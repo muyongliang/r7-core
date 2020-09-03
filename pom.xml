@@ -19,6 +19,7 @@
         <module>cloud-setting</module>
         <module>cloud-video</module>
         <module>cloud-im</module>
+        <module>cloud-wallet</module>
     </modules>
 
 
