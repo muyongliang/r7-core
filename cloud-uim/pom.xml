@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cloud-uims</artifactId>
+    <artifactId>cloud-uim</artifactId>
 
 
     <dependencies>
@@ -38,13 +38,13 @@
             <version>${security.jwt.version}</version>
         </dependency>
 
+        <!-- jwt类库-->
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>${jjwt.version}</version>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>${nimbus.version}</version>
         </dependency>
     </dependencies>
-
 
 
     <build>

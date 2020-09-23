@@ -10,17 +10,13 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>cloud-common</module>
-        <module>cloud-uims</module>
-        <module>cloud-proxy</module>
-        <module>cloud-profit</module>
-        <module>cloud-task</module>
-        <module>cloud-integral</module>
-        <module>cloud-funds</module>
+        <module>cloud-uim</module>
         <module>cloud-setting</module>
-        <module>cloud-video</module>
         <module>cloud-im</module>
-        <module>cloud-wallet</module>
+        <module>cloud-job</module>
         <module>cloud-gateway</module>
+        <module>cloud-assets</module>
+        <module>cloud-dividend</module>
     </modules>
 
 
@@ -45,7 +41,7 @@
         <hutool.version>5.2.5</hutool.version>
         <spring-cloud-alibaba.version>2.1.0.RELEASE</spring-cloud-alibaba.version>
         <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
-        <jjwt.version>0.9.1</jjwt.version>
+        <nimbus.version>9.0.1</nimbus.version>
     </properties>
 
     <dependencies>
