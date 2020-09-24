@@ -1,0 +1,69 @@
+server:
+  port: 8088
+
+spring:
+  # 接口返回 时间格式化
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  profiles:
+    active: local
+  application:
+    name: R7-core-setting
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.1.49:8848
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:8080
+      eager: true
+  main:
+    #当遇到同样名字的时候，是否允许覆盖注册
+    allow-bean-definition-overriding: true
+  # 数据源配置
+  datasource:
+    druid:
+      url: jdbc:mysql://192.168.1.48:3306/core?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false
+      username: root
+      password: root.R7db@192.168.1.48
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+  #   mybatis映射
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.yym.setting.mapper
+  configuration:
+    # 开启驼峰映射
+    map-underscore-to-camel-case: true
+
+# rocketmq 配置
+rocketmq:
+  name-server: 192.168.1.22:9876
+  producer:
+    send-message-timeout: 300000
+    group: service-phone-data-group
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+#修改调用超时时间
+feign:
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 10000
+
+# http://192.168.1.13:5601/app/kibana
+logstash:
+  enable: true
+  destination: 192.168.1.13:5044
+
+logging:
+  file: ./log/yym-cloud-setting.log
