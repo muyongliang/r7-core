@@ -19,6 +19,7 @@
         <module>cloud-dividend</module>
         <module>cloud-stand</module>
         <module>cloud-trigger</module>
+        <module>cloud-integral</module>
     </modules>
 
 
