@@ -1,24 +1,22 @@
-package com.r7.core.uims;
-
+package com.r7.core.stand.main;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
-
 /**
- * uim 启动类
+ * 支架项目启动类
  *
  * @author zhongpingli
  */
-@MapperScan("com.r7.core.uims.mapper")
+@MapperScan("com.r7.core.stand.*.mapper")
 @SpringBootApplication(scanBasePackages = {"com.r7.core"})
 @EnableDiscoveryClient
-public class UimApplication {
+public class StandApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UimApplication.class, args);
+        SpringApplication.run(StandApplication.class, args);
     }
 
 }

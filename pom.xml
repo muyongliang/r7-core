@@ -18,6 +18,8 @@
         <module>cloud-assets</module>
         <module>cloud-dividend</module>
         <module>cloud-stand</module>
+        <module>cloud-trigger</module>
+        <module>cloud-integral</module>
     </modules>
 
 
@@ -47,9 +49,14 @@
 
     <dependencies>
         <!--nacos 配置动态更新-->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
+<!--        </dependency>-->
+        <!--        spring cloud alibaba 分布式包-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
 
         <!--第三方工具包-->
