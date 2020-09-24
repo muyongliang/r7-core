@@ -54,7 +54,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.r7.core.uims.UimsApplication</mainClass>
+                    <mainClass>com.r7.core.uims.UimApplication</mainClass>
                     <fork>true</fork>
                     <jvmArguments>
                         -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005

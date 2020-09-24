@@ -13,10 +13,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication(scanBasePackages = {"com.r7.core"})
 @EnableDiscoveryClient
-public class UimsApplication {
+public class UimApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UimsApplication.class, args);
+        SpringApplication.run(UimApplication.class, args);
     }
 
 }

@@ -17,6 +17,7 @@
         <module>cloud-gateway</module>
         <module>cloud-assets</module>
         <module>cloud-dividend</module>
+        <module>cloud-stand</module>
     </modules>
 
 
