@@ -11,9 +11,11 @@ public enum CommitErrorEnum implements IError {
     /**
      * 异常
      */
-    UNVALID_API("unvalid_api", "没有找到对应的API"),
-    ARGUMENT_NOT_VALID("valid_failed", "参数校验失败"),
-    UNKNOWN_ERROR("unknown_error", "未知错误"),
+    BAD_REQUEST("400", "参数校验失败"),
+    UNAUTHORIZED("401", "用户未认证"),
+    FORBIDDEN("403", "用户无权限"),
+    NOT_FOUND("404", "资源不存在"),
+    SERVER_ERROR("500", "服务器发生未知错误"),
     ;
 
     /**
