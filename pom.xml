@@ -18,6 +18,7 @@
         <module>cloud-assets</module>
         <module>cloud-dividend</module>
         <module>cloud-stand</module>
+        <module>cloud-trigger</module>
     </modules>
 
 
