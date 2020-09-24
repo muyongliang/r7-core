@@ -26,7 +26,7 @@ public class CoreSettingController {
     public ResponseEntity addSetting(CoreSettingVO coreSettingVO) {
         Set<ConstraintViolation<CoreSettingVO>> violationSet = ValidatorUtil.validate(coreSettingVO);
         if (violationSet.size() != 0) {
-            return ResponseEntity.failure(CommitErrorEnum.ARGUMENT_NOT_VALID.getCode(),violationSet.iterator().next().getMessage());
+            return ResponseEntity.failure(CommitErrorEnum.BAD_REQUEST.getCode(),violationSet.iterator().next().getMessage());
         }
         return ResponseEntity.success(coreSettingService.insert(coreSettingVO));
     }
