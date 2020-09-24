@@ -1,11 +1,11 @@
-package com.r7.core.setting.dto;
+package com.r7.core.setting.vo;
 
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class CoreSettingDTO {
+public class CoreSettingVO {
 
     private Long id;
 
@@ -25,9 +25,8 @@ public class CoreSettingDTO {
 
     private Long createdBy;
 
-    private Date createdAt;
+
 
     private Long updatedBy;
 
-    private Date updatedAt;
 }

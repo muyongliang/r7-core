@@ -1,11 +1,11 @@
 package com.r7.core.setting.service;
 
 
-import com.r7.core.setting.dto.CoreSettingDTO;
+import com.r7.core.setting.vo.CoreSettingVO;
 
 public interface CoreSettingService {
 
 
-    Integer insert(CoreSettingDTO coreSettingDTO);
+    Integer insert(CoreSettingVO coreSettingVO);
 
 }
