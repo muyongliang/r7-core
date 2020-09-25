@@ -1,14 +1,13 @@
 package com.r7.core.setting.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.setting.common.enums.CommitErrorEnum;
 import com.r7.core.setting.common.util.ValidatorUtil;
 import com.r7.core.setting.vo.CoreSettingVO;
 import com.r7.core.setting.service.CoreSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolation;
 import java.util.Set;
@@ -22,14 +21,33 @@ public class CoreSettingController {
     private CoreSettingService coreSettingService;
 
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity addSetting(CoreSettingVO coreSettingVO) {
         Set<ConstraintViolation<CoreSettingVO>> violationSet = ValidatorUtil.validate(coreSettingVO);
         if (violationSet.size() != 0) {
-            return ResponseEntity.failure(CommitErrorEnum.BAD_REQUEST.getCode(),violationSet.iterator().next().getMessage());
+            return ResponseEntity.failure(CommitErrorEnum.BAD_REQUEST.getCode(), violationSet.iterator().next().getMessage());
         }
-        return ResponseEntity.success(coreSettingService.insert(coreSettingVO));
+        return ResponseEntity.success(coreSettingService.addSetting(coreSettingVO));
     }
 
+    @PutMapping
+    public ResponseEntity updateSetting(CoreSettingVO coreSettingVO) {
+        Set<ConstraintViolation<CoreSettingVO>> violationSet = ValidatorUtil.validate(coreSettingVO);
+        if (violationSet.size() != 0) {
+            return ResponseEntity.failure(CommitErrorEnum.BAD_REQUEST.getCode(), violationSet.iterator().next().getMessage());
+        }
+        return ResponseEntity.success(coreSettingService.updateSetting(coreSettingVO));
 
+    }
+
+    @GetMapping("/setting/{id}")
+    public ResponseEntity qrySetting(@PathVariable Long id) {
+        return ResponseEntity.success(coreSettingService.qrySetting(id));
+    }
+
+    @GetMapping("/settings")
+    public ResponseEntity qrySetting(Page page) {
+        return ResponseEntity.success(coreSettingService.qrySetting(page));
+
+    }
 }

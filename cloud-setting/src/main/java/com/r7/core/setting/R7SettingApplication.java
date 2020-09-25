@@ -9,8 +9,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 /**
  * @author muyongliang
  */
-@MapperScan(value = "com.r7.core.setting.mapper")
 @SpringBootApplication(scanBasePackages = {"com.r7.core"})
+@MapperScan("com.r7.core.setting.mapper")
 @EnableDiscoveryClient
 //@EnableFeignClients
 public class R7SettingApplication {
