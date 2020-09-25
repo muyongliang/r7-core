@@ -1,6 +1,6 @@
-package com.r7.core.uims.service.impl;
+package com.r7.core.uim.service.impl;
 
-import com.r7.core.uims.service.UserService;
+import com.r7.core.uim.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
