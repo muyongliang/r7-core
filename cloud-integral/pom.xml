@@ -14,6 +14,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>7.1.2</version>
+        </dependency>
+        <dependency>
             <groupId>com.r7.core</groupId>
             <artifactId>cloud-common</artifactId>
             <version>${project.version}</version>
