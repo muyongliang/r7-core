@@ -11,7 +11,7 @@
 |cloud-setting|公共配置模块|
 |cloud-job|任务模块|
 |cloud-uim|统一登录授权模块|
-|trigger|定时任务模块|
+|cloud-trigger|定时任务模块|
 |cloud-stand|支架模块 包含短信、电子签、视频录制|
 
 ## 开发要求
