@@ -22,7 +22,7 @@ public class CoreSettingController {
 
 
     @PostMapping
-    public ResponseEntity addSetting(CoreSettingVO coreSettingVO) {
+    public ResponseEntity addSetting(@RequestBody CoreSettingVO coreSettingVO) {
         Set<ConstraintViolation<CoreSettingVO>> violationSet = ValidatorUtil.validate(coreSettingVO);
         if (violationSet.size() != 0) {
             return ResponseEntity.failure(CommitErrorEnum.BAD_REQUEST.getCode(), violationSet.iterator().next().getMessage());
@@ -31,7 +31,7 @@ public class CoreSettingController {
     }
 
     @PutMapping
-    public ResponseEntity updateSetting(CoreSettingVO coreSettingVO) {
+    public ResponseEntity updateSetting(@RequestBody CoreSettingVO coreSettingVO) {
         Set<ConstraintViolation<CoreSettingVO>> violationSet = ValidatorUtil.validate(coreSettingVO);
         if (violationSet.size() != 0) {
             return ResponseEntity.failure(CommitErrorEnum.BAD_REQUEST.getCode(), violationSet.iterator().next().getMessage());

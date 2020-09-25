@@ -29,6 +29,7 @@ public class CoreSettingServiceImpl implements CoreSettingService {
         CoreSetting coreSetting = BeanUtil.mapToBean(stringObjectMap, CoreSetting.class, true, new CopyOptions());
         coreSetting.setId(snowflakeId);
         coreSetting.setCreatedAt(new Date());
+        coreSetting.setUpdatedAt(new Date());
         return coreSettingMapper.insert(coreSetting);
     }
 
