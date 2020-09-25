@@ -1,6 +1,6 @@
-package com.r7.core.uims.config;
+package com.r7.core.uim.config;
 
-import com.r7.core.uims.service.impl.UserServiceImpl;
+import com.r7.core.uim.service.impl.UserServiceImpl;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
