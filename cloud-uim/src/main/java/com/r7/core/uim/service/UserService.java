@@ -1,4 +1,4 @@
-package com.r7.core.uims.service;
+package com.r7.core.uim.service;
 
 /**
  * 用户服务

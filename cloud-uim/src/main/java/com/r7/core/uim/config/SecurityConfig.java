@@ -1,4 +1,4 @@
-package com.r7.core.uims.config;
+package com.r7.core.uim.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
