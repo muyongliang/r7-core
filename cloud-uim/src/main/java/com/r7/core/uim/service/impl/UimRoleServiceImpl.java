@@ -30,7 +30,7 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
         UimRole uimRole = Option.of(baseMapper.selectById(id))
-                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_IS_NOT_EXISTS));
         uimRole.toUimRole(uimRoleDto);
         uimRole.setUpdatedAt(new Date());
         uimRole.setUpdatedBy(userId);

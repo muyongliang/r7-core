@@ -2,18 +2,19 @@ package com.r7.core.setting.service;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.r7.core.setting.vo.CoreSettingVO;
+import com.r7.core.setting.dto.CoreSettingDto;
+import com.r7.core.setting.vo.CoreSettingVo;
 
 public interface CoreSettingService {
 
 
-    Integer addSetting(CoreSettingVO coreSettingVO);
+    Integer addSetting(CoreSettingDto coreSettingDto);
 
-    CoreSettingVO qrySetting(Long id);
+    CoreSettingVo qrySetting(Long id);
 
-    Page<CoreSettingVO> qrySetting(Page page);
+    Page<CoreSettingVo> qrySetting(Integer pageSize,Integer pageNum);
 
-    Integer updateSetting(CoreSettingVO coreSettingVO);
+    Integer updateSettingById(Long id,CoreSettingDto coreSettingDto);
 }
 
 

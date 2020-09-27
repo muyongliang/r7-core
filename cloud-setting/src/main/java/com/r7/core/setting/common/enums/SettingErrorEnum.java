@@ -7,16 +7,14 @@ import com.r7.core.common.constant.IError;
  *
  * @author mrli
  */
-public enum CommitErrorEnum implements IError {
+public enum SettingErrorEnum implements IError {
     /**
      * 异常
      */
-    BAD_REQUEST("400", "参数校验失败"),
-    UNAUTHORIZED("401", "用户未认证"),
-    FORBIDDEN("403", "用户无权限"),
-    NOT_FOUND("404", "资源不存在"),
-    SERVER_ERROR("500", "服务器发生未知错误"),
-    ;
+    SETTING_IS_NOT_EXISTS("setting_is_not_exists", "配置项不存在"),
+    PAGE_SIZE_IS_NULL("page_size_is_null", "分页大小不能为空"),
+    PAGE_NUM_IS_NULL("page_num_is_null", "分页页码不能为空"),
+    SETTING_ID_IS_NULL("setting_id_is_null", "配置信息ID不能为空");
 
     /**
      * 错误码
@@ -28,7 +26,7 @@ public enum CommitErrorEnum implements IError {
      */
     private String message;
 
-    CommitErrorEnum(String code, String message) {
+    SettingErrorEnum(String code, String message) {
         this.code = code;
         this.message = message;
     }
