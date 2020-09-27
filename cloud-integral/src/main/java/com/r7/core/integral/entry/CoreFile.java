@@ -2,7 +2,8 @@ package com.r7.core.integral.entry;
 
 import org.springframework.data.annotation.Id;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
