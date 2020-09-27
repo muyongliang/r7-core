@@ -26,5 +26,3 @@ spring:
     host: 192.168.1.48
     port: 6379
 
-  #   mybatis映射
-mybatis-plus:
