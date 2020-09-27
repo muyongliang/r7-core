@@ -5,9 +5,9 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.setting.common.enums.SettingErrorEnum;
-import com.r7.core.setting.common.util.ValidatorUtil;
 import com.r7.core.setting.common.util.YmIdUtils;
 import com.r7.core.setting.dto.CoreSettingDto;
 import com.r7.core.setting.mapper.CoreSettingMapper;
@@ -15,48 +15,50 @@ import com.r7.core.setting.model.CoreSetting;
 import com.r7.core.setting.service.CoreSettingService;
 import com.r7.core.setting.vo.CoreSettingVo;
 import io.vavr.control.Option;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolation;
 import java.util.Date;
-import java.util.Map;
-import java.util.Set;
 
+/**
+ * @Author muyongliang
+ * @Date 2020/9/27 17:27
+ * @Description 公共配置服务实现类
+ */
+@Slf4j
 @Service
-public class CoreSettingServiceImpl implements CoreSettingService {
+public class CoreSettingServiceImpl extends ServiceImpl<CoreSettingMapper, CoreSetting> implements CoreSettingService {
 
     @Autowired
     private CoreSettingMapper coreSettingMapper;
 
     @Override
-    public Integer addSetting(CoreSettingDto coreSettingDto) {
-        //       todo 参数校验
-        Set<ConstraintViolation<CoreSettingDto>> violationSet = ValidatorUtil.validate(coreSettingDto);
+    public CoreSettingVo saveSetting(CoreSettingDto coreSettingDto, Long userId) {
         Long snowflakeId = YmIdUtils.getSnowflakeId();
-        Map<String, Object> stringObjectMap = BeanUtil.beanToMap(coreSettingDto);
-        CoreSetting coreSetting = BeanUtil.mapToBean(stringObjectMap, CoreSetting.class, true, new CopyOptions());
+        CoreSetting coreSetting = BeanUtil.mapToBean(BeanUtil.beanToMap(coreSettingDto), CoreSetting.class, true, new CopyOptions());
         coreSetting.setId(snowflakeId);
         coreSetting.setCreatedAt(new Date());
         coreSetting.setUpdatedAt(new Date());
-        return coreSettingMapper.insert(coreSetting);
+        coreSettingMapper.insert(coreSetting);
+        CoreSettingVo coreSettingVo = BeanUtil.mapToBean(BeanUtil.beanToMap(coreSetting), CoreSettingVo.class, true, new CopyOptions());
+        return coreSettingVo;
     }
 
     @Override
-    public CoreSettingVo qrySetting(Long id) {
+    public CoreSettingVo findSettingById(Long id) {
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(SettingErrorEnum.SETTING_ID_IS_NULL));
         CoreSetting coreSetting = coreSettingMapper.selectById(id);
-        if (coreSetting==null) {
+        if (coreSetting == null) {
             throw new BusinessException(SettingErrorEnum.SETTING_IS_NOT_EXISTS);
         }
-        Map<String, Object> stringObjectMap = BeanUtil.beanToMap(coreSetting);
-        CoreSettingVo coreSettingVO = BeanUtil.mapToBean(stringObjectMap, CoreSettingVo.class, true, new CopyOptions());
+        CoreSettingVo coreSettingVO = BeanUtil.mapToBean(BeanUtil.beanToMap(coreSetting), CoreSettingVo.class, true, new CopyOptions());
         return coreSettingVO;
     }
 
     @Override
-    public Page<CoreSettingVo> qrySetting(Integer pageSize,Integer pageNum) {
+    public Page<CoreSettingVo> pageSetting(Integer pageSize, Integer pageNum) {
         pageSize = Option.of(pageSize)
                 .getOrElseThrow(() -> new BusinessException(SettingErrorEnum.PAGE_SIZE_IS_NULL));
         pageNum = Option.of(pageNum)
@@ -72,20 +74,20 @@ public class CoreSettingServiceImpl implements CoreSettingService {
     }
 
     @Override
-    public Integer updateSettingById(Long id,CoreSettingDto coreSettingDto) {
-        id = Option.of(id)
+    public CoreSettingVo updateSettingById(Long id, CoreSettingDto coreSettingDto, Long userId) {
+        Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(SettingErrorEnum.SETTING_ID_IS_NULL));
-        //       todo 参数校验
-        Set<ConstraintViolation<CoreSettingDto>> violationSet = ValidatorUtil.validate(coreSettingDto);
-        CoreSetting qry = coreSettingMapper.selectById(id);
-        if (qry==null) {
+        CoreSetting findById = coreSettingMapper.selectById(id);
+        if (findById == null) {
             throw new BusinessException(SettingErrorEnum.SETTING_IS_NOT_EXISTS);
         }
-        Map<String, Object> stringObjectMap = BeanUtil.beanToMap(coreSettingDto);
-        CoreSetting coreSetting = BeanUtil.mapToBean(stringObjectMap, CoreSetting.class, true, new CopyOptions());
+        CoreSetting coreSetting = BeanUtil.mapToBean(BeanUtil.beanToMap(coreSettingDto), CoreSetting.class, true, new CopyOptions());
         coreSetting.setId(id);
         coreSetting.setUpdatedAt(new Date());
-        return coreSettingMapper.updateById(coreSetting);
+        coreSettingMapper.updateById(coreSetting);
+        CoreSetting coreSetting1 = coreSettingMapper.selectById(id);
+        CoreSettingVo coreSettingVo = BeanUtil.mapToBean(BeanUtil.beanToMap(coreSetting1), CoreSettingVo.class, true, new CopyOptions());
+        return coreSettingVo;
     }
 
 }

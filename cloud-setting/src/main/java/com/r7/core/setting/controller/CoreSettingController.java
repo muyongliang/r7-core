@@ -1,6 +1,5 @@
 package com.r7.core.setting.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.setting.dto.CoreSettingDto;
 import com.r7.core.setting.service.CoreSettingService;
@@ -15,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
  * @Date 2020/9/27 11:26
  * @Description 公共配置接口
  */
-@Api(value = "/setting", tags = {"公共配置接口"})
+@Api(value = "/api/setting", tags = {"公共配置接口"})
 @RestController
-@RequestMapping
+@RequestMapping("/setting")
 public class CoreSettingController {
 
     @Autowired
@@ -27,37 +26,37 @@ public class CoreSettingController {
             value = "根据配置id查询配置信息",
             notes = "配置id是必须的",
             response = CoreSettingVo.class)
-    @GetMapping("/setting/{id}")
-    public ResponseEntity qrySetting(@PathVariable("id") Long id) {
-        return ResponseEntity.success(coreSettingService.qrySetting(id));
+    @GetMapping("/{id}")
+    public ResponseEntity findSettingById(@PathVariable("id") Long id) {
+        return ResponseEntity.success(coreSettingService.findSettingById(id));
     }
 
     @ApiOperation(
             value = "新增配置信息",
             notes = "",
             response = Integer.class)
-    @PostMapping("/setting")
-    public ResponseEntity addSetting(@RequestBody CoreSettingDto coreSettingDto) {
+    @PostMapping
+    public ResponseEntity saveSetting(@RequestBody CoreSettingDto coreSettingDto) {
 
-        return ResponseEntity.success(coreSettingService.addSetting(coreSettingDto));
+        return ResponseEntity.success(coreSettingService.saveSetting(coreSettingDto,0L));
     }
 
     @ApiOperation(
-            value = "更新配置信息",
-            notes = "",
+            value = "根据id更新配置信息",
+            notes = "配置id是必须的",
             response = Integer.class)
-    @PutMapping("/setting/{id}")
-    public ResponseEntity updateSetting(@PathVariable("id") Long id, @RequestBody CoreSettingDto coreSettingDto) {
-        return ResponseEntity.success(coreSettingService.updateSettingById(id, coreSettingDto));
+    @PutMapping("/{id}")
+    public ResponseEntity updateSettingById(@PathVariable("id") Long id, @RequestBody CoreSettingDto coreSettingDto) {
+        return ResponseEntity.success(coreSettingService.updateSettingById(id, coreSettingDto,0L));
     }
 
     @ApiOperation(
             value = "分页查询所有配置信息",
             notes = "",
-            response = IPage.class)
-    @GetMapping("/settings")
-    public ResponseEntity qrySetting(Integer pageSize, Integer pageNum) {
-        return ResponseEntity.success(coreSettingService.qrySetting(pageSize, pageNum));
+            response = CoreSettingVo.class)
+    @GetMapping("/page")
+    public ResponseEntity pageSetting(@RequestParam(value = "pageSize",defaultValue = "15") Integer pageSize, @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum) {
+        return ResponseEntity.success(coreSettingService.pageSetting(pageSize, pageNum));
 
     }
 }
