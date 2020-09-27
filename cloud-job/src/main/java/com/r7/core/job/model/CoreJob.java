@@ -1,5 +1,7 @@
 package com.r7.core.job.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,9 +11,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 @Data
-//@TableName("core_job")
-@ApiModel(description = "任务类")
-public class CoreJob {
+@TableName("core_job")
+@ApiModel(description = "任务信息")
+public class CoreJob extends Model<CoreJob> {
     /** id;任务id */
 //    @Id
 //    @GeneratedValue
