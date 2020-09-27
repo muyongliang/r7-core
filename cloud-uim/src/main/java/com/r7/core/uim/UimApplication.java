@@ -1,4 +1,4 @@
-package com.r7.core.uims;
+package com.r7.core.uim;
 
 
 import org.mybatis.spring.annotation.MapperScan;
@@ -12,7 +12,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  *
  * @author zhongpingli
  */
-@MapperScan("com.r7.core.uims.mapper")
+@MapperScan("com.r7.core.uim.mapper")
 @SpringBootApplication(scanBasePackages = {"com.r7.core"})
 @EnableDiscoveryClient
 public class UimApplication {

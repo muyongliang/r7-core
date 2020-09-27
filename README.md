@@ -11,7 +11,7 @@
 |cloud-setting|公共配置模块|
 |cloud-job|任务模块|
 |cloud-uim|统一登录授权模块|
-|trigger|定时任务模块|
+|cloud-trigger|定时任务模块|
 |cloud-stand|支架模块 包含短信、电子签、视频录制|
 
 ## 开发要求
@@ -49,3 +49,39 @@ bug修复分支: fix_xxx
 -e MYSQL_SERVICE_DB_NAME=nacos \
 -p 8848:8848 \
 nacos/nacos-server
+
+
+>docker run -p 9000:9000 \
+--name minio \
+-d --restart=always \
+-e "MINIO_ACCESS_KEY=admin" \
+-e "MINIO_SECRET_KEY=admin123456" \
+-v ~/minio/data:/data \
+-v ~/minio/config:/root/.minio \
+minio/minio server /data
+>
+>docker服务编排， Loki轻量级日志服务
+>version: "3"
+ networks:
+   loki: 
+ services:
+   loki:
+     image: grafana/loki:1.5.0
+     ports:
+       - "3100:3100"
+     command: -config.file=/etc/loki/local-config.yaml
+     networks:
+       - loki
+   promtail:
+     image: grafana/promtail:1.5.0
+     volumes:
+       - /var/log:/var/log
+     command: -config.file=/etc/promtail/docker-config.yaml
+     networks:
+       - loki
+   grafana:
+     image: grafana/grafana:latest
+     ports:
+       - "3000:3000"
+     networks:
+       - loki

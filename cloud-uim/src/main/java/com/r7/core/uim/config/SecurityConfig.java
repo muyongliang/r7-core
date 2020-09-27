@@ -1,4 +1,4 @@
-package com.r7.core.uims.config;
+package com.r7.core.uim.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,13 +27,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources",
             "/swagger-resources/configuration/security",
             "/swagger-ui.html",
-            "/webjars/**"
+            "/webjars/**",
+            "/role/**"
     };
 
     /**
      * 系统过滤地址
      */
-    private static final String[] SYSTEM_AUTH_LIST = {"/auth/**"};
+    private static final String[] SYSTEM_AUTH_LIST = {
+            "/auth/**",
+            "/role/**"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {
