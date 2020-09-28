@@ -7,12 +7,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
-import com.r7.core.setting.common.enums.SettingErrorEnum;
+import com.r7.core.common.util.SnowflakeUtil;
+import com.r7.core.setting.constant.SettingErrorEnum;
 import com.r7.core.setting.dto.CoreSettingDto;
 import com.r7.core.setting.mapper.CoreSettingMapper;
 import com.r7.core.setting.model.CoreSetting;
 import com.r7.core.setting.service.CoreSettingService;
-import com.r7.core.setting.util.YmIdUtils;
 import com.r7.core.setting.vo.CoreSettingVo;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class CoreSettingServiceImpl extends ServiceImpl<CoreSettingMapper, CoreS
 
     @Override
     public CoreSettingVo saveSetting(CoreSettingDto coreSettingDto, Long userId) {
-        Long snowflakeId = YmIdUtils.getSnowflakeId();
+        Long snowflakeId = SnowflakeUtil.getSnowflakeId();
         CoreSetting coreSetting = BeanUtil.mapToBean(BeanUtil.beanToMap(coreSettingDto), CoreSetting.class, true, new CopyOptions());
         coreSetting.setId(snowflakeId);
         coreSetting.setCreatedAt(new Date());
