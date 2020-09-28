@@ -2,14 +2,18 @@ package com.r7.core.job.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.r7.core.job.dto.CoreJobDto;
+import com.r7.core.job.vo.CoreJobVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+/**
+ * 任务实体
+ * @author zs
+ */
 @Data
 @TableName("core_job")
 @ApiModel(description = "任务信息")
@@ -59,4 +63,27 @@ public class CoreJob extends Model<CoreJob> {
     @ApiModelProperty(value = "更新时间", hidden = true)
     private Date updatedAt ;
 
+    public CoreJobVo toCoreJobVo() {
+        CoreJobVo coreJobVo = new CoreJobVo();
+        coreJobVo.setId(this.getId());
+        coreJobVo.setAppId(this.getAppId());
+        coreJobVo.setJobName(this.getJobName());
+        coreJobVo.setJobCode(this.getJobCode());
+        coreJobVo.setJobRule(this.getJobRule());
+        coreJobVo.setContent(this.getContent());
+        coreJobVo.setOnShelf(this.getOnShelf());
+        coreJobVo.setOffShelf(this.getOffShelf());
+        coreJobVo.setStatus(this.getStatus());
+        coreJobVo.setWinnerNum(this.getWinnerNum());
+        return coreJobVo;
+    }
+
+    public void toCoreJob(CoreJobDto coreJobDto) {
+        this.setJobName(coreJobDto.getJobName());
+        this.setJobCode(coreJobDto.getJobCode());
+        this.setContent(coreJobDto.getContent());
+        this.setJobRule(coreJobDto.getJobRule());
+        this.setStatus(coreJobDto.getStatus());
+        this.setOnShelf(coreJobDto.getOnShelf());
+    }
 }

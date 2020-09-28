@@ -10,7 +10,9 @@ public enum JobErrorEnum implements IError {
      * 任务不存在
      */
     JOB_IS_NOT_EXISTS("job_is_not_exists", "任务不存在。"),
-    JOB_ID_IS_NULL("job_id_is_null", "任务id不能为空");
+    JOB_ID_IS_NULL("job_id_is_null", "任务id不能为空"),
+    JOB_PROGRESS_IS_NOT_EXISTS("job_progress_is_not_exists", "任务进度不存在。"),
+    JOB_PROGRESS_ID_IS_NULL("job_id_is_null", "任务进度id不能为空");
 
     /**
      * 错误码
