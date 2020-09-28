@@ -9,7 +9,9 @@ import javax.validation.ValidatorFactory;
 import java.util.Set;
 
 /**
- * Created by MuYongLiang on 2018/7/5.
+ * @Author muyongliang
+ * @Date 2020/9/28 10:40
+ * @Description 实体类校验工具类
  */
 public class ValidatorUtil {
     private static ValidatorUtil validatorUtil = new ValidatorUtil();
