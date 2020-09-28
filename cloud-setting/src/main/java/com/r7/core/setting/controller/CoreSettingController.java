@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * @Author liang
  * @Date 2020/9/27 11:26
@@ -36,7 +38,7 @@ public class CoreSettingController {
             notes = "",
             response = Integer.class)
     @PostMapping
-    public ResponseEntity saveSetting(@RequestBody CoreSettingDto coreSettingDto) {
+    public ResponseEntity saveSetting(@RequestBody @Valid CoreSettingDto coreSettingDto) {
 
         return ResponseEntity.success(coreSettingService.saveSetting(coreSettingDto,0L));
     }
@@ -46,7 +48,7 @@ public class CoreSettingController {
             notes = "配置id是必须的",
             response = Integer.class)
     @PutMapping("/{id}")
-    public ResponseEntity updateSettingById(@PathVariable("id") Long id, @RequestBody CoreSettingDto coreSettingDto) {
+    public ResponseEntity updateSettingById(@PathVariable("id") Long id, @RequestBody @Valid CoreSettingDto coreSettingDto) {
         return ResponseEntity.success(coreSettingService.updateSettingById(id, coreSettingDto,0L));
     }
 

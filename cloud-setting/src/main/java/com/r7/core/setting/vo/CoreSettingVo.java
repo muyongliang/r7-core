@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 @ApiModel(description = "公共配置信息")
 @Data
 public class CoreSettingVo {
@@ -52,6 +54,21 @@ public class CoreSettingVo {
      */
     @ApiModelProperty("创建人")
     private Long createdBy;
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty("创建时间")
+    private Date createdAt;
+    /**
+     * 更新人
+     */
+    @ApiModelProperty("更新人")
+    private Long updatedBy;
+    /**
+     * 更新时间
+     */
+    @ApiModelProperty("更新时间")
+    private Date updatedAt;
 
 
 }
