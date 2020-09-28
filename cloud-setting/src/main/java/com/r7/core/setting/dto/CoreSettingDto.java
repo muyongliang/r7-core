@@ -1,9 +1,5 @@
 package com.r7.core.setting.dto;
 
-/**
- * @Auther liang
- * @Date 2020/9/27
- */
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,7 +11,7 @@ import javax.validation.constraints.NotNull;
 /**
  * @Author liang
  * @Date 2020/9/25 11:04
- * @Description 配置表
+ * @Description 配置表查询
  */
 @ApiModel(description = "公共配置信息")
 @Data

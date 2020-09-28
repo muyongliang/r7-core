@@ -10,7 +10,7 @@ import com.r7.core.setting.vo.CoreSettingVo;
 /**
  * @Author muyongliang
  * @Date 2020/9/27 17:18
- * @Description 公共配置模块服务
+ * @Description 公共配置模块服务接口
  */
 public interface CoreSettingService extends IService<CoreSetting> {
 

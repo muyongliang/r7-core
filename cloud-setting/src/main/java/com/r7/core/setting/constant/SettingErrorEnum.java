@@ -1,11 +1,11 @@
-package com.r7.core.setting.common.enums;
+package com.r7.core.setting.constant;
 
 import com.r7.core.common.constant.IError;
 
 /**
- * 公共异常
- *
- * @author mrli
+ * @Author muyongliang
+ * @Date 2020/9/28 10:32
+ * @Description 配置模块异常类
  */
 public enum SettingErrorEnum implements IError {
     /**

@@ -1,4 +1,4 @@
-package com.r7.core.setting.common.util;
+package com.r7.core.setting.util;
 
 import org.hibernate.validator.HibernateValidator;
 
