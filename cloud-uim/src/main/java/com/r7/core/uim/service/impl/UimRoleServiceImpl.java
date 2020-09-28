@@ -27,6 +27,7 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
 
     @Override
     public UimRoleVo updateRoleById(Long id, UimRoleDto uimRoleDto, Long userId) {
+        log.info("角色修改ID:{},修改内容：{}, 修改人ID：{}", id, uimRoleDto, userId);
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
         UimRole uimRole = Option.of(baseMapper.selectById(id))
