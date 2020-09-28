@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * 角色对外接口
@@ -16,7 +17,7 @@ import javax.annotation.Resource;
  * @author zhongpingli
  * @date 2020-09-25
  */
-@Api(value = "/role", tags = {"角色接口"})
+@Api(value = "/api/role", tags = {"角色接口"})
 @RestController
 @RequestMapping("/role")
 public class UimRoleController {
@@ -30,7 +31,10 @@ public class UimRoleController {
             notes = "角色ID一定要存在",
             response = UimRoleVo.class)
     @PutMapping("/{id}")
-    public ResponseEntity updateRoleById(@PathVariable("id") Long id, @RequestBody UimRoleDto uimRoleDto) {
+    public ResponseEntity updateRoleById(@PathVariable("id") Long id,
+                                         @Valid @RequestBody UimRoleDto uimRoleDto,
+                                         @RequestParam(value = "pageSize", defaultValue = "1") int pageSize,
+                                         @RequestParam(value = "pageNum", defaultValue = "15") int pageNum) {
         return ResponseEntity.success(uimRoleService.updateRoleById(id, uimRoleDto, 0L));
     }
 
