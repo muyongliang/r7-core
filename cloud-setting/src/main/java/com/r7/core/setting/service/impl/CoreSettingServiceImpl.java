@@ -36,12 +36,14 @@ public class CoreSettingServiceImpl extends ServiceImpl<CoreSettingMapper, CoreS
     @Override
     public CoreSettingVo saveSetting(CoreSettingDto coreSettingDto, Long userId) {
         Long snowflakeId = SnowflakeUtil.getSnowflakeId();
-        CoreSetting coreSetting = BeanUtil.mapToBean(BeanUtil.beanToMap(coreSettingDto), CoreSetting.class, true, new CopyOptions());
+        CoreSetting coreSetting = BeanUtil
+                .mapToBean(BeanUtil.beanToMap(coreSettingDto), CoreSetting.class, true, new CopyOptions());
         coreSetting.setId(snowflakeId);
         coreSetting.setCreatedAt(new Date());
         coreSetting.setUpdatedAt(new Date());
         coreSettingMapper.insert(coreSetting);
-        CoreSettingVo coreSettingVo = BeanUtil.mapToBean(BeanUtil.beanToMap(coreSetting), CoreSettingVo.class, true, new CopyOptions());
+        CoreSettingVo coreSettingVo = BeanUtil
+                .mapToBean(BeanUtil.beanToMap(coreSetting), CoreSettingVo.class, true, new CopyOptions());
         return coreSettingVo;
     }
 
@@ -53,7 +55,8 @@ public class CoreSettingServiceImpl extends ServiceImpl<CoreSettingMapper, CoreS
         if (coreSetting == null) {
             throw new BusinessException(SettingErrorEnum.SETTING_IS_NOT_EXISTS);
         }
-        CoreSettingVo coreSettingVO = BeanUtil.mapToBean(BeanUtil.beanToMap(coreSetting), CoreSettingVo.class, true, new CopyOptions());
+        CoreSettingVo coreSettingVO = BeanUtil
+                .mapToBean(BeanUtil.beanToMap(coreSetting), CoreSettingVo.class, true, new CopyOptions());
         return coreSettingVO;
     }
 
@@ -81,12 +84,14 @@ public class CoreSettingServiceImpl extends ServiceImpl<CoreSettingMapper, CoreS
         if (findById == null) {
             throw new BusinessException(SettingErrorEnum.SETTING_IS_NOT_EXISTS);
         }
-        CoreSetting coreSetting = BeanUtil.mapToBean(BeanUtil.beanToMap(coreSettingDto), CoreSetting.class, true, new CopyOptions());
+        CoreSetting coreSetting = BeanUtil
+                .mapToBean(BeanUtil.beanToMap(coreSettingDto), CoreSetting.class, true, new CopyOptions());
         coreSetting.setId(id);
         coreSetting.setUpdatedAt(new Date());
         coreSettingMapper.updateById(coreSetting);
         CoreSetting coreSetting1 = coreSettingMapper.selectById(id);
-        CoreSettingVo coreSettingVo = BeanUtil.mapToBean(BeanUtil.beanToMap(coreSetting1), CoreSettingVo.class, true, new CopyOptions());
+        CoreSettingVo coreSettingVo = BeanUtil
+                .mapToBean(BeanUtil.beanToMap(coreSetting1), CoreSettingVo.class, true, new CopyOptions());
         return coreSettingVo;
     }
 

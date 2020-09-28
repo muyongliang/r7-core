@@ -35,12 +35,11 @@ public class CoreSettingController {
 
     @ApiOperation(
             value = "新增配置信息",
-            notes = "",
             response = Integer.class)
     @PostMapping
     public ResponseEntity saveSetting(@RequestBody @Valid CoreSettingDto coreSettingDto) {
 
-        return ResponseEntity.success(coreSettingService.saveSetting(coreSettingDto,0L));
+        return ResponseEntity.success(coreSettingService.saveSetting(coreSettingDto, 0L));
     }
 
     @ApiOperation(
@@ -48,8 +47,9 @@ public class CoreSettingController {
             notes = "配置id是必须的",
             response = Integer.class)
     @PutMapping("/{id}")
-    public ResponseEntity updateSettingById(@PathVariable("id") Long id, @RequestBody @Valid CoreSettingDto coreSettingDto) {
-        return ResponseEntity.success(coreSettingService.updateSettingById(id, coreSettingDto,0L));
+    public ResponseEntity updateSettingById(@PathVariable("id") Long id,
+                                            @RequestBody @Valid CoreSettingDto coreSettingDto) {
+        return ResponseEntity.success(coreSettingService.updateSettingById(id, coreSettingDto, 0L));
     }
 
     @ApiOperation(
@@ -57,7 +57,8 @@ public class CoreSettingController {
             notes = "",
             response = CoreSettingVo.class)
     @GetMapping("/page")
-    public ResponseEntity pageSetting(@RequestParam(value = "pageSize",defaultValue = "15") Integer pageSize, @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum) {
+    public ResponseEntity pageSetting(@RequestParam(value = "pageSize", defaultValue = "15") Integer pageSize,
+                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         return ResponseEntity.success(coreSettingService.pageSetting(pageSize, pageNum));
 
     }
