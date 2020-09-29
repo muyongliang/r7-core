@@ -16,9 +16,21 @@ import java.util.List;
  */
 
 public interface CoreJobMapper extends BaseMapper<CoreJob> {
-
+    /**
+     * 分页查询
+     * @param search 条件
+     * @param page 分页
+     * @return 分页结果
+     */
     Page<CoreJobVo> pageJob(@Param("search") String search, @Param("page") Page<CoreJobVo> page);
 
+    /**
+     * 当前模块与公共模块的任务分页
+     * @param appId 平台id
+     * @param platformAppId 公共平台id
+     * @param page 分页
+     * @return 分页结果
+     */
     Page<CoreJobVo> pageCurrentJob(@Param("appId") Long appId, @Param("platformAppId") Long platformAppId, @Param("page") Page<CoreJobVo> page);
 
 

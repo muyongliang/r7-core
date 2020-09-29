@@ -53,7 +53,6 @@ public class CoreJobController {
         return ResponseEntity.success(coreJobService.findJobById(id));
     }
 
-    //todo 查询自己写方法
     @ApiOperation(value = "分页查询信息", response = CoreJobVo.class)
     @GetMapping("/page")
     public ResponseEntity pageJob(
