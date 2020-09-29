@@ -20,5 +20,4 @@ import java.util.List;
 public interface CoreJobMapper extends BaseMapper<CoreJob> {
 
 
-    Page<CoreJob> pageJobs(@Param("platformAppId") Long platformAppId, @Param("appId") Long appId, @Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
 }

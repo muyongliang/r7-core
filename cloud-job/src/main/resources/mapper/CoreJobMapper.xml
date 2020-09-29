@@ -24,10 +24,10 @@
         on_shelf, off_shelf, created_by, created_at, updated_by, updated_at
     </sql>
 
-    <select id="pageJobs" resultMap="BaseResultMap">
-        select * from core_job
-        where app_id=#{appId} or platformAppId=#{platformAppId} limit #{pageNum},#{pageSize}
-    </select>
+<!--    <select id="pageJobs" resultMap="BaseResultMap">-->
+<!--        select * from core_job-->
+<!--        where app_id=#{appId} or platformAppId=#{platformAppId} limit #{pageNum},#{pageSize}-->
+<!--    </select>-->
 
 
 </mapper>

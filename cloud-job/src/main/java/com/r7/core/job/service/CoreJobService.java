@@ -22,13 +22,13 @@ public interface CoreJobService extends IService<CoreJob> {
      */
     CoreJobVo saveJob(Long appId, CoreJobDto coreJobDto, Long userId);
 
-    /**
-     * 删除
-     * @param id 任务id
-     * @param userId 操作人id
-     * @return
-     */
-    boolean removeJobById(Long id, Long userId);
+//    /**
+//     * 删除
+//     * @param id 任务id
+//     * @param userId 操作人id
+//     * @return
+//     */
+//    boolean removeJobById(Long id, Long userId);
 
     /**
      * 根据任务id进行修改

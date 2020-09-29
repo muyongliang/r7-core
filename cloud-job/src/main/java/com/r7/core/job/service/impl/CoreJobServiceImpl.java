@@ -18,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.print.attribute.standard.JobName;
 import java.util.Date;
 import java.util.List;
 
@@ -50,13 +51,13 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
         return null;
     }
 
-    @Override
-    public boolean removeJobById(Long id, Long userId) {
-        log.info("删除任务id：{}", id);
-        baseMapper.deleteById(id);
-        log.info("删除任务id:{}，完成", id);
-        return true;
-    }
+//    @Override
+//    public boolean removeJobById(Long id, Long userId) {
+//        log.info("删除任务id：{}", id);
+//        baseMapper.deleteById(id);
+//        log.info("删除任务id:{}，完成", id);
+//        return true;
+//    }
 
     @Override
     public CoreJobVo updateJobById(Long id, CoreJobDto coreJobDto, Long userId) {
@@ -98,10 +99,15 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
     public Page<CoreJobVo> pageCurrentJob(Long appId, Integer pageNum, Integer pageSize) {
         QueryWrapper<CoreJob> wrapper = new QueryWrapper<>();
         Long platformAppId = 125L;
-        Page<CoreJob> pageJobs = coreJobMapper.pageJobs(platformAppId, appId, pageNum, pageSize);
-        
-//        Page<CoreJobVo> page = baseMapper.selectPage(new Page(pageNum, pageSize), wrapper);
-        return null;
+        if (appId != null) {
+            wrapper.eq("app_id", appId);
+            wrapper.or();
+        }
+        if (platformAppId != null) {
+            wrapper.eq("app_id", platformAppId);
+        }
+        Page<CoreJobVo> page = baseMapper.selectPage(new Page(pageNum, pageSize), wrapper);
+        return page;
     }
 
 

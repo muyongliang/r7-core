@@ -30,14 +30,14 @@ public class CoreJobController {
         return ResponseEntity.success(coreJobService.saveJob(appId, coreJobDto, 0L));
     }
 
-    @ApiOperation(
-            value = "删除任务",
-            notes = "任务id")
-    @DeleteMapping("/remove/{id}")
-    public ResponseEntity removeJob(@PathVariable Long id) {
-        boolean whether = coreJobService.removeJobById(id, 0L);
-        return ResponseEntity.success(whether);
-    }
+//    @ApiOperation(
+//            value = "删除任务",
+//            notes = "任务id")
+//    @DeleteMapping("/remove/{id}")
+//    public ResponseEntity removeJob(@PathVariable Long id) {
+//        boolean whether = coreJobService.removeJobById(id, 0L);
+//        return ResponseEntity.success(whether);
+//    }
 
     @ApiOperation(
             value = "修改任务",
