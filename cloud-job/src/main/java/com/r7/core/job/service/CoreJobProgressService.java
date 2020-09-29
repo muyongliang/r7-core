@@ -14,25 +14,26 @@ import com.r7.core.job.vo.CoreJobProgressVo;
 public interface CoreJobProgressService extends IService<CoreJobProgress> {
 
     /**
-     * 插入Job
-     * @param coreJobProgressDto
-     * @param userId
-     * @return
+     * 新增任务进度
+     * @param coreJobProgressDto 新增任务进度信息
+     * @param userId 操作人id
+     * @return 返回新增结果
      */
     CoreJobProgressVo saveJobProgress(CoreJobProgressDto coreJobProgressDto, Long userId);
 
     /**
-     * 根据用户id修改任务进度
-     * @param id
-     * @param coreJobProgressDto
-     * @return
+     * 根据任务进度id修改任务进度
+     * @param id 任务id
+     * @param coreJobProgressDto 任务进度修改信息
+     * @param userId 操作人id
+     * @return 返回修改结果
      */
     CoreJobProgressVo updateJobById(Long id, CoreJobProgressDto coreJobProgressDto, Long userId);
 
     /**
      * 根据用户id查询任务进度
-     * @param userId
-     * @return
+     * @param userId 用户id
+     * @return 返回查询结果
      */
     CoreJobProgressVo getJobProgressByUserId(Long userId);
 }

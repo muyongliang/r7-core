@@ -11,13 +11,15 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * 任务Mapper接口
+ * 任务Mapper层
  * @author zs
  */
 
-@Mapper
-@Component
 public interface CoreJobMapper extends BaseMapper<CoreJob> {
+
+    Page<CoreJobVo> pageJob(@Param("search") String search, @Param("page") Page<CoreJobVo> page);
+
+    Page<CoreJobVo> pageCurrentJob(@Param("appId") Long appId, @Param("platformAppId") Long platformAppId, @Param("page") Page<CoreJobVo> page);
 
 
 }

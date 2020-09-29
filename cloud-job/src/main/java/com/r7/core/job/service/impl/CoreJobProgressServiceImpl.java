@@ -2,6 +2,7 @@ package com.r7.core.job.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
+import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.job.constant.JobErrorEnum;
 import com.r7.core.job.dto.CoreJobProgressDto;
 import com.r7.core.job.mapper.CoreJobProgressMapper;
@@ -12,12 +13,11 @@ import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.Date;
 
 /**
  * @author zs
- * @description:
+ * @description: 任务进度实现层
  * @date : 2020-09-28
  */
 @Slf4j
@@ -26,22 +26,21 @@ public class CoreJobProgressServiceImpl
         extends ServiceImpl<CoreJobProgressMapper, CoreJobProgress>
         implements CoreJobProgressService {
 
-    @Resource
-    private CoreJobProgressMapper coreJobProgressMapper;
-
     @Override
     public CoreJobProgressVo saveJobProgress(CoreJobProgressDto coreJobProgressDto, Long userId) {
-        log.info("新增用户任务进度：{}，操作人：{}，开始时间：{}", coreJobProgressDto, 666L, new Date());
+        log.info("新增用户任务进度：{}，操作人：{}，开始时间：{}", coreJobProgressDto, userId, new Date());
         CoreJobProgress coreJobProgress = new CoreJobProgress();
         coreJobProgress.toCoreJobProgress(coreJobProgressDto);
-//        coreJobProgress.setIsDistribution(0);
+        Long id = SnowflakeUtil.getSnowflakeId();
+        coreJobProgress.setId(id);
+        coreJobProgress.setUserId(userId);
         coreJobProgress.setStartAt(new Date());
-        coreJobProgress.setCreatedBy(666L);
+        coreJobProgress.setCreatedBy(userId);
         coreJobProgress.setCreatedAt(new Date());
-        coreJobProgress.setUpdatedBy(666L);
+        coreJobProgress.setUpdatedBy(userId);
         coreJobProgress.setUpdatedAt(new Date());
         baseMapper.insert(coreJobProgress);
-        log.info("新增用户任务进度：{}成功，开始时间：{}", coreJobProgressDto, 666L, new Date());
+        log.info("新增用户任务进度：{}成功，开始时间：{}", coreJobProgressDto, userId, new Date());
         return coreJobProgress.toCoreJobProgressVo();
     }
 
@@ -53,7 +52,7 @@ public class CoreJobProgressServiceImpl
         CoreJobProgress coreJobProgress = Option.of(baseMapper.selectById(id))
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_PROGRESS_IS_NOT_EXISTS));
         coreJobProgress.toCoreJobProgress(coreJobProgressDto);
-        coreJobProgress.setUpdatedBy(66L);
+        coreJobProgress.setUpdatedBy(userId);
         coreJobProgress.setUpdatedAt(new Date());
         baseMapper.updateById(coreJobProgress);
         log.info("修改用户任务进度：{}，完成", id, coreJobProgressDto);
@@ -62,7 +61,6 @@ public class CoreJobProgressServiceImpl
 
     @Override
     public CoreJobProgressVo getJobProgressByUserId(Long userId) {
-        CoreJobProgress coreJobProgress = coreJobProgressMapper.getJobProgressByUserId(userId);
-         return coreJobProgress.toCoreJobProgressVo();
+        return baseMapper.getJobProgressByUserId(userId);
     }
 }

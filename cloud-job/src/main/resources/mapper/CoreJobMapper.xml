@@ -2,32 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.r7.core.job.mapper.CoreJobMapper">
 
-    <resultMap id="BaseResultMap" type="com.r7.core.job.model.CoreJob">
-        <id column="id" jdbcType="BIGINT" property="id" />
-        <result column="app_id" jdbcType="BIGINT" property="appId" />
-        <result column="job_name" jdbcType="VARCHAR" property="jobName" />
-        <result column="job_code" jdbcType="VARCHAR" property="jobCode" />
-        <result column="content" jdbcType="VARCHAR" property="content" />
-        <result column="job_rule" jdbcType="VARCHAR" property="jobRule" />
-        <result column="winner_num" jdbcType="VARCHAR" property="winnerNum" />
-        <result column="status" jdbcType="INTEGER" property="status" />
-        <result column="on_shelf" jdbcType="INTEGER" property="onShelf" />
-        <result column="off_shelf" jdbcType="TIMESTAMP" property="offShelf" />
-        <result column="created_by" jdbcType="BIGINT" property="createdBy" />
-        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
-        <result column="updated_by" jdbcType="BIGINT" property="updatedBy" />
-        <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-    </resultMap>
+    <select id="pageJob" resultType="com.r7.core.job.vo.CoreJobVo">
+        select id, app_id, job_name, job_code, content, job_rule, winner_num, status, on_shelf, off_shelf
+        from core_job
+        <where>
+            <if test="search!=null and search!=''">
+                job_name like concat(concat('%',#{search}),'%')
+                or
+                job_code like concat(concat('%',#{search}),'%')
+                or
+                status=#{search}
+            </if>
+        </where>
+    </select>
 
-    <sql id="Base_Column_List">
-        id, app_id, job_name, job_code, content, job_rule, winner_num, status,
-        on_shelf, off_shelf, created_by, created_at, updated_by, updated_at
-    </sql>
-
-<!--    <select id="pageJobs" resultMap="BaseResultMap">-->
-<!--        select * from core_job-->
-<!--        where app_id=#{appId} or platformAppId=#{platformAppId} limit #{pageNum},#{pageSize}-->
-<!--    </select>-->
-
+    <select id="pageCurrentJob" resultType="com.r7.core.job.vo.CoreJobVo">
+        select id, app_id, job_name, job_code, content, job_rule, winner_num, status, on_shelf, off_shelf
+        from core_job
+        <where>
+            app_id=#{appId}
+            or
+            app_id=#{platformAppId}
+        </where>
+    </select>
 
 </mapper>
