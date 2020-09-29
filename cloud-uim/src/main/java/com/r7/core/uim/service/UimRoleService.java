@@ -36,6 +36,7 @@ public interface UimRoleService extends IService<UimRole> {
      *
      * @param uimRoleSaveDto 新增角色信息
      * @param organId        组织id
+     * @param appId          平台id
      * @param userId         操作用户ID
      * @return 返回新增结果
      */
@@ -70,7 +71,7 @@ public interface UimRoleService extends IService<UimRole> {
      * @param pageSize 展示条数
      * @return 返回结果
      */
-    IPage<UimRoleVo> pageRole(String search, Integer pageNum, Integer pageSize);
+    IPage<UimRoleVo> pageRole(String search, long pageNum, long pageSize);
 
 
     /**

@@ -2,6 +2,7 @@ package com.r7.core.uim.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 角色实现层
@@ -41,12 +41,14 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
         // 校验
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
-        Optional.of(getRoleByRoleCode(code))
-                .map(x -> (UimRole) null)
-                .orElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_CODE_IS_EXISTS));
-        Optional.of(getRoleByRoleName(roleName))
-                .map(x -> (UimRole) null)
-                .orElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_NAME_IS_EXISTS));
+
+        if (getRoleByRoleCode(code) != null) {
+            throw new BusinessException(UimErrorEnum.ROLE_CODE_IS_EXISTS);
+        }
+        if (getRoleByRoleName(roleName) != null) {
+            throw new BusinessException(UimErrorEnum.ROLE_NAME_IS_EXISTS);
+        }
+
         UimRole uimRole = Option.of(baseMapper.selectById(id))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_IS_NOT_EXISTS));
         uimRole.toUimRole(uimRoleDto);
@@ -64,14 +66,12 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
         log.info("角色新增内容：{}, 操作用户ID：{}", uimRoleSaveDto, userId);
         String code = uimRoleSaveDto.getCode();
         String roleName = uimRoleSaveDto.getRoleName();
-
-        Optional.of(getRoleByRoleCode(code))
-                .map(x -> (UimRole) null)
-                .orElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_CODE_IS_EXISTS));
-        Optional.of(getRoleByRoleName(roleName))
-                .map(x -> (UimRole) null)
-                .orElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_NAME_IS_EXISTS));
-
+        if (getRoleByRoleCode(code) != null) {
+            throw new BusinessException(UimErrorEnum.ROLE_CODE_IS_EXISTS);
+        }
+        if (getRoleByRoleName(roleName) != null) {
+            throw new BusinessException(UimErrorEnum.ROLE_NAME_IS_EXISTS);
+        }
         Long id = SnowflakeUtil.getSnowflakeId();
         UimRole uimRole = new UimRole();
         uimRole.setId(id);
@@ -86,22 +86,24 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
         if (!save) {
             throw new BusinessException(UimErrorEnum.ROLE_SAVE_ERROR);
         }
-        return getById(id).toUimRoleVo();
+        log.info("新增角色成功，内容：{}, 操作用户ID：{}", uimRole, userId);
+        return getRoleById(id);
     }
 
     @Override
     @Transactional
     public Boolean removeRoleById(Long roleId, Long userId) {
-        log.info("角色新增内容：{}, 操作用户ID：{}", roleId, userId);
+        log.info("删除角色内容：{}, 操作用户ID：{}", roleId, userId);
         roleId = Option.of(roleId)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
-        Option.of(getById(roleId))
+        UimRole uimRole = Option.of(getById(roleId))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_IS_NOT_EXISTS));
         boolean remove = removeById(roleId);
         if (!remove) {
             throw new BusinessException(UimErrorEnum.ROLE_DELETE_ERROR);
         }
-        return remove;
+        log.info("删除角色内容成功：{}, 操作用户ID：{}", uimRole, userId);
+        return true;
     }
 
     @Override
@@ -112,13 +114,17 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
     }
 
     @Override
-    public IPage<UimRoleVo> pageRole(String search, Integer pageNum, Integer pageSize) {
-        return null;
+    public IPage<UimRoleVo> pageRole(String search, long pageNum, long pageSize) {
+        Page<UimRoleVo> page = new Page<>(pageNum, pageSize);
+        return baseMapper.pageRole(search, page);
     }
 
     @Override
     public UimRoleVo getRoleById(Long roleId) {
-        return null;
+        roleId = Option.of(roleId)
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
+        UimRole uimRole = Option.of(getById(roleId)).getOrElse(new UimRole());
+        return uimRole.toUimRoleVo();
     }
 
     @Override
@@ -132,6 +138,6 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
     public UimRole getRoleByRoleCode(String roleCode) {
         roleCode = Option.of(roleCode)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_CODE_IS_NULL));
-        return baseMapper.selectOne(Wrappers.<UimRole>lambdaQuery().eq(UimRole::getRoleName, roleCode));
+        return baseMapper.selectOne(Wrappers.<UimRole>lambdaQuery().eq(UimRole::getCode, roleCode));
     }
 }
