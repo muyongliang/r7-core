@@ -45,6 +45,7 @@
         <spring-cloud-alibaba.version>2.1.0.RELEASE</spring-cloud-alibaba.version>
         <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
         <nimbus.version>9.0.1</nimbus.version>
+        <minio.version>7.1.4</minio.version>
     </properties>
 
     <dependencies>
