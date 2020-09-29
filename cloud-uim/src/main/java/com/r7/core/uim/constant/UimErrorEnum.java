@@ -11,6 +11,15 @@ import com.r7.core.common.constant.IError;
 public enum UimErrorEnum implements IError {
 
     /**
+     * 资源错误
+     */
+    RESOURCE_IS_NOT_EXISTS("resource_is_not_exists", "资源不存在。"),
+    RESOURCE_ID_IS_NULL("recourese_id_is_null", "资源ID不能为空。"),
+    RESOURCE_SAVE_ERROR("resource_save_error", "资源新增失败。"),
+    RESOURCE_UPDATE_ERROR("resource_update_error", "资源修改失败。"),
+    RESOURCE_DELETE_ERROR("resource_delete_error", "资源删除失败。"),
+
+    /**
      * 角色错误
      */
     ROLE_NAME_IS_NULL("role_name_is_null", "角色名称不能为空。"),
