@@ -10,40 +10,49 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
-
 /**
- * 组织
+ * 资源表
  *
  * @author zhongpingli
  */
 @Data
-@TableName("uim_organ")
-@ApiModel(description = "组织")
+@ApiModel(description = "资源表")
+@TableName("uim_resource")
 @EqualsAndHashCode(callSuper = true)
-public class UimOrgan extends Model<UimOrgan> {
+public class UimResource extends Model<UimResource> {
 
     @TableId
     @ApiModelProperty("id")
     private Long id;
     /**
-     * 父组织
+     * 资源父类
      */
-    @ApiModelProperty("父id")
+    @ApiModelProperty("资源父类")
     private Long pId;
     /**
-     * 组织编码
+     * 平台id
      */
-    @ApiModelProperty("组织编码")
-    private String organCode;
+    @ApiModelProperty("平台id")
+    private Long appId;
     /**
-     * 组织名称
+     * 资源标识
      */
-    @ApiModelProperty("组织名称")
-    private String organName;
+    @ApiModelProperty("资源标识")
+    private String code;
     /**
-     * 类型;1组织0部门
+     * 资源名称
      */
-    @ApiModelProperty(value = "组织类型", example = "1")
+    @ApiModelProperty("资源名称")
+    private String resourceName;
+    /**
+     * 资源地址
+     */
+    @ApiModelProperty("资源地址")
+    private String url;
+    /**
+     * 资源类型;0菜单/1按钮
+     */
+    @ApiModelProperty("资源类型")
     private Integer type;
     /**
      * 排序
@@ -70,6 +79,5 @@ public class UimOrgan extends Model<UimOrgan> {
      */
     @ApiModelProperty("更新时间")
     private Date updatedAt;
-
 
 }

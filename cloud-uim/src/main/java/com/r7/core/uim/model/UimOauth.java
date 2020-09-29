@@ -10,46 +10,50 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
-
 /**
- * 组织
+ * 用户认证表
  *
  * @author zhongpingli
  */
 @Data
-@TableName("uim_organ")
-@ApiModel(description = "组织")
+@ApiModel(description = "用户认证表")
+@TableName("uim_oauth")
 @EqualsAndHashCode(callSuper = true)
-public class UimOrgan extends Model<UimOrgan> {
+public class UimOauth extends Model<UimOauth> {
 
     @TableId
     @ApiModelProperty("id")
     private Long id;
     /**
-     * 父组织
+     * 用户ID
      */
-    @ApiModelProperty("父id")
-    private Long pId;
+    @ApiModelProperty("用户ID")
+    private Long userId;
     /**
-     * 组织编码
+     * 平台ID
      */
-    @ApiModelProperty("组织编码")
-    private String organCode;
+    @ApiModelProperty("平台ID")
+    private Long appId;
     /**
-     * 组织名称
+     * 认证订单id
      */
-    @ApiModelProperty("组织名称")
-    private String organName;
+    @ApiModelProperty("认证订单id")
+    private Long oauthOrderId;
     /**
-     * 类型;1组织0部门
+     * 认证类型
      */
-    @ApiModelProperty(value = "组织类型", example = "1")
+    @ApiModelProperty("认证类型")
     private Integer type;
     /**
-     * 排序
+     * 认证状态
      */
-    @ApiModelProperty("排序")
-    private Integer sort;
+    @ApiModelProperty("认证状态")
+    private Integer status;
+    /**
+     * 驳回原因
+     */
+    @ApiModelProperty("驳回原因")
+    private String reason;
     /**
      * 创建人
      */
