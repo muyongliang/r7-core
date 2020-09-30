@@ -42,12 +42,13 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
 
-        if (getRoleByRoleCode(code) != null) {
+        Option.of(getRoleByRoleCode(code)).exists(x -> {
             throw new BusinessException(UimErrorEnum.ROLE_CODE_IS_EXISTS);
-        }
-        if (getRoleByRoleName(roleName) != null) {
+        });
+
+        Option.of(getRoleByRoleCode(roleName)).exists(x -> {
             throw new BusinessException(UimErrorEnum.ROLE_NAME_IS_EXISTS);
-        }
+        });
 
         UimRole uimRole = Option.of(baseMapper.selectById(id))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_IS_NOT_EXISTS));
@@ -66,12 +67,14 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
         log.info("角色新增内容：{}, 操作用户ID：{}", uimRoleSaveDto, userId);
         String code = uimRoleSaveDto.getCode();
         String roleName = uimRoleSaveDto.getRoleName();
-        if (getRoleByRoleCode(code) != null) {
+
+        Option.of(getRoleByRoleCode(code)).exists(x -> {
             throw new BusinessException(UimErrorEnum.ROLE_CODE_IS_EXISTS);
-        }
-        if (getRoleByRoleName(roleName) != null) {
+        });
+
+        Option.of(getRoleByRoleCode(roleName)).exists(x -> {
             throw new BusinessException(UimErrorEnum.ROLE_NAME_IS_EXISTS);
-        }
+        });
         Long id = SnowflakeUtil.getSnowflakeId();
         UimRole uimRole = new UimRole();
         uimRole.setId(id);
