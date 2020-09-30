@@ -50,6 +50,4 @@ public class UimResourceNodeVo {
     private List<UimResourceNodeVo> subNodes = new ArrayList<>();
 
 
-    public void addSubNode(UimResourceNodeVo subNode) { subNodes.add(subNode); }
-
 }

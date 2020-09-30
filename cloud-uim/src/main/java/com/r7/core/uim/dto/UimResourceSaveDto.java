@@ -17,6 +17,13 @@ import javax.validation.constraints.NotNull;
 public class UimResourceSaveDto {
 
     /**
+     * 资源父类
+     */
+    @ApiModelProperty("资源父类")
+    @NotNull(message = "资源父ID不能为空")
+    private Long pId;
+
+    /**
      * 资源标识
      */
     @ApiModelProperty("资源标识")

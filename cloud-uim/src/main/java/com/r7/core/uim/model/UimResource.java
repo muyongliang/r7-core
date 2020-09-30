@@ -86,6 +86,7 @@ public class UimResource extends Model<UimResource> {
 
 
     public void toUimResource(UimResourceSaveDto uimResourceSaveDto) {
+        this.setPId(uimResourceSaveDto.getPId());
         this.setCode(uimResourceSaveDto.getCode());
         this.setResourceName(uimResourceSaveDto.getResourceName());
         this.setUrl(uimResourceSaveDto.getUrl());

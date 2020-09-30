@@ -36,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     private static final String[] SYSTEM_AUTH_LIST = {
             "/auth/**",
-            "/role/**"};
+            "/role/**",
+            "/resource/**"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {

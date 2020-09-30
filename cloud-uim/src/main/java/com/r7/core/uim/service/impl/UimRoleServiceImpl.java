@@ -57,8 +57,10 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
         uimRole.setUpdatedBy(userId);
         boolean update = updateById(uimRole);
         if (!update) {
+            log.info("角色修改ID:{},修改内容：{}失败, 操作用户ID：{}", id, uimRole, userId);
             throw new BusinessException(UimErrorEnum.ROLE_UPDATE_ERROR);
         }
+        log.info("角色修改ID:{},修改内容：{}成功, 操作用户ID：{}", id, uimRole, userId);
         return uimRole.toUimRoleVo();
     }
 
@@ -87,9 +89,10 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
         uimRole.setUpdatedBy(userId);
         boolean save = save(uimRole);
         if (!save) {
+            log.info("角色新增内容：{}失败, 操作用户ID：{}", uimRole, userId);
             throw new BusinessException(UimErrorEnum.ROLE_SAVE_ERROR);
         }
-        log.info("新增角色成功，内容：{}, 操作用户ID：{}", uimRole, userId);
+        log.info("新增角色，内容：{}成功, 操作用户ID：{}", uimRole, userId);
         return getRoleById(id);
     }
 
@@ -103,16 +106,19 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_IS_NOT_EXISTS));
         boolean remove = removeById(roleId);
         if (!remove) {
+            log.info("删除角色:{}内容失败：{}, 操作用户ID：{}", roleId, uimRole, userId);
             throw new BusinessException(UimErrorEnum.ROLE_DELETE_ERROR);
         }
-        log.info("删除角色内容成功：{}, 操作用户ID：{}", uimRole, userId);
+        log.info("删除角色:{}内容成功：{}, 操作用户ID：{}", roleId, uimRole, userId);
         return true;
     }
 
     @Override
     @Transactional
     public Boolean removeRoleByIds(List<Long> roleIds, Long userId) {
+        log.info("批量删除角色{}, 操作用户ID：{}", roleIds, userId);
         roleIds.forEach(x -> removeRoleById(x, userId));
+        log.info("批量删除角色{}成功, 操作用户ID：{}", roleIds, userId);
         return true;
     }
 
