@@ -2,6 +2,7 @@ package com.r7.core.uim.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.uim.constant.UimErrorEnum;
@@ -31,7 +32,7 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
 
     @Override
     public UimResourceVo saveUimResource(UimResourceSaveDto uimResourceSaveDto, Long appId, Long userId) {
-
+        log.info("平台:{}新增资源内容:{},操作用户:{}", appId, uimResourceSaveDto, userId);
         Long id = SnowflakeUtil.getSnowflakeId();
         UimResource uimResource = new UimResource();
         uimResource.setId(id);
@@ -41,12 +42,12 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
         uimResource.setCreatedBy(userId);
         uimResource.setUpdatedAt(new Date());
         uimResource.setUpdatedBy(userId);
-
         boolean save = save(uimResource);
         if (!save) {
+            log.error("平台:{}新增资源内容失败:{},操作用户:{}", appId, uimResourceSaveDto, userId);
             throw new BusinessException(UimErrorEnum.RESOURCE_SAVE_ERROR);
         }
-
+        log.info("平台:{}新增资源内容成功:{},操作用户:{}", appId, uimResourceSaveDto, userId);
         return getUimResourceById(id);
     }
 
@@ -79,21 +80,29 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
     @Override
     public List<UimResourceNodeVo> treeUimResource(Long appId, Long pId) {
 
-
-        return null;
-    }
-
-
-    public void treeUimResource(UimResourceNodeVo uimResourceNodeVo, Long appId) {
         List<UimResource> uimResources = list(Wrappers.<UimResource>lambdaQuery()
                 .select(UimResource::getId, UimResource::getPId, UimResource::getCode, UimResource::getResourceName,
                         UimResource::getType, UimResource::getUrl)
-                .eq(UimResource::getAppId, appId).eq(UimResource::getPId, uimResourceNodeVo.getId()));
+                .eq(UimResource::getAppId, appId).orderByAsc(UimResource::getType).orderByAsc(UimResource::getSort));
+        List<UimResourceNodeVo> uimResourceNodeVos = Lists.newArrayList();
+        treeUimResource(uimResourceNodeVos, uimResources, pId);
+        return uimResourceNodeVos;
+    }
 
-        uimResources.forEach(x -> {
+
+    /**
+     * 树形展示逻辑
+     *
+     * @param uimResourceNodeVos 展示视图
+     * @param uimResources       资源数据来源
+     * @param pId                资源父类
+     */
+    public void treeUimResource(List<UimResourceNodeVo> uimResourceNodeVos, List<UimResource> uimResources, Long pId) {
+
+        uimResources.stream().filter(x -> x.getPId().equals(pId)).forEach(x -> {
             UimResourceNodeVo resourceNodeVo = x.toUimResourceNodeVo();
-            uimResourceNodeVo.addSubNode(resourceNodeVo);
-            treeUimResource(resourceNodeVo, appId);
+            uimResourceNodeVos.add(resourceNodeVo);
+            treeUimResource(resourceNodeVo.getSubNodes(), uimResources, x.getId());
         });
     }
 
