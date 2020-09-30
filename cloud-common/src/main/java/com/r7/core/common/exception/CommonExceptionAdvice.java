@@ -31,7 +31,7 @@ public class CommonExceptionAdvice {
 
     @ResponseBody
     @ExceptionHandler(BusinessException.class)
-    ResponseEntity handelBusinessException(HttpServletRequest request, BusinessException e) {
+    ResponseEntity handleBusinessException(HttpServletRequest request, BusinessException e) {
         return ResponseEntity.failure(e.getCode(), e.getMsg());
     }
 
@@ -57,6 +57,7 @@ public class CommonExceptionAdvice {
         }
         return ResponseEntity.failure(CommitErrorEnum.ARGUMENT_NOT_VALID.getCode(), ex.getMessage());
     }
+
     /**
      * 方法调用错误使用
      *

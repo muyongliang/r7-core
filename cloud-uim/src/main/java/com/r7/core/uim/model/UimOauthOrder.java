@@ -10,46 +10,60 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
-
 /**
- * 组织
+ * 用户认证订单表
  *
  * @author zhongpingli
  */
 @Data
-@TableName("uim_organ")
-@ApiModel(description = "组织")
+@ApiModel(description = "用户认证订单表")
+@TableName("uim_oauth_order")
 @EqualsAndHashCode(callSuper = true)
-public class UimOrgan extends Model<UimOrgan> {
+public class UimOauthOrder extends Model<UimOauthOrder> {
 
     @TableId
     @ApiModelProperty("id")
     private Long id;
     /**
-     * 父组织
+     * 用户ID
      */
-    @ApiModelProperty("父id")
-    private Long pId;
+    @ApiModelProperty("用户id")
+    private Long userId;
     /**
-     * 组织编码
+     * 平台ID
      */
-    @ApiModelProperty("组织编码")
-    private String organCode;
+    @ApiModelProperty("平台ID")
+    private Long appId;
     /**
-     * 组织名称
+     * 认证类型;实名认证，视频认证，电子签认证
      */
-    @ApiModelProperty("组织名称")
-    private String organName;
-    /**
-     * 类型;1组织0部门
-     */
-    @ApiModelProperty(value = "组织类型", example = "1")
+    @ApiModelProperty("认证类型")
     private Integer type;
+    /**
+     * 认证项目key;比如实名认证中，身份证人头面对应的key，或者国徽面对应的key，审核内容对应的key
+     */
+    @ApiModelProperty("认证项目key")
+    private String oauthKey;
+    /**
+     * 审核内容;统一使用json格式存储
+     */
+    @ApiModelProperty("审核内容")
+    private String context;
+    /**
+     * 审核状态;未审核，待审核，审核通过，审核驳回
+     */
+    @ApiModelProperty("审核状态")
+    private Integer status;
     /**
      * 排序
      */
     @ApiModelProperty("排序")
     private Integer sort;
+    /**
+     * 描述
+     */
+    @ApiModelProperty("描述")
+    private String description;
     /**
      * 创建人
      */
@@ -70,6 +84,5 @@ public class UimOrgan extends Model<UimOrgan> {
      */
     @ApiModelProperty("更新时间")
     private Date updatedAt;
-
 
 }

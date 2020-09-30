@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.r7.core.uim.dto.UimRoleDto;
+import com.r7.core.uim.dto.UimRoleSaveDto;
 import com.r7.core.uim.vo.UimRoleVo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,6 +13,11 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
+/**
+ * 角色信息
+ *
+ * @author zhongpingli
+ */
 @Data
 @TableName("uim_role")
 @ApiModel(description = "角色信息")
@@ -87,6 +93,13 @@ public class UimRole extends Model<UimRole> {
         this.setRoleName(uimRoleDto.getRoleName());
         this.setFeature(uimRoleDto.getFeature());
         this.setSort(uimRoleDto.getSort());
+    }
+
+    public void toUimRole(UimRoleSaveDto uimRoleSaveDto) {
+        this.setCode(uimRoleSaveDto.getCode());
+        this.setRoleName(uimRoleSaveDto.getRoleName());
+        this.setFeature(0);
+        this.setSort(uimRoleSaveDto.getSort());
     }
 
 }

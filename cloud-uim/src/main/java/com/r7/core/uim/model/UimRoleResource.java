@@ -10,46 +10,30 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
-
 /**
- * 组织
+ * 角色资源关联
  *
  * @author zhongpingli
  */
 @Data
-@TableName("uim_organ")
-@ApiModel(description = "组织")
+@ApiModel(description = "角色资源关联")
+@TableName("uim_role_resource")
 @EqualsAndHashCode(callSuper = true)
-public class UimOrgan extends Model<UimOrgan> {
+public class UimRoleResource extends Model<UimRoleResource> {
 
     @TableId
     @ApiModelProperty("id")
     private Long id;
     /**
-     * 父组织
+     * 资源ID
      */
-    @ApiModelProperty("父id")
-    private Long pId;
+    @ApiModelProperty("资源ID")
+    private Long resourceId;
     /**
-     * 组织编码
+     * 角色id
      */
-    @ApiModelProperty("组织编码")
-    private String organCode;
-    /**
-     * 组织名称
-     */
-    @ApiModelProperty("组织名称")
-    private String organName;
-    /**
-     * 类型;1组织0部门
-     */
-    @ApiModelProperty(value = "组织类型", example = "1")
-    private Integer type;
-    /**
-     * 排序
-     */
-    @ApiModelProperty("排序")
-    private Integer sort;
+    @ApiModelProperty("角色id")
+    private Long roleId;
     /**
      * 创建人
      */
@@ -70,6 +54,5 @@ public class UimOrgan extends Model<UimOrgan> {
      */
     @ApiModelProperty("更新时间")
     private Date updatedAt;
-
 
 }
