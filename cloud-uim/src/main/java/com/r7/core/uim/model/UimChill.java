@@ -10,46 +10,35 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
-
 /**
- * 组织
+ * 冻结表
  *
  * @author zhongpingli
  */
 @Data
-@TableName("uim_organ")
-@ApiModel(description = "组织")
+@ApiModel(description = "冻结记录表")
+@TableName("uim_chill")
 @EqualsAndHashCode(callSuper = true)
-public class UimOrgan extends Model<UimOrgan> {
+public class UimChill extends Model<UimChill> {
 
     @TableId
     @ApiModelProperty("id")
     private Long id;
     /**
-     * 父组织
+     * 冻结用户
      */
-    @ApiModelProperty("父id")
-    private Long pId;
+    @ApiModelProperty("冻结用户")
+    private Long userId;
     /**
-     * 组织编码
+     * 冻结资源;登录/邀请码/提现/平台冻结
      */
-    @ApiModelProperty("组织编码")
-    private String organCode;
+    @ApiModelProperty("冻结资源id")
+    private String resourceId;
     /**
-     * 组织名称
+     * 描述
      */
-    @ApiModelProperty("组织名称")
-    private String organName;
-    /**
-     * 类型;1组织0部门
-     */
-    @ApiModelProperty(value = "组织类型", example = "1")
-    private Integer type;
-    /**
-     * 排序
-     */
-    @ApiModelProperty("排序")
-    private Integer sort;
+    @ApiModelProperty("描述")
+    private String description;
     /**
      * 创建人
      */
@@ -70,6 +59,5 @@ public class UimOrgan extends Model<UimOrgan> {
      */
     @ApiModelProperty("更新时间")
     private Date updatedAt;
-
 
 }
