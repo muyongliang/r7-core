@@ -37,11 +37,10 @@
         <swagger.version>2.9.2</swagger.version>
         <vavr.version>0.9.2</vavr.version>
         <guava.version>23.0</guava.version>
-        <hutool.version>5.2.5</hutool.version>
+        <hutool.version>5.4.3</hutool.version>
         <mybatis.plus.version>3.3.0</mybatis.plus.version>
         <alibaba.druid.version>1.1.23</alibaba.druid.version>
         <security.jwt.version>1.1.0.RELEASE</security.jwt.version>
-        <hutool.version>5.2.5</hutool.version>
         <spring-cloud-alibaba.version>2.1.0.RELEASE</spring-cloud-alibaba.version>
         <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
         <nimbus.version>9.0.1</nimbus.version>
@@ -50,10 +49,10 @@
 
     <dependencies>
         <!--nacos 配置动态更新-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.alibaba.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
+        <!--        </dependency>-->
         <!--        spring cloud alibaba 分布式包-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
