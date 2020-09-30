@@ -47,7 +47,7 @@ public class CoreJobProgressController {
             value = "根据用户id查询用户完成任务进度",
             response = CoreJobProgressVo.class)
     @GetMapping("/{id}")
-    public ResponseEntity findJobProgressByUserId(@PathVariable("id")Long userId) {
+    public ResponseEntity findJobProgressByUserId(@PathVariable("id") Long userId) {
         return ResponseEntity.success(coreJobProgressService.getJobProgressByUserId(userId));
     }
 

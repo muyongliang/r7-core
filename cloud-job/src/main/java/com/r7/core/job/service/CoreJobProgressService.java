@@ -1,6 +1,5 @@
 package com.r7.core.job.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.r7.core.job.dto.CoreJobProgressDto;
 import com.r7.core.job.model.CoreJobProgress;

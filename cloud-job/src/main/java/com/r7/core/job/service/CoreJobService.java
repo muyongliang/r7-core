@@ -7,8 +7,6 @@ import com.r7.core.job.dto.CoreJobStatusDto;
 import com.r7.core.job.model.CoreJob;
 import com.r7.core.job.vo.CoreJobVo;
 
-import java.util.List;
-
 /**
  * 任务服务
  * @author zs

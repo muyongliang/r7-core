@@ -1,6 +1,5 @@
 package com.r7.core.job.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
@@ -14,7 +13,6 @@ import com.r7.core.job.service.CoreJobService;
 import com.r7.core.job.vo.CoreJobVo;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

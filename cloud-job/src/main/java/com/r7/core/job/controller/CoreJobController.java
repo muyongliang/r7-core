@@ -3,12 +3,10 @@ package com.r7.core.job.controller;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.job.dto.CoreJobDto;
 import com.r7.core.job.dto.CoreJobStatusDto;
-import com.r7.core.job.model.CoreJob;
 import com.r7.core.job.service.CoreJobService;
 import com.r7.core.job.vo.CoreJobVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -16,6 +14,7 @@ import javax.validation.Valid;
 
 /**
  * 任务对外接口
+ *
  * @author zs
  */
 @Api(value = "/api/job", tags = {"任务详情接口"})
@@ -28,8 +27,7 @@ public class CoreJobController {
 
     @ApiOperation(value = "添加任务详情信息")
     @PostMapping("/")
-    public ResponseEntity saveJob(
-            @RequestBody CoreJobDto coreJobDto) {
+    public ResponseEntity saveJob(@Valid @RequestBody CoreJobDto coreJobDto) {
         return ResponseEntity.success(coreJobService.saveJob(coreJobDto, 0L, 0L));
     }
 
@@ -65,7 +63,7 @@ public class CoreJobController {
     @ApiOperation(value = "发布/下架任务", response = CoreJobVo.class)
     @PutMapping("/on/off/{id}")
     public ResponseEntity onOffShelf(
-            @PathVariable("id")Long id,
+            @PathVariable("id") Long id,
             @Valid @RequestBody CoreJobStatusDto coreJobStatusDto) {
         return ResponseEntity.success(coreJobService.updateJobStatusById(id, coreJobStatusDto, 0L));
     }
