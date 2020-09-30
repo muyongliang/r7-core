@@ -1,29 +1,22 @@
-package com.r7.core.setting.model;
+package com.r7.core.setting.vo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
-
 /**
- * @Author liang
- * @Date 2020/9/25 11:04
- * @Description 配置表实体类
+ * @Author muyongliang
+ * @Date 2020/9/28 10:37
+ * @Description 公共配置信息展示vo
  */
 @ApiModel(description = "公共配置信息")
-@TableName("core_setting")
 @Data
-public class CoreSetting extends Model<CoreSetting> {
+public class CoreSettingVO {
     /**
      * id
      */
     @ApiModelProperty("id")
-    @TableId
     private Long id;
     /**
      * 平台id
@@ -34,7 +27,6 @@ public class CoreSetting extends Model<CoreSetting> {
      * key;用于区分配置的不同模块前缀，如商城core_xxxx
      */
     @ApiModelProperty("用于区分配置的不同模块前缀，如商城core_xxxx")
-    @TableField(value = "`key`")
     private String key;
     /**
      * 配置名称;模块的名称
@@ -50,7 +42,6 @@ public class CoreSetting extends Model<CoreSetting> {
      * 状态;-1禁用，1开启
      */
     @ApiModelProperty("状态;-1禁用，1开启")
-    @TableField(value = "`status`")
     private Integer status;
     /**
      * 排序
@@ -82,4 +73,6 @@ public class CoreSetting extends Model<CoreSetting> {
      */
     @ApiModelProperty("更新时间")
     private Date updatedAt;
+
+
 }
