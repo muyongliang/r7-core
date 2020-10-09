@@ -8,13 +8,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * 新增角色
+ * 用户角色传输层
  *
  * @author zhongpingli
+ * @date 2020-09-25
  */
 @Data
-@ApiModel("新增角色实体")
-public class UimRoleSaveDto {
+@ApiModel(description = "用户角色传输层")
+public class UimRoleDTO {
 
     /**
      * 角色编码
@@ -25,14 +26,20 @@ public class UimRoleSaveDto {
     /**
      * 角色名
      */
-    @ApiModelProperty("角色名称")
+    @ApiModelProperty("角色名")
     @NotBlank(message = "角色名称不能为空")
     private String roleName;
-
+    /**
+     * 特殊角色;特定角色不展示给后端
+     */
+    @ApiModelProperty("特殊角色")
+    @NotNull(message = "特殊角色不能为空。")
+    private Integer feature;
     /**
      * 排序
      */
     @ApiModelProperty("排序")
-    @NotNull(message = "排序不能为空")
+    @NotNull(message = "排序不能为空。")
     private Integer sort;
+
 }

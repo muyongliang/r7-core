@@ -3,10 +3,10 @@ package com.r7.core.uim.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.r7.core.uim.dto.UimResourceSaveDto;
-import com.r7.core.uim.dto.UimResourceUpdateDto;
-import com.r7.core.uim.vo.UimResourceNodeVo;
-import com.r7.core.uim.vo.UimResourceVo;
+import com.r7.core.uim.dto.UimResourceSaveDTO;
+import com.r7.core.uim.dto.UimResourceUpdateDTO;
+import com.r7.core.uim.vo.UimResourceNodeVO;
+import com.r7.core.uim.vo.UimResourceVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -85,7 +85,7 @@ public class UimResource extends Model<UimResource> {
     private Date updatedAt;
 
 
-    public void toUimResource(UimResourceSaveDto uimResourceSaveDto) {
+    public void toUimResource(UimResourceSaveDTO uimResourceSaveDto) {
         this.setPId(uimResourceSaveDto.getPId());
         this.setCode(uimResourceSaveDto.getCode());
         this.setResourceName(uimResourceSaveDto.getResourceName());
@@ -94,7 +94,7 @@ public class UimResource extends Model<UimResource> {
         this.setSort(uimResourceSaveDto.getSort());
     }
 
-    public void toUimResource(UimResourceUpdateDto uimResourceUpdateDto) {
+    public void toUimResource(UimResourceUpdateDTO uimResourceUpdateDto) {
         this.setCode(uimResourceUpdateDto.getCode());
         this.setResourceName(uimResourceUpdateDto.getResourceName());
         this.setUrl(uimResourceUpdateDto.getUrl());
@@ -102,8 +102,8 @@ public class UimResource extends Model<UimResource> {
         this.setSort(uimResourceUpdateDto.getSort());
     }
 
-    public UimResourceVo toUimResourceVo() {
-        UimResourceVo uimResourceVo = new UimResourceVo();
+    public UimResourceVO toUimResourceVo() {
+        UimResourceVO uimResourceVo = new UimResourceVO();
         uimResourceVo.setId(this.getId());
         uimResourceVo.setCode(this.getCode());
         uimResourceVo.setPId(this.getPId());
@@ -114,8 +114,8 @@ public class UimResource extends Model<UimResource> {
         return uimResourceVo;
     }
 
-    public UimResourceNodeVo toUimResourceNodeVo() {
-        UimResourceNodeVo uimResourceNodeVo = new UimResourceNodeVo();
+    public UimResourceNodeVO toUimResourceNodeVo() {
+        UimResourceNodeVO uimResourceNodeVo = new UimResourceNodeVO();
         uimResourceNodeVo.setId(this.getId());
         uimResourceNodeVo.setPId(this.getPId());
         uimResourceNodeVo.setCode(this.getCode());

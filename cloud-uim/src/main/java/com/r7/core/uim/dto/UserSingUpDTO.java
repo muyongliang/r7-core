@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  *
  * @author zhongpingli
  */
-public class UserSingUpDto {
+public class UserSingUpDTO {
 
     /**
      * 组织ID

@@ -7,12 +7,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.uim.constant.UimErrorEnum;
-import com.r7.core.uim.dto.UimRoleDto;
-import com.r7.core.uim.dto.UimRoleSaveDto;
+import com.r7.core.uim.dto.UimRoleDTO;
+import com.r7.core.uim.dto.UimRoleSaveDTO;
 import com.r7.core.uim.mapper.UimRoleMapper;
 import com.r7.core.uim.model.UimRole;
 import com.r7.core.uim.service.UimRoleService;
-import com.r7.core.uim.vo.UimRoleVo;
+import com.r7.core.uim.vo.UimRoleVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
 
 
     @Override
-    public UimRoleVo updateRoleById(Long id, UimRoleDto uimRoleDto, Long userId) {
+    public UimRoleVO updateRoleById(Long id, UimRoleDTO uimRoleDto, Long userId) {
         log.info("角色修改ID:{},修改内容：{}, 操作用户ID：{}", id, uimRoleDto, userId);
         String code = uimRoleDto.getCode();
         String roleName = uimRoleDto.getRoleName();
@@ -65,7 +65,7 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
     }
 
     @Override
-    public UimRoleVo saveRole(UimRoleSaveDto uimRoleSaveDto, Long appId, Long organId, Long userId) {
+    public UimRoleVO saveRole(UimRoleSaveDTO uimRoleSaveDto, Long appId, Long organId, Long userId) {
         log.info("角色新增内容：{}, 操作用户ID：{}", uimRoleSaveDto, userId);
         String code = uimRoleSaveDto.getCode();
         String roleName = uimRoleSaveDto.getRoleName();
@@ -123,13 +123,13 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
     }
 
     @Override
-    public IPage<UimRoleVo> pageRole(String search, long pageNum, long pageSize) {
-        Page<UimRoleVo> page = new Page<>(pageNum, pageSize);
+    public IPage<UimRoleVO> pageRole(String search, long pageNum, long pageSize) {
+        Page<UimRoleVO> page = new Page<>(pageNum, pageSize);
         return baseMapper.pageRole(search, page);
     }
 
     @Override
-    public UimRoleVo getRoleById(Long roleId) {
+    public UimRoleVO getRoleById(Long roleId) {
         roleId = Option.of(roleId)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
         UimRole uimRole = Option.of(getById(roleId)).getOrElse(new UimRole());

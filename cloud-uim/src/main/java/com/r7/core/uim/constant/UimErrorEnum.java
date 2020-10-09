@@ -13,12 +13,24 @@ public enum UimErrorEnum implements IError {
     /**
      * 资源错误
      */
-    RESOURCE_SUB_IS_NOT_EXISTS("resource_sub_is_not_exists", "当前资源存在子级。"),
+    RESOURCE_SUB_IS_EXISTS("resource_sub_is_exists", "当前资源存在子资源。"),
     RESOURCE_IS_NOT_EXISTS("resource_is_not_exists", "资源不存在。"),
     RESOURCE_ID_IS_NULL("resource_id_is_null", "资源ID不能为空。"),
     RESOURCE_SAVE_ERROR("resource_save_error", "资源新增失败。"),
     RESOURCE_UPDATE_ERROR("resource_update_error", "资源修改失败。"),
     RESOURCE_DELETE_ERROR("resource_delete_error", "资源删除失败。"),
+
+    /**
+     * 组织错误
+     */
+    ORGAN_CODE_IS_EXISTS("organ_code_is_exists", "组织编码已存在。"),
+    ORGAN_NAME_IS_EXISTS("organ_name_is_exists", "组织名称已存在。"),
+    ORGAN_SUB_IS_EXISTS("organ_sub_is_exists", "当前组织存在子组织。"),
+    ORGAN_IS_NOT_EXISTS("organ_is_not_exists", "组织不存在。"),
+    ORGAN_ID_IS_NULL("organ_id_is_null", "组织ID不能为空。"),
+    ORGAN_SAVE_ERROR("organ_save_error", "组织新增失败。"),
+    ORGAN_UPDATE_ERROR("organ_update_error", "组织修改失败。"),
+    ORGAN_DELETE_ERROR("organ_delete_error", "组织删除失败。"),
 
     /**
      * 角色错误

@@ -1,26 +1,18 @@
-package com.r7.core.uim.vo;
-
+package com.r7.core.uim.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 资源展示
+ * 资源修改传输
  *
  * @author zhongpingli
  */
 @Data
-@ApiModel("资源展示")
-public class UimResourceVo {
+@ApiModel("资源修改传输")
+public class UimResourceUpdateDTO {
 
-    @ApiModelProperty("id")
-    private Long id;
-    /**
-     * 资源父类
-     */
-    @ApiModelProperty("资源父类")
-    private Long pId;
     /**
      * 资源标识
      */
@@ -46,5 +38,4 @@ public class UimResourceVo {
      */
     @ApiModelProperty("排序")
     private Integer sort;
-
 }

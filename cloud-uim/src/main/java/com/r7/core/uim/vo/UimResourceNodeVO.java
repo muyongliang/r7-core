@@ -1,5 +1,6 @@
 package com.r7.core.uim.vo;
 
+import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @Data
 @ApiModel("资源树节点")
-public class UimResourceNodeVo {
+public class UimResourceNodeVO {
 
     @ApiModelProperty("id")
     private Long id;
@@ -47,7 +48,7 @@ public class UimResourceNodeVo {
 
 
     @ApiModelProperty("子资源节点")
-    private List<UimResourceNodeVo> subNodes = new ArrayList<>();
+    private List<UimResourceNodeVO> subNodes = Lists.newArrayList();
 
 
 }

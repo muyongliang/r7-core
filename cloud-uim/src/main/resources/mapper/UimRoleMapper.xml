@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.r7.core.uim.mapper.UimRoleMapper">
 
-    <select id="pageRole" resultType="com.r7.core.uim.vo.UimRoleVo">
+    <select id="pageRole" resultType="com.r7.core.uim.vo.UimRoleVO">
         select id, code, role_name, feature, sort
         from uim_role
         <where>

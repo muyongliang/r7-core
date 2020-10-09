@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     private static final String[] SYSTEM_AUTH_LIST = {
             "/auth/**",
+            "/organ/**",
             "/role/**",
             "/resource/**"};
 
