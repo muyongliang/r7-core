@@ -11,5 +11,18 @@
 
     <artifactId>cloud-job</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.r7.core</groupId>
+            <artifactId>cloud-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api -->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
+        </dependency>
+    </dependencies>
 
 </project>
