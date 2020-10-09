@@ -28,15 +28,8 @@ public class MinIOTest {
      */
     @Before
     public void init() throws Exception {
-        System.setProperty("javax.net.ssl.trustStore", "C:\\Users\\liang\\Desktop\\minIO.keystore");
-//        Map<String, String> getenv = System.getenv();
-//        System.out.println();
-//        System.setProperty("javax.net.ssl.trustStore", "minIO.keystore");
-//        InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("minIO.keystore");
-//        byte[] bytes = new byte[1024];
-//        resourceAsStream.read(bytes);
-//        String s = new String(bytes);
-//        log.info("读取的内容为：{}"+s);
+        String file = Thread.currentThread().getContextClassLoader().getResource("minIO.keystore").getFile();
+        System.setProperty("javax.net.ssl.trustStore", file);
         minioClient =
                 MinioClient.builder()
                         .endpoint("https://192.168.1.49:9000")
@@ -62,14 +55,26 @@ public class MinIOTest {
         }
         // Upload the zip file to the bucket with putObject
         minioClient.putObject("mybucket", "美女.jpg", "C:\\Users\\liang\\Pictures\\Camera Roll\\美女.jpg", null);
+//        存在覆盖问题
+//        minioClient.putObject("mybucket", "美女.jpg", "C:\\Users\\liang\\Pictures\\Camera Roll\\美女1.jpg", null);
         System.out.println("文件上传成功");
+
+// Get information of an object.
+        ObjectStat objectStat =
+                minioClient.statObject(
+                        StatObjectArgs.builder().bucket("mybucket").object("美女.jpg").build());
         // Download object given the bucket, object name and output file name
+        File file = new File("C:\\Users\\liang\\Desktop\\美女原始下载.jpg");
+        if (file.exists()) {
+            file.delete();
+        }
         minioClient.downloadObject(
                 DownloadObjectArgs.builder()
                         .bucket("mybucket")
                         .object("美女.jpg")
                         .filename("C:\\Users\\liang\\Desktop\\美女原始下载.jpg")
                         .build());
+
     }
 
     /**
@@ -119,7 +124,7 @@ public class MinIOTest {
         SecretKey aesKey = aes.generateKey();
         ServerSideEncryptionCustomerKey serverSideEncryptionCustomerKey = new ServerSideEncryptionCustomerKey(aesKey);
 // Upload a video file.
-        minioClient.uploadObject(
+        ObjectWriteResponse objectWriteResponse = minioClient.uploadObject(
                 UploadObjectArgs.builder()
                         .bucket("mybucket")
                         .object("美女服务端加密")
@@ -128,6 +133,19 @@ public class MinIOTest {
                         .contentType(MediaType.ANY_IMAGE_TYPE.toString())
                         .build());
         System.out.println("myobject is uploaded successfully");
+
+// Get information of SSE-C encrypted object.
+        ObjectStat objectStat =
+                minioClient.statObject(
+                        StatObjectArgs.builder()
+                                .bucket("my-bucketname")
+                                .object("my-objectname")
+                                .ssec(serverSideEncryptionCustomerKey)
+                                .build());
+        File file = new File("C:\\Users\\liang\\Desktop\\美女服务端加密下载.jpg");
+        if (file.exists()) {
+            file.delete();
+        }
         minioClient.downloadObject(
                 DownloadObjectArgs.builder()
                         .bucket("mybucket")
