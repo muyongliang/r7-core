@@ -38,6 +38,4 @@ public class UserSingUpDTO {
      * IP地址
      */
     private String ip;
-
-
 }
