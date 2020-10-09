@@ -6,13 +6,13 @@ import com.google.common.collect.Lists;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.uim.constant.UimErrorEnum;
-import com.r7.core.uim.dto.UimResourceSaveDto;
-import com.r7.core.uim.dto.UimResourceUpdateDto;
+import com.r7.core.uim.dto.UimResourceSaveDTO;
+import com.r7.core.uim.dto.UimResourceUpdateDTO;
 import com.r7.core.uim.mapper.UimResourceMapper;
 import com.r7.core.uim.model.UimResource;
 import com.r7.core.uim.service.UimResourceService;
-import com.r7.core.uim.vo.UimResourceNodeVo;
-import com.r7.core.uim.vo.UimResourceVo;
+import com.r7.core.uim.vo.UimResourceNodeVO;
+import com.r7.core.uim.vo.UimResourceVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
 
     @Override
     @Transactional
-    public UimResourceVo saveUimResource(UimResourceSaveDto uimResourceSaveDto, Long appId, Long userId) {
+    public UimResourceVO saveUimResource(UimResourceSaveDTO uimResourceSaveDto, Long appId, Long userId) {
         log.info("平台:{}新增资源内容:{},操作用户:{}", appId, uimResourceSaveDto, userId);
         Long id = SnowflakeUtil.getSnowflakeId();
         UimResource uimResource = new UimResource();
@@ -51,12 +51,13 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
             throw new BusinessException(UimErrorEnum.RESOURCE_SAVE_ERROR);
         }
         log.info("平台:{}新增资源内容成功:{},操作用户:{}", appId, uimResourceSaveDto, userId);
-        return getUimResourceById(id);
+        return getUimResourceById(id, appId);
     }
 
     @Override
     @Transactional
-    public UimResourceVo updateUimResource(Long resourceId, UimResourceUpdateDto uimResourceSaveDto, Long userId) {
+    public UimResourceVO updateUimResource(Long resourceId, UimResourceUpdateDTO uimResourceSaveDto,
+                                           Long appId, Long userId) {
         log.info("修改资源:{}内容为:{},操作用户:{}", resourceId, uimResourceSaveDto, userId);
         Option.of(resourceId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_ID_IS_NULL));
         UimResource uimResource = Option.of(getById(resourceId))
@@ -70,14 +71,14 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
             throw new BusinessException(UimErrorEnum.RESOURCE_UPDATE_ERROR);
         }
         log.info("修改资源:{}内容为:{}成功,操作用户:{}", resourceId, uimResourceSaveDto, userId);
-        return getUimResourceById(resourceId);
+        return getUimResourceById(resourceId, appId);
     }
 
     @Override
-    @Transactional
-    public boolean removeUimResource(Long resourceId, Long userId) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeUimResource(Long resourceId, Long userId, Long appId) {
         log.info("删除资源:{},操作用户:{}", resourceId, userId);
-        UimResourceVo uimResourceVo = Option.of(getUimResourceById(resourceId))
+        UimResourceVO uimResourceVo = Option.of(getUimResourceById(resourceId, appId))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_IS_NOT_EXISTS));
         Option.of(getUimResourceByPid(resourceId))
                 .exists(x -> {
@@ -93,54 +94,56 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
     }
 
     @Override
-    public List<UimResourceNodeVo> treeUimResource(Long appId, Long pId) {
+    public List<UimResourceNodeVO> treeUimResource(Long appId, Long pId) {
 
         List<UimResource> uimResources = list(Wrappers.<UimResource>lambdaQuery()
                 .select(UimResource::getId, UimResource::getPId, UimResource::getCode, UimResource::getResourceName,
                         UimResource::getType, UimResource::getUrl)
                 .eq(UimResource::getAppId, appId).orderByAsc(UimResource::getType).orderByAsc(UimResource::getSort));
-        List<UimResourceNodeVo> uimResourceNodeVos = Lists.newArrayList();
-        treeUimResource(uimResourceNodeVos, uimResources, pId);
-        return uimResourceNodeVos;
+        List<UimResourceNodeVO> uimresourcenodevos = Lists.newArrayList();
+        treeUimResource(uimresourcenodevos, uimResources, pId);
+        return uimresourcenodevos;
     }
 
 
     /**
      * 树形展示逻辑
      *
-     * @param uimResourceNodeVos 展示视图
+     * @param uimresourcenodevos 展示视图
      * @param uimResources       资源数据来源
      * @param pId                资源父类
      */
-    public void treeUimResource(List<UimResourceNodeVo> uimResourceNodeVos, List<UimResource> uimResources, Long pId) {
+    public void treeUimResource(List<UimResourceNodeVO> uimresourcenodevos, List<UimResource> uimResources, Long pId) {
 
         uimResources.stream().filter(x -> x.getPId().equals(pId)).forEach(x -> {
-            UimResourceNodeVo resourceNodeVo = x.toUimResourceNodeVo();
-            uimResourceNodeVos.add(resourceNodeVo);
+            UimResourceNodeVO resourceNodeVo = x.toUimResourceNodeVo();
+            uimresourcenodevos.add(resourceNodeVo);
             treeUimResource(resourceNodeVo.getSubNodes(), uimResources, x.getId());
         });
     }
 
     @Override
-    public UimResourceVo getUimResourceById(Long resourceId) {
+    public UimResourceVO getUimResourceById(Long resourceId, Long appId) {
         Option.of(resourceId)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_IS_NOT_EXISTS));
         UimResource uimResource = Option.of(getOne(Wrappers.<UimResource>lambdaQuery()
                 .select(UimResource::getId, UimResource::getPId, UimResource::getCode, UimResource::getResourceName,
                         UimResource::getUrl, UimResource::getType, UimResource::getSort)
-                .eq(UimResource::getId, resourceId)))
+                .eq(UimResource::getId, resourceId)
+                .eq(UimResource::getAppId, appId)))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_IS_NOT_EXISTS));
         return uimResource.toUimResourceVo();
     }
 
     @Override
-    public List<UimResourceVo> getUimResourceByPid(Long pId) {
+    public List<UimResourceVO> getUimResourceByPid(Long pId) {
         Option.of(pId)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_IS_NOT_EXISTS));
         return Option.of(
                 list(Wrappers.<UimResource>lambdaQuery()
-                        .select(UimResource::getId, UimResource::getPId, UimResource::getCode, UimResource::getResourceName,
-                                UimResource::getUrl, UimResource::getType, UimResource::getSort)
+                        .select(UimResource::getId, UimResource::getPId, UimResource::getCode,
+                                UimResource::getResourceName, UimResource::getUrl,
+                                UimResource::getType, UimResource::getSort)
                         .eq(UimResource::getPId, pId)))
                 .filter(x -> x.size() > 0)
                 .map(x -> x.stream()

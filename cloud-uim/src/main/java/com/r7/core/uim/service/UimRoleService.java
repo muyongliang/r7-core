@@ -2,10 +2,10 @@ package com.r7.core.uim.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.r7.core.uim.dto.UimRoleDto;
-import com.r7.core.uim.dto.UimRoleSaveDto;
+import com.r7.core.uim.dto.UimRoleDTO;
+import com.r7.core.uim.dto.UimRoleSaveDTO;
 import com.r7.core.uim.model.UimRole;
-import com.r7.core.uim.vo.UimRoleVo;
+import com.r7.core.uim.vo.UimRoleVO;
 
 import java.util.List;
 
@@ -26,8 +26,8 @@ public interface UimRoleService extends IService<UimRole> {
      * @param userId     操作用户ID
      * @return 返回修改结果
      */
-    UimRoleVo updateRoleById(Long id,
-                             UimRoleDto uimRoleDto,
+    UimRoleVO updateRoleById(Long id,
+                             UimRoleDTO uimRoleDto,
                              Long userId);
 
 
@@ -40,7 +40,7 @@ public interface UimRoleService extends IService<UimRole> {
      * @param userId         操作用户ID
      * @return 返回新增结果
      */
-    UimRoleVo saveRole(UimRoleSaveDto uimRoleSaveDto, Long appId, Long organId, Long userId);
+    UimRoleVO saveRole(UimRoleSaveDTO uimRoleSaveDto, Long appId, Long organId, Long userId);
 
 
     /**
@@ -71,7 +71,7 @@ public interface UimRoleService extends IService<UimRole> {
      * @param pageSize 展示条数
      * @return 返回结果
      */
-    IPage<UimRoleVo> pageRole(String search, long pageNum, long pageSize);
+    IPage<UimRoleVO> pageRole(String search, long pageNum, long pageSize);
 
 
     /**
@@ -80,7 +80,7 @@ public interface UimRoleService extends IService<UimRole> {
      * @param roleId 角色ID
      * @return 返回结果
      */
-    UimRoleVo getRoleById(Long roleId);
+    UimRoleVO getRoleById(Long roleId);
 
     /**
      * 根据角色名称查询角色

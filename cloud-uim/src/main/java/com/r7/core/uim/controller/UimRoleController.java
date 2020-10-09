@@ -1,10 +1,10 @@
 package com.r7.core.uim.controller;
 
 import com.r7.core.common.web.ResponseEntity;
-import com.r7.core.uim.dto.UimRoleDto;
-import com.r7.core.uim.dto.UimRoleSaveDto;
+import com.r7.core.uim.dto.UimRoleDTO;
+import com.r7.core.uim.dto.UimRoleSaveDTO;
 import com.r7.core.uim.service.UimRoleService;
-import com.r7.core.uim.vo.UimRoleVo;
+import com.r7.core.uim.vo.UimRoleVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -31,19 +31,19 @@ public class UimRoleController {
     @ApiOperation(
             value = "根据角色ID修改角色信息",
             notes = "角色ID一定要存在",
-            response = UimRoleVo.class)
+            response = UimRoleVO.class)
     @PutMapping("/{id}")
     public ResponseEntity updateRoleById(@PathVariable("id") Long id,
-                                         @Valid @RequestBody UimRoleDto uimRoleDto) {
+                                         @Valid @RequestBody UimRoleDTO uimRoleDto) {
         return ResponseEntity.success(uimRoleService.updateRoleById(id, uimRoleDto, 0L));
     }
 
 
     @ApiOperation(
             value = "新增角色",
-            response = UimRoleVo.class)
+            response = UimRoleVO.class)
     @PostMapping("")
-    public ResponseEntity saveRole(@Valid @RequestBody UimRoleSaveDto uimRoleSaveDto) {
+    public ResponseEntity saveRole(@Valid @RequestBody UimRoleSaveDTO uimRoleSaveDto) {
         return ResponseEntity.success(uimRoleService.saveRole(uimRoleSaveDto, 0L, 0L, 0L));
     }
 
@@ -65,7 +65,7 @@ public class UimRoleController {
 
     @ApiOperation(
             value = "分页查询角色",
-            response = UimRoleVo.class)
+            response = UimRoleVO.class)
     @GetMapping("/page")
     public ResponseEntity pageRole(@RequestParam(value = "search", required = false) String search,
                                    @RequestParam(value = "pageNum", defaultValue = "1") long pageNum,
@@ -75,7 +75,7 @@ public class UimRoleController {
 
     @ApiOperation(
             value = "根据ID查询角色详情",
-            response = UimRoleVo.class)
+            response = UimRoleVO.class)
     @GetMapping("/{id}")
     public ResponseEntity getRoleById(@PathVariable("id") Long id) {
         return ResponseEntity.success(uimRoleService.getRoleById(id));

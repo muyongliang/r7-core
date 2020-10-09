@@ -21,6 +21,15 @@ public enum UimErrorEnum implements IError {
     RESOURCE_DELETE_ERROR("resource_delete_error", "资源删除失败。"),
 
     /**
+     * 组织错误
+     */
+    ORGAN_IS_NOT_EXISTS("organ_is_not_exists", "组织不存在。"),
+    ORGAN_ID_IS_NULL("organ_id_is_null", "组织ID不能为空。"),
+    ORGAN_SAVE_ERROR("organ_save_error", "组织新增失败。"),
+    ORGAN_UPDATE_ERROR("organ_update_error", "组织修改失败。"),
+    ORGAN_DELETE_ERROR("organ_delete_error", "组织删除失败。"),
+
+    /**
      * 角色错误
      */
     ROLE_NAME_IS_NULL("role_name_is_null", "角色名称不能为空。"),

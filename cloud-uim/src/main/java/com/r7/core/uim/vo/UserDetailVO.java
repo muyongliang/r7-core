@@ -1,4 +1,4 @@
 package com.r7.core.uim.vo;
 
-public class UserDetailVo {
+public class UserDetailVO {
 }

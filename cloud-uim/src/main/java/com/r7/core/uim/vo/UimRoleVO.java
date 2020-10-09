@@ -12,7 +12,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel(description = "角色视图")
-public class UimRoleVo {
+public class UimRoleVO {
 
     @ApiModelProperty("id")
     private Long id;

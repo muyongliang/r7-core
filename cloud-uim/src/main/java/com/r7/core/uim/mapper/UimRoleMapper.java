@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.r7.core.uim.model.UimRole;
-import com.r7.core.uim.vo.UimRoleVo;
+import com.r7.core.uim.vo.UimRoleVO;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -22,7 +22,7 @@ public interface UimRoleMapper extends BaseMapper<UimRole> {
      * @param page   分页
      * @return 返回分页信息
      */
-    IPage<UimRoleVo> pageRole(@Param("search") String search,
-                              @Param("page") Page<UimRoleVo> page);
+    IPage<UimRoleVO> pageRole(@Param("search") String search,
+                              @Param("page") Page<UimRoleVO> page);
 
 }
