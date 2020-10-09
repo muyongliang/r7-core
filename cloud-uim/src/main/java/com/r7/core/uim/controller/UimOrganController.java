@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -32,7 +33,7 @@ public class UimOrganController {
     @ApiOperation(value = "创建组织", response = UimOrganVO.class)
     @PostMapping("/{pId}")
     public ResponseEntity saveUimOrganByPid(@PathVariable("pId") Long pId,
-                                            @RequestBody UimOrganSaveDTO uimOrganSaveDTO) {
+                                            @Valid @RequestBody UimOrganSaveDTO uimOrganSaveDTO) {
         return ResponseEntity.success(uimOrganService.saveUimOrganByPid(pId, uimOrganSaveDTO, 0L, 0L));
     }
 
@@ -51,7 +52,7 @@ public class UimOrganController {
     @ApiOperation(value = "根据ID修改组织", response = UimOrganVO.class)
     @PutMapping("/{id}")
     public ResponseEntity updateUimOrganById(@PathVariable("id") Long id,
-                                             @RequestBody UimOrganUpdateDTO uimOrganUpdateDTO) {
+                                             @Valid @RequestBody UimOrganUpdateDTO uimOrganUpdateDTO) {
         return ResponseEntity.success(uimOrganService.updateUimOrganById(id, uimOrganUpdateDTO, 0L, 0L));
     }
 
