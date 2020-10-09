@@ -82,7 +82,7 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_IS_NOT_EXISTS));
         Option.of(getUimResourceByPid(resourceId))
                 .exists(x -> {
-                    throw new BusinessException(UimErrorEnum.RESOURCE_SUB_IS_NOT_EXISTS);
+                    throw new BusinessException(UimErrorEnum.RESOURCE_SUB_IS_EXISTS);
                 });
         boolean remove = removeById(resourceId);
         if (!remove) {

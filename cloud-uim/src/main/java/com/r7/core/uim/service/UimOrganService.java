@@ -79,4 +79,5 @@ public interface UimOrganService extends IService<UimOrgan> {
      * @return 返回信息
      */
     UimOrganVO getUimOrganById(Long id, Long appId);
+
 }
