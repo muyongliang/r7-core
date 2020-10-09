@@ -49,7 +49,6 @@ public interface UimOrganService extends IService<UimOrgan> {
      */
     Boolean removeUimOrganByIds(List<Long> ids, Long userId, Long appId);
 
-    // 根据id修改组织
 
     /**
      * 根据ID修改组织信息
