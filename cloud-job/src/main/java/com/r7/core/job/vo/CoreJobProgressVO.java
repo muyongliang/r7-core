@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @TableName("core_job_progress")
 @ApiModel(description = "任务进度明细")
-public class CoreJobProgressVo extends Model<CoreJobProgressVo> {
+public class CoreJobProgressVO extends Model<CoreJobProgressVO> {
     /**
      * 任务进度id
      */

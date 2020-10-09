@@ -5,12 +5,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.job.constant.JobErrorEnum;
-import com.r7.core.job.dto.CoreJobDto;
-import com.r7.core.job.dto.CoreJobStatusDto;
+import com.r7.core.job.dto.CoreJobDTO;
+import com.r7.core.job.dto.CoreJobStatusDTO;
 import com.r7.core.job.mapper.CoreJobMapper;
 import com.r7.core.job.model.CoreJob;
 import com.r7.core.job.service.CoreJobService;
-import com.r7.core.job.vo.CoreJobVo;
+import com.r7.core.job.vo.CoreJobVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -27,7 +27,7 @@ import java.util.Date;
 public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> implements CoreJobService {
 
     @Override
-    public CoreJobVo saveJob(CoreJobDto coreJobDto, Long appId, Long userId) {
+    public CoreJobVO saveJob(CoreJobDTO coreJobDto, Long appId, Long userId) {
         log.info("新增任务：{}，开始时间：{}", coreJobDto, new Date());
         CoreJob coreJob = new CoreJob();
         coreJob.toCoreJob(coreJobDto);
@@ -48,7 +48,7 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
     }
 
     @Override
-    public CoreJobVo updateJobById(Long id, CoreJobDto coreJobDto, Long userId) {
+    public CoreJobVO updateJobById(Long id, CoreJobDTO coreJobDto, Long userId) {
         log.info("修改任务id：{}，修改内容：{}", id, coreJobDto);
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_ID_IS_NULL));
@@ -66,7 +66,7 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
     }
 
     @Override
-    public CoreJobVo updateJobStatusById(Long id, CoreJobStatusDto coreJobStatusDto, Long userId) {
+    public CoreJobVO updateJobStatusById(Long id, CoreJobStatusDTO coreJobStatusDto, Long userId) {
         log.info("修改任务id:{}，修改内容：{}", id, coreJobStatusDto);
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_ID_IS_NULL));
@@ -89,22 +89,22 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
     }
 
     @Override
-    public CoreJobVo findJobById(Long id) {
-        CoreJobVo coreJobVo = new CoreJobVo();
+    public CoreJobVO findJobById(Long id) {
+        CoreJobVO coreJobVo = new CoreJobVO();
         CoreJob coreJob = baseMapper.selectById(id);
         BeanUtils.copyProperties(coreJob, coreJobVo);
         return coreJobVo;
     }
 
     @Override
-    public Page<CoreJobVo> pageJob(String search, Integer pageNum, Integer pageSize) {
-        Page<CoreJobVo> page = new Page<>(pageNum, pageSize);
+    public Page<CoreJobVO> pageJob(String search, Integer pageNum, Integer pageSize) {
+        Page<CoreJobVO> page = new Page<>(pageNum, pageSize);
         return baseMapper.pageJob(search, page);
     }
 
     @Override
-    public Page<CoreJobVo> pageCurrentJob(Long appId, Long platformAppId, Integer pageNum, Integer pageSize) {
-        Page<CoreJobVo> page = new Page<>(pageNum, pageSize);
+    public Page<CoreJobVO> pageCurrentJob(Long appId, Long platformAppId, Integer pageNum, Integer pageSize) {
+        Page<CoreJobVO> page = new Page<>(pageNum, pageSize);
         return baseMapper.pageCurrentJob(appId, platformAppId, page);
     }
 

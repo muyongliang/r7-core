@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.job.constant.JobErrorEnum;
-import com.r7.core.job.dto.CoreJobProgressDto;
+import com.r7.core.job.dto.CoreJobProgressDTO;
 import com.r7.core.job.mapper.CoreJobProgressMapper;
 import com.r7.core.job.model.CoreJobProgress;
 import com.r7.core.job.service.CoreJobProgressService;
-import com.r7.core.job.vo.CoreJobProgressVo;
+import com.r7.core.job.vo.CoreJobProgressVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class CoreJobProgressServiceImpl
         implements CoreJobProgressService {
 
     @Override
-    public CoreJobProgressVo saveJobProgress(CoreJobProgressDto coreJobProgressDto, Long userId) {
+    public CoreJobProgressVO saveJobProgress(CoreJobProgressDTO coreJobProgressDto, Long userId) {
         log.info("新增用户任务进度：{}，操作人：{}，开始时间：{}", coreJobProgressDto, userId, new Date());
         CoreJobProgress coreJobProgress = new CoreJobProgress();
         coreJobProgress.toCoreJobProgress(coreJobProgressDto);
@@ -45,7 +45,7 @@ public class CoreJobProgressServiceImpl
     }
 
     @Override
-    public CoreJobProgressVo updateJobById(Long id, CoreJobProgressDto coreJobProgressDto, Long userId) {
+    public CoreJobProgressVO updateJobById(Long id, CoreJobProgressDTO coreJobProgressDto, Long userId) {
         log.info("修改用户任务进度：{}，修改内容：{}", id, coreJobProgressDto);
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_PROGRESS_ID_IS_NULL));
@@ -60,7 +60,7 @@ public class CoreJobProgressServiceImpl
     }
 
     @Override
-    public CoreJobProgressVo getJobProgressByUserId(Long userId) {
+    public CoreJobProgressVO getJobProgressByUserId(Long userId) {
         return baseMapper.getJobProgressByUserId(userId);
     }
 }
