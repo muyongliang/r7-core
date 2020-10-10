@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 
 /**
@@ -194,4 +195,55 @@ public class MinIOTest {
         inputStream.close();
         fileOutputStream.close();
     }
+
+    /**
+     * @Author muyongliang
+     * @Date 2020/9/29 15:35
+     * @Description 利用保存的aeskey下载大文件测试
+     */
+    @Test
+    public void minIOTest5() throws Exception {
+        long start = System.currentTimeMillis();
+        String encoded = "I9mArhjdOG2tfKnHl5woB8YdikF8UGpyBxkKasIB6Us=";
+        SecretKeySpec aes = new SecretKeySpec(Base64.decode(encoded), "AES");
+        ServerSideEncryptionCustomerKey serverSideEncryptionCustomerKey = new ServerSideEncryptionCustomerKey(aes);
+        // get object given the bucket and object name
+        InputStream inputStream1 = minioClient.getObject(
+                GetObjectArgs.builder()
+                        .bucket("mybucket")
+                        .object("美女")
+                        .ssec(serverSideEncryptionCustomerKey)
+                        .build());
+        minioClient.downloadObject(
+                DownloadObjectArgs.builder()
+                        .bucket("mybucket")
+                        .object("美女")
+                        .ssec(serverSideEncryptionCustomerKey)
+                        .filename("C:\\Users\\liang\\Desktop\\美女服务端加密下载.flv")
+                        .build());
+        long end = System.currentTimeMillis();
+        long usedTime = end - start;
+        log.info("用时：{}毫秒", usedTime);
+    }
+
+    /**
+     * @Author muyongliang
+     * @Date 2020/9/29 15:35
+     * @Description minIO大文件上传测试
+     */
+    @Test
+    public void minIOTest6() throws Exception {
+        long start = System.currentTimeMillis();
+// Upload a video file.
+        ObjectWriteResponse objectWriteResponse = minioClient.uploadObject(
+                UploadObjectArgs.builder()
+                        .bucket("mybucket")
+                        .object("视频.flv")
+                        .filename("C:\\Users\\liang\\Videos\\93980974-1-80.flv")
+                        .build());
+        long end = System.currentTimeMillis();
+        long usedTime = end - start;
+        log.info("用时：{}毫秒", usedTime);
+    }
+
 }
