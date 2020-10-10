@@ -39,7 +39,7 @@ public class FileUploadController {
             ServerSideEncryptionCustomerKey serverSideEncryptionCustomerKey = new ServerSideEncryptionCustomerKey(aesKey);
 // Upload input stream with server-side encryption.
             minioClient.putObject(
-                    PutObjectArgs.builder().bucket("mybucket").object("美女.jpg").stream(
+                    PutObjectArgs.builder().bucket("mybucket").object("美女").stream(
                             inputStream, -1, 10 * 1024 * 1024)
                             .sse(serverSideEncryptionCustomerKey)
                             .build());
@@ -47,13 +47,13 @@ public class FileUploadController {
             InputStream inputStream1 = minioClient.getObject(
                     GetObjectArgs.builder()
                             .bucket("mybucket")
-                            .object("美女.jpg")
+                            .object("美女")
                             .ssec(serverSideEncryptionCustomerKey)
                             .build());
             minioClient.downloadObject(
                     DownloadObjectArgs.builder()
                             .bucket("mybucket")
-                            .object("美女.jpg")
+                            .object("美女")
                             .ssec(serverSideEncryptionCustomerKey)
                             .filename("C:\\Users\\liang\\Desktop\\美女服务端加密下载.jpg")
                             .build());
