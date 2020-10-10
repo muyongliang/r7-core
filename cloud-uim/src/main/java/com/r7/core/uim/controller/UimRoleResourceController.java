@@ -33,4 +33,27 @@ public class UimRoleResourceController {
                 .bindResourceByRoleId(roleId, resourceIds, 0L, 0L, 0L));
     }
 
+    @ApiOperation(value = "根据角色ID批量解绑角色资源", response = Boolean.class)
+    @PutMapping("/unBind/{roleId}")
+    public ResponseEntity unBindResourceByRoleId(@PathVariable("roleId") Long roleId,
+                                                 @RequestBody List<Long> resourceIds) {
+        return ResponseEntity.success(uimRoleResourceService
+                .unBindResourceByRoleId(roleId, resourceIds, 0L, 0L, 0L));
+    }
+
+
+    @ApiOperation(value = "根据角色ID解绑所有资源", response = Boolean.class)
+    @PutMapping("/unBind/all/{roleId}")
+    public ResponseEntity unBindResourceByRoleId(@PathVariable("roleId") Long roleId) {
+        return ResponseEntity.success(uimRoleResourceService
+                .unBindResourceByRoleId(roleId, 0L, 0L, 0L));
+    }
+
+    @ApiOperation(value = "根据角色ID查询绑定的资源", response = Boolean.class)
+    @PutMapping("/list/{roleId}")
+    public ResponseEntity listUimRoleResource(@PathVariable() Long roleId) {
+        return ResponseEntity.success(uimRoleResourceService
+                .listUimRoleResource(roleId, 0L, 0L));
+    }
+
 }
