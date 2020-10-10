@@ -11,6 +11,14 @@ import com.r7.core.common.constant.IError;
 public enum UimErrorEnum implements IError {
 
     /**
+     * 角色资源
+     */
+    ROLE_RESOURCE_IS_EXISTS("role_resource_is_exists", "角色资源已绑定。"),
+    ROLE_RESOURCE_IS_NOT_EXISTS("role_resource_is_not_exists", "角色资源未绑定。"),
+    ROLE_RESOURCE_BIND_ERROR("role_resource_bind_error", "角色资源绑定失败。"),
+    ROLE_RESOURCE_UNBIND_ERROR("role_resource_unbind_error", "角色资源解绑失败。"),
+
+    /**
      * 资源错误
      */
     RESOURCE_SUB_IS_EXISTS("resource_sub_is_exists", "当前资源存在子资源。"),
@@ -28,6 +36,7 @@ public enum UimErrorEnum implements IError {
     ORGAN_SUB_IS_EXISTS("organ_sub_is_exists", "当前组织存在子组织。"),
     ORGAN_IS_NOT_EXISTS("organ_is_not_exists", "组织不存在。"),
     ORGAN_ID_IS_NULL("organ_id_is_null", "组织ID不能为空。"),
+    ORGAN_PID_IS_NULL("organ_pid_is_null", "组织父ID不能为空。"),
     ORGAN_SAVE_ERROR("organ_save_error", "组织新增失败。"),
     ORGAN_UPDATE_ERROR("organ_update_error", "组织修改失败。"),
     ORGAN_DELETE_ERROR("organ_delete_error", "组织删除失败。"),

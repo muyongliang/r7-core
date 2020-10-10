@@ -7,6 +7,7 @@ import com.r7.core.uim.service.UimRoleService;
 import com.r7.core.uim.vo.UimRoleVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author zhongpingli
  * @date 2020-09-25
  */
+@Slf4j
 @Api(value = "/api/role", tags = {"角色接口"})
 @RestController
 @RequestMapping("/role")
@@ -35,7 +37,7 @@ public class UimRoleController {
     @PutMapping("/{id}")
     public ResponseEntity updateRoleById(@PathVariable("id") Long id,
                                          @Valid @RequestBody UimRoleDTO uimRoleDto) {
-        return ResponseEntity.success(uimRoleService.updateRoleById(id, uimRoleDto, 0L));
+        return ResponseEntity.success(uimRoleService.updateRoleById(id, uimRoleDto, 0L, 0L, 0L));
     }
 
 
@@ -52,7 +54,7 @@ public class UimRoleController {
             response = Boolean.class)
     @DeleteMapping("/{id}")
     public ResponseEntity removeRoleById(@PathVariable("id") Long id) {
-        return ResponseEntity.success(uimRoleService.removeRoleById(id, 0L));
+        return ResponseEntity.success(uimRoleService.removeRoleById(id, 0L, 0L, 0L));
     }
 
     @ApiOperation(
@@ -60,7 +62,7 @@ public class UimRoleController {
             response = Boolean.class)
     @DeleteMapping("")
     public ResponseEntity removeRoleByIds(@RequestBody List<Long> ids) {
-        return ResponseEntity.success(uimRoleService.removeRoleByIds(ids, 0L));
+        return ResponseEntity.success(uimRoleService.removeRoleByIds(ids, 0L, 0L, 0L));
     }
 
     @ApiOperation(
@@ -70,7 +72,7 @@ public class UimRoleController {
     public ResponseEntity pageRole(@RequestParam(value = "search", required = false) String search,
                                    @RequestParam(value = "pageNum", defaultValue = "1") long pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "15") long pageSize) {
-        return ResponseEntity.success(uimRoleService.pageRole(search, pageNum, pageSize));
+        return ResponseEntity.success(uimRoleService.pageRole(search, 0L, 0L, pageNum, pageSize));
     }
 
     @ApiOperation(
@@ -78,7 +80,7 @@ public class UimRoleController {
             response = UimRoleVO.class)
     @GetMapping("/{id}")
     public ResponseEntity getRoleById(@PathVariable("id") Long id) {
-        return ResponseEntity.success(uimRoleService.getRoleById(id));
+        return ResponseEntity.success(uimRoleService.getRoleById(id, 0L, 0L));
     }
 
 }

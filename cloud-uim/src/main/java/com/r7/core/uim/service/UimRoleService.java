@@ -24,11 +24,13 @@ public interface UimRoleService extends IService<UimRole> {
      * @param id         角色ID
      * @param uimRoleDto 角色修改谢谢
      * @param userId     操作用户ID
+     * @param appId      平台ID
+     * @param organId    组织ID
      * @return 返回修改结果
      */
     UimRoleVO updateRoleById(Long id,
                              UimRoleDTO uimRoleDto,
-                             Long userId);
+                             Long userId, Long appId, Long organId);
 
 
     /**
@@ -37,6 +39,7 @@ public interface UimRoleService extends IService<UimRole> {
      * @param uimRoleSaveDto 新增角色信息
      * @param organId        组织id
      * @param appId          平台id
+     * @param organId        组织ID
      * @param userId         操作用户ID
      * @return 返回新增结果
      */
@@ -46,11 +49,13 @@ public interface UimRoleService extends IService<UimRole> {
     /**
      * 删除角色
      *
-     * @param roleId 角色ID
-     * @param userId 操作用户ID
+     * @param roleId  角色ID
+     * @param userId  操作用户ID
+     * @param appId   平台ID
+     * @param organId 组织ID
      * @return 返回删除结果
      */
-    Boolean removeRoleById(Long roleId, Long userId);
+    Boolean removeRoleById(Long roleId, Long userId, Long appId, Long organId);
 
 
     /**
@@ -58,44 +63,54 @@ public interface UimRoleService extends IService<UimRole> {
      *
      * @param roleIds 删除角色id列表
      * @param userId  操作用户id
+     * @param appId   平台ID
+     * @param organId 组织ID
      * @return 返回删除结果
      */
-    Boolean removeRoleByIds(List<Long> roleIds, Long userId);
+    Boolean removeRoleByIds(List<Long> roleIds, Long userId, Long appId, Long organId);
 
 
     /**
      * 分页展示角色
      *
      * @param search   搜索条件
+     * @param appId    平台ID
+     * @param organId  组织ID
      * @param pageNum  当前页数
      * @param pageSize 展示条数
      * @return 返回结果
      */
-    IPage<UimRoleVO> pageRole(String search, long pageNum, long pageSize);
+    IPage<UimRoleVO> pageRole(String search, Long appId, Long organId, long pageNum, long pageSize);
 
 
     /**
      * 根据ID获取角色详情
      *
-     * @param roleId 角色ID
+     * @param appId   平台ID
+     * @param roleId  角色ID
+     * @param organId 组织ID
      * @return 返回结果
      */
-    UimRoleVO getRoleById(Long roleId);
+    UimRoleVO getRoleById(Long roleId, Long appId, Long organId);
 
     /**
      * 根据角色名称查询角色
      *
      * @param roleName 角色名称
+     * @param appId    平台ID
+     * @param organId  组织ID
      * @return 返回信息
      */
-    UimRole getRoleByRoleName(String roleName);
+    UimRole getRoleByRoleName(String roleName, Long appId, Long organId);
 
     /**
      * 根据角色编码查询角色
      *
      * @param roleCode 角色编码
+     * @param appId    平台ID
+     * @param organId  组织ID
      * @return 返回角色信息
      */
-    UimRole getRoleByRoleCode(String roleCode);
+    UimRole getRoleByRoleCode(String roleCode, Long appId, Long organId);
 
 }

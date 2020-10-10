@@ -7,10 +7,13 @@
         select id, code, role_name, feature, sort
         from uim_role
         <where>
+            organ_id = #{organId}
+            and
+            app_id = #{appId}
             <if test="search!=null and search!=''">
-             code like concat(concat('%',#{search}),'%')
-             or
-            role_name like concat(concat('%',#{search}),'%')
+                and code like concat(concat('%',#{search}),'%')
+                or
+                role_name like concat(concat('%',#{search}),'%')
             </if>
         </where>
         order by `sort`

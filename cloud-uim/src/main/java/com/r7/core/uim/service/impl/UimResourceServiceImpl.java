@@ -151,4 +151,23 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
                         .collect(Collectors.toList()))
                 .getOrNull();
     }
+
+    @Override
+    public List<UimResourceVO> listUimResourceByIds(List<Long> ids, Long appId) {
+        Option.of(ids)
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_IS_NOT_EXISTS));
+        return Option.of(
+                list(Wrappers.<UimResource>lambdaQuery()
+                        .select(UimResource::getId, UimResource::getPId, UimResource::getCode,
+                                UimResource::getResourceName, UimResource::getUrl,
+                                UimResource::getType, UimResource::getSort)
+                        .eq(UimResource::getAppId, appId)
+                        .in(UimResource::getId, ids)))
+                .filter(x -> x.size() > 0)
+                .map(x -> x.stream()
+                        .map(UimResource::toUimResourceVo)
+                        .collect(Collectors.toList()))
+                .getOrNull();
+
+    }
 }
