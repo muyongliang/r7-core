@@ -78,4 +78,13 @@ public interface UimResourceService extends IService<UimResource> {
      * @return 返回结果
      */
     List<UimResourceVO> getUimResourceByPid(Long pId);
+
+    /**
+     * 根据ID获取资源
+     *
+     * @param ids   资源ID
+     * @param appId 平台ID
+     * @return 返回信息
+     */
+    List<UimResourceVO> listUimResourceByIds(List<Long> ids, Long appId);
 }

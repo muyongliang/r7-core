@@ -35,6 +35,7 @@ public class UimOrganServiceImpl extends ServiceImpl<UimOrganMapper, UimOrgan> i
     @Transactional
     public UimOrganVO saveUimOrganByPid(Long pId, UimOrganSaveDTO uimOrganSaveDTO, Long userId, Long appId) {
         log.info("平台:{}新增组织内容:{},操作用户:{}", appId, uimOrganSaveDTO, userId);
+        Option.of(pId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ORGAN_PID_IS_NULL));
         validationSaveUimOrganByCode(appId, uimOrganSaveDTO.getOrganCode());
         validationSaveUimOrganByName(appId, uimOrganSaveDTO.getOrganName());
         Long id = SnowflakeUtil.getSnowflakeId();
@@ -60,6 +61,7 @@ public class UimOrganServiceImpl extends ServiceImpl<UimOrganMapper, UimOrgan> i
     @Transactional
     public Boolean removeUimOrganById(Long id, Long userId, Long appId) {
         log.info("平台:{}删除组织ID:{},操作用户:{}", appId, id, userId);
+        Option.of(id).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ORGAN_ID_IS_NULL));
         UimOrganVO uimOrganVO = getUimOrganById(id, appId);
         validationUimOrganByPid(id, appId);
 
@@ -83,6 +85,7 @@ public class UimOrganServiceImpl extends ServiceImpl<UimOrganMapper, UimOrgan> i
     @Transactional
     public UimOrganVO updateUimOrganById(Long id, UimOrganUpdateDTO uimOrganUpdateDTO, Long userId, Long appId) {
         log.info("平台:{}修改组织{}内容:{},操作用户:{}", appId, id, uimOrganUpdateDTO, userId);
+        Option.of(id).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ORGAN_ID_IS_NULL));
 
         UimOrgan uimOrgan = Option.of(getOne(Wrappers.<UimOrgan>lambdaQuery()
                 .eq(UimOrgan::getId, id).eq(UimOrgan::getAppId, appId)))
@@ -103,6 +106,8 @@ public class UimOrganServiceImpl extends ServiceImpl<UimOrganMapper, UimOrgan> i
 
     @Override
     public List<UimOrganNodeVO> treeUimOrganNodeByPid(Long pId, Long appId) {
+        Option.of(pId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ORGAN_PID_IS_NULL));
+
         List<UimOrgan> uimOrgans = Option.of(list(Wrappers.<UimOrgan>lambdaQuery()
                 .select(UimOrgan::getId, UimOrgan::getPId, UimOrgan::getOrganCode,
                         UimOrgan::getOrganName, UimOrgan::getType)
@@ -116,6 +121,8 @@ public class UimOrganServiceImpl extends ServiceImpl<UimOrganMapper, UimOrgan> i
 
     @Override
     public UimOrganVO getUimOrganById(Long id, Long appId) {
+        Option.of(id).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ORGAN_ID_IS_NULL));
+
         UimOrgan uimOrgan = Option.of(getOne(Wrappers.<UimOrgan>lambdaQuery()
                 .select(UimOrgan::getId, UimOrgan::getPId, UimOrgan::getOrganCode, UimOrgan::getOrganName,
                         UimOrgan::getType, UimOrgan::getSort)
