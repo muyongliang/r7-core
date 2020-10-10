@@ -1,4 +1,4 @@
-package com.r7.core.stand.video.util;
+package com.r7.core.stand.video.recording;
 
 
 public interface RecordingEventHandler {
