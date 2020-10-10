@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel(description = "任务进度明细")
-public class CoreJobProgressDto {
+public class CoreJobProgressDTO {
 
     /** 任务标识 */
     @ApiModelProperty(value = "任务标识")

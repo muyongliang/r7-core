@@ -12,7 +12,7 @@ import java.util.Date;
  **/
 @Data
 @ApiModel(description = "任务类")
-public class CoreJobVo {
+public class CoreJobVO {
     /**
      * id;任务id
      */

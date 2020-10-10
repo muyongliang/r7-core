@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.r7.core.stand.video.mapper.CoreVideoMapper">
+
+
+    <select id="pageVideo" resultType="com.r7.core.stand.video.vo.CoreVideoVO">
+        select id, app_id, user_id, organ_id, url, location_url, supply_side, description, status, fail_reason
+        from core_job
+        <where>
+            <if test="search!=null and search!=''">
+                organ_id=#{search}
+                or
+                supply_side=#{search}
+                or
+                status=#{search}
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>
