@@ -10,6 +10,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>cloud-dividend</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>dividend-proxy</module>
+        <module>dividend-profit</module>
+    </modules>
 
 
 </project>
