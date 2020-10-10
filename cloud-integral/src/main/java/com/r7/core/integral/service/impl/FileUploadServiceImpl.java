@@ -4,10 +4,7 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.crypto.digest.MD5;
 import com.r7.core.integral.dto.FileDataDTO;
 import com.r7.core.integral.service.FileUploadService;
-import io.minio.GetObjectArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.ServerSideEncryptionCustomerKey;
+import io.minio.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +36,11 @@ public class FileUploadServiceImpl implements FileUploadService {
         fileDataDTO.setBucketName(bucketName);
         fileDataDTO.setMD5(digestHex);
         try {
+            // Get information of an object.
+            ObjectStat objectStat =
+                    minioClient.statObject(
+                            StatObjectArgs.builder().bucket(bucketName).object(digestHex).build());
+        } catch (Exception e) {
             long start = System.currentTimeMillis();
             //生成256位AES key.
             KeyGenerator aes = KeyGenerator.getInstance("AES");
