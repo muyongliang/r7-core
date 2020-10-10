@@ -46,7 +46,7 @@ public class CoreJobProgressServiceImpl
 
     @Override
     public CoreJobProgressVO updateJobById(Long id, CoreJobProgressDTO coreJobProgressDto, Long userId) {
-        log.info("修改用户任务进度：{}，修改内容：{}", id, coreJobProgressDto);
+        log.info("修改用户任务进度：{}，操作人：{}，修改内容：{}", id, userId, coreJobProgressDto);
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_PROGRESS_ID_IS_NULL));
         CoreJobProgress coreJobProgress = Option.of(baseMapper.selectById(id))
@@ -55,7 +55,7 @@ public class CoreJobProgressServiceImpl
         coreJobProgress.setUpdatedBy(userId);
         coreJobProgress.setUpdatedAt(new Date());
         baseMapper.updateById(coreJobProgress);
-        log.info("修改用户任务进度：{}，完成", id, coreJobProgressDto);
+        log.info("修改用户任务进度：{}，操作人：{}，完成", id, userId, coreJobProgressDto);
         return coreJobProgress.toCoreJobProgressVo();
     }
 

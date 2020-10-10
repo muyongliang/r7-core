@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author zs
- * @description:
+ * @description: 视频实现层
  * @date : 2020-10-10
  */
 @Slf4j

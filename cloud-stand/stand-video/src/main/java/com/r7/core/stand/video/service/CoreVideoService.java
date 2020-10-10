@@ -5,7 +5,7 @@ import com.r7.core.stand.video.vo.CoreVideoVO;
 
 /**
  * @author zs
- * @description:
+ * @description: 视频服务层
  * @date : 2020-10-10
  */
 

@@ -7,7 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author zs
- * @description:
+ * @description: video启动类
  * @date : 2020-10-10
  */
 @MapperScan("com.r7.core.stand.video.mapper")

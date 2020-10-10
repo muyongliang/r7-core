@@ -28,7 +28,7 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
 
     @Override
     public CoreJobVO saveJob(CoreJobDTO coreJobDto, Long appId, Long userId) {
-        log.info("新增任务：{}，开始时间：{}", coreJobDto, new Date());
+        log.info("新增任务：{}，操作人{}，开始时间：{}", coreJobDto, userId, new Date());
         CoreJob coreJob = new CoreJob();
         coreJob.toCoreJob(coreJobDto);
         Long id = SnowflakeUtil.getSnowflakeId();
@@ -43,13 +43,13 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
         if (!save) {
             throw new BusinessException(JobErrorEnum.JOB_SAVE_ERROR);
         }
-        log.info("新增任务：{}成功，结束时间：{}", coreJobDto, new Date());
+        log.info("新增任务：{}成功，操作人{}，结束时间：{}", coreJobDto, userId, new Date());
         return findJobById(id);
     }
 
     @Override
     public CoreJobVO updateJobById(Long id, CoreJobDTO coreJobDto, Long userId) {
-        log.info("修改任务id：{}，修改内容：{}", id, coreJobDto);
+        log.info("修改任务id：{}，操作人{}，修改内容：{}", id, userId, coreJobDto);
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_ID_IS_NULL));
         CoreJob coreJob = Option.of(baseMapper.selectById(id))
@@ -61,13 +61,13 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
         if (!update) {
             throw new BusinessException(JobErrorEnum.JOB_UPDATE_ERROR);
         }
-        log.info("修改任务id：{}，完成", id);
+        log.info("修改任务id：{}，操作人{}，完成", id, userId);
         return coreJob.toCoreJobVo();
     }
 
     @Override
     public CoreJobVO updateJobStatusById(Long id, CoreJobStatusDTO coreJobStatusDto, Long userId) {
-        log.info("修改任务id:{}，修改内容：{}", id, coreJobStatusDto);
+        log.info("修改任务id:{}，操作人{}，修改内容：{}", id, userId, coreJobStatusDto);
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_ID_IS_NULL));
         CoreJob coreJob = Option.of(baseMapper.selectById(id))
@@ -84,7 +84,7 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
         if (!update) {
             throw new BusinessException(JobErrorEnum.JOB_UPDATE_ERROR);
         }
-        log.info("修改任务id：{}，任务下架完成", id);
+        log.info("修改任务id：{}，操作人{}，任务下架完成", id, userId);
         return coreJob.toCoreJobVo();
     }
 
