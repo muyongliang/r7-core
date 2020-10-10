@@ -1,20 +1,20 @@
 package com.r7.core.integral.controller;
 
-import cn.hutool.core.codec.Base64;
+import com.r7.core.common.web.ResponseEntity;
+import com.r7.core.integral.dto.FileDataDTO;
 import com.r7.core.integral.service.FileUploadService;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.ServerSideEncryptionCustomerKey;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import javax.servlet.ServletInputStream;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.InputStream;
 
 /**
  * @Auther muyongliang
@@ -24,38 +24,35 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @RequestMapping("/upload")
 @RestController
+@Api(value = "/api/upload", tags = {"文件上传接口"})
 public class FileUploadController {
-    @Autowired
-    private MinioClient minioClient;
+
     @Autowired
     private FileUploadService fileUploadService;
 
-    @PostMapping
-    public void upload(HttpServletRequest request) throws Exception {
+    @PostMapping("/{bucketName}")
+    @ApiOperation(
+            value = "文件上传接口，大小限制1G"
+            , response = FileDataDTO.class)
+    public ResponseEntity upload(@PathVariable("bucketName") String bucketName, HttpServletRequest request) throws Exception {
         ServletInputStream inputStream = request.getInputStream();
-        try {
-            long start = System.currentTimeMillis();
-            //生成256位AES key.
-            KeyGenerator aes = KeyGenerator.getInstance("AES");
-            aes.init(256);
-            SecretKey aesKey = aes.generateKey();
-            String encode = Base64.encode(aesKey.getEncoded());
-            log.info("生成的aesKey为：{}", encode);
-            ServerSideEncryptionCustomerKey serverSideEncryptionCustomerKey = new ServerSideEncryptionCustomerKey(aesKey);
-// Upload input stream with server-side encryption.
-            minioClient.putObject(
-                    PutObjectArgs.builder().bucket("mybucket").object("美女").stream(
-                            inputStream, -1, 10 * 1024 * 1024)
-                            .sse(serverSideEncryptionCustomerKey)
-                            .build());
-            long end = System.currentTimeMillis();
-            long usedTime = end - start;
-            log.info("上传文件用时：{}毫秒", usedTime);
-        } finally {
-            inputStream.close();
+        return ResponseEntity.success(fileUploadService.upload(inputStream, bucketName));
+    }
+
+    @GetMapping
+    @ApiOperation(
+            value = "文件下载接口，大小限制1G")
+    public void download(@RequestBody @Valid FileDataDTO fileDataDTO, HttpServletResponse response) throws Exception {
+
+        InputStream download = fileUploadService.download(fileDataDTO);
+        // 用response获得字节输出流
+        ServletOutputStream outputStream = response.getOutputStream();
+        int len;
+        byte[] buffer = new byte[5 * 1024 * 1024];
+        while ((len = download.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, len);
         }
-
-
+        download.close();
     }
 
 }
