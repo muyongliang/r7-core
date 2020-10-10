@@ -3,14 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.r7.core.uim.mapper.UimRoleMapper">
 
-    <select id="pageRole" resultType="com.r7.core.uim.vo.UimRoleVo">
+    <select id="pageRole" resultType="com.r7.core.uim.vo.UimRoleVO">
         select id, code, role_name, feature, sort
         from uim_role
         <where>
+            organ_id = #{organId}
+            and
+            app_id = #{appId}
             <if test="search!=null and search!=''">
-             code like concat(concat('%',#{search}),'%')
-             or
-            role_name like concat(concat('%',#{search}),'%')
+                and code like concat(concat('%',#{search}),'%')
+                or
+                role_name like concat(concat('%',#{search}),'%')
             </if>
         </where>
         order by `sort`

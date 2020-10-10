@@ -3,9 +3,9 @@ package com.r7.core.uim.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.r7.core.uim.dto.UimRoleDto;
-import com.r7.core.uim.dto.UimRoleSaveDto;
-import com.r7.core.uim.vo.UimRoleVo;
+import com.r7.core.uim.dto.UimRoleDTO;
+import com.r7.core.uim.dto.UimRoleSaveDTO;
+import com.r7.core.uim.vo.UimRoleVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -78,8 +78,8 @@ public class UimRole extends Model<UimRole> {
     @ApiModelProperty("更新时间")
     private Date updatedAt;
 
-    public UimRoleVo toUimRoleVo() {
-        UimRoleVo uimRoleVo = new UimRoleVo();
+    public UimRoleVO toUimRoleVo() {
+        UimRoleVO uimRoleVo = new UimRoleVO();
         uimRoleVo.setId(this.getId());
         uimRoleVo.setCode(this.getCode());
         uimRoleVo.setRoleName(this.getRoleName());
@@ -88,14 +88,14 @@ public class UimRole extends Model<UimRole> {
         return uimRoleVo;
     }
 
-    public void toUimRole(UimRoleDto uimRoleDto) {
+    public void toUimRole(UimRoleDTO uimRoleDto) {
         this.setCode(uimRoleDto.getCode());
         this.setRoleName(uimRoleDto.getRoleName());
         this.setFeature(uimRoleDto.getFeature());
         this.setSort(uimRoleDto.getSort());
     }
 
-    public void toUimRole(UimRoleSaveDto uimRoleSaveDto) {
+    public void toUimRole(UimRoleSaveDTO uimRoleSaveDto) {
         this.setCode(uimRoleSaveDto.getCode());
         this.setRoleName(uimRoleSaveDto.getRoleName());
         this.setFeature(0);
