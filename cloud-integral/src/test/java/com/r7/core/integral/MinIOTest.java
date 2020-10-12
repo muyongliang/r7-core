@@ -1,8 +1,9 @@
 package com.r7.core.integral;
 
 import cn.hutool.core.codec.Base64;
+import cn.hutool.crypto.digest.DigestUtil;
+import cn.hutool.crypto.digest.MD5;
 import cn.hutool.crypto.symmetric.AES;
-import com.google.common.net.MediaType;
 import io.minio.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -53,7 +54,6 @@ public class MinIOTest {
      */
     @Test
     public void minIOTest1() throws Exception {
-
 
         // Upload the zip file to the bucket with putObject
         minioClient.putObject("mybucket", "美女.jpg", "C:\\Users\\liang\\Pictures\\Camera Roll\\美女.jpg", null);
@@ -117,6 +117,7 @@ public class MinIOTest {
      * @Author muyongliang
      * @Date 2020/9/29 15:36
      * @Description 本地文件进行服务端加密
+     * md5校验会修改流
      */
     @Test
     public void minIOTest3() throws Exception {
@@ -126,24 +127,17 @@ public class MinIOTest {
         SecretKey aesKey = aes.generateKey();
         ServerSideEncryptionCustomerKey serverSideEncryptionCustomerKey = new ServerSideEncryptionCustomerKey(aesKey);
 // Upload a video file.
-        ObjectWriteResponse objectWriteResponse = minioClient.uploadObject(
-                UploadObjectArgs.builder()
-                        .bucket("mybucket")
-                        .object("美女服务端加密")
-                        .filename("C:\\Users\\liang\\Pictures\\Camera Roll\\美女.jpg")
+        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\liang\\Pictures\\Camera Roll\\美女.jpg");
+//        String digestHex = MD5.create().digestHex(fileInputStream);
+        String digestHex = "digestHex";
+// Upload input stream with server-side encryption.
+        minioClient.putObject(
+                PutObjectArgs.builder().bucket("mybucket").object(digestHex).stream(
+                        fileInputStream, -1, 10 * 1024 * 1024)
                         .sse(serverSideEncryptionCustomerKey)
-                        .contentType(MediaType.ANY_IMAGE_TYPE.toString())
                         .build());
+        fileInputStream.close();
         System.out.println("myobject is uploaded successfully");
-
-// Get information of SSE-C encrypted object.
-        ObjectStat objectStat =
-                minioClient.statObject(
-                        StatObjectArgs.builder()
-                                .bucket("my-bucketname")
-                                .object("my-objectname")
-                                .ssec(serverSideEncryptionCustomerKey)
-                                .build());
         File file = new File("C:\\Users\\liang\\Desktop\\美女服务端加密下载.jpg");
         if (file.exists()) {
             file.delete();
@@ -151,7 +145,7 @@ public class MinIOTest {
         minioClient.downloadObject(
                 DownloadObjectArgs.builder()
                         .bucket("mybucket")
-                        .object("美女服务端加密")
+                        .object(digestHex)
                         .ssec(serverSideEncryptionCustomerKey)
                         .filename("C:\\Users\\liang\\Desktop\\美女服务端加密下载.jpg")
                         .build());
@@ -245,6 +239,57 @@ public class MinIOTest {
         long end = System.currentTimeMillis();
         long usedTime = end - start;
         log.info("用时：{}毫秒", usedTime);
+    }
+
+    /**
+     * @Author muyongliang
+     * @Date 2020/9/29 15:35
+     * @Description md5测试, md5会修改流
+     */
+    @Test
+    public void MD5Test1() throws Exception {
+        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\liang\\Pictures\\Camera Roll\\美女.jpg");
+        log.info(Integer.toString(fileInputStream.available()));
+        String digestHex1 = MD5.create().digestHex(fileInputStream);
+        log.info(digestHex1);
+        log.info(Integer.toString(fileInputStream.available()));
+        String digestHex2 = MD5.create().digestHex(fileInputStream);
+        log.info(digestHex2);
+        log.info(Integer.toString(fileInputStream.available()));
+    }
+
+    /**
+     * @Author muyongliang
+     * @Date 2020/9/29 15:35
+     * @Description 摘要算法会修改流
+     */
+    @Test
+    public void SHA256Test1() throws Exception {
+        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\liang\\Pictures\\Camera Roll\\美女.jpg");
+        log.info(Integer.toString(fileInputStream.available()));
+        String sha256Hex1 = DigestUtil.sha256Hex(fileInputStream);
+        log.info(sha256Hex1);
+        log.info(Integer.toString(fileInputStream.available()));
+        String sha256Hex2 = DigestUtil.sha256Hex(fileInputStream);
+        log.info(sha256Hex2);
+        log.info(Integer.toString(fileInputStream.available()));
+    }
+
+    /**
+     * @Author muyongliang
+     * @Date 2020/9/29 15:35
+     * @Description md5测试, md5不会修改文件
+     */
+    @Test
+    public void MD5Test12() throws Exception {
+        File file = new File("C:\\Users\\liang\\Pictures\\Camera Roll\\美女.jpg");
+        log.info(Long.toString(file.length()));
+        String digestHex1 = MD5.create().digestHex(file);
+        log.info(digestHex1);
+        log.info(Long.toString(file.length()));
+        String digestHex2 = MD5.create().digestHex(file);
+        log.info(digestHex2);
+        log.info(Long.toString(file.length()));
     }
 
 }
