@@ -14,7 +14,6 @@ import com.r7.core.uim.model.UimUser;
 import com.r7.core.uim.service.UimSysUserService;
 import com.r7.core.uim.service.UimUserRoleService;
 import com.r7.core.uim.service.UimUserService;
-import com.r7.core.uim.vo.UimRoleVO;
 import com.r7.core.uim.vo.UimUserDetailsVO;
 import com.r7.core.uim.vo.UimUserVO;
 import io.vavr.control.Option;
