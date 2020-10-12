@@ -10,8 +10,8 @@ import java.io.InputStream;
  * @Description FileUploadService
  */
 public interface FileUploadService {
-
-    FileDataDTO upload(InputStream inputStream, String bucketName) throws Exception;
-
     InputStream download(FileDataDTO fileDataDTO) throws Exception;
+
+    FileDataDTO uploadStreamUseSSE(InputStream inputStream, String bucketName, boolean encrypted, String aesKey) throws Exception;
+
 }

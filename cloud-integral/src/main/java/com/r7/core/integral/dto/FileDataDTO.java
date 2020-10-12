@@ -29,12 +29,20 @@ public class FileDataDTO {
     /**
      * 文件aes加密秘钥，经base64编码
      */
-    @ApiModelProperty(value = "文件aes加密秘钥，经base64编码", required = true)
-    @NotEmpty(message = "文件aesKey不能为空")
+    @ApiModelProperty(value = "文件aes加密秘钥，经base64编码", notes = "使用加密保存的对象必须提供秘钥", required = true)
     private String aesKey;
     /**
      * 上传或者下载用时，毫秒数
      */
     @ApiModelProperty("上传或者下载用时,毫秒数")
     private Long usedTime;
+    /**
+     * 文件是否已经存在
+     */
+    private boolean Exist;
+    /**
+     * 其他信息
+     */
+    @ApiModelProperty("其他信息")
+    private String msg;
 }
