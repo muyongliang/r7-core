@@ -113,4 +113,20 @@ public interface UimRoleService extends IService<UimRole> {
      */
     UimRole getRoleByRoleCode(String roleCode, Long appId, Long organId);
 
+    /**
+     * 根据ID获取角色
+     *
+     * @param roleIds 角色ID
+     * @param appId 平台ID
+     * @return 返回信息
+     */
+    List<UimRoleVO> listUimRoleByIds(List<Long> roleIds, Long appId);
+
+    /**
+     * 根据ID获取角色编码
+     *
+     * @param roleIds 角色ID集合
+     * @return 返回角色编码集合
+     */
+    List<String> listRoleCode(List<Long> roleIds, Long appId);
 }
