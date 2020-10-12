@@ -107,7 +107,7 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     @Override
     @Transactional
     public Boolean unBindRoleByUserId(Long unBindUserId, Long appId, Long organId, Long userId) {
-        log.info("平台:{}对组织:{}中用户:{}解绑所有角色:{}, 操作用户:{}。", appId, organId, unBindUserId, userId);
+        log.info("平台:{}对组织:{}中用户:{}解绑所有角色, 操作用户:{}。", appId, organId, unBindUserId, userId);
         uimUserService.getUserById(unBindUserId, appId, organId);
         List<UimUserRole> uimUserRoleList =
                 list(Wrappers.<UimUserRole>lambdaQuery().eq(UimUserRole::getUserId, unBindUserId));
@@ -117,10 +117,10 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
         List<Long> ids = uimUserRoleList.stream().map(UimUserRole::getId).collect(Collectors.toList());
         boolean remove = removeByIds(ids);
         if (!remove) {
-            log.info("平台:{}对组织:{}中用户:{}解绑所有角色:{}失败, 操作用户:{}。", appId, organId, unBindUserId, userId);
+            log.info("平台:{}对组织:{}中用户:{}解绑所有角色失败, 操作用户:{}。", appId, organId, unBindUserId, userId);
             throw new BusinessException(UimErrorEnum.USER_ROLE_UNBIND_ERROR);
         }
-        log.info("平台:{}对组织:{}中用户:{}解绑所有角色:{}成功, 操作用户:{}。", appId, organId, unBindUserId, userId);
+        log.info("平台:{}对组织:{}中用户:{}解绑所有角色成功, 操作用户:{}。", appId, organId, unBindUserId, userId);
         return true;
     }
 
