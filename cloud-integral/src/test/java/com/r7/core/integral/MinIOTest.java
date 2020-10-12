@@ -36,6 +36,14 @@ public class MinIOTest {
                         .endpoint("https://192.168.1.49:9000")
                         .credentials("admin", "admin123456")
                         .build();
+        boolean isExist =
+                minioClient.bucketExists(BucketExistsArgs.builder().bucket("mybucket").build());
+        if (isExist) {
+            System.out.println("Bucket already exists.");
+        } else {
+            // Make a new bucket called asiatrip to hold a zip file of photos.
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket("mybucket").build());
+        }
     }
 
     /**
@@ -46,14 +54,7 @@ public class MinIOTest {
     @Test
     public void minIOTest1() throws Exception {
 
-        boolean isExist =
-                minioClient.bucketExists(BucketExistsArgs.builder().bucket("mybucket").build());
-        if (isExist) {
-            System.out.println("Bucket already exists.");
-        } else {
-            // Make a new bucket called asiatrip to hold a zip file of photos.
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket("mybucket").build());
-        }
+
         // Upload the zip file to the bucket with putObject
         minioClient.putObject("mybucket", "美女.jpg", "C:\\Users\\liang\\Pictures\\Camera Roll\\美女.jpg", null);
 //        存在覆盖问题

@@ -29,9 +29,14 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public FileDataDTO upload(InputStream inputStream, String bucketName) throws Exception {
         if (StringUtils.isBlank(bucketName)) {
-            bucketName = "defaultBucket";
+            bucketName = "defaultbucket";
         }
+        long MD5start = System.currentTimeMillis();
         String digestHex = MD5.create().digestHex(inputStream);
+        long MD5end = System.currentTimeMillis();
+        long MD5usedTime = MD5end - MD5start;
+        log.info("MD5校验值为：{}", digestHex);
+        log.info("MD5校验用时：{}毫秒", MD5usedTime);
         FileDataDTO fileDataDTO = new FileDataDTO();
         fileDataDTO.setBucketName(bucketName);
         fileDataDTO.setMD5(digestHex);
@@ -42,6 +47,16 @@ public class FileUploadServiceImpl implements FileUploadService {
                             StatObjectArgs.builder().bucket(bucketName).object(digestHex).build());
             fileDataDTO.setExist(true);
         } catch (Exception e) {
+            log.info("查询对象是否存在时发生异常：{}", e.getMessage());
+//            创建桶
+            boolean isExist =
+                    minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+            if (isExist) {
+                log.info("Bucket:{} already exists.", bucketName);
+            } else {
+                // Make a new bucket
+                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+            }
             long start = System.currentTimeMillis();
             //生成256位AES key.
             KeyGenerator aes = KeyGenerator.getInstance("AES");
@@ -60,6 +75,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             long end = System.currentTimeMillis();
             long usedTime = end - start;
             log.info("上传文件用时：{}毫秒", usedTime);
+            fileDataDTO.setUsedTime(usedTime);
         } finally {
             inputStream.close();
         }

@@ -22,19 +22,19 @@ import java.io.InputStream;
  * @Description FileUploadController
  */
 @Slf4j
-@RequestMapping("/upload")
 @RestController
+@RequestMapping("/upload")
 @Api(value = "/api/upload", tags = {"文件上传接口"})
 public class FileUploadController {
 
     @Autowired
     private FileUploadService fileUploadService;
 
-    @PostMapping("/{bucketName}")
+    @PostMapping
     @ApiOperation(
             value = "文件上传接口，大小限制1G"
             , response = FileDataDTO.class)
-    public ResponseEntity upload(@PathVariable("bucketName") String bucketName, HttpServletRequest request) throws Exception {
+    public ResponseEntity upload(@PathVariable(value = "bucketName", required = false) String bucketName, HttpServletRequest request) throws Exception {
         ServletInputStream inputStream = request.getInputStream();
         return ResponseEntity.success(fileUploadService.upload(inputStream, bucketName));
     }
@@ -52,6 +52,7 @@ public class FileUploadController {
         while ((len = download.read(buffer)) != -1) {
             outputStream.write(buffer, 0, len);
         }
+        outputStream.flush();
         download.close();
     }
 

@@ -14,20 +14,16 @@ import javax.validation.constraints.NotEmpty;
 @ApiModel(description = "文件元信息")
 @Data
 public class FileDataDTO {
-    /**
-     * fileName
-     */
-    @ApiModelProperty("fileName")
-    private String fileName;
+
     /**
      * 桶名，不传则用默认桶名defaultBucket
      */
-    @ApiModelProperty(value = "桶名")
+    @ApiModelProperty(value = "桶名", notes = "桶名，不传则用默认桶名defaultBucket,名称只能包含小写字母，数字，点和连字符（-）")
     private String bucketName;
     /**
      * 文件MD5校验值
      */
-    @ApiModelProperty(value = "文件MD5校验值", required = true)
+    @ApiModelProperty(value = "文件MD5校验值,同时作为对象名", required = true)
     @NotEmpty(message = "文件MD5校验值不能为空")
     private String MD5;
     /**
@@ -41,13 +37,8 @@ public class FileDataDTO {
      */
     private boolean Exist;
     /**
-     * 文件新建时间
+     * 上传或者下载用时，毫秒数
      */
-    @ApiModelProperty("文件新建时间")
-    private String createTime;
-    /**
-     * 文件修改时间
-     */
-    @ApiModelProperty("文件修改时间")
-    private String updateTime;
+    @ApiModelProperty("上传或者下载用时,毫秒数")
+    private Long usedTime;
 }
