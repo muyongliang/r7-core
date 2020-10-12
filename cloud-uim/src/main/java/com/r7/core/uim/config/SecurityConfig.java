@@ -28,17 +28,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources/configuration/security",
             "/swagger-ui.html",
             "/webjars/**",
-            "/role/**"
     };
 
     /**
      * 系统过滤地址
      */
     private static final String[] SYSTEM_AUTH_LIST = {
-            "/auth/**",
-            "/organ/**",
-            "/role/**",
-            "/resource/**"};
+            "/auth/**"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -61,8 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(SYSTEM_AUTH_LIST)
                 .permitAll()
                 .anyRequest()
-//                .access("@rbacService.hasPermission(request,authentication)") // todo rbac需要用都的 目前资源还未增加不使用
-                .authenticated()
+                .access("@rbacService.hasPermission(request,authentication)")
+//                .authenticated()
                 .and()
                 .formLogin()
                 .permitAll();
