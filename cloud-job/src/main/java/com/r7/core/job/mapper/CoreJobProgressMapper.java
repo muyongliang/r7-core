@@ -2,7 +2,7 @@ package com.r7.core.job.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.r7.core.job.model.CoreJobProgress;
-import com.r7.core.job.vo.CoreJobProgressVo;
+import com.r7.core.job.vo.CoreJobProgressVO;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -17,5 +17,5 @@ public interface CoreJobProgressMapper extends BaseMapper<CoreJobProgress> {
      * @param userId 用户id
      * @return 任务进度信息
      */
-    CoreJobProgressVo getJobProgressByUserId(@Param("userId") Long userId);
+    CoreJobProgressVO getJobProgressByUserId(@Param("userId") Long userId);
 }

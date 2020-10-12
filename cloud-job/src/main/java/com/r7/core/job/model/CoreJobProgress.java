@@ -3,8 +3,8 @@ package com.r7.core.job.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.r7.core.job.dto.CoreJobProgressDto;
-import com.r7.core.job.vo.CoreJobProgressVo;
+import com.r7.core.job.dto.CoreJobProgressDTO;
+import com.r7.core.job.vo.CoreJobProgressVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -84,15 +84,15 @@ public class CoreJobProgress extends Model<CoreJobProgress> {
     @ApiModelProperty(value = "更新时间")
     private Date updatedAt;
 
-    public void toCoreJobProgress(CoreJobProgressDto coreJobProgressDto) {
+    public void toCoreJobProgress(CoreJobProgressDTO coreJobProgressDto) {
         this.setJobCode(coreJobProgressDto.getJobCode());
         this.setStatus(coreJobProgressDto.getStatus());
         this.setProgress(coreJobProgressDto.getProgress());
         this.setIsDistribution(coreJobProgressDto.getIsDistribution());
     }
 
-    public CoreJobProgressVo toCoreJobProgressVo() {
-        CoreJobProgressVo coreJobProgressVo = new CoreJobProgressVo();
+    public CoreJobProgressVO toCoreJobProgressVo() {
+        CoreJobProgressVO coreJobProgressVo = new CoreJobProgressVO();
         coreJobProgressVo.setId(this.getId());
         coreJobProgressVo.setUserId(this.getUserId());
         coreJobProgressVo.setJobCode(this.getJobCode());

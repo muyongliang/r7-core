@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 角色实现层
@@ -161,5 +162,39 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
                 .eq(UimRole::getCode, roleCode)
                 .eq(UimRole::getOrganId, organId)
                 .eq(UimRole::getAppId, appId));
+    }
+
+    @Override
+    public List<UimRoleVO> listUimRoleByIds(List<Long> roleIds, Long appId) {
+        // todo 返回异常需要添加
+        Option.of(roleIds)
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_IS_NOT_EXISTS));
+        return Option.of(
+                list(Wrappers.<UimRole>lambdaQuery()
+                        .select(UimRole::getId, UimRole::getOrganId,
+                                UimRole::getCode, UimRole::getRoleName,
+                                UimRole::getFeature, UimRole::getSort)
+                        .eq(UimRole::getAppId, appId)
+                        .in(UimRole::getId, roleIds)))
+                .filter(x -> x.size() > 0)
+                .map(x -> x.stream()
+                        .map(UimRole::toUimRoleVo)
+                        .collect(Collectors.toList()))
+                .getOrNull();
+    }
+
+    @Override
+    public List<String> listRoleCode(List<Long> roleIds, Long appId) {
+        Option.of(roleIds)
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_IS_NOT_EXISTS));
+        List<UimRole> list = list(Wrappers.<UimRole>lambdaQuery()
+                .select(UimRole::getCode)
+                .eq(UimRole::getAppId, appId)
+                .in(UimRole::getId, roleIds));
+
+        List<String> listRoleCode = list.stream().map(UimRole::getCode).collect(Collectors.toList());
+
+        return listRoleCode;
+
     }
 }

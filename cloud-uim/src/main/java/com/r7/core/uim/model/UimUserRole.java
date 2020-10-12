@@ -24,22 +24,22 @@ public class UimUserRole extends Model<UimUserRole> {
 
     @TableId
     @ApiModelProperty("id")
-    private String id;
+    private Long id;
     /**
      * 用户id
      */
     @ApiModelProperty("用户id")
-    private String userId;
+    private Long userId;
     /**
      * 角色id
      */
     @ApiModelProperty("角色id")
-    private String roleId;
+    private Long roleId;
     /**
      * 创建人
      */
     @ApiModelProperty("创建人")
-    private String createdBy;
+    private Long createdBy;
     /**
      * 创建时间
      */
@@ -49,7 +49,7 @@ public class UimUserRole extends Model<UimUserRole> {
      * 更新人
      */
     @ApiModelProperty("更新人")
-    private String updatedBy;
+    private Long updatedBy;
     /**
      * 更新时间
      */

@@ -3,9 +3,9 @@ package com.r7.core.job.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.r7.core.job.dto.CoreJobDto;
-import com.r7.core.job.dto.CoreJobStatusDto;
-import com.r7.core.job.vo.CoreJobVo;
+import com.r7.core.job.dto.CoreJobDTO;
+import com.r7.core.job.dto.CoreJobStatusDTO;
+import com.r7.core.job.vo.CoreJobVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -92,8 +92,8 @@ public class CoreJob extends Model<CoreJob> {
     @ApiModelProperty(value = "更新时间", hidden = true)
     private Date updatedAt;
 
-    public CoreJobVo toCoreJobVo() {
-        CoreJobVo coreJobVo = new CoreJobVo();
+    public CoreJobVO toCoreJobVo() {
+        CoreJobVO coreJobVo = new CoreJobVO();
         coreJobVo.setId(this.getId());
         coreJobVo.setAppId(this.getAppId());
         coreJobVo.setJobName(this.getJobName());
@@ -107,7 +107,7 @@ public class CoreJob extends Model<CoreJob> {
         return coreJobVo;
     }
 
-    public void toCoreJob(CoreJobDto coreJobDto) {
+    public void toCoreJob(CoreJobDTO coreJobDto) {
         this.setJobName(coreJobDto.getJobName());
         this.setJobCode(coreJobDto.getJobCode());
         this.setContent(coreJobDto.getContent());
@@ -118,7 +118,7 @@ public class CoreJob extends Model<CoreJob> {
     }
 
 
-    public void toCoreJobStatusVo(CoreJobStatusDto coreJobStatusDto) {
+    public void toCoreJobStatusVo(CoreJobStatusDTO coreJobStatusDto) {
         this.setStatus(coreJobStatusDto.getStatus());
     }
 }

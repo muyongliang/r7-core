@@ -30,6 +30,27 @@ public enum UimErrorEnum implements IError {
     ROLE_RESOURCE_UNBIND_ERROR("role_resource_unbind_error", "角色资源解绑失败。"),
 
     /**
+     * 用户错误
+     */
+    USER_ID_IS_NULL("user_id_is_null", "用户ID不能为空"),
+
+    /**
+     * 用户角色
+     */
+    USER_ROLE_IS_EXISTS("user_role_is_exists", "用户角色已绑定"),
+    USER_ROLE_IS_NOT_EXISTS("user_role_is_not_exists", "用户角色未绑定"),
+    USER_ROLE_BIND_ERROR("user_role_bind_error", "用户角色绑定失败"),
+    USER_ROLE_UNBIND_ERROR("user_role_unbind_error", "用户角色解绑失败"),
+
+    /**
+     * 角色资源
+     */
+    ROLE_RESOURCE_IS_EXISTS("role_resource_is_exists", "角色资源已绑定。"),
+    ROLE_RESOURCE_IS_NOT_EXISTS("role_resource_is_not_exists", "角色资源未绑定。"),
+    ROLE_RESOURCE_BIND_ERROR("role_resource_bind_error", "角色资源绑定失败。"),
+    ROLE_RESOURCE_UNBIND_ERROR("role_resource_unbind_error", "角色资源解绑失败。"),
+
+    /**
      * 资源错误
      */
     RESOURCE_SUB_IS_EXISTS("resource_sub_is_exists", "当前资源存在子资源。"),

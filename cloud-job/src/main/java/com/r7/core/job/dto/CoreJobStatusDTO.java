@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(description = "任务类")
-public class CoreJobStatusDto {
+public class CoreJobStatusDTO {
     /**
      * 任务名称
      */
