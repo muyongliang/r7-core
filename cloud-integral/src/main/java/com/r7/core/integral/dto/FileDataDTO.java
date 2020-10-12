@@ -37,6 +37,10 @@ public class FileDataDTO {
     @NotEmpty(message = "文件aesKey不能为空")
     private String aesKey;
     /**
+     * 文件是否已经存在
+     */
+    private boolean Exist;
+    /**
      * 文件新建时间
      */
     @ApiModelProperty("文件新建时间")

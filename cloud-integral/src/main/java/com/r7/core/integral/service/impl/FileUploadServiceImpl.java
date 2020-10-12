@@ -40,6 +40,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             ObjectStat objectStat =
                     minioClient.statObject(
                             StatObjectArgs.builder().bucket(bucketName).object(digestHex).build());
+            fileDataDTO.setExist(true);
         } catch (Exception e) {
             long start = System.currentTimeMillis();
             //生成256位AES key.
