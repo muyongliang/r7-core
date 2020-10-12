@@ -33,10 +33,6 @@ public class FileDataDTO {
     @NotEmpty(message = "文件aesKey不能为空")
     private String aesKey;
     /**
-     * 文件是否已经存在
-     */
-    private boolean Exist;
-    /**
      * 上传或者下载用时，毫秒数
      */
     @ApiModelProperty("上传或者下载用时,毫秒数")
