@@ -1,6 +1,6 @@
 package com.r7.core.integral.service;
 
-import com.r7.core.integral.dto.FileDataDTO;
+import com.r7.core.integral.dto.CoreFileDTO;
 
 import java.io.InputStream;
 
@@ -10,8 +10,8 @@ import java.io.InputStream;
  * @Description FileUploadService
  */
 public interface FileUploadService {
-    InputStream download(FileDataDTO fileDataDTO) throws Exception;
+    InputStream download(String fileName) throws Exception;
 
-    FileDataDTO uploadStreamUseSSE(InputStream inputStream, String bucketName, boolean encrypted, String aesKey) throws Exception;
+    CoreFileDTO uploadStream(InputStream inputStream, String bucketName, boolean encrypted, String aesKey, String originalFileName) throws Exception;
 
 }
