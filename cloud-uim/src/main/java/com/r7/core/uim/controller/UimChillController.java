@@ -1,8 +1,7 @@
 package com.r7.core.uim.controller;
 
 import com.r7.core.common.web.ResponseEntity;
-import com.r7.core.uim.dto.UimChillSaveDTO;
-import com.r7.core.uim.dto.UimChillUpdateDTO;
+import com.r7.core.uim.dto.UimChillSaveListDTO;
 import com.r7.core.uim.service.UimChillService;
 import com.r7.core.uim.vo.UimChillVO;
 import io.swagger.annotations.Api;
@@ -27,29 +26,16 @@ public class UimChillController {
     @Resource
     private UimChillService uimChillService;
 
-    @ApiOperation(value = "新增冻结", response = UimChillVO.class)
+    @ApiOperation(value = "冻结/解冻", response = UimChillVO.class)
     @PostMapping("")
-    public ResponseEntity saveUimChill(@Valid @RequestBody UimChillSaveDTO uimChillSaveDTO) {
-        return ResponseEntity.success(uimChillService.saveUimChill(uimChillSaveDTO, 0L, 0L, 0L));
-    }
-
-    @ApiOperation(value = "修改冻结", response = UimChillVO.class)
-    @PutMapping("/{id}")
-    public ResponseEntity updateUimChill(@PathVariable Long id,
-            @Valid @RequestBody UimChillUpdateDTO uimChillUpdateDTO) {
-        return ResponseEntity.success(uimChillService.updateUimChill(id, uimChillUpdateDTO, 0L, 0L, 0L));
-    }
-
-    @ApiOperation(value = "根据id查询冻结", response = UimChillVO.class)
-    @GetMapping("/{id}")
-    public ResponseEntity getUimChillById(@PathVariable Long id) {
-        return ResponseEntity.success(uimChillService.getChillById(id));
+    public ResponseEntity frostUimChill(@Valid @RequestBody UimChillSaveListDTO uimChillSaveListDTO) {
+        return ResponseEntity.success(uimChillService.frostUimChill(uimChillSaveListDTO, 0L, 0L, 0L));
     }
 
     @ApiOperation(value = "根据用户id查询冻结", response = UimChillVO.class)
-    @GetMapping("/get/{userId}")
-    public ResponseEntity getUimChillByUserId(@PathVariable Long userId) {
-        return ResponseEntity.success(uimChillService.getChillByUserId(userId));
+    @GetMapping("/list/{userId}")
+    public ResponseEntity listUimChillByUserId(@PathVariable Long userId) {
+        return ResponseEntity.success(uimChillService.listChillByUserId(userId));
     }
 
 }
