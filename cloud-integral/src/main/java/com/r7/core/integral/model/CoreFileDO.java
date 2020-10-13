@@ -37,6 +37,10 @@ public class CoreFileDO extends Model<CoreFileDO> {
      */
     private String originalFileName;
     /**
+     * 文件后缀
+     */
+    private String extension;
+    /**
      * 资源描述
      */
     private String description;

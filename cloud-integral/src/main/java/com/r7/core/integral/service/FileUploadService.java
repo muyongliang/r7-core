@@ -1,6 +1,7 @@
 package com.r7.core.integral.service;
 
 import com.r7.core.integral.dto.CoreFileDTO;
+import com.r7.core.integral.model.CoreFileDO;
 
 import java.io.InputStream;
 
@@ -11,6 +12,8 @@ import java.io.InputStream;
  */
 public interface FileUploadService {
     InputStream download(String fileName) throws Exception;
+
+    CoreFileDO getCoreFileByFileName(String fileName);
 
     CoreFileDTO uploadStream(InputStream inputStream, String bucketName, boolean encrypted, String aesKey, String originalFileName) throws Exception;
 

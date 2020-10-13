@@ -10,6 +10,7 @@ import com.r7.core.integral.model.CoreFileDO;
 import com.r7.core.integral.service.FileUploadService;
 import io.minio.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -111,6 +112,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             coreFileDO.setId(SnowflakeUtil.getSnowflakeId());
             coreFileDO.setStatus(1);
             coreFileDO.setOriginalFileName(originalFileName);
+            coreFileDO.setExtension(FilenameUtils.getExtension(originalFileName));
             coreFileMapper.insert(coreFileDO);
         } finally {
             byteArrayInputStream.close();
@@ -127,10 +129,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Override
     public InputStream download(String fileName) throws Exception {
-        QueryWrapper<CoreFileDO> queryWrapper = new QueryWrapper<>();
-        queryWrapper
-                .eq("fileName", fileName);
-        CoreFileDO coreFileDO = coreFileMapper.selectOne(queryWrapper);
+        CoreFileDO coreFileDO = getCoreFileByFileName(fileName);
         String bucketName = coreFileDO.getBucketName();
         if (StringUtils.isBlank(bucketName)) {
             bucketName = "defaultBucket";
@@ -161,5 +160,14 @@ public class FileUploadServiceImpl implements FileUploadService {
         long usedTime = end - start;
         log.info("用时：{}毫秒", usedTime);
         return inputStream;
+    }
+
+    @Override
+    public CoreFileDO getCoreFileByFileName(String fileName) {
+        QueryWrapper<CoreFileDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper
+                .eq("fileName", fileName);
+        CoreFileDO coreFileDO = coreFileMapper.selectOne(queryWrapper);
+        return coreFileDO;
     }
 }
