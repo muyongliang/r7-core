@@ -33,7 +33,7 @@ public class UimChillController {
     }
 
     @ApiOperation(value = "根据用户id查询冻结", response = UimChillVO.class)
-    @GetMapping("/list/{userId}")
+    @GetMapping("/userId/{userId}")
     public ResponseEntity listUimChillByUserId(@PathVariable Long userId) {
         return ResponseEntity.success(uimChillService.listChillByUserId(userId));
     }
