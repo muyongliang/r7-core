@@ -44,6 +44,12 @@
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>${nimbus.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.hashids</groupId>
+            <artifactId>hashids</artifactId>
+            <version>1.0.3</version>
+        </dependency>
     </dependencies>
 
 
@@ -54,7 +60,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.r7.core.uims.UimApplication</mainClass>
+                    <mainClass>com.r7.core.uim.UimApplication</mainClass>
                     <fork>true</fork>
                     <jvmArguments>
                         -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005

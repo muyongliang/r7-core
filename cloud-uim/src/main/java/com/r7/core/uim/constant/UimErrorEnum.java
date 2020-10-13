@@ -10,10 +10,17 @@ import com.r7.core.common.constant.IError;
  */
 public enum UimErrorEnum implements IError {
 
+
     /**
-     * 用户错误
+     * 用户
      */
-    USER_ID_IS_NULL("user_id_is_null", "用户ID不能为空"),
+    USER_IS_NOT_EXISTS("user_id_not_exists", "用户不存在。"),
+    USER_ID_IS_NULL("user_id_is_null", "用户ID不能为空。"),
+    USER_UPDATE_ERROR("user_update_error", "用户修改失败。"),
+    USER_DELETE_ERROR("user_delete_error", "用户删除失败。"),
+    USER_SAVE_ERROR("user_save_error", "用户注册失败。"),
+    USER_PHONE_EXISTS("user_phone_exists", "电话号已经存在。"),
+    USER_LOGIN_NAME_ERROR("user_login_name_error", "用户名或密码错误。"),
 
     /**
      * 用户角色

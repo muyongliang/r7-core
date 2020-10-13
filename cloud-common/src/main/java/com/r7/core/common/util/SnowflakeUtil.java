@@ -30,7 +30,7 @@ public class SnowflakeUtil {
      * @return
      */
     public static Long getSnowflakeId() {
-        return snowflake.nextId() + RandomUtil.randomInt(0, 9);
+        return snowflake.nextId();
     }
 
     public static void main(String[] args) {

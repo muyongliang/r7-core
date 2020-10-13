@@ -11,7 +11,7 @@ import lombok.Data;
  * @date 2020-09-25
  */
 @Data
-@ApiModel(description = "角色视图")
+@ApiModel("角色视图")
 public class UimRoleVO {
 
     @ApiModelProperty("id")
