@@ -38,7 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/auth/**",
             "/organ/**",
             "/role/**",
-            "/resource/**"};
+            "/resource/**",
+            "/user/**"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {

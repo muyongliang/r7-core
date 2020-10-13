@@ -32,35 +32,11 @@ public class UimUserRoleController {
                 .bindRoleByUserId(bindUserId, roleIds, 0L, 0L, 0L));
     }
 
-
-    @ApiOperation(value = "根据用户ID解绑角色", response = Boolean.class)
-    @PutMapping("/un/bind/{unBindUserId}")
-    public ResponseEntity unBindRoleByUserId(@PathVariable("unBindUserId") Long unBindUserId,
-                                           @RequestBody List<Long> roleIds) {
-        return ResponseEntity.success(uimUserRoleService
-                .unBindRoleByUserId(unBindUserId, roleIds, 0L, 0L, 0L));
-    }
-
-    @ApiOperation(value = "根据用户ID解绑全部角色", response = Boolean.class)
-    @PutMapping("/remove/{unBindUserId}")
-    public ResponseEntity removeRoleByUserId(@PathVariable("unBindUserId") Long unBindUserId) {
-        return ResponseEntity.success(uimUserRoleService
-                .unBindRoleByUserId(unBindUserId, 0L, 0L, 0L));
-    }
-
     @ApiOperation(value = "根据用户ID查询绑定角色", response = Boolean.class)
     @PutMapping("/list/{userId}")
     public ResponseEntity listRoleByUserId(@PathVariable("userId") Long userId) {
         return ResponseEntity.success(uimUserRoleService
                 .listUimUserRole(userId, 0L, 0L));
-    }
-
-    @ApiOperation(value = "根据用户ID或角色ID查询绑定信息", response = Boolean.class)
-    @PutMapping("/get/{userId}/{roleId}")
-    public ResponseEntity getUimUserRoleByUserIdAndRoleId(@PathVariable("userId") Long userId,
-                                                          @PathVariable("roleId") Long roleId) {
-        return ResponseEntity.success(uimUserRoleService
-                .getUimUserRoleByUserIdAndRoleId(userId, roleId));
     }
 
 }

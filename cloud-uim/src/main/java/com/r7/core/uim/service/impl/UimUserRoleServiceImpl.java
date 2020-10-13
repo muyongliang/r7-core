@@ -10,7 +10,6 @@ import com.r7.core.uim.mapper.UimUserRoleMapper;
 import com.r7.core.uim.model.UimUserRole;
 import com.r7.core.uim.service.UimRoleService;
 import com.r7.core.uim.service.UimUserRoleService;
-import com.r7.core.uim.service.UimUserService;
 import com.r7.core.uim.vo.UimRoleVO;
 import com.r7.core.uim.vo.UimUserRoleBindVO;
 import io.vavr.control.Option;
@@ -33,8 +32,8 @@ import java.util.stream.Collectors;
 @Service
 public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUserRole> implements UimUserRoleService {
 
-    @Resource
-    private UimUserService uimUserService;
+//    @Resource
+//    private UimUserService uimUserService;
 
     @Resource
     private UimRoleService uimRoleService;
@@ -43,7 +42,7 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     @Transactional
     public Boolean bindRoleByUserId(Long bindUserId, Long roleId, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中用户:{}绑定角色:{},操作用户:{}。", appId, organId, bindUserId, roleId, userId);
-        uimUserService.getUserById(bindUserId, appId, organId);
+        Option.of(bindUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         uimRoleService.getRoleById(roleId, appId, organId);
         Option.of(getUimUserRoleByUserIdAndRoleId(bindUserId, roleId)).exists(x -> {
             throw new BusinessException(UimErrorEnum.USER_ROLE_IS_NOT_EXISTS);
@@ -71,7 +70,7 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     @Transactional
     public Boolean unBindRoleByUserId(Long roleId, Long unBindUserId, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中用户:{}解绑角色:{},操作用户:{}。", appId, organId, unBindUserId, roleId, userId);
-        uimUserService.getUserById(unBindUserId, appId, organId);
+        Option.of(unBindUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         uimRoleService.getRoleById(roleId, appId, organId);
         UimUserRole uimUserRole = Option.of(getUimUserRoleByUserIdAndRoleId(unBindUserId, roleId))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ROLE_IS_EXISTS));
@@ -108,7 +107,7 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     @Transactional
     public Boolean unBindRoleByUserId(Long unBindUserId, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中用户:{}解绑所有角色, 操作用户:{}。", appId, organId, unBindUserId, userId);
-        uimUserService.getUserById(unBindUserId, appId, organId);
+        Option.of(unBindUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         List<UimUserRole> uimUserRoleList =
                 list(Wrappers.<UimUserRole>lambdaQuery().eq(UimUserRole::getUserId, unBindUserId));
         if (uimUserRoleList == null || uimUserRoleList.size() == 0) {
@@ -126,7 +125,7 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
 
     @Override
     public List<UimUserRoleBindVO> listUimUserRole(Long userId, Long organId, Long appId) {
-        uimUserService.getUserById(userId, appId, organId);
+        Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         List<UimUserRole> uimUserRoleList =
                 list(Wrappers.<UimUserRole>lambdaQuery().eq(UimUserRole::getUserId, userId));
         if (uimUserRoleList == null || uimUserRoleList.size() == 0) {
@@ -164,7 +163,7 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     }
 
     @Override
-    public List<String> listRoleCode(Long userId, Long appId) {
+    public List<String> listRoleCode(Long userId) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         List<UimUserRole> uimUserRoleList =
                 list(Wrappers.<UimUserRole>lambdaQuery().eq(UimUserRole::getUserId, userId));
@@ -176,7 +175,7 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
             Long roleId = uimUserRole.getRoleId();
             roleIds.add(roleId);
         }
-        List<String> listRoleCode = uimRoleService.listRoleCode(roleIds, appId);
+        List<String> listRoleCode = uimRoleService.listRoleCode(roleIds);
         return listRoleCode;
     }
 }

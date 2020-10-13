@@ -184,12 +184,11 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
     }
 
     @Override
-    public List<String> listRoleCode(List<Long> roleIds, Long appId) {
+    public List<String> listRoleCode(List<Long> roleIds) {
         Option.of(roleIds)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_IS_NOT_EXISTS));
         List<UimRole> list = list(Wrappers.<UimRole>lambdaQuery()
                 .select(UimRole::getCode)
-                .eq(UimRole::getAppId, appId)
                 .in(UimRole::getId, roleIds));
 
         List<String> listRoleCode = list.stream().map(UimRole::getCode).collect(Collectors.toList());
