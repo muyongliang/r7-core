@@ -57,8 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(SYSTEM_AUTH_LIST)
                 .permitAll()
                 .anyRequest()
-                .access("@rbacService.hasPermission(request,authentication)")
-//                .authenticated()
+//                .access("@rbacService.hasPermission(request,authentication)")
+                .authenticated()
                 .and()
                 .formLogin()
                 .permitAll();

@@ -8,13 +8,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * 用户角色传输层
+ * 用户角色传输对象
  *
  * @author zhongpingli
  * @date 2020-09-25
  */
 @Data
-@ApiModel(description = "用户角色传输层")
+@ApiModel("用户角色传输对象")
 public class UimRoleDTO {
 
     /**

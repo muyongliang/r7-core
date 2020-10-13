@@ -21,18 +21,6 @@ public enum UimErrorEnum implements IError {
     USER_SAVE_ERROR("user_save_error", "用户注册失败。"),
     USER_PHONE_EXISTS("user_phone_exists", "电话号已经存在。"),
     USER_LOGIN_NAME_ERROR("user_login_name_error", "用户名或密码错误。"),
-    /**
-     * 角色资源
-     */
-    ROLE_RESOURCE_IS_EXISTS("role_resource_is_exists", "角色资源已绑定。"),
-    ROLE_RESOURCE_IS_NOT_EXISTS("role_resource_is_not_exists", "角色资源未绑定。"),
-    ROLE_RESOURCE_BIND_ERROR("role_resource_bind_error", "角色资源绑定失败。"),
-    ROLE_RESOURCE_UNBIND_ERROR("role_resource_unbind_error", "角色资源解绑失败。"),
-
-    /**
-     * 用户错误
-     */
-    USER_ID_IS_NULL("user_id_is_null", "用户ID不能为空"),
 
     /**
      * 用户角色

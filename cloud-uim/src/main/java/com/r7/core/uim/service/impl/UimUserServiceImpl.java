@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户服务实现层
@@ -56,8 +57,9 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
                 .getOrElse(uimSysUserService.findUserDetailsByLogin(loginName));
         Option.of(uimUserDetailsVO).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_LOGIN_NAME_ERROR));
 
-        // todo 添加角色
-
+        // 添加角色
+        List<String> listRoleCode = uimUserRoleService.listRoleCode(uimUserDetailsVO.getId(), 0L);
+        uimUserDetailsVO.setRoles(listRoleCode);
         return uimUserDetailsVO;
     }
 
