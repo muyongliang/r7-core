@@ -32,9 +32,6 @@ import java.util.stream.Collectors;
 @Service
 public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUserRole> implements UimUserRoleService {
 
-//    @Resource
-//    private UimUserService uimUserService;
-
     @Resource
     private UimRoleService uimRoleService;
 
