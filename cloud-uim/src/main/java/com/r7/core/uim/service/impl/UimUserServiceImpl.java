@@ -58,7 +58,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         Option.of(uimUserDetailsVO).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_LOGIN_NAME_ERROR));
 
         // 添加角色
-        List<String> listRoleCode = uimUserRoleService.listRoleCode(uimUserDetailsVO.getId(), 0L);
+        List<String> listRoleCode = uimUserRoleService.listRoleCode(uimUserDetailsVO.getId());
         uimUserDetailsVO.setRoles(listRoleCode);
         return uimUserDetailsVO;
     }

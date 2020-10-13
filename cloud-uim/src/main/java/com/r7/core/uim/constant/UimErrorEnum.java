@@ -10,6 +10,13 @@ import com.r7.core.common.constant.IError;
  */
 public enum UimErrorEnum implements IError {
 
+    /**
+     * 冻结
+     */
+    CHILL_SAVE_ERROR("chill_save_error", "冻结保存失败"),
+    CHILL_ID_IS_NOT_EXISTS("chill_id_is_not_exists", "冻结不存在"),
+    CHILL_UPDATE_ERROR("chill_update_error", "冻结修改失败"),
+    CHILL_USER_ID_IS_NOT_EXISTS("chill_user_id_is_not_exists", "冻结用户id不存在"),
 
     /**
      * 用户
