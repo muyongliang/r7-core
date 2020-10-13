@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import java.util.Date;
  */
 @Data
 @TableName("core_file")
+@EqualsAndHashCode(callSuper = true)
 public class CoreFileDO extends Model<CoreFileDO> {
     /**
      * id

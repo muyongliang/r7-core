@@ -1,11 +1,10 @@
 package com.r7.core.integral.controller;
 
 import com.r7.core.common.web.ResponseEntity;
-import com.r7.core.integral.constant.BucketNameEnum;
 import com.r7.core.integral.constant.FileErrorEnum;
-import com.r7.core.integral.dto.CoreFileDTO;
 import com.r7.core.integral.model.CoreFileDO;
 import com.r7.core.integral.service.FileUploadService;
+import com.r7.core.integral.vo.FileUploadVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -36,44 +34,27 @@ public class FileUploadController {
     /**
      * @Author muyongliang
      * @Date 2020/10/12 15:53
-     * @Description 文件上传接口，目前仅支持单文件上传，如果使用form-data提交文件（推荐，可以保留原始文件名方便下载浏览），文件名请使用"file"；也可以使用binary提交
+     * @Description 文件上传接口，目前仅支持multipart/form-data，单文件上传，超过1mb文件不提供去重功能和防止覆盖，由客户端负责
      * @Description 当encrypted为true时使用服务端加密，false不使用服务端加密，默认为true。
      */
     @PostMapping
     @ApiOperation(
-            value = "文件上传接口，大小限制1G，目前仅支持单文件上传，如果使用form-data提交文件（推荐，可以保留原始文件名方便下载浏览），" +
-                    "文件名请使用\"file\"；也可以使用binary提交"
+            value = "文件上传接口，目前仅支持multipart/form-data，单文件上传，超过1mb文件不提供去重功能和防止覆盖，由客户端负责"
             , notes = "encrypted:是否加密上传"
-            , response = CoreFileDTO.class)
+            , response = FileUploadVO.class)
     public ResponseEntity upload(
             @RequestParam(value = "encrypted", defaultValue = "true") boolean encrypted
-            , @RequestParam(value = "file", required = false) MultipartFile file
-            , HttpServletRequest request) throws Exception {
+            , @RequestParam(value = "file") MultipartFile file
+    ) throws Exception {
         log.info("是否使用服务端加密：{}", encrypted);
         String aesKey = "";
-        String originalFileName = "";
-        String bucketName;
-        CoreFileDTO coreFileDTO;
-        InputStream inputStream;
-        if (file != null) {
-            originalFileName = file.getOriginalFilename();
-            inputStream = file.getInputStream();
-        } else {
-            inputStream = request.getInputStream();
-        }
-        if (inputStream.available() == 0) {
+        InputStream inputStream = file.getInputStream();
+        if (file == null || inputStream.available() == 0) {
             return ResponseEntity.failure(FileErrorEnum.FILE_IS_EMPTY);
-        } else if (inputStream.available() < 1024 * 1024) {
-            bucketName = BucketNameEnum.SMALL.name();
-        } else if (inputStream.available() < 10 * 1024 * 1024) {
-            bucketName = BucketNameEnum.MIDDLE.name();
-        } else if (inputStream.available() < 1024 * 1024 * 1024) {
-            bucketName = BucketNameEnum.LARGE.name();
-        } else {
-            bucketName = BucketNameEnum.HUGE.name();
         }
-        coreFileDTO = fileUploadService.uploadStream(inputStream, bucketName, encrypted, aesKey, originalFileName);
-        return ResponseEntity.success(coreFileDTO);
+        String originalFileName = file.getOriginalFilename();
+        FileUploadVO fileUploadVO = fileUploadService.uploadStream(inputStream, encrypted, aesKey, originalFileName);
+        return ResponseEntity.success(fileUploadVO);
     }
 
     @GetMapping

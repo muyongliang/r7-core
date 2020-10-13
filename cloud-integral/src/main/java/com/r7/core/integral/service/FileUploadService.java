@@ -1,7 +1,7 @@
 package com.r7.core.integral.service;
 
-import com.r7.core.integral.dto.CoreFileDTO;
 import com.r7.core.integral.model.CoreFileDO;
+import com.r7.core.integral.vo.FileUploadVO;
 
 import java.io.InputStream;
 
@@ -15,6 +15,6 @@ public interface FileUploadService {
 
     CoreFileDO getCoreFileByFileName(String fileName);
 
-    CoreFileDTO uploadStream(InputStream inputStream, String bucketName, boolean encrypted, String aesKey, String originalFileName) throws Exception;
+    FileUploadVO uploadStream(InputStream inputStream, boolean encrypted, String aesKey, String originalFileName) throws Exception;
 
 }
