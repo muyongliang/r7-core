@@ -1,5 +1,6 @@
 package com.r7.core.uim.config;
 
+import com.r7.core.uim.service.impl.UimUserServiceImpl;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,8 +29,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Resource
     private AuthenticationManager authenticationManager;
 
-//    @Resource
-//    private UserServiceImpl userServiceImpl;
+    @Resource
+    private UimUserServiceImpl userServiceImpl;
 
     @Resource(name = "jwtTokenStore")
     private TokenStore tokenStore;
@@ -41,7 +42,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)
-//                .userDetailsService(userServiceImpl)
+                .userDetailsService(userServiceImpl)
                 .tokenStore(tokenStore)
                 .accessTokenConverter(jwtAccessTokenConverter);
     }
@@ -50,7 +51,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient("uim")
-                .secret(passwordEncoder.encode("origin"))
+                .secret(passwordEncoder.encode("uim"))
                 .accessTokenValiditySeconds(3600)
                 .refreshTokenValiditySeconds(864000)
                 .scopes("all")

@@ -3,6 +3,9 @@ package com.r7.core.uim.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.uim.dto.UimUserUpdateDTO;
+import com.r7.core.uim.dto.UserSingUpDTO;
+import com.r7.core.uim.vo.UimUserVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -94,5 +97,28 @@ public class UimUser extends Model<UimUser> {
      */
     @ApiModelProperty("更新时间")
     private Date updatedAt;
+
+    public UimUserVO toUimUserVO() {
+        UimUserVO uimUserVO = new UimUserVO();
+        uimUserVO.setId(this.id);
+        uimUserVO.setAvatar(this.avatar);
+        uimUserVO.setCode(this.code);
+        uimUserVO.setPhoneNumber(this.phoneNumber);
+        uimUserVO.setUserName(this.userName);
+        return uimUserVO;
+    }
+
+    public void toUserSingUpDTO(UserSingUpDTO userSingUpDTO) {
+        this.setPhoneNumber(userSingUpDTO.getPhoneNumber());
+        this.setOrganId(userSingUpDTO.getOrganId());
+        this.setUserName(userSingUpDTO.getUserName());
+        this.setPassword(userSingUpDTO.getPassword());
+        this.setPhoneNumber(userSingUpDTO.getPhoneNumber());
+    }
+
+    public void toUimUserUpdateDTO(UimUserUpdateDTO uimUserUpdateDTO) {
+        this.setUserName(uimUserUpdateDTO.getUserName());
+        this.setAvatar(uimUserUpdateDTO.getAvatar());
+    }
 
 }

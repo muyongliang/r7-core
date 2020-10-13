@@ -23,7 +23,7 @@ public class JwtTokenStoreConfig {
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
         // jwt使用的秘钥
-        accessTokenConverter.setSigningKey("origin");
+        accessTokenConverter.setSigningKey("uim");
         return accessTokenConverter;
     }
 
