@@ -82,8 +82,6 @@ public class FileUploadServiceImpl implements FileUploadService {
         } else {
             objectName = originalFileName;
         }
-
-
         QueryWrapper<CoreFileDO> queryWrapper = new QueryWrapper<>();
         queryWrapper
                 .eq("file_name", objectName);
@@ -94,15 +92,20 @@ public class FileUploadServiceImpl implements FileUploadService {
             fileUploadVO.setExist(true);
             return fileUploadVO;
         }
-        if (encrypted && StringUtils.isBlank(aesKey)) {
-            //生成256位AES key.
-            KeyGenerator aes = KeyGenerator.getInstance("AES");
-            aes.init(256);
-            aesKey = Base64.encode(aes.generateKey().getEncoded());
-            log.info("生成的aesKey为：{}", aesKey);
+//        如果需要服务端加密则生成秘钥
+        ServerSideEncryptionCustomerKey ssc = null;
+        if (encrypted) {
+            if (StringUtils.isBlank(aesKey)) {
+                //生成256位AES key.
+                KeyGenerator aes = KeyGenerator.getInstance("AES");
+                aes.init(256);
+                aesKey = Base64.encode(aes.generateKey().getEncoded());
+                log.info("生成的aesKey为：{}", aesKey);
+            }
+            SecretKeySpec aes = new SecretKeySpec(Base64.decode(aesKey), "AES");
+            ssc = new ServerSideEncryptionCustomerKey(aes);
         }
-        SecretKeySpec aes = new SecretKeySpec(Base64.decode(aesKey), "AES");
-        ServerSideEncryptionCustomerKey ssc = new ServerSideEncryptionCustomerKey(aes);
+
 //            创建桶
         boolean isExist =
                 minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
