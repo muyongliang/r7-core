@@ -29,3 +29,8 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
+
+
+logging:
+  level:
+    com.r7.core.integral.mapper: debug
