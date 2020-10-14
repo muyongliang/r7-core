@@ -149,6 +149,21 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     /**
      * @Author muyongliang
+     * @Date 2020/10/14 14:07
+     * @Description 根据文件名删除文件，包括minIO服务器和本地数据库数据
+     */
+    @Override
+    public boolean deleteByBucketNameAndfileName(String bucketName, String fileName) throws Exception {
+        QueryWrapper<CoreFileDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("file_name", fileName);
+        int delete = coreFileMapper.delete(queryWrapper);
+        // Remove object.
+        minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(fileName).build());
+        return true;
+    }
+
+    /**
+     * @Author muyongliang
      * @Date 2020/10/12 17:44
      * @Description 文件下载业务
      */

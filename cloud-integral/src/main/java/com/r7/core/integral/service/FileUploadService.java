@@ -17,4 +17,5 @@ public interface FileUploadService {
 
     FileUploadVO uploadStream(InputStream inputStream, boolean encrypted, String aesKey, String originalFileName) throws Exception;
 
+    boolean deleteByBucketNameAndfileName(String bucketName, String fileName) throws Exception;
 }

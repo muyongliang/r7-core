@@ -71,9 +71,9 @@ public class FileUploadController {
             throw new BusinessException(FileErrorEnum.FILE_IS_NOT_EXIST);
         }
         String originalFileName = coreFileDO.getOriginalFileName();
-         if (StringUtils.isBlank(originalFileName)) {
-             originalFileName = coreFileDO.getFileName();
-         }
+        if (StringUtils.isBlank(originalFileName)) {
+            originalFileName = coreFileDO.getFileName();
+        }
         if (!inline) {
             // 在浏览器中手动选择下载位置
             response.setContentType("application/octet-stream");
@@ -89,6 +89,21 @@ public class FileUploadController {
         }
         outputStream.flush();
         download.close();
+    }
+
+    @DeleteMapping
+    @ApiOperation(
+            value = "文件删除接口",
+            response = boolean.class
+    )
+    public ResponseEntity delete(@RequestParam(value = "fileName") String fileName
+    ) throws Exception {
+        CoreFileDO coreFileDO = fileUploadService.getCoreFileByFileName(fileName);
+        if (coreFileDO == null) {
+            throw new BusinessException(FileErrorEnum.FILE_IS_NOT_EXIST);
+        }
+        String bucketName = coreFileDO.getBucketName();
+        return ResponseEntity.success(fileUploadService.deleteByBucketNameAndfileName(bucketName, fileName));
     }
 
 }
