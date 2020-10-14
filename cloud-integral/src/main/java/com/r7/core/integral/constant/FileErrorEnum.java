@@ -13,6 +13,7 @@ public enum FileErrorEnum implements IError {
      */
     PAGE_SIZE_IS_NULL("page_size_is_null", "分页大小不能为空"),
     PAGE_NUM_IS_NULL("page_num_is_null", "分页页码不能为空"),
+    FILE_IS_NOT_EXIST("file_is_not_exist", "文件不存在"),
     FILE_IS_EMPTY("file_is_empty", "配置信息ID不能为空");
 
     /**

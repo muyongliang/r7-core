@@ -1,5 +1,6 @@
 package com.r7.core.integral.controller;
 
+import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.integral.constant.FileErrorEnum;
 import com.r7.core.integral.model.CoreFileDO;
@@ -66,16 +67,17 @@ public class FileUploadController {
             , @RequestParam(value = "inline", defaultValue = "false") boolean inline
             , HttpServletResponse response) throws Exception {
         CoreFileDO coreFileDO = fileUploadService.getCoreFileByFileName(fileName);
-        response.setContentType("application/octet-stream");
+        if (coreFileDO == null) {
+            throw new BusinessException(FileErrorEnum.FILE_IS_NOT_EXIST);
+        }
         String originalFileName = coreFileDO.getOriginalFileName();
-        if (StringUtils.isNotBlank(originalFileName)) {
-            if (inline) {
-                // 在浏览器中打开
-                response.addHeader("Content-Disposition", "inline; filename=" + URLEncoder.encode(originalFileName, "UTF-8"));
-            } else {
-                // 直接下载
-                response.addHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(originalFileName, "UTF-8"));
-            }
+        if (StringUtils.isBlank(originalFileName)) {
+            originalFileName = coreFileDO.getFileName();
+        }
+        if (!inline) {
+            // 在浏览器中手动选择下载位置
+            response.setContentType("application/octet-stream");
+            response.addHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(originalFileName, "UTF-8"));
         }
         InputStream download = fileUploadService.download(fileName);
         // 用response获得字节输出流

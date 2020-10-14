@@ -3,8 +3,10 @@ package com.r7.core.integral.service.impl;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.crypto.digest.MD5;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.integral.constant.BucketNameEnum;
+import com.r7.core.integral.constant.FileErrorEnum;
 import com.r7.core.integral.mapper.CoreFileMapper;
 import com.r7.core.integral.model.CoreFileDO;
 import com.r7.core.integral.service.FileUploadService;
@@ -154,6 +156,9 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public InputStream download(String fileName) throws Exception {
         CoreFileDO coreFileDO = getCoreFileByFileName(fileName);
+        if (coreFileDO == null) {
+            throw new BusinessException(FileErrorEnum.FILE_IS_NOT_EXIST);
+        }
         String bucketName = coreFileDO.getBucketName();
         InputStream inputStream;
         long start = System.currentTimeMillis();
@@ -179,7 +184,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         }
         long end = System.currentTimeMillis();
         long usedTime = end - start;
-        log.info("用时：{}毫秒", usedTime);
+        log.info("下载文件：{}用时：{}毫秒", fileName, usedTime);
         return inputStream;
     }
 
@@ -192,7 +197,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     public CoreFileDO getCoreFileByFileName(String fileName) {
         QueryWrapper<CoreFileDO> queryWrapper = new QueryWrapper<>();
         queryWrapper
-                .eq("file_name", fileName);
+                .eq("file_name", fileName.trim());
         CoreFileDO coreFileDO = coreFileMapper.selectOne(queryWrapper);
         return coreFileDO;
     }
