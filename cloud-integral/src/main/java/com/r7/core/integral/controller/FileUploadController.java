@@ -71,9 +71,9 @@ public class FileUploadController {
             throw new BusinessException(FileErrorEnum.FILE_IS_NOT_EXIST);
         }
         String originalFileName = coreFileDO.getOriginalFileName();
-        if (StringUtils.isBlank(originalFileName)) {
-            originalFileName = coreFileDO.getFileName();
-        }
+         if (StringUtils.isBlank(originalFileName)) {
+             originalFileName = coreFileDO.getFileName();
+         }
         if (!inline) {
             // 在浏览器中手动选择下载位置
             response.setContentType("application/octet-stream");
