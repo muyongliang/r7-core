@@ -11,6 +11,18 @@ import com.r7.core.common.constant.IError;
 public enum UimErrorEnum implements IError {
 
     /**
+     * 认证
+     */
+    OAUTH_INFO_SAVE_ERROR("oauth_info_save_error", "认证信息保存失败"),
+    USER_ID_IS_NOT_EXIST("USER_ID_IS_NOT_EXIST", "用户id不存在"),
+    OAUTH_ORDER_SAVE_ERROR("oauth_order_save_error", "认证订单创建失败"),
+    OAUTH_ORDER_ID_IS_NULL("oauth_order_id_is_null", "认证订单id不能为空"),
+    OAUTH_ORDER_IS_NOT_EXISTS("oauth_order_is_not_exists", "认证订单不存在"),
+    OAUTH_ORDER_UPDATE_ERROR("oauth_order_update_error", "认证订单修改失败"),
+    OAUTH_SAVE_ERROR("oauth_save_error", "用户认证保存失败"),
+    OAUTH_USER_ID_IS_Not_EXISTS("oauth_user_id_is_not_exists", "认证用户id不存在"),
+
+    /**
      * 冻结
      */
     CHILL_SAVE_ERROR("chill_save_error", "冻结保存失败"),
