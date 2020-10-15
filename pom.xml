@@ -20,6 +20,7 @@
         <module>cloud-stand</module>
         <module>cloud-trigger</module>
         <module>cloud-integral</module>
+        <module>uim-main</module>
     </modules>
 
 

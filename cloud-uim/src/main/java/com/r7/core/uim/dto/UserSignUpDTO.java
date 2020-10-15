@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel("用户注册")
-public class UserSingUpDTO {
+public class UserSignUpDTO {
 
     /**
      * 组织ID

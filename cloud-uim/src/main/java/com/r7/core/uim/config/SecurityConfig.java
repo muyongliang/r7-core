@@ -1,5 +1,7 @@
 package com.r7.core.uim.config;
 
+import com.r7.core.uim.handler.UimAuthenticationFailureHandler;
+import com.r7.core.uim.handler.UimAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.annotation.Resource;
 
 /**
  * spring security配置
@@ -34,7 +38,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 系统过滤地址
      */
     private static final String[] SYSTEM_AUTH_LIST = {
-            "/auth/**"};
+            "/oauth/**",
+            "/sign/**"};
+
+
+//    @Resource
+//    private UimAuthenticationFailureHandler uimAuthenticationFailureHandler;
+//
+//    @Resource
+//    private UimAuthenticationSuccessHandler uimAuthenticationSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -49,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.csrf()
                 .disable()
                 .authorizeRequests()
@@ -57,10 +70,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(SYSTEM_AUTH_LIST)
                 .permitAll()
                 .anyRequest()
-//                .access("@rbacService.hasPermission(request,authentication)")
-                .authenticated()
+                .access("@rbacService.hasPermission(request,authentication)")
                 .and()
                 .formLogin()
+                .loginPage("/oauth/require")
+                .loginProcessingUrl("/oauth/singin")
+//                .successHandler(uimAuthenticationSuccessHandler)
+//                .failureHandler(uimAuthenticationFailureHandler)
                 .permitAll();
     }
 

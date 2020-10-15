@@ -6,10 +6,10 @@ import com.google.common.collect.Lists;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.uim.constant.UimErrorEnum;
-import com.r7.core.uim.dto.UimResourceSaveDTO;
 import com.r7.core.uim.dto.UimResourceUpdateDTO;
 import com.r7.core.uim.mapper.UimResourceMapper;
 import com.r7.core.uim.model.UimResource;
+import com.r7.core.uim.dto.UimResourceSaveDTO;
 import com.r7.core.uim.service.UimResourceService;
 import com.r7.core.uim.vo.UimResourceNodeVO;
 import com.r7.core.uim.vo.UimResourceVO;
@@ -169,5 +169,14 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
                         .collect(Collectors.toList()))
                 .getOrNull();
 
+    }
+
+    @Override
+    public List<String> listResourceUrlsByIds(List<Long> ids) {
+        Option.of(ids).getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_ID_IS_NULL));
+        List<UimResource> resourceList = list(Wrappers.<UimResource>lambdaQuery()
+                .select(UimResource::getUrl)
+                .in(UimResource::getId, ids));
+        return resourceList.stream().map(UimResource::getUrl).collect(Collectors.toList());
     }
 }

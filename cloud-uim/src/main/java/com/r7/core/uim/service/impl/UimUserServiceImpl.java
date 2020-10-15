@@ -5,10 +5,11 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
+import com.r7.core.common.util.CodeUtil;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.uim.constant.UimErrorEnum;
 import com.r7.core.uim.dto.UimUserUpdateDTO;
-import com.r7.core.uim.dto.UserSingUpDTO;
+import com.r7.core.uim.dto.UserSignUpDTO;
 import com.r7.core.uim.mapper.UimUserMapper;
 import com.r7.core.uim.model.UimUser;
 import com.r7.core.uim.service.UimSysUserService;
@@ -55,29 +56,33 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         // 普通用户使用电话号 & 系统用户登录账号
         UimUserDetailsVO uimUserDetailsVO = Option.of(baseMapper.findUserDetailsByLogin(loginName))
                 .getOrElse(uimSysUserService.findUserDetailsByLogin(loginName));
-        Option.of(uimUserDetailsVO).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_LOGIN_NAME_ERROR));
+        Option.of(uimUserDetailsVO).getOrElseThrow(() -> new UsernameNotFoundException(UimErrorEnum.USER_LOGIN_NAME_ERROR.getMessage()));
 
         // 添加角色
         List<String> listRoleCode = uimUserRoleService.listRoleCode(uimUserDetailsVO.getId(), 0L);
-        uimUserDetailsVO.setRoles(listRoleCode);
+        Option.of(listRoleCode).exists(x -> {
+            uimUserDetailsVO.setRoles(x);
+            return false;
+        });
         return uimUserDetailsVO;
     }
 
     @Override
     @Transactional
-    public UimUserVO singUpUser(String code, UserSingUpDTO userSingUpDTO, String ip) {
-        log.info("新用户注册：{},IP地址{}", userSingUpDTO, ip);
+    public UimUserVO signUpUser(String code, UserSignUpDTO userSignUpDTO, String ip) {
+        userSignUpDTO.setPassword(passwordEncoder.encode(userSignUpDTO.getPassword()));
+        log.info("新用户注册：{},IP地址{}", userSignUpDTO, ip);
         // 电话号是否已经存在
-        UimUserVO userByPhone = getUserByPhone(userSingUpDTO.getPhoneNumber());
+        UimUserVO userByPhone = getUserByPhone(userSignUpDTO.getPhoneNumber());
         Option.of(userByPhone).exists(eror -> {
             throw new BusinessException(UimErrorEnum.USER_PHONE_EXISTS);
         });
+        // code 是否存在
         Long id = SnowflakeUtil.getSnowflakeId();
         UimUser uimUser = new UimUser();
         uimUser.setId(id);
-        uimUser.toUserSingUpDTO(userSingUpDTO);
-        uimUser.setPassword(passwordEncoder.encode(userSingUpDTO.getPassword()));
-        uimUser.setCode(hashids.encode(id));
+        uimUser.toUserSingUpDTO(userSignUpDTO);
+        uimUser.setCode(CodeUtil.instance().gen(id));
         uimUser.setAvatar("abc");
         uimUser.setIp(ip);
         // 未认证
@@ -94,7 +99,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         boolean save = save(uimUser);
         // todo 层级
         if (!save) {
-            log.info("新用户注册：{}失败,IP地址{}", userSingUpDTO, ip);
+            log.info("新用户注册：{}失败,IP地址{}", userSignUpDTO, ip);
             throw new BusinessException(UimErrorEnum.USER_SAVE_ERROR);
         }
         return getUserById(id);

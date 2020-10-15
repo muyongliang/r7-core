@@ -69,7 +69,7 @@ public class UimUserDetailsVO implements UserDetails {
     @Override
     public boolean isAccountNonLocked() {
         // 账户是否被冻结
-        return this.status == 2;
+        return this.del == 2;
     }
 
     @Override

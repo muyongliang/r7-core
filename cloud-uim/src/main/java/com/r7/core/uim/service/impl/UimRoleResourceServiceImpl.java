@@ -167,4 +167,20 @@ public class UimRoleResourceServiceImpl extends ServiceImpl<UimRoleResourceMappe
                 .eq(UimRoleResource::getRoleId, roleId)
                 .eq(UimRoleResource::getResourceId, resourceId));
     }
+
+    @Override
+    public List<String> listResourceUrlByRoleCodes(List<String> roleCodes) {
+        List<Long> roleIds = uimRoleService.listRoleIdsByRoleCods(roleCodes);
+        return listResourceUrlByRoleIds(roleIds);
+    }
+
+    @Override
+    public List<String> listResourceUrlByRoleIds(List<Long> roleIds) {
+        Option.of(roleIds).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
+        List<UimRoleResource> roleResources = list(Wrappers.<UimRoleResource>lambdaQuery()
+                .select(UimRoleResource::getResourceId)
+                .in(UimRoleResource::getRoleId, roleIds));
+        List<Long> resourceIds = roleResources.stream().map(UimRoleResource::getResourceId).collect(Collectors.toList());
+        return uimResourceService.listResourceUrlsByIds(resourceIds);
+    }
 }

@@ -7,12 +7,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.uim.constant.UimErrorEnum;
-import com.r7.core.uim.dto.UimRoleDTO;
-import com.r7.core.uim.dto.UimRoleSaveDTO;
 import com.r7.core.uim.mapper.UimRoleMapper;
 import com.r7.core.uim.model.UimRole;
 import com.r7.core.uim.service.UimRoleService;
 import com.r7.core.uim.vo.UimRoleVO;
+import com.r7.core.uim.dto.UimRoleDTO;
+import com.r7.core.uim.dto.UimRoleSaveDTO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -135,13 +135,11 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
     public UimRoleVO getRoleById(Long roleId, Long appId, Long organId) {
         roleId = Option.of(roleId)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
-        // todo 返回异常是否合理？
         return Option.of(getOne(Wrappers.<UimRole>lambdaQuery()
                 .eq(UimRole::getId, roleId)
                 .eq(UimRole::getOrganId, organId)
                 .eq(UimRole::getAppId, appId)))
-                .map(UimRole::toUimRoleVo)
-                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_IS_NOT_EXISTS));
+                .map(UimRole::toUimRoleVo).getOrNull();
     }
 
     @Override
@@ -166,7 +164,6 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
 
     @Override
     public List<UimRoleVO> listUimRoleByIds(List<Long> roleIds, Long appId) {
-        // todo 返回异常需要添加
         Option.of(roleIds)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_IS_NOT_EXISTS));
         return Option.of(
@@ -192,9 +189,17 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
                 .eq(UimRole::getAppId, appId)
                 .in(UimRole::getId, roleIds));
 
-        List<String> listRoleCode = list.stream().map(UimRole::getCode).collect(Collectors.toList());
+        return list.stream().map(UimRole::getCode).collect(Collectors.toList());
 
-        return listRoleCode;
+    }
 
+    @Override
+    public List<Long> listRoleIdsByRoleCods(List<String> roleCodes) {
+        Option.of(roleCodes).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_CODE_IS_NULL));
+        List<UimRole> list = list(Wrappers.<UimRole>lambdaQuery()
+                .select(UimRole::getId)
+                .in(UimRole::getCode, roleCodes));
+
+        return list.stream().map(UimRole::getId).collect(Collectors.toList());
     }
 }

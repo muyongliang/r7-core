@@ -40,21 +40,22 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.inMemory()
+                .withClient("uim")
+                .secret(passwordEncoder.encode("uim123"))
+                .accessTokenValiditySeconds(3600)
+                .refreshTokenValiditySeconds(864000)
+                .scopes("all")
+                .authorizedGrantTypes("authorization_code", "password", "refresh_token");
+    }
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.authenticationManager(authenticationManager)
                 .userDetailsService(userServiceImpl)
                 .tokenStore(tokenStore)
                 .accessTokenConverter(jwtAccessTokenConverter);
     }
 
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                .withClient("uim")
-                .secret(passwordEncoder.encode("uim"))
-                .accessTokenValiditySeconds(3600)
-                .refreshTokenValiditySeconds(864000)
-                .scopes("all")
-                .authorizedGrantTypes("authorization_code", "password", "refresh_token");
-    }
 }
