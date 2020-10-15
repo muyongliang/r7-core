@@ -44,7 +44,7 @@ public interface UimChillService extends IService<UimChill> {
      * @param userId  操作人id
      * @return 返回结果
      */
-    Boolean meltingUimChill(Long meltingUserId, Long appId, Long organId, Long userId);
+    Boolean meltingUimChillById(Long meltingUserId, Long appId, Long organId, Long userId);
 
     /**
      * 根据用户id查询冻结信息

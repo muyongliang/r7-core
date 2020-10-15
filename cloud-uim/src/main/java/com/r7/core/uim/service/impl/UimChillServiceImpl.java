@@ -72,7 +72,7 @@ public class UimChillServiceImpl extends ServiceImpl<UimChillMapper, UimChill> i
         List<Long> resourceIds = uimChillSaveListDTO.getResourceIds();
 
         //解冻全部
-        meltingUimChill(chillUserId, appId, organId, userId);
+        meltingUimChillById(chillUserId, appId, organId, userId);
 
         String description = uimChillSaveListDTO.getDescription();
         UimChillSaveDTO uimChillSaveDTO = new UimChillSaveDTO();
@@ -89,7 +89,7 @@ public class UimChillServiceImpl extends ServiceImpl<UimChillMapper, UimChill> i
 
     @Override
     @Transactional
-    public Boolean meltingUimChill(Long meltingUserId, Long appId, Long organId, Long userId) {
+    public Boolean meltingUimChillById(Long meltingUserId, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中的用户:{}进行解冻操作,操作人:{}", appId, organId, meltingUserId, userId);
         List<UimChill> uimChillList = list(Wrappers.<UimChill>lambdaQuery().eq(UimChill::getUserId, meltingUserId));
         if (uimChillList == null || uimChillList.size() == 0) {

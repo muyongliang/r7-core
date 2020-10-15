@@ -42,6 +42,5 @@ public class UimOauthDTO {
      * 驳回原因
      */
     @ApiModelProperty("驳回原因")
-    // todo 是否必须存在
     private String reason;
 }
