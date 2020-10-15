@@ -33,7 +33,7 @@ public class UimUserRoleController {
     }
 
     @ApiOperation(value = "根据用户ID查询绑定角色", response = Boolean.class)
-    @PutMapping("/userId/{userId}")
+    @GetMapping("/userId/{userId}")
     public ResponseEntity listRoleByUserId(@PathVariable("userId") Long userId) {
         return ResponseEntity.success(uimUserRoleService
                 .listUimUserRole(userId, 0L, 0L));

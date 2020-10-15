@@ -43,7 +43,7 @@ public enum UimErrorEnum implements IError {
      * 用户角色
      */
     USER_ROLE_IS_EXISTS("user_role_is_exists", "用户角色已绑定"),
-    USER_ROLE_IS_NOT_EXISTS("user_role_is_not_exists", "用户角色未绑定"),
+    USER_ROLE_IS_NOT_EXISTS("user_role_is_not_exists", "用户角色不存在"),
     USER_ROLE_BIND_ERROR("user_role_bind_error", "用户角色绑定失败"),
     USER_ROLE_UNBIND_ERROR("user_role_unbind_error", "用户角色解绑失败"),
 

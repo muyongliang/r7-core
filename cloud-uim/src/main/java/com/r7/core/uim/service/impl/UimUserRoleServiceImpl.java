@@ -10,6 +10,7 @@ import com.r7.core.uim.mapper.UimUserRoleMapper;
 import com.r7.core.uim.model.UimUserRole;
 import com.r7.core.uim.service.UimRoleService;
 import com.r7.core.uim.service.UimUserRoleService;
+import com.r7.core.uim.service.UimUserService;
 import com.r7.core.uim.vo.UimRoleVO;
 import com.r7.core.uim.vo.UimUserRoleBindVO;
 import io.vavr.control.Option;
@@ -35,11 +36,15 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     @Resource
     private UimRoleService uimRoleService;
 
+    @Resource
+    private UimUserService uimUserService;
+
     @Override
     @Transactional
     public Boolean bindRoleByUserId(Long bindUserId, Long roleId, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中用户:{}绑定角色:{},操作用户:{}。", appId, organId, bindUserId, roleId, userId);
-        Option.of(bindUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
+        Option.of(uimUserService.getUserById(bindUserId))
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NOT_EXIST));
         uimRoleService.getRoleById(roleId, appId, organId);
         Option.of(getUimUserRoleByUserIdAndRoleId(bindUserId, roleId)).exists(x -> {
             throw new BusinessException(UimErrorEnum.USER_ROLE_IS_NOT_EXISTS);
