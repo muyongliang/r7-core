@@ -1,11 +1,13 @@
 package com.r7.core.uim.config;
 
-import com.r7.core.uim.handler.UimAuthenticationFailureHandler;
-import com.r7.core.uim.handler.UimAuthenticationSuccessHandler;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.expression.OAuth2WebSecurityExpressionHandler;
 
 import javax.annotation.Resource;
 
@@ -36,11 +38,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     private static final String[] SYSTEM_AUTH_LIST = {
             "/oauth/**",
             "/sign/**"};
-    @Resource
-    private UimAuthenticationFailureHandler uimAuthenticationFailureHandler;
 
     @Resource
-    private UimAuthenticationSuccessHandler uimAuthenticationSuccessHandler;
+    private OAuth2WebSecurityExpressionHandler expressionHandler;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -52,13 +52,21 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(SYSTEM_AUTH_LIST)
                 .permitAll()
                 .anyRequest()
-                .access("@rbacService.hasPermission(request,authentication)")
-                .and()
-                .formLogin()
-                .loginPage("/oauth/require")
-                .loginProcessingUrl("/oauth/singin")
-                .successHandler(uimAuthenticationSuccessHandler)
-                .failureHandler(uimAuthenticationFailureHandler)
-                .permitAll();
+                .access("@rbacService.hasPermission(request,authentication)");
+    }
+
+
+
+
+    @Bean
+    public OAuth2WebSecurityExpressionHandler oAuth2WebSecurityExpressionHandler(ApplicationContext applicationContext) {
+        OAuth2WebSecurityExpressionHandler expressionHandler = new OAuth2WebSecurityExpressionHandler();
+        expressionHandler.setApplicationContext(applicationContext);
+        return expressionHandler;
+    }
+
+    @Override
+    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+        resources.expressionHandler(expressionHandler);
     }
 }
