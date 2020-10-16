@@ -3,6 +3,8 @@ package com.r7.core.uim.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.uim.dto.UimOauthInfoDTO;
+import com.r7.core.uim.vo.UimOauthInfoVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -95,4 +97,31 @@ public class UimOauthInfo extends Model<UimOauthInfo> {
     @ApiModelProperty("更新时间")
     private Date updatedAt;
 
+    public void toOauthInfo(UimOauthInfoDTO uimOauthInfoDto) {
+        this.setOauthName(uimOauthInfoDto.getOauthName());
+        this.setIdentity(uimOauthInfoDto.getIdentity());
+        this.setSex(uimOauthInfoDto.getSex());
+        this.setAge(uimOauthInfoDto.getAge());
+        this.setBirthday(uimOauthInfoDto.getBirthday());
+        this.setNativePlace(uimOauthInfoDto.getNativePlace());
+        this.setProvince(uimOauthInfoDto.getProvince());
+        this.setCity(uimOauthInfoDto.getCity());
+        this.setCounty(uimOauthInfoDto.getCounty());
+    }
+
+    public UimOauthInfoVO toUimOauthInfoVo() {
+        UimOauthInfoVO uimOauthInfoVo = new UimOauthInfoVO();
+        uimOauthInfoVo.setId(this.getId());
+        uimOauthInfoVo.setUserId(this.getUserId());
+        uimOauthInfoVo.setOauthName(this.getOauthName());
+        uimOauthInfoVo.setIdentity(this.getIdentity());
+        uimOauthInfoVo.setSex(this.getSex());
+        uimOauthInfoVo.setAge(this.getAge());
+        uimOauthInfoVo.setBirthday(this.getBirthday());
+        uimOauthInfoVo.setNativePlace(this.getNativePlace());
+        uimOauthInfoVo.setProvince(this.getProvince());
+        uimOauthInfoVo.setCity(this.getCity());
+        uimOauthInfoVo.setCounty(this.getCounty());
+        return uimOauthInfoVo;
+    }
 }

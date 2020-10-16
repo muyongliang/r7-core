@@ -97,5 +97,5 @@ public interface UimUserRoleService extends IService<UimUserRole> {
      * @param userId 用户id
      * @return 返回roleCode
      */
-    List<String> listRoleCode(Long userId, Long appId);
+    List<String> listRoleCode(Long userId);
 }

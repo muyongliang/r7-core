@@ -3,6 +3,8 @@ package com.r7.core.uim.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.uim.dto.UimOauthDTO;
+import com.r7.core.uim.vo.UimOauthVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -40,7 +42,7 @@ public class UimOauth extends Model<UimOauth> {
     @ApiModelProperty("认证订单id")
     private Long oauthOrderId;
     /**
-     * 认证类型
+     * 认证类型 实名认证，视频认证，电子签认证
      */
     @ApiModelProperty("认证类型")
     private Integer type;
@@ -76,4 +78,23 @@ public class UimOauth extends Model<UimOauth> {
     private Date updatedAt;
 
 
+    public void toUimOauth(UimOauthDTO uimOauthDto) {
+        this.setUserId(uimOauthDto.getUserId());
+        this.setOauthOrderId(uimOauthDto.getOauthOrderId());
+        this.setType(uimOauthDto.getType());
+        this.setStatus(uimOauthDto.getStatus());
+        this.setReason(uimOauthDto.getReason());
+    }
+
+    public UimOauthVO toUimOauthVo() {
+        UimOauthVO uimOauthVo = new UimOauthVO();
+        uimOauthVo.setId(this.getId());
+        uimOauthVo.setUserId(this.getUserId());
+        uimOauthVo.setAppId(this.getAppId());
+        uimOauthVo.setOauthOrderId(this.getOauthOrderId());
+        uimOauthVo.setType(this.getType());
+        uimOauthVo.setStatus(this.getStatus());
+        uimOauthVo.setReason(this.getReason());
+        return uimOauthVo;
+    }
 }

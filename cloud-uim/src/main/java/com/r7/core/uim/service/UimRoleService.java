@@ -128,5 +128,5 @@ public interface UimRoleService extends IService<UimRole> {
      * @param roleIds 角色ID集合
      * @return 返回角色编码集合
      */
-    List<String> listRoleCode(List<Long> roleIds, Long appId);
+    List<String> listRoleCode(List<Long> roleIds);
 }

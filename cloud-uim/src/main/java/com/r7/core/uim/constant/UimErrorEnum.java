@@ -10,6 +10,23 @@ import com.r7.core.common.constant.IError;
  */
 public enum UimErrorEnum implements IError {
 
+    /**
+     * 认证
+     */
+    OAUTH_INFO_SAVE_ERROR("oauth_info_save_error", "认证信息保存失败"),
+    USER_ID_IS_NOT_EXIST("USER_ID_IS_NOT_EXIST", "用户id不存在"),
+    OAUTH_ORDER_SAVE_ERROR("oauth_order_save_error", "认证订单创建失败"),
+    OAUTH_ORDER_ID_IS_NULL("oauth_order_id_is_null", "认证订单id不能为空"),
+    OAUTH_ORDER_IS_NOT_EXISTS("oauth_order_is_not_exists", "认证订单不存在"),
+    OAUTH_ORDER_UPDATE_ERROR("oauth_order_update_error", "认证订单修改失败"),
+    OAUTH_SAVE_ERROR("oauth_save_error", "用户认证保存失败"),
+    OAUTH_USER_ID_IS_Not_EXISTS("oauth_user_id_is_not_exists", "认证用户id不存在"),
+
+    /**
+     * 冻结
+     */
+    CHILL_SAVE_ERROR("chill_save_error", "冻结保存失败"),
+    CHILL_ID_IS_NOT_EXISTS("chill_id_is_not_exists", "冻结不存在"),
 
     /**
      * 用户
@@ -26,7 +43,7 @@ public enum UimErrorEnum implements IError {
      * 用户角色
      */
     USER_ROLE_IS_EXISTS("user_role_is_exists", "用户角色已绑定"),
-    USER_ROLE_IS_NOT_EXISTS("user_role_is_not_exists", "用户角色未绑定"),
+    USER_ROLE_IS_NOT_EXISTS("user_role_is_not_exists", "用户角色不存在"),
     USER_ROLE_BIND_ERROR("user_role_bind_error", "用户角色绑定失败"),
     USER_ROLE_UNBIND_ERROR("user_role_unbind_error", "用户角色解绑失败"),
 
