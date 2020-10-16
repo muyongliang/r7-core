@@ -27,7 +27,7 @@ import java.net.URLEncoder;
 @Slf4j
 @RestController
 @RequestMapping("/file")
-@Api(value = "/api/upload", tags = {"文件上传接口"})
+@Api(value = "/api/file", tags = {"文件上传接口"})
 public class FileUploadController {
     @Autowired
     private FileUploadService fileUploadService;
