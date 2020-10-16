@@ -47,6 +47,7 @@ public class MinIOTest {
         }
     }
 
+
     /**
      * @Author muyongliang
      * @Date 2020/9/29 15:35
@@ -76,6 +77,8 @@ public class MinIOTest {
                         .object("美女.jpg")
                         .filename("C:\\Users\\liang\\Desktop\\美女原始下载.jpg")
                         .build());
+        String url = minioClient.getObjectUrl("mybucket", "美女.jpg");
+        System.out.println("can be downloaded by " + url);
 
     }
 
