@@ -140,7 +140,7 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
         if (uimRoleVOList == null || uimRoleVOList.size() == 0) {
             return null;
         }
-        Map<Long, UimRoleVO> uimRoleVOMap = uimRoleVOList.stream()
+        Map<Long, UimRoleVO> uimRoleVoMap = uimRoleVOList.stream()
                 .collect(Collectors.toMap(UimRoleVO::getId, x -> x));
         List<UimUserRoleBindVO> uimUserRoleBindVOList = Lists.newArrayList();
 
@@ -148,8 +148,8 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
             UimUserRoleBindVO uimUserRoleBindVO = new UimUserRoleBindVO();
             uimUserRoleBindVO.setUserId(x.getUserId());
             uimUserRoleBindVO.setRoleId(x.getRoleId());
-            uimUserRoleBindVO.setRoleCode(uimRoleVOMap.get(x.getRoleId()).getCode());
-            uimUserRoleBindVO.setRoleName(uimRoleVOMap.get(x.getRoleId()).getRoleName());
+            uimUserRoleBindVO.setRoleCode(uimRoleVoMap.get(x.getRoleId()).getCode());
+            uimUserRoleBindVO.setRoleName(uimRoleVoMap.get(x.getRoleId()).getRoleName());
             uimUserRoleBindVOList.add(uimUserRoleBindVO);
         });
         return uimUserRoleBindVOList;

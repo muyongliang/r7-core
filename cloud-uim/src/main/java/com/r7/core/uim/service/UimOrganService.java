@@ -79,4 +79,12 @@ public interface UimOrganService extends IService<UimOrgan> {
      */
     UimOrganVO getUimOrganById(Long id, Long appId);
 
+    /**
+     * 根据ID查询组织信息
+     *
+     * @param id 组织ID
+     * @return 返回信息
+     */
+    UimOrganVO getUimOrganById(Long id);
+
 }

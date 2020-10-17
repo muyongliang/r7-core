@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.r7.core.uim.dto.UimUserUpdateDTO;
-import com.r7.core.uim.dto.UserSingUpDTO;
+import com.r7.core.uim.dto.UserSignUpDTO;
 import com.r7.core.uim.vo.UimUserVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -51,7 +51,7 @@ public class UimUser extends Model<UimUser> {
      * 电话
      */
     @ApiModelProperty("电话")
-    private String phoneNumber;
+    private Long phoneNumber;
     /**
      * 是否认证
      */
@@ -108,12 +108,12 @@ public class UimUser extends Model<UimUser> {
         return uimUserVO;
     }
 
-    public void toUserSingUpDTO(UserSingUpDTO userSingUpDTO) {
-        this.setPhoneNumber(userSingUpDTO.getPhoneNumber());
-        this.setOrganId(userSingUpDTO.getOrganId());
-        this.setUserName(userSingUpDTO.getUserName());
-        this.setPassword(userSingUpDTO.getPassword());
-        this.setPhoneNumber(userSingUpDTO.getPhoneNumber());
+    public void toUserSingUpDTO(UserSignUpDTO userSignUpDTO) {
+        this.setPhoneNumber(userSignUpDTO.getPhoneNumber());
+        this.setOrganId(userSignUpDTO.getOrganId());
+        this.setUserName(userSignUpDTO.getUserName());
+        this.setPassword(userSignUpDTO.getPassword());
+        this.setPhoneNumber(userSignUpDTO.getPhoneNumber());
     }
 
     public void toUimUserUpdateDTO(UimUserUpdateDTO uimUserUpdateDTO) {

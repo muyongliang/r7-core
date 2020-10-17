@@ -34,7 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 系统过滤地址
      */
     private static final String[] SYSTEM_AUTH_LIST = {
-            "/auth/**"};
+            "/oauth/**",
+            "/sign/**"};
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -49,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.csrf()
                 .disable()
                 .authorizeRequests()
@@ -57,11 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(SYSTEM_AUTH_LIST)
                 .permitAll()
                 .anyRequest()
-//                .access("@rbacService.hasPermission(request,authentication)")
-                .authenticated()
-                .and()
-                .formLogin()
-                .permitAll();
+                .access("@rbacService.hasPermission(request,authentication)");
     }
 
 }

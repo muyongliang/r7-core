@@ -1,11 +1,12 @@
 package com.r7.core.uim.vo;
 
 import com.google.common.collect.Lists;
+import com.r7.core.uim.constant.PermissionEnum;
+import com.r7.core.uim.constant.ResourceEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +45,10 @@ public class UimResourceNodeVO {
      * 资源类型;0菜单/1按钮
      */
     @ApiModelProperty("资源类型")
-    private Integer type;
+    private ResourceEnum type;
+
+    @ApiModelProperty("权限:browse、create、update、delete四个之一")
+    private PermissionEnum permission;
 
 
     @ApiModelProperty("子资源节点")

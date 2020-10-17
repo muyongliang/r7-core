@@ -2,6 +2,7 @@ package com.r7.core.uim.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.r7.core.uim.model.UimRoleResource;
+import com.r7.core.uim.vo.UimResourceInfoVo;
 import com.r7.core.uim.vo.UimRoleResourceBindVo;
 
 import java.util.List;
@@ -92,5 +93,24 @@ public interface UimRoleResourceService extends IService<UimRoleResource> {
      * @return 返回信息
      */
     UimRoleResource getUimRoleResourceByRoleIdAndResourceId(Long roleId, Long resourceId);
+
+
+    /**
+     * 根据角色编码获取对应资源的url
+     *
+     * @param roleCodes 角色编码
+     * @return URL资源集合
+     */
+    List<UimResourceInfoVo> listResourceUrlByRoleCodes(List<String> roleCodes);
+
+
+    /**
+     * 根据角色ID获取对应的资源URL
+     *
+     * @param roleIds 角色ID集合
+     * @return 返回资源url集合
+     */
+    List<UimResourceInfoVo> listResourceUrlByRoleIds(List<Long> roleIds);
+
 
 }

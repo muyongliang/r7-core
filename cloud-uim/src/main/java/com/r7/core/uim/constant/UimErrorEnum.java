@@ -11,6 +11,16 @@ import com.r7.core.common.constant.IError;
 public enum UimErrorEnum implements IError {
 
     /**
+     * 认证返回异常
+     */
+    OAUTH_GET_TOKEN_FAIL_CLIENT_MISSING("oauth_get_token_fail_client_missing", "客户端信息缺失"),
+    OAUTH_GET_TOKEN_FAIL_CLIENT("oauth_get_token_fail_client", "客户端认证失败"),
+    OAUTH_GET_TOKEN_FAIL_USER("oauth_get_token_fail_user", "用户名或密码错误"),
+    OAUTH_ACCESS_RESOURCE_INSUFFICIENT_AUTHORITY("oauth_access_resource_insufficient_authority", "资源权限不足"),
+    OAUTH_ACCESS_RESOURCE_TOKEN_INVALID("oauth_access_resource_token_invalid", "登录凭证已失效"),
+    CLIENT_ID_OR_SECRET_ERROR("client_id_or_secret_error", "client_id 或client_secret 不正确"),
+
+    /**
      * 认证
      */
     OAUTH_INFO_SAVE_ERROR("oauth_info_save_error", "认证信息保存失败"),
@@ -32,11 +42,14 @@ public enum UimErrorEnum implements IError {
      * 用户
      */
     USER_IS_NOT_EXISTS("user_id_not_exists", "用户不存在。"),
+    USER_CODE_IS_NOT_EXISTS("user_code_is_not_exists", "用户邀请码不存在"),
+    USER_CODE_IS_EXISTS("user_code_is_exists", "用户邀请码已存在"),
     USER_ID_IS_NULL("user_id_is_null", "用户ID不能为空。"),
     USER_UPDATE_ERROR("user_update_error", "用户修改失败。"),
     USER_DELETE_ERROR("user_delete_error", "用户删除失败。"),
     USER_SAVE_ERROR("user_save_error", "用户注册失败。"),
     USER_PHONE_EXISTS("user_phone_exists", "电话号已经存在。"),
+    USER_PHONE_ERROR("user_phone_error", "请填写正确的手机号。"),
     USER_LOGIN_NAME_ERROR("user_login_name_error", "用户名或密码错误。"),
 
     /**

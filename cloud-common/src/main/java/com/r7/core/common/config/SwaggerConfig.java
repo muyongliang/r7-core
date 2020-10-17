@@ -41,7 +41,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(basePackage("com.r7.core" + SPLIT + "org.springframework.security.oauth2.provider.endpoint"))
+                .apis(basePackage("com.r7.core"))
                 .paths(PathSelectors.any())
                 .build()
                 .securitySchemes(token())

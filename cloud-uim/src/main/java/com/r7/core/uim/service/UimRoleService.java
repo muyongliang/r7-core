@@ -2,10 +2,10 @@ package com.r7.core.uim.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.r7.core.uim.dto.UimRoleDTO;
-import com.r7.core.uim.dto.UimRoleSaveDTO;
 import com.r7.core.uim.model.UimRole;
 import com.r7.core.uim.vo.UimRoleVO;
+import com.r7.core.uim.dto.UimRoleDTO;
+import com.r7.core.uim.dto.UimRoleSaveDTO;
 
 import java.util.List;
 
@@ -117,7 +117,7 @@ public interface UimRoleService extends IService<UimRole> {
      * 根据ID获取角色
      *
      * @param roleIds 角色ID
-     * @param appId 平台ID
+     * @param appId   平台ID
      * @return 返回信息
      */
     List<UimRoleVO> listUimRoleByIds(List<Long> roleIds, Long appId);
@@ -129,4 +129,12 @@ public interface UimRoleService extends IService<UimRole> {
      * @return 返回角色编码集合
      */
     List<String> listRoleCode(List<Long> roleIds);
+
+    /**
+     * 根据角色编码获取角色ID
+     *
+     * @param roleCodes 角色编码
+     * @return 角色id集合
+     */
+    List<Long> listRoleIdsByRoleCods(List<String> roleCodes);
 }

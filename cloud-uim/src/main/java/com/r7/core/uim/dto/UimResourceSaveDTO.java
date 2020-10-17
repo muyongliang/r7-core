@@ -1,5 +1,7 @@
 package com.r7.core.uim.dto;
 
+import com.r7.core.uim.constant.PermissionEnum;
+import com.r7.core.uim.constant.ResourceEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -41,12 +43,15 @@ public class UimResourceSaveDTO {
     @ApiModelProperty("资源地址")
     @NotBlank(message = "资源地址不能为空。")
     private String url;
+
+    @ApiModelProperty("权限:browse、create、update、delete四个之一")
+    private PermissionEnum permission;
     /**
      * 资源类型;0菜单/1按钮
      */
     @ApiModelProperty("资源类型")
     @NotNull(message = "资源类型不能为空")
-    private Integer type;
+    private ResourceEnum type;
     /**
      * 排序
      */

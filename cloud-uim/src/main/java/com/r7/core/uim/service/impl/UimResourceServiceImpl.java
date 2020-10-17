@@ -6,11 +6,12 @@ import com.google.common.collect.Lists;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.uim.constant.UimErrorEnum;
-import com.r7.core.uim.dto.UimResourceSaveDTO;
 import com.r7.core.uim.dto.UimResourceUpdateDTO;
 import com.r7.core.uim.mapper.UimResourceMapper;
 import com.r7.core.uim.model.UimResource;
+import com.r7.core.uim.dto.UimResourceSaveDTO;
 import com.r7.core.uim.service.UimResourceService;
+import com.r7.core.uim.vo.UimResourceInfoVo;
 import com.r7.core.uim.vo.UimResourceNodeVO;
 import com.r7.core.uim.vo.UimResourceVO;
 import io.vavr.control.Option;
@@ -98,7 +99,7 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
 
         List<UimResource> uimResources = list(Wrappers.<UimResource>lambdaQuery()
                 .select(UimResource::getId, UimResource::getPId, UimResource::getCode, UimResource::getResourceName,
-                        UimResource::getType, UimResource::getUrl)
+                        UimResource::getPermission, UimResource::getType, UimResource::getUrl)
                 .eq(UimResource::getAppId, appId).orderByAsc(UimResource::getType).orderByAsc(UimResource::getSort));
         List<UimResourceNodeVO> uimresourcenodevos = Lists.newArrayList();
         treeUimResource(uimresourcenodevos, uimResources, pId);
@@ -128,7 +129,7 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_IS_NOT_EXISTS));
         UimResource uimResource = Option.of(getOne(Wrappers.<UimResource>lambdaQuery()
                 .select(UimResource::getId, UimResource::getPId, UimResource::getCode, UimResource::getResourceName,
-                        UimResource::getUrl, UimResource::getType, UimResource::getSort)
+                        UimResource::getPermission, UimResource::getUrl, UimResource::getType, UimResource::getSort)
                 .eq(UimResource::getId, resourceId)
                 .eq(UimResource::getAppId, appId)))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_IS_NOT_EXISTS));
@@ -143,7 +144,7 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
                 list(Wrappers.<UimResource>lambdaQuery()
                         .select(UimResource::getId, UimResource::getPId, UimResource::getCode,
                                 UimResource::getResourceName, UimResource::getUrl,
-                                UimResource::getType, UimResource::getSort)
+                                UimResource::getPermission, UimResource::getType, UimResource::getSort)
                         .eq(UimResource::getPId, pId)))
                 .filter(x -> x.size() > 0)
                 .map(x -> x.stream()
@@ -160,7 +161,7 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
                 list(Wrappers.<UimResource>lambdaQuery()
                         .select(UimResource::getId, UimResource::getPId, UimResource::getCode,
                                 UimResource::getResourceName, UimResource::getUrl,
-                                UimResource::getType, UimResource::getSort)
+                                UimResource::getPermission, UimResource::getType, UimResource::getSort)
                         .eq(UimResource::getAppId, appId)
                         .in(UimResource::getId, ids)))
                 .filter(x -> x.size() > 0)
@@ -169,5 +170,22 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
                         .collect(Collectors.toList()))
                 .getOrNull();
 
+    }
+
+    @Override
+    public List<UimResourceInfoVo> listResourceUrlsByIds(List<Long> ids) {
+        Option.of(ids).getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_ID_IS_NULL));
+        List<UimResource> resourceList = list(Wrappers.<UimResource>lambdaQuery()
+                .select(UimResource::getUrl, UimResource::getPermission)
+                .in(UimResource::getId, ids));
+        if (resourceList == null || resourceList.size() == 0) {
+            return null;
+        }
+        return resourceList.stream().map(x -> {
+            UimResourceInfoVo uimResourceInfoVo = new UimResourceInfoVo();
+            uimResourceInfoVo.setUrl(x.getUrl());
+            uimResourceInfoVo.setPermission(x.getPermission());
+            return uimResourceInfoVo;
+        }).collect(Collectors.toList());
     }
 }

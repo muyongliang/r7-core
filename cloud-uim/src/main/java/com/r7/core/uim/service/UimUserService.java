@@ -3,7 +3,7 @@ package com.r7.core.uim.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.r7.core.uim.dto.UimUserUpdateDTO;
-import com.r7.core.uim.dto.UserSingUpDTO;
+import com.r7.core.uim.dto.UserSignUpDTO;
 import com.r7.core.uim.model.UimUser;
 import com.r7.core.uim.vo.UimUserVO;
 
@@ -19,11 +19,11 @@ public interface UimUserService extends IService<UimUser> {
      * 用户注册
      *
      * @param code          邀请码
-     * @param userSingUpDTO 用户注册信息
+     * @param userSignUpDTO 用户注册信息
      * @param ip            注册IP
      * @return 返回注册信息
      */
-    UimUserVO singUpUser(String code, UserSingUpDTO userSingUpDTO, String ip);
+    UimUserVO signUpUser(String code, UserSignUpDTO userSignUpDTO, String ip);
 
     /**
      * 修改用户信息
@@ -42,6 +42,14 @@ public interface UimUserService extends IService<UimUser> {
      * @return 返回用户信息
      */
     UimUserVO getUserById(Long id);
+
+    /**
+     * 根据邀请码查询用户信息
+     *
+     * @param code 邀请码
+     * @return 返回用户信息
+     */
+    UimUserVO getUserByCode(String code);
 
     /**
      * 分页展示用户
@@ -71,5 +79,5 @@ public interface UimUserService extends IService<UimUser> {
      * @param phone 电话号
      * @return 返回用户信息
      */
-    UimUserVO getUserByPhone(String phone);
+    UimUserVO getUserByPhone(Long phone);
 }

@@ -11,6 +11,7 @@ import com.r7.core.uim.model.UimRoleResource;
 import com.r7.core.uim.service.UimResourceService;
 import com.r7.core.uim.service.UimRoleResourceService;
 import com.r7.core.uim.service.UimRoleService;
+import com.r7.core.uim.vo.UimResourceInfoVo;
 import com.r7.core.uim.vo.UimResourceVO;
 import com.r7.core.uim.vo.UimRoleResourceBindVo;
 import io.vavr.control.Option;
@@ -166,5 +167,27 @@ public class UimRoleResourceServiceImpl extends ServiceImpl<UimRoleResourceMappe
         return getOne(Wrappers.<UimRoleResource>lambdaQuery()
                 .eq(UimRoleResource::getRoleId, roleId)
                 .eq(UimRoleResource::getResourceId, resourceId));
+    }
+
+    @Override
+    public List<UimResourceInfoVo> listResourceUrlByRoleCodes(List<String> roleCodes) {
+        List<Long> roleIds = uimRoleService.listRoleIdsByRoleCods(roleCodes);
+        if (roleIds == null || roleIds.size() == 0) {
+            return null;
+        }
+        return listResourceUrlByRoleIds(roleIds);
+    }
+
+    @Override
+    public List<UimResourceInfoVo> listResourceUrlByRoleIds(List<Long> roleIds) {
+        Option.of(roleIds).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
+        List<UimRoleResource> roleResources = list(Wrappers.<UimRoleResource>lambdaQuery()
+                .select(UimRoleResource::getResourceId)
+                .in(UimRoleResource::getRoleId, roleIds));
+        if (roleResources == null || roleResources.size() == 0) {
+            return null;
+        }
+        List<Long> resourceIds = roleResources.stream().map(UimRoleResource::getResourceId).collect(Collectors.toList());
+        return uimResourceService.listResourceUrlsByIds(resourceIds);
     }
 }

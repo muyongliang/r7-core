@@ -35,6 +35,6 @@ public class UimUserVO {
      * 电话
      */
     @ApiModelProperty("电话")
-    private String phoneNumber;
+    private Long phoneNumber;
 
 }

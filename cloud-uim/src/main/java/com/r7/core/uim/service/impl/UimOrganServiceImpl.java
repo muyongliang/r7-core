@@ -6,10 +6,10 @@ import com.google.common.collect.Lists;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.uim.constant.UimErrorEnum;
-import com.r7.core.uim.dto.UimOrganSaveDTO;
-import com.r7.core.uim.dto.UimOrganUpdateDTO;
 import com.r7.core.uim.mapper.UimOrganMapper;
 import com.r7.core.uim.model.UimOrgan;
+import com.r7.core.uim.dto.UimOrganSaveDTO;
+import com.r7.core.uim.dto.UimOrganUpdateDTO;
 import com.r7.core.uim.service.UimOrganService;
 import com.r7.core.uim.vo.UimOrganNodeVO;
 import com.r7.core.uim.vo.UimOrganVO;
@@ -62,7 +62,8 @@ public class UimOrganServiceImpl extends ServiceImpl<UimOrganMapper, UimOrgan> i
     public Boolean removeUimOrganById(Long id, Long userId, Long appId) {
         log.info("平台:{}删除组织ID:{},操作用户:{}", appId, id, userId);
         Option.of(id).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ORGAN_ID_IS_NULL));
-        UimOrganVO uimOrganVO = getUimOrganById(id, appId);
+        UimOrganVO uimOrganVO = Option.of(getUimOrganById(id, appId))
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ORGAN_IS_NOT_EXISTS));
         validationUimOrganByPid(id, appId);
 
         boolean remove = removeById(id);
@@ -127,9 +128,19 @@ public class UimOrganServiceImpl extends ServiceImpl<UimOrganMapper, UimOrgan> i
                 .select(UimOrgan::getId, UimOrgan::getPId, UimOrgan::getOrganCode, UimOrgan::getOrganName,
                         UimOrgan::getType, UimOrgan::getSort)
                 .eq(UimOrgan::getId, id)
-                .eq(UimOrgan::getAppId, appId)))
-                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ORGAN_IS_NOT_EXISTS));
-        return uimOrgan.toUimOrganVO();
+                .eq(UimOrgan::getAppId, appId))).getOrNull();
+        return Option.of(uimOrgan).map(UimOrgan::toUimOrganVO).getOrNull();
+    }
+
+    @Override
+    public UimOrganVO getUimOrganById(Long id) {
+        Option.of(id).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ORGAN_ID_IS_NULL));
+
+        UimOrgan uimOrgan = Option.of(getOne(Wrappers.<UimOrgan>lambdaQuery()
+                .select(UimOrgan::getId, UimOrgan::getPId, UimOrgan::getOrganCode, UimOrgan::getOrganName,
+                        UimOrgan::getType, UimOrgan::getSort)
+                .eq(UimOrgan::getId, id))).getOrNull();
+        return Option.of(uimOrgan).map(UimOrgan::toUimOrganVO).getOrNull();
     }
 
     /**
