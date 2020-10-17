@@ -16,6 +16,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class IntegralApplication {
 
     public static void main(String[] args) {
+
+
         SpringApplication.run(IntegralApplication.class, args);
     }
 
