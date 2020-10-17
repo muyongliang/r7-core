@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 注册
+ *
+ * @author zhongpingli
+ */
 @Slf4j
 @Api(value = "/api/sign", tags = {"注册"})
 @RestController

@@ -59,7 +59,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         Option.of(uimUserDetailsVO).getOrElseThrow(() -> new UsernameNotFoundException(UimErrorEnum.USER_LOGIN_NAME_ERROR.getMessage()));
 
         // 添加角色
-        List<String> listRoleCode = uimUserRoleService.listRoleCode(uimUserDetailsVO.getId(), 0L);
+        List<String> listRoleCode = uimUserRoleService.listRoleCode(uimUserDetailsVO.getId());
         Option.of(listRoleCode).exists(x -> {
             uimUserDetailsVO.setRoles(x);
             return false;
