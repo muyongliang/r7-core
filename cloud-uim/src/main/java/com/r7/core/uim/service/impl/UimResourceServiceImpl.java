@@ -99,7 +99,7 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
 
         List<UimResource> uimResources = list(Wrappers.<UimResource>lambdaQuery()
                 .select(UimResource::getId, UimResource::getPId, UimResource::getCode, UimResource::getResourceName,
-                        UimResource::getType, UimResource::getUrl)
+                        UimResource::getPermission, UimResource::getType, UimResource::getUrl)
                 .eq(UimResource::getAppId, appId).orderByAsc(UimResource::getType).orderByAsc(UimResource::getSort));
         List<UimResourceNodeVO> uimresourcenodevos = Lists.newArrayList();
         treeUimResource(uimresourcenodevos, uimResources, pId);
@@ -129,7 +129,7 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_IS_NOT_EXISTS));
         UimResource uimResource = Option.of(getOne(Wrappers.<UimResource>lambdaQuery()
                 .select(UimResource::getId, UimResource::getPId, UimResource::getCode, UimResource::getResourceName,
-                        UimResource::getUrl, UimResource::getType, UimResource::getSort)
+                        UimResource::getPermission, UimResource::getUrl, UimResource::getType, UimResource::getSort)
                 .eq(UimResource::getId, resourceId)
                 .eq(UimResource::getAppId, appId)))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_IS_NOT_EXISTS));
@@ -144,7 +144,7 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
                 list(Wrappers.<UimResource>lambdaQuery()
                         .select(UimResource::getId, UimResource::getPId, UimResource::getCode,
                                 UimResource::getResourceName, UimResource::getUrl,
-                                UimResource::getType, UimResource::getSort)
+                                UimResource::getPermission, UimResource::getType, UimResource::getSort)
                         .eq(UimResource::getPId, pId)))
                 .filter(x -> x.size() > 0)
                 .map(x -> x.stream()
@@ -161,7 +161,7 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
                 list(Wrappers.<UimResource>lambdaQuery()
                         .select(UimResource::getId, UimResource::getPId, UimResource::getCode,
                                 UimResource::getResourceName, UimResource::getUrl,
-                                UimResource::getType, UimResource::getSort)
+                                UimResource::getPermission, UimResource::getType, UimResource::getSort)
                         .eq(UimResource::getAppId, appId)
                         .in(UimResource::getId, ids)))
                 .filter(x -> x.size() > 0)
