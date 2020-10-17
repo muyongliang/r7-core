@@ -1,6 +1,7 @@
 package com.r7.core.uim.vo;
 
 import com.google.common.collect.Lists;
+import com.r7.core.uim.constant.ResourceEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -43,7 +44,7 @@ public class UimResourceNodeVO {
      * 资源类型;0菜单/1按钮
      */
     @ApiModelProperty("资源类型")
-    private Integer type;
+    private ResourceEnum type;
 
 
     @ApiModelProperty("子资源节点")

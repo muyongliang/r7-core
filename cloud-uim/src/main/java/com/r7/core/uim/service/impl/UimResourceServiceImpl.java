@@ -11,6 +11,7 @@ import com.r7.core.uim.mapper.UimResourceMapper;
 import com.r7.core.uim.model.UimResource;
 import com.r7.core.uim.dto.UimResourceSaveDTO;
 import com.r7.core.uim.service.UimResourceService;
+import com.r7.core.uim.vo.UimResourceInfoVo;
 import com.r7.core.uim.vo.UimResourceNodeVO;
 import com.r7.core.uim.vo.UimResourceVO;
 import io.vavr.control.Option;
@@ -172,11 +173,19 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
     }
 
     @Override
-    public List<String> listResourceUrlsByIds(List<Long> ids) {
+    public List<UimResourceInfoVo> listResourceUrlsByIds(List<Long> ids) {
         Option.of(ids).getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_ID_IS_NULL));
         List<UimResource> resourceList = list(Wrappers.<UimResource>lambdaQuery()
-                .select(UimResource::getUrl)
+                .select(UimResource::getUrl, UimResource::getPermission)
                 .in(UimResource::getId, ids));
-        return resourceList.stream().map(UimResource::getUrl).collect(Collectors.toList());
+        if (resourceList == null || resourceList.size() == 0) {
+            return null;
+        }
+        return resourceList.stream().map(x -> {
+            UimResourceInfoVo uimResourceInfoVo = new UimResourceInfoVo();
+            uimResourceInfoVo.setUrl(x.getUrl());
+            uimResourceInfoVo.setPermission(x.getPermission());
+            return uimResourceInfoVo;
+        }).collect(Collectors.toList());
     }
 }

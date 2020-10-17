@@ -3,6 +3,8 @@ package com.r7.core.uim.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.uim.constant.PermissionEnum;
+import com.r7.core.uim.constant.ResourceEnum;
 import com.r7.core.uim.dto.UimResourceSaveDTO;
 import com.r7.core.uim.dto.UimResourceUpdateDTO;
 import com.r7.core.uim.vo.UimResourceNodeVO;
@@ -53,11 +55,14 @@ public class UimResource extends Model<UimResource> {
      */
     @ApiModelProperty("资源地址")
     private String url;
+
+    @ApiModelProperty("权限:browse、create、update、delete四个之一")
+    private PermissionEnum permission;
     /**
-     * 资源类型;0菜单/1按钮
+     * 资源类型;1菜单/2按钮3公共
      */
     @ApiModelProperty("资源类型")
-    private Integer type;
+    private ResourceEnum type;
     /**
      * 排序
      */

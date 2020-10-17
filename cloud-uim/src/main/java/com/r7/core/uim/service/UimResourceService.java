@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.r7.core.uim.dto.UimResourceSaveDTO;
 import com.r7.core.uim.dto.UimResourceUpdateDTO;
 import com.r7.core.uim.model.UimResource;
+import com.r7.core.uim.vo.UimResourceInfoVo;
 import com.r7.core.uim.vo.UimResourceNodeVO;
 import com.r7.core.uim.vo.UimResourceVO;
 
@@ -95,5 +96,5 @@ public interface UimResourceService extends IService<UimResource> {
      * @param ids 资源ID
      * @return 返回资源url集合
      */
-    List<String> listResourceUrlsByIds(List<Long> ids);
+    List<UimResourceInfoVo> listResourceUrlsByIds(List<Long> ids);
 }

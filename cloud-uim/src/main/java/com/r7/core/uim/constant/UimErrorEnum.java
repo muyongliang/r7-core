@@ -10,6 +10,16 @@ import com.r7.core.common.constant.IError;
  */
 public enum UimErrorEnum implements IError {
 
+    /**
+     * 认证返回异常
+     */
+    OAUTH_GET_TOKEN_FAIL_CLIENT_MISSING("oauth_get_token_fail_client_missing", "客户端信息缺失"),
+    OAUTH_GET_TOKEN_FAIL_CLIENT("oauth_get_token_fail_client", "客户端认证失败"),
+    OAUTH_GET_TOKEN_FAIL_USER("oauth_get_token_fail_user", "用户名或密码错误"),
+    OAUTH_ACCESS_RESOURCE_INSUFFICIENT_AUTHORITY("oauth_access_resource_insufficient_authority", "资源权限不足"),
+    OAUTH_ACCESS_RESOURCE_TOKEN_INVALID("oauth_access_resource_token_invalid", "登录凭证已失效"),
+    CLIENT_ID_OR_SECRET_ERROR("client_id_or_secret_error", "client_id 或client_secret 不正确"),
+
 
     /**
      * 用户
