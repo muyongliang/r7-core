@@ -51,7 +51,7 @@ public class UimUser extends Model<UimUser> {
      * 电话
      */
     @ApiModelProperty("电话")
-    private String phoneNumber;
+    private Long phoneNumber;
     /**
      * 是否认证
      */

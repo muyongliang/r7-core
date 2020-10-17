@@ -44,6 +44,14 @@ public interface UimUserService extends IService<UimUser> {
     UimUserVO getUserById(Long id);
 
     /**
+     * 根据邀请码查询用户信息
+     *
+     * @param code 邀请码
+     * @return 返回用户信息
+     */
+    UimUserVO getUserByCode(String code);
+
+    /**
      * 分页展示用户
      *
      * @param search   搜索条件
@@ -71,5 +79,5 @@ public interface UimUserService extends IService<UimUser> {
      * @param phone 电话号
      * @return 返回用户信息
      */
-    UimUserVO getUserByPhone(String phone);
+    UimUserVO getUserByPhone(Long phone);
 }

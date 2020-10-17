@@ -1,5 +1,6 @@
 package com.r7.core.uim.service.impl;
 
+import cn.hutool.core.lang.Validator;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -7,11 +8,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.CodeUtil;
 import com.r7.core.common.util.SnowflakeUtil;
+import com.r7.core.common.util.ValidatorUtil;
 import com.r7.core.uim.constant.UimErrorEnum;
 import com.r7.core.uim.dto.UimUserUpdateDTO;
 import com.r7.core.uim.dto.UserSignUpDTO;
 import com.r7.core.uim.mapper.UimUserMapper;
 import com.r7.core.uim.model.UimUser;
+import com.r7.core.uim.service.UimOrganService;
 import com.r7.core.uim.service.UimSysUserService;
 import com.r7.core.uim.service.UimUserRoleService;
 import com.r7.core.uim.service.UimUserService;
@@ -19,7 +22,6 @@ import com.r7.core.uim.vo.UimUserDetailsVO;
 import com.r7.core.uim.vo.UimUserVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
-import org.hashids.Hashids;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -49,7 +51,8 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
     @Resource
     private UimUserRoleService uimUserRoleService;
 
-    private static Hashids hashids = new Hashids("uim_user");
+    @Resource
+    private UimOrganService uimOrganService;
 
     @Override
     public UserDetails loadUserByUsername(String loginName) throws UsernameNotFoundException {
@@ -72,17 +75,30 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
     public UimUserVO signUpUser(String code, UserSignUpDTO userSignUpDTO, String ip) {
         userSignUpDTO.setPassword(passwordEncoder.encode(userSignUpDTO.getPassword()));
         log.info("新用户注册：{},IP地址{}", userSignUpDTO, ip);
+        // 手机格式
+        if (!ValidatorUtil.validatorPhoneNumber(userSignUpDTO.getPhoneNumber())) {
+            throw new BusinessException(UimErrorEnum.USER_PHONE_ERROR);
+        }
         // 电话号是否已经存在
-        UimUserVO userByPhone = getUserByPhone(userSignUpDTO.getPhoneNumber());
-        Option.of(userByPhone).exists(eror -> {
+        Option.of(getUserByPhone(userSignUpDTO.getPhoneNumber())).exists(eror -> {
             throw new BusinessException(UimErrorEnum.USER_PHONE_EXISTS);
         });
+        // 组织是否存在
+        Option.of(uimOrganService.getUimOrganById(userSignUpDTO.getOrganId()))
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ORGAN_IS_NOT_EXISTS));
         // code 是否存在
+        Option.of(getUserByCode(code))
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_CODE_IS_NOT_EXISTS));
         Long id = SnowflakeUtil.getSnowflakeId();
+        String userCode = CodeUtil.instance().gen(id);
+        // code 是否生成重复
+        Option.of(getUserByCode(userCode)).exists(x -> {
+            throw new BusinessException(UimErrorEnum.USER_CODE_IS_EXISTS);
+        });
         UimUser uimUser = new UimUser();
         uimUser.setId(id);
         uimUser.toUserSingUpDTO(userSignUpDTO);
-        uimUser.setCode(CodeUtil.instance().gen(id));
+        uimUser.setCode(userCode);
         uimUser.setAvatar("abc");
         uimUser.setIp(ip);
         // 未认证
@@ -102,6 +118,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
             log.info("新用户注册：{}失败,IP地址{}", userSignUpDTO, ip);
             throw new BusinessException(UimErrorEnum.USER_SAVE_ERROR);
         }
+        log.info("新用户注册：{}成功,IP地址{}", userSignUpDTO, ip);
         return getUserById(id);
     }
 
@@ -134,6 +151,15 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
     }
 
     @Override
+    public UimUserVO getUserByCode(String code) {
+        UimUser uimUser = getOne(Wrappers.<UimUser>lambdaQuery()
+                .select(UimUser::getId, UimUser::getAvatar,
+                        UimUser::getUserName, UimUser::getCode, UimUser::getPhoneNumber)
+                .eq(UimUser::getCode, code));
+        return Option.of(uimUser).map(UimUser::toUimUserVO).getOrNull();
+    }
+
+    @Override
     public IPage<UimUserVO> pageUser(String search, Long organId, int pageNum, int pageSize) {
         Page<UimUserVO> page = new Page<>(pageNum, pageSize);
         return baseMapper.pageUser(search, organId, page);
@@ -146,7 +172,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
     }
 
     @Override
-    public UimUserVO getUserByPhone(String phone) {
+    public UimUserVO getUserByPhone(Long phone) {
         UimUser uimUser = getOne(Wrappers.<UimUser>lambdaQuery()
                 .select(UimUser::getId, UimUser::getAvatar,
                         UimUser::getUserName, UimUser::getCode, UimUser::getPhoneNumber)

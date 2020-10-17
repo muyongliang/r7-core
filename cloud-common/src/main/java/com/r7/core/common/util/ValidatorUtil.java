@@ -1,31 +1,19 @@
 package com.r7.core.common.util;
 
-import org.hibernate.validator.HibernateValidator;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import java.util.Set;
+import cn.hutool.core.lang.Validator;
 
 /**
- * @Author muyongliang
- * @Date 2020/9/28 10:40
- * @Description 实体类校验工具类
+ * 公共验证工具类
+ *
+ * @author zhongpingli
  */
 public class ValidatorUtil {
-    private static ValidatorUtil validatorUtil = new ValidatorUtil();
-    private static Validator validator;
 
-    private ValidatorUtil() {
-        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
-                .configure()
-                .failFast(true)
-                .buildValidatorFactory();
-        validator = validatorFactory.getValidator();
+
+    public static boolean validatorPhoneNumber(Long phoneNumber) {
+        return Validator.isMactchRegex("^1[34578]\\d{9}$", phoneNumber.toString());
     }
-    public static <T> Set<ConstraintViolation<T>> validate(T object) {
-        Set<ConstraintViolation<T>> violationSet = validator.validate(object);
-        return violationSet;
-    }
+
+
 }

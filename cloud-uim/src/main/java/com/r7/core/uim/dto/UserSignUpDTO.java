@@ -35,7 +35,7 @@ public class UserSignUpDTO {
      */
     @NotEmpty(message = "电话不能为空")
     @ApiModelProperty("电话")
-    private String phoneNumber;
+    private Long phoneNumber;
 
     /**
      * 账户密码
