@@ -34,16 +34,17 @@ import java.util.stream.Collectors;
 public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUserRole> implements UimUserRoleService {
 
     @Resource
-    private UimUserService uimUserService;
+    private UimRoleService uimRoleService;
 
     @Resource
-    private UimRoleService uimRoleService;
+    private UimUserService uimUserService;
 
     @Override
     @Transactional
     public Boolean bindRoleByUserId(Long bindUserId, Long roleId, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中用户:{}绑定角色:{},操作用户:{}。", appId, organId, bindUserId, roleId, userId);
-        uimUserService.getUserById(bindUserId);
+        Option.of(uimUserService.getUserById(bindUserId))
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NOT_EXIST));
         uimRoleService.getRoleById(roleId, appId, organId);
         Option.of(getUimUserRoleByUserIdAndRoleId(bindUserId, roleId)).exists(x -> {
             throw new BusinessException(UimErrorEnum.USER_ROLE_IS_NOT_EXISTS);
@@ -71,7 +72,7 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     @Transactional
     public Boolean unBindRoleByUserId(Long roleId, Long unBindUserId, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中用户:{}解绑角色:{},操作用户:{}。", appId, organId, unBindUserId, roleId, userId);
-        uimUserService.getUserById(unBindUserId);
+        Option.of(unBindUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         uimRoleService.getRoleById(roleId, appId, organId);
         UimUserRole uimUserRole = Option.of(getUimUserRoleByUserIdAndRoleId(unBindUserId, roleId))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ROLE_IS_EXISTS));
@@ -107,8 +108,8 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     @Override
     @Transactional
     public Boolean unBindRoleByUserId(Long unBindUserId, Long appId, Long organId, Long userId) {
-        log.info("平台:{}对组织:{}中用户:{}解绑所有角色:{}, 操作用户:{}。", appId, organId, unBindUserId, userId);
-        uimUserService.getUserById(unBindUserId);
+        log.info("平台:{}对组织:{}中用户:{}解绑所有角色, 操作用户:{}。", appId, organId, unBindUserId, userId);
+        Option.of(unBindUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         List<UimUserRole> uimUserRoleList =
                 list(Wrappers.<UimUserRole>lambdaQuery().eq(UimUserRole::getUserId, unBindUserId));
         if (uimUserRoleList == null || uimUserRoleList.size() == 0) {
@@ -117,16 +118,16 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
         List<Long> ids = uimUserRoleList.stream().map(UimUserRole::getId).collect(Collectors.toList());
         boolean remove = removeByIds(ids);
         if (!remove) {
-            log.info("平台:{}对组织:{}中用户:{}解绑所有角色:{}失败, 操作用户:{}。", appId, organId, unBindUserId, userId);
+            log.info("平台:{}对组织:{}中用户:{}解绑所有角色失败, 操作用户:{}。", appId, organId, unBindUserId, userId);
             throw new BusinessException(UimErrorEnum.USER_ROLE_UNBIND_ERROR);
         }
-        log.info("平台:{}对组织:{}中用户:{}解绑所有角色:{}成功, 操作用户:{}。", appId, organId, unBindUserId, userId);
+        log.info("平台:{}对组织:{}中用户:{}解绑所有角色成功, 操作用户:{}。", appId, organId, unBindUserId, userId);
         return true;
     }
 
     @Override
     public List<UimUserRoleBindVO> listUimUserRole(Long userId, Long organId, Long appId) {
-        uimUserService.getUserById(userId);
+        Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         List<UimUserRole> uimUserRoleList =
                 list(Wrappers.<UimUserRole>lambdaQuery().eq(UimUserRole::getUserId, userId));
         if (uimUserRoleList == null || uimUserRoleList.size() == 0) {
@@ -164,7 +165,7 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     }
 
     @Override
-    public List<String> listRoleCode(Long userId, Long appId) {
+    public List<String> listRoleCode(Long userId) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         List<UimUserRole> uimUserRoleList =
                 list(Wrappers.<UimUserRole>lambdaQuery().eq(UimUserRole::getUserId, userId));
@@ -176,7 +177,7 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
             Long roleId = uimUserRole.getRoleId();
             roleIds.add(roleId);
         }
-        List<String> listRoleCode = uimRoleService.listRoleCode(roleIds, appId);
+        List<String> listRoleCode = uimRoleService.listRoleCode(roleIds);
         return listRoleCode;
     }
 }

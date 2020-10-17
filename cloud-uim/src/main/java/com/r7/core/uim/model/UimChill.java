@@ -3,6 +3,8 @@ package com.r7.core.uim.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.uim.dto.UimChillSaveDTO;
+import com.r7.core.uim.vo.UimChillVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,7 +35,7 @@ public class UimChill extends Model<UimChill> {
      * 冻结资源;登录/邀请码/提现/平台冻结
      */
     @ApiModelProperty("冻结资源id")
-    private String resourceId;
+    private Long resourceId;
     /**
      * 描述
      */
@@ -60,4 +62,18 @@ public class UimChill extends Model<UimChill> {
     @ApiModelProperty("更新时间")
     private Date updatedAt;
 
+    public void toUimChill(UimChillSaveDTO uimChillSaveDto) {
+        this.setUserId(uimChillSaveDto.getUserId());
+        this.setResourceId(uimChillSaveDto.getResourceId());
+        this.setDescription(uimChillSaveDto.getDescription());
+    }
+
+    public UimChillVO toUimChillVo() {
+        UimChillVO uimChillVO = new UimChillVO();
+        uimChillVO.setId(this.getId());
+        uimChillVO.setUserId(this.getUserId());
+        uimChillVO.setResourceId(this.getResourceId());
+        uimChillVO.setDescription(this.getDescription());
+        return uimChillVO;
+    }
 }

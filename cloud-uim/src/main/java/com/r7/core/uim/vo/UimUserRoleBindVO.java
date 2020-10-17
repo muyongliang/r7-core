@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * @author zs
- * @description:
+ * @description: 用户角色绑定关系展示
  * @date : 2020-10-12
  */
 @Data

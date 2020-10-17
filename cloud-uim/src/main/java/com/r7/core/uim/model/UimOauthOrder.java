@@ -3,6 +3,8 @@ package com.r7.core.uim.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.uim.dto.UimOauthOrderDTO;
+import com.r7.core.uim.vo.UimOauthOrderVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -50,7 +52,7 @@ public class UimOauthOrder extends Model<UimOauthOrder> {
     @ApiModelProperty("审核内容")
     private String context;
     /**
-     * 审核状态;未审核，待审核，审核通过，审核驳回
+     * 审核状态 1未审核，2待审核，3审核通过，4审核驳回
      */
     @ApiModelProperty("审核状态")
     private Integer status;
@@ -85,4 +87,27 @@ public class UimOauthOrder extends Model<UimOauthOrder> {
     @ApiModelProperty("更新时间")
     private Date updatedAt;
 
+    public UimOauthOrderVO toUimOauthOrderVo() {
+        UimOauthOrderVO uimOauthOrderVo = new UimOauthOrderVO();
+        uimOauthOrderVo.setId(this.getId());
+        uimOauthOrderVo.setUserId(this.getUserId());
+        uimOauthOrderVo.setAppId(this.getAppId());
+        uimOauthOrderVo.setType(this.getType());
+        uimOauthOrderVo.setOauthKey(this.getOauthKey());
+        uimOauthOrderVo.setContext(this.getContext());
+        uimOauthOrderVo.setStatus(this.getStatus());
+        uimOauthOrderVo.setSort(this.getSort());
+        uimOauthOrderVo.setDescription(this.getDescription());
+        return uimOauthOrderVo;
+    }
+
+    public void toUimOauthOrder(UimOauthOrderDTO uimOauthOrderDto) {
+        this.setUserId(uimOauthOrderDto.getUserId());
+        this.setType(uimOauthOrderDto.getType());
+        this.setOauthKey(uimOauthOrderDto.getOauthKey());
+        this.setContext(uimOauthOrderDto.getContext());
+        this.setStatus(uimOauthOrderDto.getStatus());
+        this.setSort(uimOauthOrderDto.getSort());
+        this.setDescription(uimOauthOrderDto.getDescription());
+    }
 }
