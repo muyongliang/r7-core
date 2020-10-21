@@ -1,9 +1,13 @@
 package com.r7.core.uim.service.impl;
 
+import com.google.common.collect.Lists;
+import com.r7.core.cache.service.RedisListService;
 import com.r7.core.uim.constant.PermissionEnum;
+import com.r7.core.uim.constant.RedisConstant;
 import com.r7.core.uim.service.RbacService;
 import com.r7.core.uim.service.UimRoleResourceService;
 import com.r7.core.uim.vo.UimResourceInfoVo;
+import com.r7.core.uim.vo.UimRoleResourceVO;
 import io.vavr.control.Option;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,7 +33,7 @@ public class RbacServiceImpl implements RbacService {
     private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     @Resource
-    private UimRoleResourceService uimRoleResourceService;
+    private RedisListService redisListService;
 
     @Override
     public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
@@ -53,7 +57,14 @@ public class RbacServiceImpl implements RbacService {
         List<String> roleCodes = authorities.stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         // 获取用户角色对应的资源
-        List<UimResourceInfoVo> uimResourceInfoVoList = uimRoleResourceService.listResourceUrlByRoleCodes(roleCodes);
+        List<UimRoleResourceVO> uimRoleResourceVos = redisListService.getKey(RedisConstant.REDIS_RESOURCE_ROLE_KEY,
+                UimRoleResourceVO.class);
+        List<UimResourceInfoVo> uimResourceInfoVoList = Lists.newArrayListWithExpectedSize(uimRoleResourceVos.size());
+        roleCodes.forEach(x ->
+                uimResourceInfoVoList.addAll(uimRoleResourceVos.stream()
+                        .filter(y -> y.getRoleCode().equals(x))
+                        .map(UimRoleResourceVO::toUimResourceInfoVo).collect(Collectors.toList()))
+        );
 
         return Option.of(uimResourceInfoVoList).exists(x ->
                 x.stream().anyMatch(y -> {

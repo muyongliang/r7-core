@@ -1,5 +1,6 @@
 package com.r7.core.uim.controller;
 
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.uim.dto.UimOauthDTO;
 import com.r7.core.uim.model.UimOauth;
@@ -29,7 +30,8 @@ public class UimOauthController {
     @ApiOperation(value = "新增用户认证", response = UimOauthVO.class)
     @PostMapping("/")
     public ResponseEntity saveUimOauth(@RequestBody UimOauthDTO uimOauthDto) {
-        return ResponseEntity.success(uimOauthService.saveUimOauth(uimOauthDto, 0L, 0L, 0L));
+        return ResponseEntity.success(uimOauthService.saveUimOauth(uimOauthDto, RequestHolder.getAppId(),
+                RequestHolder.getOrganId(), RequestHolder.getUserId()));
     }
 
     @ApiOperation(value = "根据用户id查询认证信息", response = UimOauthVO.class)

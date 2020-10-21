@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.r7.core.uim.mapper.UimRoleResourceMapper">
+
+    <select id="listUimRoleResourceVo" resultType="com.r7.core.uim.vo.UimRoleResourceVO">
+        select u.app_id, url as resource_url, permission, ur.code as role_code from uim_role_resource urr
+        join   uim_role ur  on (urr.role_id=ur.id)
+        join uim_resource u on urr.resource_id = u.id;
+    </select>
+</mapper>

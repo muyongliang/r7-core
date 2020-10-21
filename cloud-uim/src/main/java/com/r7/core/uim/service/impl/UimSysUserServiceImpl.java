@@ -19,9 +19,6 @@ public class UimSysUserServiceImpl extends ServiceImpl<UimSysUserMapper, UimSysU
 
     @Override
     public UimUserDetailsVO findUserDetailsByLogin(String loginName) {
-
-
-
-        return null;
+        return baseMapper.findUserDetailsByLogin(loginName);
     }
 }

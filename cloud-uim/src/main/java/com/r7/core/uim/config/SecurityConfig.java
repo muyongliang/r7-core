@@ -1,5 +1,6 @@
 package com.r7.core.uim.config;
 
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     private static final String[] SYSTEM_AUTH_LIST = {
             "/oauth/**",
-            "/sign/**"};
+            "/sign/**",
+            "/rsa/**"};
 
 
     @Bean
@@ -58,9 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(SWAGGER_AUTH_LIST)
                 .permitAll()
                 .antMatchers(SYSTEM_AUTH_LIST)
-                .permitAll()
-                .anyRequest()
-                .access("@rbacService.hasPermission(request,authentication)");
+                .permitAll();
+        http.authorizeRequests()
+                .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
+                .anyRequest().authenticated();
     }
 
 }
