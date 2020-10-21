@@ -9,10 +9,7 @@
     </appender>
 
     <appender name="INFO_WARN_FILE" class="ch.qos.logback.core.FileAppender">
-        <File>${logDir}/${app.name}_info.log</File>
-        <!--        <filter class="com.r7.core.common.logging.MultipleLevelsFilter">-->
-        <!--            <levels>INFO|WARN</levels>-->
-        <!--        </filter>-->
+        <File>${logDir}/${app.name}_info_warn.log</File>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
             <onMatch>ACCEPT</onMatch>
@@ -23,10 +20,15 @@
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
-        <!--根据yyyy-MM-dd所以是每天新建文件，也可以设置其它格式，如每月或每分-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/car-trace.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
-        </rollingPolicy>
+        <!--        版本问题导致不适用-->
+        <!--        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
+        <!--            &lt;!&ndash;日志文件输出的文件名&ndash;&gt;-->
+        <!--            <FileNamePattern>${logDir}/${app.name}_info_warn.log.%d{yyyy-MM-dd-HH}.%i.log</FileNamePattern>-->
+        <!--            &lt;!&ndash;日志文件保留天数&ndash;&gt;-->
+        <!--            <MaxHistory>30</MaxHistory>-->
+        <!--            &lt;!&ndash;日志文件的最大大小&ndash;&gt;-->
+        <!--            <MaxFileSize>10MB</MaxFileSize>-->
+        <!--        </rollingPolicy>-->
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%-5level] [%logger{40}:%line] - %msg%n</pattern>
             <charset>UTF-8</charset>
@@ -37,10 +39,6 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
         </filter>
-        <!--根据yyyy-MM-dd所以是每天新建文件，也可以设置其它格式，如每月或每分-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/car-trace.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
-        </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%-5level] [%logger{40}:%line] - %msg%n</pattern>
             <charset>UTF-8</charset>
@@ -51,10 +49,6 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
         </filter>
-        <!--根据yyyy-MM-dd所以是每天新建文件，也可以设置其它格式，如每月或每分-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/car-trace.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
-        </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%-5level] [%logger{40}:%line] - %msg%n</pattern>
             <charset>UTF-8</charset>
@@ -64,6 +58,7 @@
     <root level="debug">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="INFO_FILE"/>
+        <appender-ref ref="INFO_WARN_FILE"/>
         <appender-ref ref="ERROR_FILE"/>
     </root>
 
