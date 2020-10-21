@@ -12,6 +12,9 @@ import com.r7.core.stand.video.vo.CoreVideoVO;
 
 public interface CoreVideoService {
 
+
+
+
     /**
      * 根据视频id查询详细信息
      * @param id 视频id
