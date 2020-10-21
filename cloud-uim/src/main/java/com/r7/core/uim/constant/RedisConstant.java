@@ -1,0 +1,12 @@
+package com.r7.core.uim.constant;
+
+/**
+ * redis 常量
+ *
+ * @author zhongpingli
+ */
+public class RedisConstant {
+
+    public static final String REDIS_RESOURCE_ROLE_KEY = "AUTH:REDIS_RESOURCE_ROLE";
+
+}

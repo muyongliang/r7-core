@@ -1,5 +1,6 @@
 package com.r7.core.uim.controller;
 
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.uim.dto.UimOauthOrderDTO;
 import com.r7.core.uim.service.UimOauthOrderService;
@@ -30,7 +31,8 @@ public class UimOauthOrderController {
     @PostMapping("/")
     public ResponseEntity saveUimOauthOrder(@RequestBody UimOauthOrderDTO uimOauthOrderDto) {
         return ResponseEntity.success(uimOauthOrderService
-                .saveUimOauthOrder(uimOauthOrderDto, 0L, 0L, 0L));
+                .saveUimOauthOrder(uimOauthOrderDto, RequestHolder.getAppId(),
+                        RequestHolder.getOrganId(), RequestHolder.getUserId()));
     }
 
     @ApiOperation(value = "修改用户认证订单", response = UimOauthOrderVO.class)
@@ -38,7 +40,8 @@ public class UimOauthOrderController {
     public ResponseEntity updateUimOauthOrder(@PathVariable Long id,
                                               @RequestBody UimOauthOrderDTO uimOauthOrderDto) {
         return ResponseEntity.success(uimOauthOrderService
-                .updateUimOauthOrder(id, uimOauthOrderDto, 0L, 0L, 0L));
+                .updateUimOauthOrder(id, uimOauthOrderDto, RequestHolder.getAppId(),
+                        RequestHolder.getOrganId(), RequestHolder.getUserId()));
     }
 
     @ApiOperation(value = "根据id查询认证信息", response = UimOauthVO.class)

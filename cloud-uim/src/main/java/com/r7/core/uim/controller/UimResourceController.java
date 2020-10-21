@@ -1,6 +1,7 @@
 package com.r7.core.uim.controller;
 
 
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.uim.dto.UimResourceSaveDTO;
 import com.r7.core.uim.dto.UimResourceUpdateDTO;
@@ -32,7 +33,8 @@ public class UimResourceController {
     @ApiOperation(value = "创建资源", response = UimResourceVO.class)
     @PostMapping("")
     public ResponseEntity saveUimResource(@RequestBody UimResourceSaveDTO uimResourceSaveDto) {
-        return ResponseEntity.success(uimResourceService.saveUimResource(uimResourceSaveDto, 0L, 0L));
+        return ResponseEntity.success(uimResourceService.saveUimResource(uimResourceSaveDto,
+                RequestHolder.getAppId(), RequestHolder.getUserId()));
     }
 
 
@@ -40,27 +42,30 @@ public class UimResourceController {
     @PutMapping("/{resourceId}")
     public ResponseEntity updateUimResource(@PathVariable("resourceId") Long resourceId,
                                             @RequestBody UimResourceUpdateDTO uimResourceSaveDto) {
-        return ResponseEntity.success(uimResourceService.updateUimResource(resourceId, uimResourceSaveDto, 0L, 0L));
+        return ResponseEntity.success(uimResourceService.updateUimResource(resourceId, uimResourceSaveDto,
+                RequestHolder.getAppId(), RequestHolder.getUserId()));
     }
 
     @ApiOperation(value = "根据ID删除资源", response = Boolean.class)
     @DeleteMapping("/{resourceId}")
     public ResponseEntity removeUimResource(@PathVariable("resourceId") Long resourceId) {
-        return ResponseEntity.success(uimResourceService.removeUimResource(resourceId, 0L, 0L));
+        return ResponseEntity.success(uimResourceService.removeUimResource(resourceId,
+                RequestHolder.getUserId(), RequestHolder.getAppId()));
     }
 
 
     @ApiOperation(value = "树形展示资源", response = UimResourceNodeVO.class)
     @GetMapping("/tree")
     public ResponseEntity treeUimResource() {
-        return ResponseEntity.success(uimResourceService.treeUimResource(0L, 0L));
+        return ResponseEntity.success(uimResourceService.treeUimResource(RequestHolder.getAppId(),
+                RequestHolder.getOrganId()));
     }
 
 
     @ApiOperation(value = "根据ID获取资源详情", response = UimResourceVO.class)
     @GetMapping("/{resourceId}")
     public ResponseEntity getUimResourceById(@PathVariable("resourceId") Long resourceId) {
-        return ResponseEntity.success(uimResourceService.getUimResourceById(resourceId, 0L));
+        return ResponseEntity.success(uimResourceService.getUimResourceById(resourceId, RequestHolder.getAppId()));
     }
 
 }

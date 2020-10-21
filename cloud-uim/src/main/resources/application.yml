@@ -5,7 +5,7 @@ server:
 
 spring:
   application:
-    name: cloud-uims
+    name: cloud-uim
   profiles:
     active: dev
   cloud:

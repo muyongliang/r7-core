@@ -37,7 +37,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
      */
     private static final String[] SYSTEM_AUTH_LIST = {
             "/oauth/**",
-            "/sign/**"};
+            "/sign/**",
+            "/rsa/**"};
 
     @Resource
     private OAuth2WebSecurityExpressionHandler expressionHandler;
@@ -54,8 +55,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .anyRequest()
                 .access("@rbacService.hasPermission(request,authentication)");
     }
-
-
 
 
     @Bean

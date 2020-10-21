@@ -20,14 +20,14 @@
         <module>cloud-stand</module>
         <module>cloud-trigger</module>
         <module>cloud-integral</module>
-        <module>uim-main</module>
+        <module>cloud-cache</module>
     </modules>
 
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.0.RELEASE</version>
+        <version>2.3.0.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -42,9 +42,9 @@
         <mybatis.plus.version>3.3.0</mybatis.plus.version>
         <alibaba.druid.version>1.1.23</alibaba.druid.version>
         <security.jwt.version>1.1.0.RELEASE</security.jwt.version>
-        <spring-cloud-alibaba.version>2.1.0.RELEASE</spring-cloud-alibaba.version>
-        <spring-cloud.version>Greenwich.SR3</spring-cloud.version>
-        <nimbus.version>9.0.1</nimbus.version>
+        <spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
+        <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+        <nimbus.version>8.9</nimbus.version>
         <minio.version>7.1.4</minio.version>
     </properties>
 

@@ -1,5 +1,6 @@
 package com.r7.core.uim.controller;
 
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.uim.dto.UimOrganSaveDTO;
 import com.r7.core.uim.dto.UimOrganUpdateDTO;
@@ -34,32 +35,37 @@ public class UimOrganController {
     @PostMapping("/{pId}")
     public ResponseEntity saveUimOrganByPid(@PathVariable("pId") Long pId,
                                             @Valid @RequestBody UimOrganSaveDTO uimOrganSaveDTO) {
-        return ResponseEntity.success(uimOrganService.saveUimOrganByPid(pId, uimOrganSaveDTO, 0L, 0L));
+        return ResponseEntity.success(uimOrganService.saveUimOrganByPid(pId, uimOrganSaveDTO,
+                RequestHolder.getUserId(), RequestHolder.getAppId()));
     }
 
     @ApiOperation(value = "根据ID删除组织", response = Boolean.class)
     @DeleteMapping("/{id}")
     public ResponseEntity removeUimOrganById(@PathVariable("id") Long id) {
-        return ResponseEntity.success(uimOrganService.removeUimOrganById(id, 0L, 0L));
+        return ResponseEntity.success(uimOrganService.removeUimOrganById(id,
+                RequestHolder.getUserId(), RequestHolder.getAppId()));
     }
 
     @ApiOperation(value = "根据ID批量删除组织", response = Boolean.class)
     @DeleteMapping("")
     public ResponseEntity removeUimOrganByIds(@RequestBody List<Long> ids) {
-        return ResponseEntity.success(uimOrganService.removeUimOrganByIds(ids, 0L, 0L));
+        return ResponseEntity.success(uimOrganService.removeUimOrganByIds(ids,
+                RequestHolder.getUserId(), RequestHolder.getAppId()));
     }
 
     @ApiOperation(value = "根据ID修改组织", response = UimOrganVO.class)
     @PutMapping("/{id}")
     public ResponseEntity updateUimOrganById(@PathVariable("id") Long id,
                                              @Valid @RequestBody UimOrganUpdateDTO uimOrganUpdateDTO) {
-        return ResponseEntity.success(uimOrganService.updateUimOrganById(id, uimOrganUpdateDTO, 0L, 0L));
+        return ResponseEntity.success(uimOrganService.updateUimOrganById(id, uimOrganUpdateDTO,
+                RequestHolder.getUserId(), RequestHolder.getAppId()));
     }
 
     @ApiOperation(value = "树形展示组织", response = UimOrganNodeVO.class)
     @GetMapping("/tree")
     public ResponseEntity treeUimOrganNodeByPid() {
-        return ResponseEntity.success(uimOrganService.treeUimOrganNodeByPid(0L, 0L));
+        return ResponseEntity.success(uimOrganService.treeUimOrganNodeByPid(RequestHolder.getOrganId(),
+                RequestHolder.getAppId()));
     }
 
 }

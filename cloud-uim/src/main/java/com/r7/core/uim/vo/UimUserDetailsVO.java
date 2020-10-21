@@ -23,6 +23,11 @@ public class UimUserDetailsVO implements UserDetails {
     @ApiModelProperty("用户名")
     private String userName;
 
+    @ApiModelProperty("组织ID")
+    private Long organId;
+
+    @ApiModelProperty("平台ID")
+    private Long appId;
 
     @ApiModelProperty("登陆名")
     private String loginName;
@@ -43,6 +48,14 @@ public class UimUserDetailsVO implements UserDetails {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getOrganId() {
+        return organId;
+    }
+
+    public Long getAppId() {
+        return appId;
     }
 
     @Override
@@ -86,7 +99,7 @@ public class UimUserDetailsVO implements UserDetails {
         this.roles = roles;
         List<GrantedAuthority> authorities = Lists.newArrayList();
         for (String role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role));
+            authorities.add(new SimpleGrantedAuthority(role.toUpperCase()));
         }
         this.authorities = authorities;
     }

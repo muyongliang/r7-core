@@ -1,5 +1,6 @@
 package com.r7.core.uim.controller;
 
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.uim.dto.UimOauthDTO;
 import com.r7.core.uim.dto.UimOauthInfoDTO;
@@ -36,7 +37,7 @@ public class UimOauthInfoController {
     public ResponseEntity saveUimOauthInfo(@PathVariable Long userId,
                                            @RequestBody UimOauthInfoDTO uimOauthInfoDto) {
         return ResponseEntity.success(uimOauthInfoService
-                .saveUimOauthInfo(userId, uimOauthInfoDto, 0L, 0L));
+                .saveUimOauthInfo(userId, uimOauthInfoDto, RequestHolder.getAppId(), RequestHolder.getOrganId()));
     }
 
     @ApiOperation(value = "根据用户id查询认证信息", response = UimOauthVO.class)
