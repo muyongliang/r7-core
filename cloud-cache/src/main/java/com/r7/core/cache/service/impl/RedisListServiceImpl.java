@@ -1,5 +1,7 @@
 package com.r7.core.cache.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONUtil;
 import com.r7.core.cache.constant.PushType;
 import com.r7.core.cache.service.RedisListService;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static io.vavr.API.*;
 
@@ -25,14 +28,15 @@ public class RedisListServiceImpl implements RedisListService {
     @Override
     public <T> void addListValue(String key, List<T> listValue, PushType type) {
 
+        Object[] objects = listValue.stream().map(JSONUtil::toJsonStr).toArray();
 
         Match(type).of(
                 Case($(PushType.RIGHT),
                         o -> run(() ->
-                                redisTemplate.opsForList().rightPushAll(key, listValue))),
+                                redisTemplate.opsForList().rightPushAll(key, objects))),
                 Case($(PushType.LEFT),
                         o -> run(() ->
-                                redisTemplate.opsForList().leftPushAll(key, listValue))),
+                                redisTemplate.opsForList().leftPushAll(key, objects))),
                 Case($(), new RuntimeException("type不能为null"))
         );
     }
@@ -48,14 +52,23 @@ public class RedisListServiceImpl implements RedisListService {
 
     @Override
     public <T> List<T> getKey(String key, Class<T> t) {
-        return (List<T>) redisTemplate.opsForList().range(key, 0, -1);
+        List<Object> values = redisTemplate.opsForList().range(key, 0, -1);
+        if (values == null || values.size() == 0) {
+            return null;
+        }
+        return values.stream().map(x -> JSONUtil.toBean(x.toString(), t)).collect(Collectors.toList());
     }
 
     @Override
     public <T> T updateValueByKey(String key, T newValue, Integer index, Class<T> t) {
 
         redisTemplate.opsForList().set(key, index, newValue);
-        return (T) redisTemplate.opsForList().index(key, index);
+        Object value = redisTemplate.opsForList().index(key, index);
+        if (ObjectUtil.isNotEmpty(value)) {
+            return JSONUtil.toBean(value.toString(), t);
+
+        }
+        return null;
     }
 
     @Override
