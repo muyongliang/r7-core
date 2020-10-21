@@ -1,5 +1,6 @@
 package com.r7.core.uim.controller;
 
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.uim.service.UimRoleResourceService;
 import io.swagger.annotations.Api;
@@ -30,7 +31,8 @@ public class UimRoleResourceController {
     public ResponseEntity bindResourceByRoleId(@PathVariable("roleId") Long roleId,
                                                @RequestBody List<Long> resourceIds) {
         return ResponseEntity.success(uimRoleResourceService
-                .bindResourceByRoleId(roleId, resourceIds, 0L, 0L, 0L));
+                .bindResourceByRoleId(roleId, resourceIds, RequestHolder.getAppId(),
+                        RequestHolder.getOrganId(), RequestHolder.getUserId()));
     }
 
 }

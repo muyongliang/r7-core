@@ -19,22 +19,21 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.r7.core</groupId>
+            <artifactId>cloud-cache</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!--分布式认证-->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-security</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
-
-        <!-- jwt -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-jwt</artifactId>
-            <version>${security.jwt.version}</version>
         </dependency>
 
         <!-- jwt类库-->

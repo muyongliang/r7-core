@@ -3,22 +3,24 @@ package com.r7.core.uim.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
+import com.r7.core.cache.constant.PushType;
+import com.r7.core.cache.service.RedisListService;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
+import com.r7.core.uim.constant.RedisConstant;
 import com.r7.core.uim.constant.UimErrorEnum;
 import com.r7.core.uim.mapper.UimRoleResourceMapper;
 import com.r7.core.uim.model.UimRoleResource;
 import com.r7.core.uim.service.UimResourceService;
 import com.r7.core.uim.service.UimRoleResourceService;
 import com.r7.core.uim.service.UimRoleService;
-import com.r7.core.uim.vo.UimResourceInfoVo;
-import com.r7.core.uim.vo.UimResourceVO;
-import com.r7.core.uim.vo.UimRoleResourceBindVo;
+import com.r7.core.uim.vo.*;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +42,20 @@ public class UimRoleResourceServiceImpl extends ServiceImpl<UimRoleResourceMappe
 
     @Resource
     private UimResourceService uimResourceService;
+
+    @Resource
+    private RedisListService redisListService;
+
+    /**
+     * 初始化资源对应的角色
+     */
+    @PostConstruct
+    public void init() {
+        List<UimRoleResourceVO> uimRoleResourceVos = baseMapper.listUimRoleResourceVo();
+        redisListService.removeByKey(RedisConstant.REDIS_RESOURCE_ROLE_KEY);
+        redisListService.addListValue(RedisConstant.REDIS_RESOURCE_ROLE_KEY,
+                uimRoleResourceVos, PushType.LEFT);
+    }
 
     @Override
     @Transactional
@@ -98,6 +114,8 @@ public class UimRoleResourceServiceImpl extends ServiceImpl<UimRoleResourceMappe
         unBindResourceByRoleId(roleId, appId, organId, userId);
         // 再绑定
         resourceIds.forEach(x -> bindResourceByRoleId(roleId, x, appId, organId, userId));
+        // 重新缓存
+        init();
         return true;
     }
 

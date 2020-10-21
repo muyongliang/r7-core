@@ -1,5 +1,6 @@
 package com.r7.core.uim.controller;
 
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.uim.dto.UimRoleDTO;
 import com.r7.core.uim.dto.UimRoleSaveDTO;
@@ -37,7 +38,8 @@ public class UimRoleController {
     @PutMapping("/{id}")
     public ResponseEntity updateRoleById(@PathVariable("id") Long id,
                                          @Valid @RequestBody UimRoleDTO uimRoleDto) {
-        return ResponseEntity.success(uimRoleService.updateRoleById(id, uimRoleDto, 0L, 0L, 0L));
+        return ResponseEntity.success(uimRoleService.updateRoleById(id, uimRoleDto,
+                RequestHolder.getUserId(), RequestHolder.getAppId(), RequestHolder.getOrganId()));
     }
 
 
@@ -46,7 +48,8 @@ public class UimRoleController {
             response = UimRoleVO.class)
     @PostMapping("")
     public ResponseEntity saveRole(@Valid @RequestBody UimRoleSaveDTO uimRoleSaveDto) {
-        return ResponseEntity.success(uimRoleService.saveRole(uimRoleSaveDto, 0L, 0L, 0L));
+        return ResponseEntity.success(uimRoleService.saveRole(uimRoleSaveDto,
+                RequestHolder.getAppId(), RequestHolder.getOrganId(), RequestHolder.getUserId()));
     }
 
     @ApiOperation(
@@ -54,7 +57,8 @@ public class UimRoleController {
             response = Boolean.class)
     @DeleteMapping("/{id}")
     public ResponseEntity removeRoleById(@PathVariable("id") Long id) {
-        return ResponseEntity.success(uimRoleService.removeRoleById(id, 0L, 0L, 0L));
+        return ResponseEntity.success(uimRoleService.removeRoleById(id,
+                RequestHolder.getUserId(), RequestHolder.getAppId(), RequestHolder.getOrganId()));
     }
 
     @ApiOperation(
@@ -62,7 +66,8 @@ public class UimRoleController {
             response = Boolean.class)
     @DeleteMapping("")
     public ResponseEntity removeRoleByIds(@RequestBody List<Long> ids) {
-        return ResponseEntity.success(uimRoleService.removeRoleByIds(ids, 0L, 0L, 0L));
+        return ResponseEntity.success(uimRoleService.removeRoleByIds(ids,
+                RequestHolder.getUserId(), RequestHolder.getAppId(), RequestHolder.getOrganId()));
     }
 
     @ApiOperation(
@@ -72,7 +77,8 @@ public class UimRoleController {
     public ResponseEntity pageRole(@RequestParam(value = "search", required = false) String search,
                                    @RequestParam(value = "pageNum", defaultValue = "1") long pageNum,
                                    @RequestParam(value = "pageSize", defaultValue = "15") long pageSize) {
-        return ResponseEntity.success(uimRoleService.pageRole(search, 0L, 0L, pageNum, pageSize));
+        return ResponseEntity.success(uimRoleService.pageRole(search,
+                RequestHolder.getAppId(), RequestHolder.getOrganId(), pageNum, pageSize));
     }
 
     @ApiOperation(
@@ -80,7 +86,8 @@ public class UimRoleController {
             response = UimRoleVO.class)
     @GetMapping("/{id}")
     public ResponseEntity getRoleById(@PathVariable("id") Long id) {
-        return ResponseEntity.success(uimRoleService.getRoleById(id, 0L, 0L));
+        return ResponseEntity.success(uimRoleService.getRoleById(id,
+                RequestHolder.getAppId(), RequestHolder.getOrganId()));
     }
 
 }

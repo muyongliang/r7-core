@@ -1,5 +1,6 @@
 package com.r7.core.uim.controller;
 
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.uim.service.UimUserRoleService;
 import io.swagger.annotations.Api;
@@ -29,14 +30,15 @@ public class UimUserRoleController {
     public ResponseEntity bindRoleByUserId(@PathVariable("bindUserId") Long bindUserId,
                                            @RequestBody List<Long> roleIds) {
         return ResponseEntity.success(uimUserRoleService
-                .bindRoleByUserId(bindUserId, roleIds, 0L, 0L, 0L));
+                .bindRoleByUserId(bindUserId, roleIds, RequestHolder.getAppId(),
+                        RequestHolder.getOrganId(), RequestHolder.getUserId()));
     }
 
     @ApiOperation(value = "根据用户ID查询绑定角色", response = Boolean.class)
     @GetMapping("/userId/{userId}")
     public ResponseEntity listRoleByUserId(@PathVariable("userId") Long userId) {
         return ResponseEntity.success(uimUserRoleService
-                .listUimUserRole(userId, 0L, 0L));
+                .listUimUserRole(userId, RequestHolder.getOrganId(), RequestHolder.getAppId()));
     }
 
 }
