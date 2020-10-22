@@ -56,7 +56,7 @@ public class RecordingSample implements RecordingEventHandler {
     HashMap<String, UserInfo> audioChannels = new HashMap<String, UserInfo>();
     HashMap<String, UserInfo> videoChannels = new HashMap<String, UserInfo>();
     Timer cleanTimer = null;
-    private int layoutMode = 0;
+    private int layoutMode = 1;
     private long maxResolutionUid = -1;
     private String maxResolutionUserAccount = "";
     private int keepLastFrame = 0;
@@ -176,6 +176,7 @@ public class RecordingSample implements RecordingEventHandler {
         //PrintUsersInfo(m_peers);
         // When the user joined, we can re-layout the canvas
         if (userAccount.length() > 0) {
+            //todo 不等于垂直布局
             if (layoutMode != VERTICALPRESENTATION_LAYOUT || RecordingSDKInstance.getUidByUserAccount(maxResolutionUserAccount) != 0) {
                 SetVideoMixingLayout();
             }
@@ -402,6 +403,7 @@ public class RecordingSample implements RecordingEventHandler {
             if (layoutMode == BESTFIT_LAYOUT) {
                 adjustBestFitVideoLayout(regionList, layout, videoUids);
             } else if (layoutMode == VERTICALPRESENTATION_LAYOUT) {
+                // todo 垂直布局
                 adjustVerticalPresentationLayout(maxuid, regionList, layout, videoUids);
             } else {
                 adjustDefaultVideoLayout(regionList, layout, videoUids);
@@ -788,12 +790,12 @@ public class RecordingSample implements RecordingEventHandler {
         return true;
     }
 
-    public void createChannel(String appId, String channelKey, String name, Integer uid, String userAccount, RecordingConfig config, Integer logLevel) {
+    public void createChannel(String appId, String channelKey, String channelName, Integer uid, String userAccount, RecordingConfig config, Integer logLevel) {
         // run jni event loop , or start a new thread to do it
         cleanTimer = new Timer();
         System.out.println("appId = " + appId);
         System.out.println("channelKey = " + channelKey);
-        System.out.println("name = " + name);
+        System.out.println("name = " + channelName);
         System.out.println("uid = " + uid);
         if (config != null) {
             System.out.println("appliteDir = " + config.appliteDir);
@@ -804,11 +806,15 @@ public class RecordingSample implements RecordingEventHandler {
         System.out.println("userAccount = " + userAccount);
         System.out.println("logLevel = " + logLevel);
         if (userAccount != null && userAccount.length() > 0) {
-            RecordingSDKInstance.createChannelWithUserAccount(appId, channelKey, name, userAccount, config, logLevel);
+            RecordingSDKInstance.createChannelWithUserAccount(appId, channelKey, channelName, userAccount, config, logLevel);
         } else {
-            RecordingSDKInstance.createChannel(appId, channelKey, name, uid, config, logLevel);
+            RecordingSDKInstance.createChannel(appId, channelKey, channelName, uid, config, logLevel);
         }
         cleanTimer.cancel();
         System.out.println("jni layer has been exited...");
     }
+
+//    public String getFileDir() {
+//        return storageDir;
+//    }
 }

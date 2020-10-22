@@ -6,46 +6,141 @@ import com.r7.core.stand.video.common.Common.*;
 public class RecordingConfig {
 
   public RecordingConfig() {
-    // todo 不存在
+    /**
+     * 声网appId
+     */
     appId = "";
-    appCertificate = "";
+    /**
+     * 证书
+     */
+    appCertificate ="";
+    /**
+     * 到期时间
+     */
     expirationTimeInSeconds = 0;
-    //todo 不存在
+    /**
+     * 纯音频
+     */
     isAudioOnly = false;
+    /**
+     * 纯视频
+     */
     isVideoOnly = false;
+    /**
+     * 启用音视频混合
+     */
     isMixingEnabled = false;
+    /**
+     * 混合音视频
+     */
     mixedVideoAudio = MIXED_AV_CODEC_TYPE.MIXED_AV_DEFAULT;
-
+    /**
+     * 混合分辨率
+     */
     mixResolution = "";
+    /**
+     * 解密方式
+     */
     decryptionMode = "";
+    /**
+     * 秘钥
+     */
     secret = "";
+    /**
+     * 设置AgoraCoreService的路径
+     */
     appliteDir = "";
+    /**
+     * 记录文件根目录
+     */
     recordFileRootDir = "";
+    /**
+     * cfg文件路径
+     */
     cfgFilePath = "";
+    /**
+     * 代理类型
+     */
     proxyType = 1;
+    /**
+     * 代理服务
+     */
     proxyServer = "";
+    /**
+     * 默认视频背景路径
+     */
     defaultVideoBgPath = "";
+    /**
+     * 默认用户背景路径
+     */
     defaultUserBgPath = "";
-
+    /**
+     * 设置最低的UDP端口。确保highUdpPort的值-lowUdpPort≥6
+     */
     lowUdpPort = 0;//40000;
+    /**
+     * 设置最高的UDP端口。确保highUdpPort的值-lowUdpPort≥6
+     */
     highUdpPort = 0;//40004;
+    /**
+     * 空闲最大时间（秒）
+     */
     idleLimitSec = 300;
+    /**
+     * 屏幕捕获间隔
+     */
     captureInterval = 5;
+    /**
+     * 触发方式，0自动/1手动
+     */
     triggerMode = 0;
+    /**
+     * 是否检测说话用户的间隔
+     */
     audioIndicationInterval = 0;
+    /**
+     * 音频资料
+     */
     audioProfile = 0;
-
+    /**
+     * 视频解码格式
+     */
     decodeVideo = VIDEO_FORMAT_TYPE.VIDEO_FORMAT_DEFAULT_TYPE;
+    /**
+     * 音频解码格式
+     */
     decodeAudio = AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE;
+    /**
+     * 频道信息
+     */
     channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION;
+    /**
+     * 流类型
+     */
     streamType = REMOTE_VIDEO_STREAM_TYPE.REMOTE_VIDEO_STREAM_HIGH;
-
+    /**
+     * 自动订阅
+     */
     autoSubscribe = true;
+    /**
+     * 启用云代理
+     */
     enableCloudProxy = false;
+    /**
+     * 订阅视频的uid
+     */
     subscribeVideoUids = "";
+    /**
+     * 订阅音频的uid
+     */
     subscribeAudioUids = "";
-    
+    /**
+     * 设置是否启用关键帧请求
+     */
     enableIntraRequest = true;
+    /**
+     * 启用H265支持
+     */
     enableH265Support = false;
   }
 

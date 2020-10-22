@@ -2,11 +2,10 @@ package com.r7.core.stand.video.service;
 
 /**
  * @author zs
- * @description:
+ * @description: 录制服务层
  * @date : 2020-10-20
  */
 public interface RecordingService {
-
 
     /**
      * 创建频道并加入

@@ -64,6 +64,7 @@ public class RecordingSampleM implements RecordingEventHandler {
     HashMap<String, UserInfo> audioChannels = new HashMap<String, UserInfo>();
     HashMap<String, UserInfo> videoChannels = new HashMap<String, UserInfo>();
     Timer cleanTimer = new Timer();
+    // todo 布局模式
     private int layoutMode = 0;
     private long maxResolutionUid = -1;
     private String maxResolutionUserAccount = "";

@@ -213,6 +213,7 @@ public class Common{
     }
   }
 
+  // todo 用户退出
   /** The reasons why a user leaves the channel or goes offline.*/
   public enum USER_OFFLINE_REASON_TYPE  {
     /** 0: The user has quit the call. */
