@@ -9,6 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>cloud-trigger</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>trigger-core</module>
+        <module>trigger-main</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>com.r7.core</groupId>
