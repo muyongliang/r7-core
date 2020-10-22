@@ -13,7 +13,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @MapperScan("com.r7.core.stand.video.mapper")
 @SpringBootApplication(scanBasePackages = {"com.r7.core.stand.video"})
-@EnableDiscoveryClient
 @EnableSwagger2
 public class VideoApplication {
     public static void main(String[] args) {

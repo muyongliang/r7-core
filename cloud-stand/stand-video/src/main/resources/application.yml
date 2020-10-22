@@ -39,6 +39,7 @@ agora:
   #1：音频和视频混合成一个文件，录制文件格式为 MP4，但播放器支持有限。
   #2：音频和视频混合成一个文件，录制文件格式为 MP4，支持更多播放器。
   mixedVideoAudio: 2
+  layoutMode: 2
   # 最低的UDP端口。确保highUdpPort的值-lowUdpPort≥6
   lowUdpPort: 40000
   # 最高的UDP端口。确保highUdpPort的值-lowUdpPort≥6
