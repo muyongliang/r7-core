@@ -48,3 +48,4 @@ agora:
   appliteDir: /root/data/apps
   # 日志级别
   logLevel: 5
+  recordFileRootDir: /root/stand_video/stand_video

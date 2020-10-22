@@ -63,6 +63,10 @@ public class AgoraProperties {
      */
     private String appliteDir;
     /**
+     * 设置录制文件路径
+     */
+    private String recordFileRootDir;
+    /**
      * 日志级别
      * 1: 日志等级为 Fatal。
      * 2: 日志等级为 Error。

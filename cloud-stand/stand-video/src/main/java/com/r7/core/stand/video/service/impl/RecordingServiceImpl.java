@@ -39,6 +39,7 @@ public class RecordingServiceImpl implements RecordingService {
         recordingConfig.appliteDir = agoraProperties.getAppliteDir();
         recordingConfig.highUdpPort= agoraProperties.getHighUdpPort();
         recordingConfig.lowUdpPort = agoraProperties.getLowUdpPort();
+        recordingConfig.recordFileRootDir = agoraProperties.getRecordFileRootDir();
         Integer logLevel = agoraProperties.getLogLevel();
         String appId = agoraProperties.getAppId();
         String appCertificate = agoraProperties.getAppCertificate();
