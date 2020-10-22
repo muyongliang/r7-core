@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.r7.core.job.mapper.CoreJobProgressMapper">
+
+    <select id="getJobProgressByUserId" resultType="com.r7.core.job.vo.CoreJobProgressVO">
+        select id, user_id, job_code, status, progress, is_distribution, start_at, end_at
+        from core_job_progress
+        where user_id=#{userId}
+    </select>
+
+</mapper>

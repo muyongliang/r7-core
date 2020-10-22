@@ -1,5 +1,6 @@
 package com.r7.core.uim.config;
 
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,15 +29,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources/configuration/security",
             "/swagger-ui.html",
             "/webjars/**",
-            "/role/**"
     };
 
     /**
      * 系统过滤地址
      */
     private static final String[] SYSTEM_AUTH_LIST = {
-            "/auth/**",
-            "/role/**"};
+            "/oauth/**",
+            "/sign/**",
+            "/rsa/**"};
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -51,19 +53,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.csrf()
                 .disable()
                 .authorizeRequests()
                 .antMatchers(SWAGGER_AUTH_LIST)
                 .permitAll()
                 .antMatchers(SYSTEM_AUTH_LIST)
-                .permitAll()
-                .anyRequest()
-//                .access("@rbacService.hasPermission(request,authentication)") // todo rbac需要用都的 目前资源还未增加不使用
-                .authenticated()
-                .and()
-                .formLogin()
                 .permitAll();
+        http.authorizeRequests()
+                .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
+                .anyRequest().authenticated();
     }
 
 }
