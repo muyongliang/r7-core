@@ -42,13 +42,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!--                <configuration>-->
-                <!--                    <mainClass>com.r7.core.integral.IntegralApplication</mainClass>-->
-                <!--                    <fork>true</fork>-->
-                <!--                    <jvmArguments>-->
-                <!--                        -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005-->
-                <!--                    </jvmArguments>-->
-                <!--                </configuration>-->
+                <configuration>
+                    <mainClass>com.r7.core.integral.IntegralApplication</mainClass>
+                    <fork>true</fork>
+                    <jvmArguments>
+                        -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005
+                    </jvmArguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>
