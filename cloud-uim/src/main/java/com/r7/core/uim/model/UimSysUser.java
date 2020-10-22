@@ -37,32 +37,32 @@ public class UimSysUser extends Model<UimSysUser> {
     /**
      * 部门id
      */
-    @ApiModelProperty("组织ID")
+    @ApiModelProperty("部门id")
     private Long branchId;
     /**
      * 登录名
      */
-    @ApiModelProperty("组织ID")
+    @ApiModelProperty("登录名")
     private String loginName;
     /**
      * 昵称
      */
-    @ApiModelProperty("组织ID")
+    @ApiModelProperty("昵称")
     private String userName;
     /**
      * 头像
      */
-    @ApiModelProperty("组织ID")
+    @ApiModelProperty("头像")
     private String avatar;
     /**
      * 电话
      */
-    @ApiModelProperty("组织ID")
+    @ApiModelProperty("电话")
     private String phoneNumber;
     /**
      * 邮箱
      */
-    @ApiModelProperty("组织ID")
+    @ApiModelProperty("邮箱")
     private String email;
     /**
      * 状态;0正常，1冻结，2注销

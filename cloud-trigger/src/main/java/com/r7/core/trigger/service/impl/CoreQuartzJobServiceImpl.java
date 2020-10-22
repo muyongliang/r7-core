@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.r7.core.common.exception.BusinessException;
+
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.trigger.constant.CoreQuartzJobErrorEnum;
 import com.r7.core.trigger.dto.CoreQuartzJobDTO;
@@ -41,7 +42,7 @@ public class CoreQuartzJobServiceImpl extends ServiceImpl<CoreQuartzJobMapper, C
         implements CoreQuartzJobService{
     @Autowired
     QuartzOptionalService quartzOptionalService;
-
+    @Transactional
     @Override
     public CoreQuartzJobVO saveCoreQuartzJob(CoreQuartzJobDTO coreQuartzJobDto, Long userId) {
         log.info("添加定时任务：{}，操作人：{}，开始时间：{}", coreQuartzJobDto, userId,
@@ -76,7 +77,9 @@ public class CoreQuartzJobServiceImpl extends ServiceImpl<CoreQuartzJobMapper, C
         coreQuartzJob.setUpdatedAt(LocalDateTime.now());
        int result =  baseMapper.insert(coreQuartzJob);
         if (result != 1) {
-            throw new BusinessException(CoreQuartzJobErrorEnum.ORE_QUARTZ_JOB_SAVE_ERROR);
+            log.info("添加定时任务失败：{}，操作人：{}，时间：{}", coreQuartzJobDto, userId,
+                    LocalDateTime.now());
+            throw new BusinessException(CoreQuartzJobErrorEnum.CORE_QUARTZ_JOB_SAVE_ERROR);
         }
         log.info("添加定时任务成功：{}，操作人：{}，结束时间：{}", coreQuartzJobDto, userId,
                 LocalDateTime.now());
@@ -367,7 +370,7 @@ public class CoreQuartzJobServiceImpl extends ServiceImpl<CoreQuartzJobMapper, C
                 .eq(CoreQuartzJob::getId, id);
         boolean   updateCountAndCountFailure =  update(updateWrapper);
         if (!updateCountAndCountFailure) {
-            throw new BusinessException(CoreQuartzJobErrorEnum.CORE_QUARTZ_JOB_JOB_COUNT_COUNTFAILURE_ERROR);
+            throw new BusinessException(CoreQuartzJobErrorEnum.CORE_QUARTZ_JOB_JOB_COUNT_COUNT_FAILURE_ERROR);
         }
 
         CoreQuartzJob  coreQuartzJob = Option.of(baseMapper.selectById(id))
