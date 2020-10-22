@@ -47,5 +47,12 @@ agora:
   # 设置AgoraCoreService的路径
   appliteDir: /root/data/apps
   # 日志级别
+  # FATAL(1),
+  # ERROR(2),
+  # WARNING(3),
+  # NOTICE(4),
+  # INFO(5),
+  # DEBUG(6);
   logLevel: 5
   recordFileRootDir: /root/stand_video/stand_video
+  agoraLib: /root/data/apps/librecording.so

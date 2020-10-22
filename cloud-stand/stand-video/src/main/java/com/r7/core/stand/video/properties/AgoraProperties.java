@@ -1,6 +1,6 @@
 package com.r7.core.stand.video.properties;
 
-import com.r7.core.stand.video.common.Common.MIXED_AV_CODEC_TYPE;
+import com.r7.core.stand.video.common.Common.*;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -41,8 +41,11 @@ public class AgoraProperties {
     private Boolean isMixingEnabled;
     /**
      * 混合音视频类型
+     * 0：（默认）不混合音频和视频。
+     * 1：音频和视频混合成一个文件，录制文件格式为 MP4，但播放器支持有限。
+     * 2：音频和视频混合成一个文件，录制文件格式为 MP4，支持更多播放器。
      */
-    private MIXED_AV_CODEC_TYPE mixedVideoAudio;
+    private int mixedVideoAudio;
     /**
      * 开始录制时设置 --isMixingEnabled 1 使用合流模式，同时设置 --layoutMode 参数选择一种布局‘
      * 0 使用悬浮布局（默认）
@@ -63,6 +66,10 @@ public class AgoraProperties {
      */
     private String appliteDir;
     /**
+     * 设置agora动态链接库地址
+     */
+    private String agoraLib;
+    /**
      * 设置录制文件路径
      */
     private String recordFileRootDir;
@@ -75,5 +82,5 @@ public class AgoraProperties {
      * 5: 日志等级为 Info。
      * 6: 日志等级为 Debug。
      */
-    private Integer logLevel;
+    private int logLevel;
 }
