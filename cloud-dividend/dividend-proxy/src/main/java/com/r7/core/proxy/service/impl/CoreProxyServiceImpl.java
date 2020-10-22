@@ -117,11 +117,11 @@ public class CoreProxyServiceImpl extends ServiceImpl<CoreProxyMapper, CoreProxy
     }
 
     @Override
-    public List<CoreProxyVO> getCoreProxyByPId(Long PId) {
+    public List<CoreProxyVO> getCoreProxyByParentId(Long parentId) {
 
         log.info("用户id:{}，查询开始时间：{}"
-                , PId, LocalDateTime.now());
-        Option.of(PId)
+                , parentId, LocalDateTime.now());
+        Option.of(parentId)
                 .getOrElseThrow(() -> new BusinessException(CoreProxyEnum.CORE_PROXY_USER_ID_IS_NULL));
 
         List<CoreProxy>  list =  Option.of(list(Wrappers.<CoreProxy>lambdaQuery()
@@ -129,13 +129,13 @@ public class CoreProxyServiceImpl extends ServiceImpl<CoreProxyMapper, CoreProxy
                             CoreProxy::getOrganId,CoreProxy::getUserId,
                             CoreProxy::getLevel,CoreProxy::getType,
                             CoreProxy::getSubordinateNum)
-                    .eq(CoreProxy::getPId,PId)))
+                    .eq(CoreProxy::getPId,parentId)))
                     .getOrElseThrow(() -> new BusinessException(CoreProxyEnum.CORE_PROXY_ID_IS_NOT_EXISTS));
 
         List<CoreProxyVO> listCoreProxyVO =  list.stream().map(CoreProxy::toCoreProxyVo).collect(Collectors.toList());
 
         log.info("用户id:{}，查询结束时间：{}"
-                , PId, LocalDateTime.now());
+                , parentId, LocalDateTime.now());
         return listCoreProxyVO;
     }
 
@@ -253,10 +253,10 @@ public class CoreProxyServiceImpl extends ServiceImpl<CoreProxyMapper, CoreProxy
     }
 
 
-    public void treeCoreProxy(List<CoreProxyNodeVO> coreProxyNodeVOS , List<CoreProxy> coreProxies, Long pId) {
+    public void treeCoreProxy(List<CoreProxyNodeVO> coreProxyNodeVos , List<CoreProxy> coreProxies, Long pId) {
         coreProxies.stream().filter(x -> x.getPId().equals(pId)).forEach(x -> {
             CoreProxyNodeVO coreProxyNodeVO = x.toCoreProxyNodeVO();
-            coreProxyNodeVOS.add(coreProxyNodeVO);
+            coreProxyNodeVos.add(coreProxyNodeVO);
             treeCoreProxy(coreProxyNodeVO.getList(), coreProxies, x.getUserId());
         });
     }

@@ -8,15 +8,12 @@ import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.profit.constant.CoreProfitEnum;
 import com.r7.core.profit.constant.SettlementEnum;
 import com.r7.core.profit.dto.CoreProfitDTO;
-import com.r7.core.profit.dto.CoreRecordIncomeDTO;
 import com.r7.core.profit.mapper.CoreProfitMapper;
 import com.r7.core.profit.model.CoreProfit;
 import com.r7.core.profit.service.CoreProfitService;
-import com.r7.core.profit.service.CoreRecordIncomeService;
 import com.r7.core.profit.vo.CoreProfitVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

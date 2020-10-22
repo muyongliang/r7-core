@@ -2,14 +2,12 @@ package com.r7.core.profit.service.impl;
 
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
-import com.r7.core.profit.constant.CoreRecordIncomeEnum;
 import com.r7.core.profit.constant.SettlementEnum;
 import com.r7.core.profit.dto.CoreRecordIncomeDTO;
 import com.r7.core.profit.model.CoreProfit;
 import com.r7.core.profit.service.CoreProfitService;
 import com.r7.core.profit.service.CoreRecordIncomeService;
 import com.r7.core.profit.service.SettlementService;
-import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

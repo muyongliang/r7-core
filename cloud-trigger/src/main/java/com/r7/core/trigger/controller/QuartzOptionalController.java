@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2020/9/29
  */
 @Slf4j
-@Api(tags = "api/trigger/optional",description = "定时任务操作")
+@Api(value = "api/trigger/optional",tags = "定时任务操作")
 @RestController
 @RequestMapping("/trigger/optional")
 public class QuartzOptionalController {

@@ -58,8 +58,8 @@ public class CoreProxyController {
 
     @ApiOperation(value = "树形展示层级", response = CoreProxyNodeVO.class)
     @GetMapping("/tree")
-    public ResponseEntity treeCoreProxyByPid(@RequestParam Long PId) {
-        return ResponseEntity.success(coreProxyService.treeCoreProxyByPid(PId,
+    public ResponseEntity treeCoreProxyByPid(@RequestParam Long parentId) {
+        return ResponseEntity.success(coreProxyService.treeCoreProxyByPid(parentId,
                 1311197443478200378L));
     }
 
@@ -155,7 +155,7 @@ public class CoreProxyController {
 
     @ApiOperation(value = "根据层级父ID查询直接下级层级信息", response = CoreProxyVO.class)
     @GetMapping("/")
-    public ResponseEntity getCoreProxyByPId(@RequestParam Long PId) {
-        return ResponseEntity.success(coreProxyService.getCoreProxyByPId(PId));
+    public ResponseEntity getCoreProxyByParentId(@RequestParam Long parentId) {
+        return ResponseEntity.success(coreProxyService.getCoreProxyByParentId(parentId));
     }
 }
