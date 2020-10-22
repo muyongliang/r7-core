@@ -65,7 +65,7 @@ public class MyCronJobListener implements JobListener {
         coreQuartzJobInfoDto.setJobId(coreQuartzJob.getId());
         coreQuartzJobInfoDto.setAppId(coreQuartzJob.getAppId());
         //jobException如果它不为空则说明任务在执行过程中出现了异常
-        if (jobException != null) {
+        if (jobException!=null && !(jobException.getMessage().contains("BusinessException"))) {
             //执行情况的状态为异常，添加执行记录,如果把异常加在描述里，描述字段的类型就应该是大文本
             coreQuartzJobInfoDto.setDescription("执行中有异常");
             coreQuartzJobInfoDto.setStatus(2);

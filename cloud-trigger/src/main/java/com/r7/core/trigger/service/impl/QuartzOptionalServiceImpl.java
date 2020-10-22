@@ -25,6 +25,7 @@ import static com.r7.core.trigger.config.QuartzConfig.*;
  * @Description 定时任务的暂停、恢复、启动相关的操作实现类
  * @date 2020/9/29
  */
+
 @Slf4j
 @Service
 public class QuartzOptionalServiceImpl implements QuartzOptionalService {
@@ -152,7 +153,7 @@ public class QuartzOptionalServiceImpl implements QuartzOptionalService {
             coreQuartzJobService.updateStatusById(id,1,userId);
             //添加操作失败的操作记录
             e.printStackTrace();
-            throw new BusinessException(CoreQuartzJobErrorEnum.CORE_QUARTZ_JOB_JOB_RESUSME_ERROR);
+            throw new BusinessException(CoreQuartzJobErrorEnum.CORE_QUARTZ_JOB_JOB_RESUME_ERROR);
         }
         //修改定时任务的状态为正常(-1异常1待启动2正常3暂停)
         coreQuartzJobService.updateStatusById(id,2,userId);
@@ -242,7 +243,7 @@ public class QuartzOptionalServiceImpl implements QuartzOptionalService {
             coreQuartzJobService.updateStatusById(id,-1,userId);
             //添加操作失败的操作记录
             e.printStackTrace();
-            throw new BusinessException(CoreQuartzJobErrorEnum.CORE_QUARTZ_JOB_JOB_IMMEDIAT_ERROR);
+            throw new BusinessException(CoreQuartzJobErrorEnum.CORE_QUARTZ_JOB_JOB_IMMEDIATE_ERROR);
         }
         //修改定时任务状态为正常
         coreQuartzJobService.updateStatusById(id,2,userId);

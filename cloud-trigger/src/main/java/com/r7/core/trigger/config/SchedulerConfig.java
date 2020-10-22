@@ -1,12 +1,17 @@
 package com.r7.core.trigger.config;
+import com.alibaba.druid.pool.DruidDataSource;
 import org.quartz.Scheduler;
 import org.quartz.ee.servlet.QuartzInitializerListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -19,6 +24,12 @@ import java.util.Properties;
 @Configuration
 public class SchedulerConfig {
     @Autowired
+    @Qualifier("dataSourceTask")
+    private DruidDataSource dataSource;
+
+
+
+    @Autowired
     private SpringJobFactory springJobFactory;
 
     @Bean
@@ -30,6 +41,8 @@ public class SchedulerConfig {
         factory.setStartupDelay(5);
         factory.setQuartzProperties(quartzProperties());
         factory.setJobFactory(springJobFactory);
+        factory.setDataSource(dataSource);
+
         return factory;
     }
 

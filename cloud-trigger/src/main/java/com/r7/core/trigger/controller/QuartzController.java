@@ -93,27 +93,12 @@ public class QuartzController {
     }
 
 
-//    @ApiOperation(value = "根据定时任务名称查询", response = CoreQuartzJobVO.class)
-//    @GetMapping("/page{jobName}")
-//    @ResponseBody
-//    public ResponseEntity getCoreQuartzJobByJobName(@RequestParam String jobName) {
-//        return ResponseEntity.success(coreQuartzJobService.getCoreQuartzJobByJobName(jobName));
-//    }
-    //    @ApiOperation(value = "根据定时任务分组查询", response = CoreQuartzJobVO.class)
-//    @GetMapping("/page{jobGroup}")
-//    @ResponseBody
-//    public ResponseEntity getCoreQuartzJobByJobGroup(@RequestParam String jobGroup) {
-//        return ResponseEntity.success(coreQuartzJobService.getCoreQuartzJobByJobGroup(jobGroup));
-//    }
-//    @ApiOperation(value = "根据定时任务路径查询", response = CoreQuartzJobVO.class)
-//    @GetMapping("/page{jobClass}")
-//    @ResponseBody
-//    public ResponseEntity getCoreQuartzJobByJobClass(@RequestParam String jobClass) {
-//        return ResponseEntity.success(coreQuartzJobService.getCoreQuartzJobByJobClass(jobClass));
-//    }
-//    @ApiOperation(value = "查询全部", response = CoreQuartzJob.class)
-//    @GetMapping("/find")
-//    public ResponseEntity findAllCoreQuartzJob(Long appId){
-//        return ResponseEntity.success(coreQuartzJobService.findAllCoreQuartzJob(2L));
-//    }
+
+    @ApiOperation(value = "根据定时任务路径查询", response = CoreQuartzJobVO.class)
+    @GetMapping("/page{jobClass}")
+    @ResponseBody
+    public ResponseEntity getCoreQuartzJobByJobClass(@RequestParam String jobClass) {
+        return ResponseEntity.success(coreQuartzJobService.getCoreQuartzJobByJobClass(jobClass));
+    }
+
 }

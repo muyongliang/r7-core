@@ -32,7 +32,7 @@ public class CoreQuartzJobInfoServiceImpl extends ServiceImpl<CoreQuartzJobInfoM
     @Override
     public CoreQuartzJobInfoVO saveCoreQuartzJobInfo(CoreQuartzJobInfoDTO coreQuartzJobInfoDto,
                                                      LocalDateTime startAt , LocalDateTime endAt) {
-        log.info("添加定时任务操作记录：{}，作业的开始时间：{}，作业的结束时间：{}，开始时间：{}",
+        log.info("添加定时任务执行情况记录：{}，作业的开始时间：{}，作业的结束时间：{}，开始时间：{}",
                 coreQuartzJobInfoDto, startAt,endAt, LocalDateTime.now());
         CoreQuartzJobInfo coreQuartzJobInfo = new CoreQuartzJobInfo();
         coreQuartzJobInfo.toCoreQuartzJobInfoDto(coreQuartzJobInfoDto);
@@ -45,9 +45,11 @@ public class CoreQuartzJobInfoServiceImpl extends ServiceImpl<CoreQuartzJobInfoM
         coreQuartzJobInfo.setUpdatedAt(LocalDateTime.now());
        int result = baseMapper.insert(coreQuartzJobInfo);
         if (result != 1) {
+            log.info("添加定时任务执行情况记录失败：{}，时间：{}",
+                    coreQuartzJobInfoDto,  LocalDateTime.now());
             throw new BusinessException(CoreQuartzJobErrorEnum.CORE_QUARTZ_JOB_JOB_OPTIONAL_ERROR);
         }
-        log.info("添加定时任务操作记录：{}，作业的开始时间：{}，作业的结束时间：{}，结束时间：{}",
+        log.info("添加定时任务执行情况记录：{}，作业的开始时间：{}，作业的结束时间：{}，结束时间：{}",
                 coreQuartzJobInfoDto, startAt,endAt, LocalDateTime.now());
         return coreQuartzJobInfo.toCoreQuartzJobInfoVo();
     }

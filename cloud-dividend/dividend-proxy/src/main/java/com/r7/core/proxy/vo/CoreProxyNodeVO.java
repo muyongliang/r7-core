@@ -1,41 +1,44 @@
-package com.r7.core.proxy.dto;
+package com.r7.core.proxy.vo;
 
-import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- *
- * @Description 代理层级信息传输层
  * @author wutao
- * @date 2020/10/9
+ * @Description 层级树节点
+ *
  */
-@ApiModel(description = "代理层级信息传输层")
 @Data
-public class CoreProxyDto extends Model<CoreProxyDto> {
+@ApiModel("代理层级树形展示视图")
+public class CoreProxyNodeVO {
 
+    /**
+     * id
+     */
+    @TableId(value = "层级id")
+    @ApiModelProperty(value="id")
+    private Long id;
 
     /**
      * 当前用户的父id 也就是新增用户邀请人的id
      */
-    @NotNull(message = "当前用户父ID不能为空")
-    @ApiModelProperty(value="当前用户的父id 也就是新增用户邀请人的id")
+    @ApiModelProperty(value="新增用户邀请人的id")
     private Long pId;
 
     /**
      * 当前用户的id
      */
-    @NotNull(message = "当前用户的id不能为空")
     @ApiModelProperty(value="当前用户的id")
     private Long userId;
 
     /**
      * 组织id 当前用户所属组织
      */
-    @NotNull(message = "当前用户组织id不能为空")
     @ApiModelProperty(value="组织id 当前用户所属组织")
     private Long organId;
 
@@ -48,16 +51,18 @@ public class CoreProxyDto extends Model<CoreProxyDto> {
     /**
      * 层级类型 销售代/其他
      */
-    @NotNull(message = "层级类型不能为空")
     @ApiModelProperty(value="层级类型 销售代/其他")
     private Integer type;
 
     /**
      * 当前层级 用户的当前层级
      */
-    @NotNull(message = "当前用户的层级不能为空")
     @ApiModelProperty(value="当前层级 用户的当前层级")
     private Integer level;
 
-
+    /**
+     * 下级节点
+     */
+    @ApiModelProperty(value="下级节点")
+    private List<CoreProxyNodeVO> list = new ArrayList<>();
 }

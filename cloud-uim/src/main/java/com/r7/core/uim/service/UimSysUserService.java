@@ -17,6 +17,10 @@ public interface UimSysUserService extends IService<UimSysUser> {
 
     // 根据用户ID获取角色
 
+    // 根据用户ID获取资源
+
+    //新增用户
+
     /**
      * 根据登录名获取登录信息
      *
