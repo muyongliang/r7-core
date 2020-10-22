@@ -9,7 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * 代理模块启动类
  *
  * @author wutao
- * @date 2020/10/09
+ *
  */
 @MapperScan("com.r7.core.proxy.mapper")
 @SpringBootApplication(scanBasePackages = {"com.r7.core"})
