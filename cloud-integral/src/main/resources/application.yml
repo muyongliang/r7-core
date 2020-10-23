@@ -33,3 +33,4 @@ minio:
 logging:
   level:
     com.r7.core.integral.mapper: debug
+    com.alibaba.nacos: error
