@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @Description MinIOProperties
  */
 @Component
-@ConfigurationProperties("minio")
+@ConfigurationProperties(prefix = "minio")
 @Data
 public class MinIOProperties {
     /**
