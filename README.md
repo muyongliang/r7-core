@@ -85,3 +85,20 @@ minio/minio server /data
        - "3000:3000"
      networks:
        - loki
+
+## 项目镜像
+>docker run -d \
+ --name cloud-gateway \
+ --restart=always \
+ --privileged=true \
+ -p 8080:8080 \
+ -v /root/core_docker/cloud-gateway:/usr/local/ymapp \
+ docker-java-runtime
+
+>docker run -d \
+ --name cloud-integral \
+ --restart=always \
+ --privileged=true \
+ -p 8099:8099 \
+ -v /root/core_docker/cloud-integral:/usr/local/ymapp \
+ docker-java-runtime

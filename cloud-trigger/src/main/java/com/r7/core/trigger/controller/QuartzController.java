@@ -21,7 +21,7 @@ import javax.validation.Valid;
  * @date 2020/9/24
  */
 @Slf4j
-@Api(tags = "api/trigger",description = "定时任务")
+@Api(value = "api/trigger",tags = "定时任务")
 @RestController
 @RequestMapping("/trigger")
 public class QuartzController {

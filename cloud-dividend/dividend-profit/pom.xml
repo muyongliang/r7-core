@@ -17,12 +17,6 @@
             <artifactId>cloud-common</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.r7.core</groupId>
-            <artifactId>cloud-trigger</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
 
     </dependencies>
 </project>

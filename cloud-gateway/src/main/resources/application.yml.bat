@@ -1,22 +1,17 @@
 server:
+  undertow:
+    io-threads: "50"
+    worker-threads: "100"
   port: 8080
 
 spring:
-  application:
-    name: cloud-gateway
-  profiles:
-    active: dev
   cloud:
-    nacos:
-      discovery:
-        server-addr: 192.168.1.49:8848
-        namespace: d685bf52-93ce-4271-942b-688f25725547
     gateway:
       routes: #配置路由规则
         - id: cloud-uim-route
           uri: lb://cloud-uim
           predicates:
-            - Path=/api/auth/**,/api/user/**,/api/oauth/**,/api/resource/**,/api/sign/**,/api/role/**,/api/organ/**
+            - Path=/api/auth/**,/api/user/**,/api/oauth/**,/api/resource/**,/api/sign/**,/api/role/**,/api/organ/**,/api/sys/user/**
 #          filters:
 #            - StripPrefix=1
 #      discovery:

@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  * @Description
  * @date 2020/9/29
  */
-@Api(tags = "api/record",description = "定时任务执行情况")
+@Api(value = "api/record",tags = "定时任务执行情况")
 @RestController
 @RequestMapping("/record")
 public class CoreQuartzJobInfo {

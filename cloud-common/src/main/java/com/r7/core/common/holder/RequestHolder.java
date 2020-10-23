@@ -9,30 +9,30 @@ import com.r7.core.common.model.UserInfo;
  */
 public class RequestHolder {
 
-    private static final ThreadLocal<UserInfo> userHolder = new ThreadLocal<UserInfo>();
+    private static final ThreadLocal<UserInfo> USER_HOLDER = new ThreadLocal<UserInfo>();
 
     public static void addUserInfo(UserInfo userInfo) {
-        userHolder.set(userInfo);
+        USER_HOLDER.set(userInfo);
     }
 
     public static UserInfo getUserInfo() {
-        return userHolder.get();
+        return USER_HOLDER.get();
     }
 
     public static long getUserId() {
-        return userHolder.get().getId();
+        return USER_HOLDER.get().getId();
     }
 
     public static long getOrganId() {
-        return userHolder.get().getOrganId();
+        return USER_HOLDER.get().getOrganId();
     }
 
     public static long getAppId() {
-        return userHolder.get().getAppId();
+        return USER_HOLDER.get().getAppId();
     }
 
     public static void removeUserInfo() {
-        userHolder.remove();
+        USER_HOLDER.remove();
     }
 
 

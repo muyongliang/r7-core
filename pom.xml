@@ -50,10 +50,10 @@
 
     <dependencies>
         <!--nacos 配置动态更新-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.alibaba.cloud</groupId>-->
-        <!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
         <!--        spring cloud alibaba 分布式包-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

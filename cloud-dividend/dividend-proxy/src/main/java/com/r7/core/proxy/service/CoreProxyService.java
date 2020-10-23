@@ -51,10 +51,10 @@ public interface CoreProxyService extends IService<CoreProxy>{
 
     /**
      * 根据用户父id查询用户的直接下级层级信息
-     * @param PId 用户父id
+     * @param parentId 用户父id
      * @return 返回查询结果
      */
-    List<CoreProxyVO> getCoreProxyByPId(Long PId);
+    List<CoreProxyVO> getCoreProxyByParentId(Long parentId);
 
     /**
      * 树形展示层级
