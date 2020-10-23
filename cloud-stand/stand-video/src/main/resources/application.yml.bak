@@ -5,7 +5,7 @@ server:
 
 spring:
   application:
-    name: cloud-job
+    name: stand-video
   profiles:
     active: dev
   cloud:

@@ -60,18 +60,19 @@ public class RecordingServiceImpl implements RecordingService {
         recordingSample.unRegister();
         return true;
     }
-public String uidToSubscribeString(Integer[] uid){
-    StringBuilder sb = new StringBuilder();
-    sb.append('"');
-    for (int i=0;i<uid.length-1;i++) {
-        sb.append(uid[i]);
+
+    public String uidToSubscribeString(Integer[] uid) {
+        StringBuilder sb = new StringBuilder();
         sb.append('"');
-        sb.append(',');
+        for (int i = 0; i < uid.length - 1; i++) {
+            sb.append(uid[i]);
+            sb.append('"');
+            sb.append(',');
+        }
+        sb.append(uid[uid.length - 1]);
+        sb.append('"');
+        return sb.toString();
     }
-    sb.append(uid[uid.length - 1]);
-    sb.append('"');
-    return sb.toString();
-}
 
 }
 
