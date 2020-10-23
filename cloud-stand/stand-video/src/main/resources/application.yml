@@ -1,5 +1,5 @@
 server:
-  port: 8051
+  port: 8055
   servlet:
     context-path: /api
 
@@ -46,6 +46,7 @@ agora:
   highUdpPort: 41000
   # 设置AgoraCoreService的路径
   appliteDir: /root/data/apps
+  recordFileRootDir: /root/stand_video/stand_video
   # 日志级别
   # FATAL(1),
   # ERROR(2),
@@ -54,5 +55,4 @@ agora:
   # INFO(5),
   # DEBUG(6);
   logLevel: 5
-  recordFileRootDir: /root/stand_video/stand_video
   agoraLib: /root/data/apps/librecording.so

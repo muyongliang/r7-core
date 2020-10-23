@@ -355,8 +355,7 @@ public class RecordingSample implements RecordingEventHandler {
     }
 
     private int SetVideoMixingLayout() {
-        Common ei = new Common();
-        VideoMixingLayout layout = ei.new VideoMixingLayout();
+        Common.VideoMixingLayout layout = new Common.VideoMixingLayout();
         layout.keepLastFrame = this.keepLastFrame;
         int max_peers = profile_type == CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION ? 7 : 17;
         if (m_peers.size() > max_peers) {

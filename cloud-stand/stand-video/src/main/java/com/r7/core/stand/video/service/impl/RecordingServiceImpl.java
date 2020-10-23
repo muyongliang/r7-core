@@ -50,9 +50,11 @@ public class RecordingServiceImpl implements RecordingService {
         int privilegeExpiredTs = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
         String channelKey = token.buildTokenWithUid(appId, appCertificate,
                 channel, uid, RtcTokenBuilder.Role.Role_Subscriber, privilegeExpiredTs);
+
         System.load(agoraProperties.getAgoraLib());
         Common.VideoMixingLayout videoMixingLayout = new Common.VideoMixingLayout();
         int i = recordingSDK.setVideoMixingLayout(videoMixingLayout);
+
 //    System.loadLibrary("librecording");
         recordingSample.createChannel(appId, channelKey, channel, uid, userAccount, recordingConfig,logLevel);
         recordingSample.unRegister();
