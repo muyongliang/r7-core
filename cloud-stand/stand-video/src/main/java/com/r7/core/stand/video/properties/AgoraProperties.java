@@ -45,7 +45,15 @@ public class AgoraProperties {
      * 1：音频和视频混合成一个文件，录制文件格式为 MP4，但播放器支持有限。
      * 2：音频和视频混合成一个文件，录制文件格式为 MP4，支持更多播放器。
      */
-    private int mixedVideoAudio;
+    private MIXED_AV_CODEC_TYPE mixedVideoAudio;
+    /**
+     * 订阅音频uids
+     */
+    private String subscribeAudioUids;
+    /**
+     * 订阅视频uids
+     */
+    private String subscribeVideoUids;
     /**
      * 开始录制时设置 --isMixingEnabled 1 使用合流模式，同时设置 --layoutMode 参数选择一种布局‘
      * 0 使用悬浮布局（默认）

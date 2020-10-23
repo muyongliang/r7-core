@@ -27,7 +27,7 @@ public class RecordingServiceImpl implements RecordingService {
     private AgoraProperties agoraProperties;
 
     @Override
-    public boolean createChannel(String channel, Integer uid) {
+    public boolean createChannel(String channel, Integer[] uids) {
         //should config -Djava.library.path to load library
         RecordingSDK recordingSDK = new RecordingSDK();
         RecordingSample recordingSample = new RecordingSample(recordingSDK);
@@ -36,10 +36,16 @@ public class RecordingServiceImpl implements RecordingService {
         RecordingConfig recordingConfig = new RecordingConfig();
 
         recordingConfig.appliteDir = agoraProperties.getAppliteDir();
-        recordingConfig.highUdpPort= agoraProperties.getHighUdpPort();
+        recordingConfig.highUdpPort = agoraProperties.getHighUdpPort();
         recordingConfig.lowUdpPort = agoraProperties.getLowUdpPort();
         recordingConfig.recordFileRootDir = agoraProperties.getRecordFileRootDir();
         recordingConfig.isMixingEnabled = agoraProperties.getIsMixingEnabled();
+        recordingConfig.mixedVideoAudio = agoraProperties.getMixedVideoAudio();
+//        录制指定 UID 的音视频流。UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
+//当 autoSubscribe 为 false 时，你可设置此参数来指定 UID 进行录制。该参数设为 NULL 则表示录制所有发流用户的视频。
+        recordingConfig.autoSubscribe = false;
+        recordingConfig.subscribeAudioUids = uidToSubscribeString(uids);
+        recordingConfig.subscribeVideoUids = uidToSubscribeString(uids);
         int logLevel = agoraProperties.getLogLevel();
         String appId = agoraProperties.getAppId();
         String appCertificate = agoraProperties.getAppCertificate();
@@ -47,19 +53,25 @@ public class RecordingServiceImpl implements RecordingService {
 
         //生成token
         RtcTokenBuilder token = new RtcTokenBuilder();
-        int privilegeExpiredTs = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
+        int privilegeExpiredTs = (int) (System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
         String channelKey = token.buildTokenWithUid(appId, appCertificate,
-                channel, uid, RtcTokenBuilder.Role.Role_Subscriber, privilegeExpiredTs);
-
-        System.load(agoraProperties.getAgoraLib());
-        Common.VideoMixingLayout videoMixingLayout = new Common.VideoMixingLayout();
-        int i = recordingSDK.setVideoMixingLayout(videoMixingLayout);
-
-//    System.loadLibrary("librecording");
-        recordingSample.createChannel(appId, channelKey, channel, uid, userAccount, recordingConfig,logLevel);
+                channel, agoraProperties.getServerUid(), RtcTokenBuilder.Role.Role_Subscriber, privilegeExpiredTs);
+        recordingSample.createChannel(appId, channelKey, channel, agoraProperties.getServerUid(), userAccount, recordingConfig, logLevel);
         recordingSample.unRegister();
         return true;
     }
+public String uidToSubscribeString(Integer[] uid){
+    StringBuilder sb = new StringBuilder();
+    sb.append('"');
+    for (int i=0;i<uid.length-1;i++) {
+        sb.append(uid[i]);
+        sb.append('"');
+        sb.append(',');
+    }
+    sb.append(uid[uid.length - 1]);
+    sb.append('"');
+    return sb.toString();
+}
 
 }
 
