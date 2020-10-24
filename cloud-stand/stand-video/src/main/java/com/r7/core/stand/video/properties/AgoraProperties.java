@@ -1,6 +1,6 @@
 package com.r7.core.stand.video.properties;
 
-import com.r7.core.stand.video.common.Common.*;
+import com.r7.core.stand.video.common.Common.MIXED_AV_CODEC_TYPE;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -54,13 +54,6 @@ public class AgoraProperties {
      * 订阅视频uids
      */
     private String subscribeVideoUids;
-    /**
-     * 开始录制时设置 --isMixingEnabled 1 使用合流模式，同时设置 --layoutMode 参数选择一种布局‘
-     * 0 使用悬浮布局（默认）
-     * 1 使用自适应布局
-     * 2 使用垂直布局
-     */
-    private int layoutMode;
     /**
      * 最低的UDP端口
      */

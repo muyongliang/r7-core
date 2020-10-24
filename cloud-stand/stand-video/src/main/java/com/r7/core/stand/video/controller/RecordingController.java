@@ -25,7 +25,7 @@ public class RecordingController {
 
     @ApiOperation(value = "开始认证录制")
     @PostMapping("/start")
-    public ResponseEntity createChannel(String channel, Integer[] uids) {
+    public ResponseEntity createChannel(String channel, Integer... uids) {
         return ResponseEntity.success(recordingService.createChannel(channel, uids));
     }
 }

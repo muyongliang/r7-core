@@ -1,7 +1,6 @@
 package com.r7.core.stand.video.service.impl;
 
 import com.r7.core.stand.video.agora.media.RtcTokenBuilder;
-import com.r7.core.stand.video.common.Common;
 import com.r7.core.stand.video.common.RecordingConfig;
 import com.r7.core.stand.video.common.RecordingSDK;
 import com.r7.core.stand.video.properties.AgoraProperties;
@@ -27,7 +26,7 @@ public class RecordingServiceImpl implements RecordingService {
     private AgoraProperties agoraProperties;
 
     @Override
-    public boolean createChannel(String channel, Integer[] uids) {
+    public boolean createChannel(String channel, Integer... uids) {
         //should config -Djava.library.path to load library
         RecordingSDK recordingSDK = new RecordingSDK();
         RecordingSample recordingSample = new RecordingSample(recordingSDK);
@@ -61,7 +60,7 @@ public class RecordingServiceImpl implements RecordingService {
         return true;
     }
 
-    public String uidToSubscribeString(Integer[] uid) {
+    public String uidToSubscribeString(Integer... uid) {
         StringBuilder sb = new StringBuilder();
         sb.append('"');
         for (int i = 0; i < uid.length - 1; i++) {

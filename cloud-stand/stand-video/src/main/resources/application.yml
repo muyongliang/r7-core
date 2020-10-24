@@ -1,5 +1,5 @@
 server:
-  port: 8055
+  port: 8098
   servlet:
     context-path: /api
 
@@ -16,7 +16,7 @@ spring:
 
   datasource:
     druid:
-      url: "${DB_URL:jdbc:mysql://192.168.1.48:3306/core?seUnicode=true&characterEncoding=UTF-8}"
+      url: jdbc:mysql://192.168.1.48:3306/core?seUnicode=true&characterEncoding=UTF-8}
       username: "root"
       password: "root.R7db@192.168.1.48"
       driver-class-name: "com.mysql.cj.jdbc.Driver"
@@ -41,14 +41,13 @@ agora:
   mixedVideoAudio: 2
   subscribeAudioUids: 1
   subscribeVideoUids: 1
-  layoutMode: 2
   # 最低的UDP端口。确保highUdpPort的值-lowUdpPort≥6
   lowUdpPort: 40000
   # 最高的UDP端口。确保highUdpPort的值-lowUdpPort≥6
   highUdpPort: 41000
   # 设置AgoraCoreService的路径
-  appliteDir: /root/stand_video
-  recordFileRootDir: /root/stand_video/stand_video
+  appliteDir: /root/data/stand_video_backup
+  recordFileRootDir: /root/data/stand_video_backup/stand_video_data
   # 日志级别
   # FATAL(1),
   # ERROR(2),
@@ -57,5 +56,5 @@ agora:
   # INFO(5),
   # DEBUG(6);
   logLevel: 5
-  agoraLib: /root/data/apps/librecording.so
+  agoraLib: /root/data/stand_video_backup/librecording.so
 
