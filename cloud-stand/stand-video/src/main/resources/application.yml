@@ -47,7 +47,7 @@ agora:
   # 最高的UDP端口。确保highUdpPort的值-lowUdpPort≥6
   highUdpPort: 41000
   # 设置AgoraCoreService的路径
-  appliteDir: /root/data/apps
+  appliteDir: /root/stand_video
   recordFileRootDir: /root/stand_video/stand_video
   # 日志级别
   # FATAL(1),

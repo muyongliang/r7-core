@@ -41,8 +41,8 @@ public class RecordingServiceImpl implements RecordingService {
         recordingConfig.recordFileRootDir = agoraProperties.getRecordFileRootDir();
         recordingConfig.isMixingEnabled = agoraProperties.getIsMixingEnabled();
         recordingConfig.mixedVideoAudio = agoraProperties.getMixedVideoAudio();
-//        录制指定 UID 的音视频流。UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
-//当 autoSubscribe 为 false 时，你可设置此参数来指定 UID 进行录制。该参数设为 NULL 则表示录制所有发流用户的视频。
+//      录制指定 UID 的音视频流。UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
+//      当 autoSubscribe 为 false 时，你可设置此参数来指定 UID 进行录制。该参数设为 NULL 则表示录制所有发流用户的视频。
         recordingConfig.autoSubscribe = false;
         recordingConfig.subscribeAudioUids = uidToSubscribeString(uids);
         recordingConfig.subscribeVideoUids = uidToSubscribeString(uids);

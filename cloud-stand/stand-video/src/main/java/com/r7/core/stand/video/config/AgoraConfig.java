@@ -2,6 +2,8 @@ package com.r7.core.stand.video.config;
 
 import com.r7.core.stand.video.properties.AgoraProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -13,12 +15,10 @@ import javax.annotation.PostConstruct;
  */
 @Configuration
 public class AgoraConfig {
-    @Autowired
-    private AgoraProperties agoraProperties;
 
     @PostConstruct
     public void init() {
-        //    System.loadLibrary(agoraProperties.getAgoraLib());
-        System.load(agoraProperties.getAgoraLib());
+//        System.load("D:\\project\\r7-core\\cloud-stand\\stand-video\\lib\\librecording.so");
+        System.load("/root/data/apps/librecording.so");
     }
 }
