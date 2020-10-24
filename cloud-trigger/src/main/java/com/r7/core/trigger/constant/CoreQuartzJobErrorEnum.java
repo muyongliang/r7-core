@@ -8,7 +8,9 @@ import com.r7.core.common.constant.IError;
  * @date 2020/9/28
  */
 public enum CoreQuartzJobErrorEnum implements IError {
-
+    /**
+     * 定时任务错误
+     */
     CORE_QUARTZ_JOB_IS_NOT_EXISTS("core_quartz_job_is_not_exists","定时任务不存在"),
     CORE_QUARTZ_JOB_ID_IS_NULL("core_quartz_job_id_is_null","定时任务id不能为空"),
     CORE_QUARTZ_JOB_JOB_NAME_IS_NULL ("core_quartz_job_job_name_is_null","定时任务名称不能为空"),

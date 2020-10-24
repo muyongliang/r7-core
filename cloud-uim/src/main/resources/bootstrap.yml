@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: cloud-uim
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.1.49:8848
+        namespace: d685bf52-93ce-4271-942b-688f25725547
+      config:
+        server-addr: 192.168.1.49:8848
+        namespace: d685bf52-93ce-4271-942b-688f25725547
+        file-extension: yaml
