@@ -55,6 +55,6 @@ agora:
   # NOTICE(4),
   # INFO(5),
   # DEBUG(6);
-  logLevel: 5
+  logLevel: 6
   agoraLib: /root/data/stand_video_backup/librecording.so
 

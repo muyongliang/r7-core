@@ -55,6 +55,8 @@ public class RecordingServiceImpl implements RecordingService {
         int privilegeExpiredTs = (int) (System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
         String channelKey = token.buildTokenWithUid(appId, appCertificate,
                 channel, agoraProperties.getServerUid(), RtcTokenBuilder.Role.Role_Subscriber, privilegeExpiredTs);
+        appId = "c02f35742ed94202b4b8fe2f91101da6";
+        channelKey = "006c02f35742ed94202b4b8fe2f91101da6IADiLWn76yqESGllflpE+uruNHCcfLqs/iPzm8P5j2thmwx+f9gAAAAAEAAKvMYLqjmVXwEAAQCoOZVf";
         recordingSample.createChannel(appId, channelKey, channel, agoraProperties.getServerUid(), userAccount, recordingConfig, logLevel);
         recordingSample.unRegister();
         return true;

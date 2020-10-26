@@ -797,10 +797,7 @@ public class RecordingSample implements RecordingEventHandler {
         System.out.println("name = " + channelName);
         System.out.println("uid = " + uid);
         if (config != null) {
-            System.out.println("appliteDir = " + config.appliteDir);
-            System.out.println("recordFileRootDir = " + config.recordFileRootDir);
-            System.out.println("highUdpPort = " + config.highUdpPort);
-            System.out.println("lowUdpPort = " + config.lowUdpPort);
+            System.out.println("RecordingConfig:" + config.toString());
         }
         System.out.println("userAccount = " + userAccount);
         System.out.println("logLevel = " + logLevel);

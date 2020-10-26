@@ -12,6 +12,12 @@ public class RecordingSDK {
   /** The maximum length of the user account.  */
   public static int MAX_USER_ACCOUNT_LENGTH = 256;
 
+  /** Load Java library. */
+
+  static {
+    System.load("/root/data/stand_video_backup/librecording.so");
+//    System.loadLibrary("librecording");
+  }
   /** Main methods that can be invoked by your application.*/
   public RecordingSDK() {
     recordingEventHandlers = new ArrayList<RecordingEventHandler>();
