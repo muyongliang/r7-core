@@ -35,10 +35,10 @@ agora:
   expirationTimeInSeconds: 360
   # true：启用混合录制  false：关闭混合录制
   isMixingEnabled: true
-  #MIXED_AV_DEFAULT  默认）不混合音频和视频。
-  #MIXED_AV_CODEC_V1 音频和视频混合成一个文件，录制文件格式为 MP4，但播放器支持有限。
-  #MIXED_AV_CODEC_V2 音频和视频混合成一个文件，录制文件格式为 MP4，支持更多播放器。
-  mixedVideoAudio: MIXED_AV_CODEC_V2
+  #MIXED_AV_DEFAULT 0 默认）不混合音频和视频。
+  #MIXED_AV_CODEC_V1 1音频和视频混合成一个文件，录制文件格式为 MP4，但播放器支持有限。
+  #MIXED_AV_CODEC_V2 2音频和视频混合成一个文件，录制文件格式为 MP4，支持更多播放器。
+  mixedVideoAudio: 2
   autoSubscribe: false
   # 最低的UDP端口。确保highUdpPort的值-lowUdpPort≥6
   lowUdpPort: 40000
