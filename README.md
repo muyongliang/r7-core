@@ -85,6 +85,18 @@ minio/minio server /data
        - "3000:3000"
      networks:
        - loki
+>
+>maven私服
+>
+> mkdir ～/nexus/nexus-data && chown -R 200 ～/nexus/nexus-data
+>
+> 账户admin 密码 yymnexus
+>
+>docker run -d -p 8081:8081 \
+--name nexus \
+-e INSTALL4J_ADD_VM_PARAMS="-Xms2g -Xmx2g -XX:MaxDirectMemorySize=3g  -Djava.util.prefs.userRoot=/some-other-dir" \
+-v /root/nexus/nexus-data:/nexus-data \
+sonatype/nexus3
 
 ## 项目镜像
 >docker run -d \
