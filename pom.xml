@@ -148,11 +148,13 @@
         </dependencies>
     </dependencyManagement>
 
+
+    <!--配置maven私服-->
     <repositories>
         <repository>
             <id>nexus</id>
             <name>Nexus Repository</name>
-            <url>http://192.168.1.49:8081/repository/maven-public/</url>
+            <url>http://scyym.f3322.net:8081/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -162,18 +164,6 @@
             </snapshots>
         </repository>
     </repositories>
-    <!--配置maven厂库源-->
-    <pluginRepositories>
-        <pluginRepository>
-            <id>self-nexus</id>
-            <name>self</name>
-            <url>http://192.168.1.49:8081/repository/maven-public/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>aliyun-nexus</id>
-            <name>aliyun</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
+
 
 </project>

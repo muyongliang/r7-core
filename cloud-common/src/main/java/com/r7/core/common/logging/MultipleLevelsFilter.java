@@ -1,11 +1,11 @@
 package com.r7.core.common.logging;
 
+import ch.qos.logback.classic.Level;
 import ch.qos.logback.core.filter.Filter;
 import ch.qos.logback.core.spi.FilterReply;
 import lombok.Getter;
 import lombok.Setter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import org.slf4j.event.Level;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
