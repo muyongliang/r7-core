@@ -1,6 +1,5 @@
 package com.r7.core.stand.video.properties;
 
-import com.r7.core.stand.video.common.Common.MIXED_AV_CODEC_TYPE;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -45,7 +44,12 @@ public class AgoraProperties {
      * 1：音频和视频混合成一个文件，录制文件格式为 MP4，但播放器支持有限。
      * 2：音频和视频混合成一个文件，录制文件格式为 MP4，支持更多播放器。
      */
-    private MIXED_AV_CODEC_TYPE mixedVideoAudio;
+    private String mixedVideoAudio;
+    /**
+     * 录制指定 UID 的音视频流。UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
+     * 当 autoSubscribe 为 false 时，你可设置此参数来指定 UID 进行录制。该参数设为 NULL 则表示录制所有发流用户的视频。
+     */
+    private String autoSubscribe;
     /**
      * 订阅音频uids
      */

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cloud-integral</artifactId>
+    <artifactId>cloud-resource</artifactId>
 
 
     <dependencies>
