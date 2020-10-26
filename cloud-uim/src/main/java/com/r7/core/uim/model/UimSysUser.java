@@ -3,6 +3,9 @@ package com.r7.core.uim.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.uim.dto.UimSysUserDTO;
+import com.r7.core.uim.dto.UimSysUserUpdateDTO;
+import com.r7.core.uim.vo.UimSysUserVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -99,5 +102,44 @@ public class UimSysUser extends Model<UimSysUser> {
      */
     @ApiModelProperty("更新时间")
     private Date updatedAt;
+
+    public void toUimSysUserUpdateDTO(UimSysUserUpdateDTO uimSysUserUpdateDTO){
+        this.setLoginName(uimSysUserUpdateDTO.getLoginName());
+        this.setUserName(uimSysUserUpdateDTO.getUserName());
+        this.setAvatar(uimSysUserUpdateDTO.getAvatar());
+        this.setPhoneNumber(uimSysUserUpdateDTO.getPhoneNumber());
+        this.setEmail(uimSysUserUpdateDTO.getEmail());
+        this.setStatus(uimSysUserUpdateDTO.getStatus());
+        this.setPassword(uimSysUserUpdateDTO.getPassword());
+
+    }
+    public void toUimSysUserDTO(UimSysUserDTO uimSysUserDTO){
+        this.setBranchId(uimSysUserDTO.getBranchId());
+        this.setLoginName(uimSysUserDTO.getLoginName());
+        this.setUserName(uimSysUserDTO.getUserName());
+        this.setAvatar(uimSysUserDTO.getAvatar());
+        this.setPhoneNumber(uimSysUserDTO.getPhoneNumber());
+        this.setEmail(uimSysUserDTO.getEmail());
+        this.setStatus(uimSysUserDTO.getStatus());
+        this.setPassword(uimSysUserDTO.getPassword());
+    }
+
+    public UimSysUserVO toUimSysUserVO(){
+        UimSysUserVO uimSysUserVO = new UimSysUserVO();
+        uimSysUserVO.setId(this.getId());
+        uimSysUserVO.setAppId(this.getAppId());
+        uimSysUserVO.setOrganId(this.getOrganId());
+        uimSysUserVO.setBranchId(this.getBranchId());
+        uimSysUserVO.setLoginName(this.getLoginName());
+        uimSysUserVO.setUserName(this.getUserName());
+        uimSysUserVO.setAvatar(this.getAvatar());
+        uimSysUserVO.setPhoneNumber(this.getPhoneNumber());
+        uimSysUserVO.setEmail(this.getEmail());
+        uimSysUserVO.setStatus(this.getStatus());
+        uimSysUserVO.setPassword(this.getPassword());
+        uimSysUserVO.setIp(this.getIp());
+        return uimSysUserVO;
+    }
+
 
 }

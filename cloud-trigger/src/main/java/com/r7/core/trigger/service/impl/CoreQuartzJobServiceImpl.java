@@ -42,7 +42,8 @@ public class CoreQuartzJobServiceImpl extends ServiceImpl<CoreQuartzJobMapper, C
         implements CoreQuartzJobService{
     @Autowired
     QuartzOptionalService quartzOptionalService;
-    @Transactional
+
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public CoreQuartzJobVO saveCoreQuartzJob(CoreQuartzJobDTO coreQuartzJobDto, Long userId) {
         log.info("添加定时任务：{}，操作人：{}，开始时间：{}", coreQuartzJobDto, userId,
@@ -93,10 +94,6 @@ public class CoreQuartzJobServiceImpl extends ServiceImpl<CoreQuartzJobMapper, C
         //验证id是否为空
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(CoreQuartzJobErrorEnum.CORE_QUARTZ_JOB_ID_IS_NULL));
-
-        //根据id查询，没有时抛出不存在异常
-        // CoreQuartzJob coreQuartzJob = Option.of(baseMapper.selectById(id))
-        //  .getOrElseThrow(() -> new BusinessException(CoreQuartzJobErrorEnum.CORE_QUARTZ_JOB_IS_NOT_EXISTS));
 
         //根据id查询，没有时返回一个空的实体
         CoreQuartzJob coreQuartzJob = Option.of(baseMapper.selectById(id))

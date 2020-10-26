@@ -3,7 +3,6 @@ package com.r7.core.profit.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.r7.core.profit.model.CoreRecordIncome;
-import com.r7.core.profit.vo.CoreProfitVO;
 import com.r7.core.profit.vo.CoreRecordIncomeVO;
 import org.apache.ibatis.annotations.Param;
 

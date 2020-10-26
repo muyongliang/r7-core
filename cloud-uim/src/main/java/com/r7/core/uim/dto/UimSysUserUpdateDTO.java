@@ -9,18 +9,12 @@ import javax.validation.constraints.NotNull;
 
 /**
  * @author wt
- * @Description 新增系统用户传输层
+ * @Description 系统用户信息修改传输层
  */
 @Data
-@ApiModel("新增系统用户传输层")
-public class UimSysUserDTO {
+@ApiModel("系统用户信息修改传输层")
+public class UimSysUserUpdateDTO {
 
-    /**
-     * 部门id
-     */
-    @NotNull(message = "部门id不能为空")
-    @ApiModelProperty("部门id")
-    private Long branchId;
     /**
      * 登录名
      */
@@ -63,4 +57,6 @@ public class UimSysUserDTO {
     @ApiModelProperty("账户密码")
     @NotBlank(message = "账户密码不能为空")
     private String password;
+
+
 }
