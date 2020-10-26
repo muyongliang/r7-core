@@ -19,6 +19,6 @@ public class AgoraConfig {
     @PostConstruct
     public void init() {
 //        System.load("D:\\project\\r7-core\\cloud-stand\\stand-video\\lib\\librecording.so");
-        System.load("/root/data/apps/librecording.so");
+        System.load("/root/data/stand_video/librecording.so");
     }
 }

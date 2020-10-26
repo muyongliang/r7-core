@@ -1,6 +1,5 @@
 package com.r7.core.stand.video.dto;
 
-import com.r7.core.stand.video.common.Common;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

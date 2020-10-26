@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @MapperScan("com.r7.core.stand.video.mapper")
 @SpringBootApplication(scanBasePackages = {"com.r7.core"})
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 public class VideoApplication {
     public static void main(String[] args) {
         SpringApplication.run(VideoApplication.class, args);

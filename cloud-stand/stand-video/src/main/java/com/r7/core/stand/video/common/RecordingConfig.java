@@ -7,18 +7,6 @@ public class RecordingConfig {
 
   public RecordingConfig() {
     /**
-     * 声网appId
-     */
-    appId = "";
-    /**
-     * 证书
-     */
-    appCertificate ="";
-    /**
-     * 到期时间
-     */
-    expirationTimeInSeconds = 0;
-    /**
      * 纯音频
      */
     isAudioOnly = false;
@@ -143,12 +131,6 @@ public class RecordingConfig {
      */
     enableH265Support = false;
   }
-
-  public String appId;
-
-  public String appCertificate;
-
-  public Integer expirationTimeInSeconds;
 
   /** Sets whether or not to record audio only:
    * <ul>

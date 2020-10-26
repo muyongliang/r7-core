@@ -1,7 +1,6 @@
 package com.r7.core.stand.video.service.impl;
 
 import com.r7.core.stand.video.agora.media.RtcTokenBuilder;
-import com.r7.core.stand.video.common.Common;
 import com.r7.core.stand.video.common.RecordingConfig;
 import com.r7.core.stand.video.common.RecordingSDK;
 import com.r7.core.stand.video.properties.AgoraProperties;
