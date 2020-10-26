@@ -26,7 +26,7 @@ public class RecordingServiceImpl implements RecordingService {
     private AgoraProperties agoraProperties;
 
     @Override
-    public boolean createChannel(String channel, Integer... uids) {
+    public boolean createChannel(String appId, String channel, String channelKey, Integer... uids) {
         //should config -Djava.library.path to load library
         RecordingSDK recordingSDK = new RecordingSDK();
         RecordingSample recordingSample = new RecordingSample(recordingSDK);
@@ -46,17 +46,14 @@ public class RecordingServiceImpl implements RecordingService {
         recordingConfig.subscribeAudioUids = uidToSubscribeString(uids);
         recordingConfig.subscribeVideoUids = uidToSubscribeString(uids);
         int logLevel = agoraProperties.getLogLevel();
-        String appId = agoraProperties.getAppId();
+//        String appId = agoraProperties.getAppId();
         String appCertificate = agoraProperties.getAppCertificate();
         Integer expirationTimeInSeconds = agoraProperties.getExpirationTimeInSeconds();
 
         //生成token
         RtcTokenBuilder token = new RtcTokenBuilder();
         int privilegeExpiredTs = (int) (System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
-        String channelKey = token.buildTokenWithUid(appId, appCertificate,
-                channel, agoraProperties.getServerUid(), RtcTokenBuilder.Role.Role_Subscriber, privilegeExpiredTs);
-        appId = "c02f35742ed94202b4b8fe2f91101da6";
-        channelKey = "006c02f35742ed94202b4b8fe2f91101da6IADiLWn76yqESGllflpE+uruNHCcfLqs/iPzm8P5j2thmwx+f9gAAAAAEAAKvMYLqjmVXwEAAQCoOZVf";
+//        String channelKey = token.buildTokenWithUid(appId, appCertificate, channel, agoraProperties.getServerUid(), RtcTokenBuilder.Role.Role_Subscriber, privilegeExpiredTs);
         recordingSample.createChannel(appId, channelKey, channel, agoraProperties.getServerUid(), userAccount, recordingConfig, logLevel);
         recordingSample.unRegister();
         return true;

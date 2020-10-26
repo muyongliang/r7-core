@@ -19,7 +19,7 @@
         <module>cloud-dividend</module>
         <module>cloud-stand</module>
         <module>cloud-trigger</module>
-        <module>cloud-integral</module>
+        <module>cloud-resource</module>
         <module>cloud-cache</module>
     </modules>
 
@@ -46,14 +46,19 @@
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
         <nimbus.version>8.9</nimbus.version>
         <minio.version>7.1.4</minio.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencies>
         <!--nacos 配置动态更新-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.alibaba.cloud</groupId>-->
-        <!--            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
         <!--        spring cloud alibaba 分布式包-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -110,6 +115,19 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencyManagement>
         <dependencies>
@@ -130,9 +148,27 @@
         </dependencies>
     </dependencyManagement>
 
-
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <name>Nexus Repository</name>
+            <url>http://192.168.1.49:8081/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <!--snapshots默认是关闭的,需要开启  -->
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <!--配置maven厂库源-->
     <pluginRepositories>
+        <pluginRepository>
+            <id>self-nexus</id>
+            <name>self</name>
+            <url>http://192.168.1.49:8081/repository/maven-public/</url>
+        </pluginRepository>
         <pluginRepository>
             <id>aliyun-nexus</id>
             <name>aliyun</name>

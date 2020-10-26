@@ -15,12 +15,12 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @SpringBootApplication(scanBasePackages = {"com.r7.core"})
 @EnableDiscoveryClient
 @RefreshScope
-public class IntegralApplication {
+public class ResourceApplication {
 
     public static void main(String[] args) {
 
 
-        SpringApplication.run(IntegralApplication.class, args);
+        SpringApplication.run(ResourceApplication.class, args);
     }
 
 }

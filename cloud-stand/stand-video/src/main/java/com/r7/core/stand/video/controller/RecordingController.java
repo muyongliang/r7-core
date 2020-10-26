@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -24,8 +25,11 @@ public class RecordingController {
     private RecordingService recordingService;
 
     @ApiOperation(value = "开始认证录制")
-    @PostMapping("/start")
-    public ResponseEntity createChannel(String channel, Integer... uids) {
-        return ResponseEntity.success(recordingService.createChannel(channel, uids));
+    @PostMapping
+    public ResponseEntity createChannel(@RequestParam("appId") String appId,
+                                        @RequestParam("channel") String channel,
+                                        @RequestParam("channelKey") String channelKey,
+                                        @RequestParam("uids") Integer... uids) {
+        return ResponseEntity.success(recordingService.createChannel(appId, channel, channelKey, uids));
     }
 }

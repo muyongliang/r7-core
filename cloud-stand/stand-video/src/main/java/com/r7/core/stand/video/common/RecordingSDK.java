@@ -16,6 +16,7 @@ public class RecordingSDK {
 
   static {
     System.load("/root/data/stand_video_backup/librecording.so");
+//    System.load("D:\\code\\r7-core\\cloud-stand\\stand-video\\lib\\librecording.so");
 //    System.loadLibrary("librecording");
   }
   /** Main methods that can be invoked by your application.*/

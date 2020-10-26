@@ -14,6 +14,6 @@ public interface RecordingService {
      * @param uid     用户id
      * @return 返回是否成功
      */
-    boolean createChannel(String channel, Integer... uid);
+    public boolean createChannel(String appId, String channel, String channelKey, Integer... uids);
 
 }
