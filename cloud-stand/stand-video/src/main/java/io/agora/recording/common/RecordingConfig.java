@@ -2,7 +2,11 @@ package io.agora.recording.common;
 
 
 import io.agora.recording.common.Common.*;
+import lombok.Data;
+import lombok.ToString;
 
+@Data
+@ToString
 public class RecordingConfig {
     /**
      * Sets whether or not to record audio only:
@@ -272,7 +276,7 @@ public class RecordingConfig {
     public RecordingConfig() {
         isAudioOnly = false;
         isVideoOnly = false;
-        isMixingEnabled = false;
+        isMixingEnabled = true;
         mixedVideoAudio = MIXED_AV_CODEC_TYPE.MIXED_AV_DEFAULT;
 
         mixResolution = "";

@@ -28,9 +28,8 @@ public class RecordingController {
     @PostMapping
     public ResponseEntity createChannel(@RequestParam("appId") String appId,
                                         @RequestParam("channel") String channel,
-                                        @RequestParam(value = "userAccount", required = false) String userAccount,
                                         @RequestParam("channelKey") String channelKey,
                                         @RequestParam("uids") Integer... uids) {
-        return ResponseEntity.success(recordingService.createChannel(appId, channel, userAccount, channelKey, uids));
+        return ResponseEntity.success(recordingService.createChannel(appId, channel, channelKey, uids));
     }
 }

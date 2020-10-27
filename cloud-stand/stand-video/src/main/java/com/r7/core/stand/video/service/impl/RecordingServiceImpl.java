@@ -25,7 +25,7 @@ public class RecordingServiceImpl implements RecordingService {
     private AgoraProperties agoraProperties;
 
     @Override
-    public boolean createChannel(String appId, String channel, String userAccount, String channelKey, Integer... uids) {
+    public boolean createChannel(String appId, String channel, String channelKey, Integer... uids) {
 //        新建sdk
         RecordingSDK recordingSDK = new RecordingSDK();
 //        配置监听回调
@@ -42,7 +42,8 @@ public class RecordingServiceImpl implements RecordingService {
 //        String channelKey = token.buildTokenWithUid(appId, appCertificate, channel, agoraProperties.getServerUid(), RtcTokenBuilder.Role.Role_Subscriber, privilegeExpiredTs);
         RecordingConfig recordingConfig = new RecordingConfig();
         recordingConfig.appliteDir = agoraProperties.getAppliteDir();
-        recordingConfig.isMixingEnabled = agoraProperties.isMixingEnabled();
+//        recordingConfig.isMixingEnabled = agoraProperties.isMixingEnabled();
+        recordingConfig.isMixingEnabled = true;
         recordingConfig.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.valueOf(agoraProperties.getMixedVideoAudio());
         recordingConfig.recordFileRootDir = agoraProperties.getRecordFileRootDir();
         recordingConfig.lowUdpPort = agoraProperties.getLowUdpPort();
@@ -51,23 +52,25 @@ public class RecordingServiceImpl implements RecordingService {
         recordingConfig.subscribeVideoUids = uidToSubscribeString(uids);
         recordingConfig.subscribeAudioUids = uidToSubscribeString(uids);
 //        开始调用本地方法进行录制
-        recordingSDK.createChannel(appId, channelKey, channel, agoraProperties.getServerUid(), recordingConfig, agoraProperties.getLogLevel());
+        log.info("appId: {}", appId);
+        log.info("channelKey: {}", channelKey);
+        log.info("channel: {}", channel);
+        log.info("uid: {}", agoraProperties.getServerUid());
+        log.info("recordingConfig: {}", recordingConfig.toString());
+        log.info("logLevel: {}", agoraProperties.getLogLevel());
+        boolean success = recordingSDK.createChannel(appId, channelKey, channel, agoraProperties.getServerUid(), recordingConfig, agoraProperties.getLogLevel());
 //        销毁监听器
         recordingSDK.unRegisterOberserver(agoraRecordingEventHandler);
-        return true;
+        return success;
     }
 
     public String uidToSubscribeString(Integer... uid) {
         StringBuilder sb = new StringBuilder();
-        sb.append('"');
         for (int i = 0; i < uid.length - 1; i++) {
             sb.append(uid[i]);
-            sb.append('"');
             sb.append(',');
-            sb.append('"');
         }
         sb.append(uid[uid.length - 1]);
-        sb.append('"');
         return sb.toString();
     }
 }
