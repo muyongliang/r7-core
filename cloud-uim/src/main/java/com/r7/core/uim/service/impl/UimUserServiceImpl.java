@@ -111,7 +111,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         uimUser.setOrganId(userByCode.getOrganId());
         uimUser.toUserSingUpDTO(userSignUpDTO);
         uimUser.setCode(userCode);
-        uimUser.setAvatar("abc");
+        uimUser.setAvatar("default");
         uimUser.setIp(ip);
         // 未认证
         uimUser.setIsOauth(2);
