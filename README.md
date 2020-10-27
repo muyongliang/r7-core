@@ -114,3 +114,11 @@ sonatype/nexus3
  -p 8099:8099 \
  -v /root/core_docker/cloud-integral:/usr/local/ymapp \
  docker-java-runtime
+
+>docker run -d \
+ --name cloud-uim \
+ --restart=always \
+ --privileged=true \
+ -p 8010:8010 \
+ -v /root/core_docker/cloud-uim:/usr/local/ymapp \
+ docker-java-runtime

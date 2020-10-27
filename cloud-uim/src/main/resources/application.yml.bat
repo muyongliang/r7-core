@@ -28,5 +28,5 @@ sms:
       key:
         id: LTAIDOb6J22j1LzH
         secret: 8y4GmAOfqGbOHTSsWQoONUPl76VsqF
-  sign:
-    name: 云觅
+    sign:
+        name: 云觅
