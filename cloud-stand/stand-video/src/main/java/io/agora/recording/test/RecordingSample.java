@@ -5,6 +5,7 @@ import io.agora.recording.RecordingSDK;
 import io.agora.recording.common.Common;
 import io.agora.recording.common.Common.*;
 import io.agora.recording.common.RecordingConfig;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,27 +13,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-class RecordingCleanTimer extends TimerTask {
-    RecordingSample rs;
-
-    public RecordingCleanTimer(RecordingSample rs) {
-        this.rs = rs;
-    }
-
-    @Override
-    public void run() {
-        rs.clean();
-    }
-}
-
-class UserInfo {
-    long uid;
-    long last_receive_time;
-    FileOutputStream channel;
-    String fileName;
-}
-
-
+@Slf4j
 public class RecordingSample implements RecordingEventHandler {
     public static final int DEFAULT_LAYOUT = 0;
     public static final int BESTFIT_LAYOUT = 1;
@@ -838,18 +819,17 @@ public class RecordingSample implements RecordingEventHandler {
     }
 
     public void createChannel(Map<String, Object> map) {
+        //        打印参数
+        log.info("recording参数为：{}", map.toString());
         int uid = 0;
         String appId = "";
         String channelKey = "";
         String name = "";
         int channelProfile = 0;
-
         String decryptionMode = "";
         String secret = "";
         String mixResolution = "360,640,15,500";
-
         int idleLimitSec = 5 * 60;// 300s
-
         String applitePath = "";
         String recordFileRootDir = "";
         String cfgFilePath = "";
@@ -859,11 +839,8 @@ public class RecordingSample implements RecordingEventHandler {
         String defaultUserBgPath = "";
         String subscribeVideoUids = "";
         String subscribeAudioUids = "";
-
-
         int lowUdpPort = 0;// 40000;
         int highUdpPort = 0;// 40004;
-
         boolean isAudioOnly = false;
         boolean isVideoOnly = false;
         boolean isMixingEnabled = false;
@@ -872,16 +849,13 @@ public class RecordingSample implements RecordingEventHandler {
         boolean enableIntraRequest = true;
         boolean enableH265Support = false;
         int mixedVideoAudio = MIXED_AV_CODEC_TYPE.MIXED_AV_DEFAULT.ordinal();
-
         int getAudioFrame = AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE.ordinal();
         int getVideoFrame = VIDEO_FORMAT_TYPE.VIDEO_FORMAT_DEFAULT_TYPE.ordinal();
         int streamType = REMOTE_VIDEO_STREAM_TYPE.REMOTE_VIDEO_STREAM_HIGH.ordinal();
         int captureInterval = 5;
         int triggerMode = 0;
-
         int audioIndicationInterval = 0;
         int logLevel = 5;
-
         int width = 0;
         int height = 0;
         int fps = 0;
@@ -930,23 +904,6 @@ public class RecordingSample implements RecordingEventHandler {
         Object SubscribeAudioUids = map.get("subscribeAudioUids");
         Object KeepLastFrame = map.get("keepLastFrame");
         Object EnableH265Support = map.get("enableH265Support");
-
-//        打印参数
-        System.out.println("appId = " + Appid);
-        System.out.println("uid = " + Uid);
-        System.out.println("UserAccount = " + UserAccount);
-        System.out.println("Channel = " + Channel);
-        System.out.println("AppliteDir = " + AppliteDir);
-        System.out.println("ChannelKey = " + ChannelKey);
-        System.out.println("IsMixingEnabled = " + IsMixingEnabled);
-        System.out.println("MixedVideoAudio = " + MixedVideoAudio);
-        System.out.println("RecordFileRootDir = " + RecordFileRootDir);
-        System.out.println("LowUdpPort = " + LowUdpPort);
-        System.out.println("HighUdpPort = " + HighUdpPort);
-        System.out.println("LogLevel = " + LogLevel);
-        System.out.println("AutoSubscribe = " + AutoSubscribe);
-        System.out.println("SubscribeVideoUids = " + SubscribeVideoUids);
-        System.out.println("SubscribeAudioUids = " + SubscribeAudioUids);
         if (Appid == null || (Uid == null && userAccount == null) || Channel == null || AppliteDir == null) {
             // print usage
             String usage = "java RecordingSDK --appId STRING --uid UINTEGER32 --userAccount STRING --channel STRING --appliteDir STRING --channelKey STRING --channelProfile UINTEGER32 --isAudioOnly --isVideoOnly --isMixingEnabled --mixResolution STRING --mixedVideoAudio --decryptionMode STRING --secret STRING --idle INTEGER32 --recordFileRootDir STRING --lowUdpPort INTEGER32 --highUdpPort INTEGER32 --getAudioFrame UINTEGER32 --getVideoFrame UINTEGER32 --captureInterval INTEGER32 --cfgFilePath STRING --streamType UINTEGER32 --triggerMode INTEGER32 \r\n --appId     (App Id/must) \r\n --uid     (User Id default is 0/one of uid and userAccount is must)  \r\n --userAccount (User account/one of uid and userAccount is must)\r\n --channel     (Channel Id/must) \r\n --appliteDir     (directory of app lite 'AgoraCoreService', Must pointer to 'Agora_Server_SDK_for_Linux_FULL/bin/' folder/must) \r\n --channelKey     (channelKey/option)\r\n --channelProfile     (channel_profile:(0:COMMUNICATION),(1:broadcast) default is 0/option)  \r\n --isAudioOnly     (Default 0:A/V, 1:AudioOnly (0:1)/option) \r\n --isVideoOnly     (Default 0:A/V, 1:VideoOnly (0:1)/option)\r\n --isMixingEnabled     (Mixing Enable? (0:1)/option)\r\n --mixResolution     (change default resolution for vdieo mix mode/option)                 \r\n --mixedVideoAudio     (mixVideoAudio:(0:seperated Audio,Video) (1:mixed Audio & Video with legacy codec) (2:mixed Audio & Video with new codec) default is 0 /option)                 \r\n --decryptionMode     (decryption Mode, default is NULL/option)                 \r\n --secret     (input secret when enable decryptionMode/option)                 \r\n --idle     (Default 300s, should be above 3s/option)                 \r\n --recordFileRootDir     (recording file root dir/option)                 \r\n --lowUdpPort     (default is random value/option)                 \r\n --highUdpPort     (default is random value/option)                 \r\n --getAudioFrame     (default 0 (0:save as file, 1:aac frame, 2:pcm frame, 3:mixed pcm frame) (Can't combine with isMixingEnabled) /option)                 \r\n --getVideoFrame     (default 0 (0:save as file, 1:h.264, 2:yuv, 3:jpg buffer, 4:jpg file, 5:jpg file and video file) (Can't combine with isMixingEnabled) /option)              \r\n --captureInterval     (default 5 (Video snapshot interval (second)))                 \r\n --cfgFilePath     (config file path / option)                 \r\n --streamType     (remote video stream type(0:STREAM_HIGH,1:STREAM_LOW), default is 0/option)  \r\n --triggerMode     (triggerMode:(0: automatically mode, 1: manually mode) default is 0/option) \r\n --proxyType    proxyType:proxyServer format type, 0:self socks5 proxy server, 1:cloud proxy domain, 2:proxy LBS server list. default is 1/option \r\n --proxyServer     proxyServer:format ip:port, eg,\"127.0.0.1:1080\"/option \r\n --defaultVideoBg    (default user background image path/option) \r\n --defaultUserBg (default user background image path/option))  \r\n --audioProfile (audio profile(0: standard single channel, 1: high quality single channel, 2: high quality two channels) defualt is 0/option)   \r\n --logLevel (log level default INFO/option) \r\n --audioIndicationInterval(0: no indication, audio indication interval(ms) default is 0/option) \r\n --layoutMode    (mix video layout mode:(0: default layout, 1:bestFit Layout mode, 2:vertical presentation Layout mode, default is 0/option)(combine with isMixingEnabled)) \r\n --maxResolutionUid    (max resolution uid (uid with maxest resolution under vertical presentation Layout mode if uid is used  ( default is -1 /option)) \r\n --maxResolutionUserAccount (max resolution user account(user account with maxest resolution under vertical presentation layout mode if user account is used to join channel (default is empty / option) --autoSubscribe (Auto subscribe video/audio streams of each uid. (0: false 1:true, default 1/option)) \r\n --subscribeVideoUids (subcsribe video stream of specified uids. seperated with commas, like 1234,2345 /option) \r\n --subscribeAudioUids (subscribe audio stream of specified uids seperated by commos, like 1234,2345 /option) \r\n --keepLastFrame (Whether to keep user last frame when user's video stream stop(0: not keep, 1: keep, default 0/option) \r\n --enableCloudProxy (enable cloud proxy or not.(0: not enable, 1: enable, default 0/option) \r\n --enableIntraRequest (enable Intra Request or not(0 : not, 1: enable, default 1/option) \r\n --enableH265Support (enable H.265 video codec or not(0 : not, 1: enable, default 0/option))";
@@ -1156,4 +1113,24 @@ public class RecordingSample implements RecordingEventHandler {
         System.out.println("jni layer has been exited...");
     }
 
+}
+
+class RecordingCleanTimer extends TimerTask {
+    RecordingSample rs;
+
+    public RecordingCleanTimer(RecordingSample rs) {
+        this.rs = rs;
+    }
+
+    @Override
+    public void run() {
+        rs.clean();
+    }
+}
+
+class UserInfo {
+    long uid;
+    long last_receive_time;
+    FileOutputStream channel;
+    String fileName;
 }

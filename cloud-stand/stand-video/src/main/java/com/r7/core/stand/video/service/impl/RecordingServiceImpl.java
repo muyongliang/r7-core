@@ -40,7 +40,7 @@ public class RecordingServiceImpl implements RecordingService {
         HashMap<String, Object> map = new HashMap<>();
         map.put("appId", appId);
         map.put("uid", agoraProperties.getServerUid());
-        map.put("isMixingEnabled", userAccount);
+        map.put("userAccount", userAccount);
         map.put("appliteDir", agoraProperties.getAppliteDir());
         map.put("channel", channel);
         map.put("channelKey", channelKey);
