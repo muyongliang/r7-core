@@ -42,6 +42,7 @@ public class RecordingServiceImpl implements RecordingService {
         map.put("uid", agoraProperties.getServerUid());
         map.put("isMixingEnabled", userAccount);
         map.put("appliteDir", agoraProperties.getAppliteDir());
+        map.put("channel", channel);
         map.put("channelKey", channelKey);
         map.put("isMixingEnabled", agoraProperties.getIsMixingEnabled());
         map.put("mixedVideoAudio", agoraProperties.getMixedVideoAudio());
@@ -64,6 +65,7 @@ public class RecordingServiceImpl implements RecordingService {
             sb.append(uid[i]);
             sb.append('"');
             sb.append(',');
+            sb.append('"');
         }
         sb.append(uid[uid.length - 1]);
         sb.append('"');
