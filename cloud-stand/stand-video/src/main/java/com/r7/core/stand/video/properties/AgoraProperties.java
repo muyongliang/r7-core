@@ -34,10 +34,10 @@ public class AgoraProperties {
     private Integer expirationTimeInSeconds;
     /**
      * 启用音视频混合
-     * 单流录制模式：0（ 默认录制模式）分开录制频道内每个 UID 的音频流和视频流。每个 UID 均有其对应的音频文件和视频文件。
-     * 合流录制模式：1 频道内所有或指定 UID 的音视频混合录制为一个音视频文件；或频道内所有或指定 UID 的音频混合录制为一个纯音频文件，所有或指定 UID 的视频混合录制为一个纯视频文件。
+     * 单流录制模式：（ 默认录制模式）分开录制频道内每个 UID 的音频流和视频流。每个 UID 均有其对应的音频文件和视频文件。
+     * 合流录制模式： 频道内所有或指定 UID 的音视频混合录制为一个音视频文件；或频道内所有或指定 UID 的音频混合录制为一个纯音频文件，所有或指定 UID 的视频混合录制为一个纯视频文件。
      */
-    private int isMixingEnabled;
+    private boolean isMixingEnabled;
     /**
      * 混合音视频类型
      * 0：（默认）不混合音频和视频。
@@ -47,9 +47,9 @@ public class AgoraProperties {
     private String mixedVideoAudio;
     /**
      * 录制指定 UID 的音视频流。UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
-     * 当 autoSubscribe 为 false 时，你可设置此参数来指定 UID 进行录制。该参数设为 NULL 则表示录制所有发流用户的视频。
+     * 当 autoSubscribe 为 false时，你可设置此参数来指定 UID 进行录制。该参数设为 NULL 则表示录制所有发流用户的视频。
      */
-    private String autoSubscribe;
+    private boolean autoSubscribe;
     /**
      * 订阅音频uids
      */

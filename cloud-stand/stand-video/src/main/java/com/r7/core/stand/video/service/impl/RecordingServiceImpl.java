@@ -3,13 +3,13 @@ package com.r7.core.stand.video.service.impl;
 import com.r7.core.stand.video.properties.AgoraProperties;
 import com.r7.core.stand.video.service.RecordingService;
 import io.agora.recording.RecordingSDK;
-import io.agora.recording.test.RecordingSample;
+import io.agora.recording.common.Common;
+import io.agora.recording.common.RecordingConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 
 /**
  * @author zs
@@ -26,9 +26,12 @@ public class RecordingServiceImpl implements RecordingService {
 
     @Override
     public boolean createChannel(String appId, String channel, String userAccount, String channelKey, Integer... uids) {
-        //should config -Djava.library.path to load library
+//        新建sdk
         RecordingSDK recordingSDK = new RecordingSDK();
-        RecordingSample recordingSample = new RecordingSample(recordingSDK);
+//        配置监听回调
+        AgoraRecordingEventHandler agoraRecordingEventHandler = new AgoraRecordingEventHandler();
+//        注册监听回调到声网
+        recordingSDK.registerOberserver(agoraRecordingEventHandler);
 //        String appId = agoraProperties.getAppId();
 //        String appCertificate = agoraProperties.getAppCertificate();
 //        Integer expirationTimeInSeconds = agoraProperties.getExpirationTimeInSeconds();
@@ -37,24 +40,20 @@ public class RecordingServiceImpl implements RecordingService {
 //        RtcTokenBuilder token = new RtcTokenBuilder();
 //        int privilegeExpiredTs = (int) (System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
 //        String channelKey = token.buildTokenWithUid(appId, appCertificate, channel, agoraProperties.getServerUid(), RtcTokenBuilder.Role.Role_Subscriber, privilegeExpiredTs);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("appId", appId);
-        map.put("uid", agoraProperties.getServerUid());
-        map.put("userAccount", userAccount);
-        map.put("appliteDir", agoraProperties.getAppliteDir());
-        map.put("channel", channel);
-        map.put("channelKey", channelKey);
-        map.put("isMixingEnabled", agoraProperties.getIsMixingEnabled());
-        map.put("mixedVideoAudio", agoraProperties.getMixedVideoAudio());
-        map.put("recordFileRootDir", agoraProperties.getRecordFileRootDir());
-        map.put("lowUdpPort", agoraProperties.getLowUdpPort());
-        map.put("highUdpPort", agoraProperties.getHighUdpPort());
-        map.put("logLevel", agoraProperties.getLogLevel());
-        map.put("autoSubscribe", agoraProperties.getAutoSubscribe());
-        map.put("subscribeVideoUids", uidToSubscribeString(uids));
-        map.put("subscribeAudioUids", uidToSubscribeString(uids));
-        recordingSample.createChannel(map);
-        recordingSample.unRegister();
+        RecordingConfig recordingConfig = new RecordingConfig();
+        recordingConfig.appliteDir = agoraProperties.getAppliteDir();
+        recordingConfig.isMixingEnabled = agoraProperties.isMixingEnabled();
+        recordingConfig.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.valueOf(agoraProperties.getMixedVideoAudio());
+        recordingConfig.recordFileRootDir = agoraProperties.getRecordFileRootDir();
+        recordingConfig.lowUdpPort = agoraProperties.getLowUdpPort();
+        recordingConfig.highUdpPort = agoraProperties.getHighUdpPort();
+        recordingConfig.autoSubscribe = agoraProperties.isAutoSubscribe();
+        recordingConfig.subscribeVideoUids = uidToSubscribeString(uids);
+        recordingConfig.subscribeAudioUids = uidToSubscribeString(uids);
+//        开始调用本地方法进行录制
+        recordingSDK.createChannel(appId, channelKey, channel, agoraProperties.getServerUid(), recordingConfig, agoraProperties.getLogLevel());
+//        销毁监听器
+        recordingSDK.unRegisterOberserver(agoraRecordingEventHandler);
         return true;
     }
 
