@@ -1,10 +1,14 @@
 package com.r7.core.uim.service.impl;
 
-import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Maps;
+import com.r7.core.sms.service.SmsService;
+import com.r7.core.cache.service.RedisService;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.CodeUtil;
 import com.r7.core.common.util.SnowflakeUtil;
@@ -32,6 +36,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 用户服务实现层
@@ -53,6 +59,12 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
 
     @Resource
     private UimOrganService uimOrganService;
+
+    @Resource
+    private SmsService smsService;
+
+    @Resource
+    private RedisService redisService;
 
     @Override
     public UserDetails loadUserByUsername(String loginName) throws UsernameNotFoundException {
@@ -79,15 +91,19 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         if (!ValidatorUtil.validatorPhoneNumber(userSignUpDTO.getPhoneNumber())) {
             throw new BusinessException(UimErrorEnum.USER_PHONE_ERROR);
         }
+        // 验证码校验
+        String smsCode = redisService.getKey(userSignUpDTO.getPhoneNumber().toString(), String.class);
+        if (smsCode == null || !smsCode.equals(userSignUpDTO.getCode())) {
+            throw new BusinessException(UimErrorEnum.USER_SIGN_UP_SMS_CODE_ERROR);
+        }
         // 电话号是否已经存在
         Option.of(getUserByPhone(userSignUpDTO.getPhoneNumber())).exists(eror -> {
             throw new BusinessException(UimErrorEnum.USER_PHONE_EXISTS);
         });
-        // 组织是否存在
-        Option.of(uimOrganService.getUimOrganById(userSignUpDTO.getOrganId()))
-                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ORGAN_IS_NOT_EXISTS));
+
         // code 是否存在
-        Option.of(getUserByCode(code))
+        UimUserVO userByCode = getUserByCode(code);
+        Option.of(userByCode)
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_CODE_IS_NOT_EXISTS));
         Long id = SnowflakeUtil.getSnowflakeId();
         String userCode = CodeUtil.instance().gen(id);
@@ -97,6 +113,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         });
         UimUser uimUser = new UimUser();
         uimUser.setId(id);
+        uimUser.setOrganId(userByCode.getOrganId());
         uimUser.toUserSingUpDTO(userSignUpDTO);
         uimUser.setCode(userCode);
         uimUser.setAvatar("abc");
@@ -153,7 +170,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
     @Override
     public UimUserVO getUserByCode(String code) {
         UimUser uimUser = getOne(Wrappers.<UimUser>lambdaQuery()
-                .select(UimUser::getId, UimUser::getAvatar,
+                .select(UimUser::getId, UimUser::getAvatar, UimUser::getOrganId,
                         UimUser::getUserName, UimUser::getCode, UimUser::getPhoneNumber)
                 .eq(UimUser::getCode, code));
         return Option.of(uimUser).map(UimUser::toUimUserVO).getOrNull();
@@ -178,5 +195,19 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
                         UimUser::getUserName, UimUser::getCode, UimUser::getPhoneNumber)
                 .eq(UimUser::getPhoneNumber, phone));
         return Option.of(uimUser).map(UimUser::toUimUserVO).getOrNull();
+    }
+
+    @Override
+    public void sendSmsCode(String phone) {
+        // 是否一分钟内发送的
+        Option.of(redisService.getKey(phone, String.class))
+                .exists(err -> {
+                    throw new BusinessException(UimErrorEnum.USER_SIGN_UP_SMS_SEND_ERROR);
+                });
+        Map<String, Object> map = Maps.newHashMapWithExpectedSize(1);
+        String code = String.valueOf(Math.round((Math.random() + 1) * 100000));
+        map.put("code", code);
+        smsService.sendSms(phone, "云觅", "SMS_165215126", JSONUtil.toJsonStr(map));
+        redisService.addValue(phone, code, 60, TimeUnit.SECONDS);
     }
 }

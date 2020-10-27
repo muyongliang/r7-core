@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * redis普通服务实现层
@@ -25,6 +26,11 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public void addValue(String key, Object value) {
         redisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(value));
+    }
+
+    @Override
+    public void addValue(String key, Object value, long time, TimeUnit timeUnit) {
+        redisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(value), time, timeUnit);
     }
 
     @Override
