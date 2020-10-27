@@ -18,6 +18,10 @@ public class SmsConfig {
     @Value("${sms.config.access.key.secret}")
     private String accessKeySecret;
 
+    @Value("${sms.config.sign.name}")
+    private String signName;
+
+
     public String getAccessKeyId() {
         return accessKeyId;
     }
@@ -26,4 +30,8 @@ public class SmsConfig {
         return accessKeySecret;
     }
 
+
+    public String getSignName() {
+        return signName;
+    }
 }

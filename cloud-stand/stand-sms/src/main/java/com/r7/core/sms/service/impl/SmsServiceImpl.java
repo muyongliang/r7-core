@@ -8,8 +8,8 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.r7.core.sms.config.SmsConfig;
+import com.r7.core.sms.constant.SmsErrorEnum;
 import com.r7.core.sms.service.SmsService;
 import com.r7.core.common.exception.BusinessException;
 import io.vavr.control.Try;
@@ -32,9 +32,6 @@ public class SmsServiceImpl implements SmsService {
     @Resource
     private SmsConfig smsConfig;
 
-    @Resource
-    private ObjectMapper objectMapper;
-
     private IAcsClient defaultAcsClient;
 
     @PostConstruct
@@ -45,7 +42,7 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
-    public void sendSms(String phoneNumber, String signName, String templateCode, String templateParam) {
+    public void sendSms(String phoneNumber, String templateCode, String templateParam) {
         CommonRequest request = new CommonRequest();
         request.setSysMethod(MethodType.POST);
         request.setSysDomain("dysmsapi.aliyuncs.com");
@@ -53,11 +50,11 @@ public class SmsServiceImpl implements SmsService {
         request.setSysAction("SendSms");
         request.putQueryParameter("RegionId", "cn-hangzhou");
         request.putQueryParameter("PhoneNumbers", phoneNumber);
-        request.putQueryParameter("SignName", signName);
+        request.putQueryParameter("SignName", smsConfig.getSignName());
         request.putQueryParameter("TemplateCode", templateCode);
         request.putQueryParameter("TemplateParam", templateParam);
         CommonResponse response = Try.of(() -> defaultAcsClient.getCommonResponse(request))
-                .getOrElseThrow(() -> new BusinessException("", ""));
+                .getOrElseThrow(() -> new BusinessException(SmsErrorEnum.SMS_SEND_ERROR));
         String data = response.getData();
         Map map = JSONUtil.toBean(data, Map.class);
         String code = map.get("Code").toString();

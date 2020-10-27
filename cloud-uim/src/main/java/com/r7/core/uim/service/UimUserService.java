@@ -87,5 +87,5 @@ public interface UimUserService extends IService<UimUser> {
      * 发送用户注册验证码
      * @param phone 发送电话号
      */
-    void sendSmsCode(String phone);
+    void sendSmsCode(Long phone);
 }

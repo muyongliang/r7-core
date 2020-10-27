@@ -1,6 +1,5 @@
 package com.r7.core.uim.service.impl;
 
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -18,7 +17,6 @@ import com.r7.core.uim.dto.UimUserUpdateDTO;
 import com.r7.core.uim.dto.UserSignUpDTO;
 import com.r7.core.uim.mapper.UimUserMapper;
 import com.r7.core.uim.model.UimUser;
-import com.r7.core.uim.service.UimOrganService;
 import com.r7.core.uim.service.UimSysUserService;
 import com.r7.core.uim.service.UimUserRoleService;
 import com.r7.core.uim.service.UimUserService;
@@ -56,9 +54,6 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
 
     @Resource
     private UimUserRoleService uimUserRoleService;
-
-    @Resource
-    private UimOrganService uimOrganService;
 
     @Resource
     private SmsService smsService;
@@ -198,16 +193,21 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
     }
 
     @Override
-    public void sendSmsCode(String phone) {
+    public void sendSmsCode(Long phone) {
+        // 手机格式
+        if (!ValidatorUtil.validatorPhoneNumber(phone)) {
+            throw new BusinessException(UimErrorEnum.USER_PHONE_ERROR);
+        }
+        String phoneNumber = phone.toString();
         // 是否一分钟内发送的
-        Option.of(redisService.getKey(phone, String.class))
+        Option.of(redisService.getKey(phoneNumber, String.class))
                 .exists(err -> {
                     throw new BusinessException(UimErrorEnum.USER_SIGN_UP_SMS_SEND_ERROR);
                 });
         Map<String, Object> map = Maps.newHashMapWithExpectedSize(1);
         String code = String.valueOf(Math.round((Math.random() + 1) * 100000));
         map.put("code", code);
-        smsService.sendSms(phone, "云觅", "SMS_165215126", JSONUtil.toJsonStr(map));
-        redisService.addValue(phone, code, 60, TimeUnit.SECONDS);
+        smsService.sendSms(phoneNumber, "SMS_165215126", JSONUtil.toJsonStr(map));
+        redisService.addValue(phoneNumber, code, 60, TimeUnit.SECONDS);
     }
 }
