@@ -1,6 +1,8 @@
 package com.r7.core.cache.service;
 
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * redis 普通CRUD服务
  *
@@ -15,6 +17,15 @@ public interface RedisService {
      * @param value 缓存valud
      */
     void addValue(String key, Object value);
+
+    /**
+     *
+     * @param key
+     * @param value
+     * @param time
+     * @param timeUnit
+     */
+    void addValue(String key, Object value, long time, TimeUnit timeUnit);
 
     /**
      * 根据key获取缓存信息

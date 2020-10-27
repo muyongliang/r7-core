@@ -6,7 +6,7 @@
 | cloud-common     | 公共模块     |
 | cloud-assets | 资产模块 包含钱包、资金、积分  |
 | cloud-im| 即时通讯模块 |
-|cloud-integral|文件资源模块|
+|cloud-resource|文件资源模块|
 |cloud-dividend| 红利模块 包含代理、分润|
 |cloud-setting|公共配置模块|
 |cloud-job|任务模块|
@@ -113,4 +113,12 @@ sonatype/nexus3
  --privileged=true \
  -p 8099:8099 \
  -v /root/core_docker/cloud-integral:/usr/local/ymapp \
+ docker-java-runtime
+
+>docker run -d \
+ --name cloud-uim \
+ --restart=always \
+ --privileged=true \
+ -p 8010:8010 \
+ -v /root/core_docker/cloud-uim:/usr/local/ymapp \
  docker-java-runtime

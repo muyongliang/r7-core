@@ -34,4 +34,11 @@ public class UimSignController {
         return ResponseEntity.success(uimUserService.signUpUser(code, userSignUpDTO, request.getRemoteAddr()));
     }
 
+    @ApiOperation(value = "注册手机验证码", response = UimUserVO.class)
+    @PostMapping("/sms/code/{phone}")
+    public ResponseEntity sendSmsCode(@PathVariable("phone") Long phone) {
+        uimUserService.sendSmsCode(phone);
+        return ResponseEntity.success();
+    }
+
 }

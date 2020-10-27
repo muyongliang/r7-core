@@ -65,6 +65,7 @@ public class RedisListServiceImpl implements RedisListService {
         redisTemplate.opsForList().set(key, index, newValue);
         Object value = redisTemplate.opsForList().index(key, index);
         if (ObjectUtil.isNotEmpty(value)) {
+            assert value != null;
             return JSONUtil.toBean(value.toString(), t);
 
         }

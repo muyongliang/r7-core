@@ -1,5 +1,8 @@
 server:
   port: 8010
+  undertow:
+      io-threads: "50"
+      worker-threads: "100"
   servlet:
     context-path: /api
 
@@ -18,3 +21,12 @@ spring:
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
   type-enums-package: com.r7.core.uim.constant
+
+sms:
+  config:
+    access:
+      key:
+        id: LTAIDOb6J22j1LzH
+        secret: 8y4GmAOfqGbOHTSsWQoONUPl76VsqF
+    sign:
+        name: 云觅
