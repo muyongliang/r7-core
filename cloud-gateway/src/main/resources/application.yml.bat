@@ -11,7 +11,7 @@ spring:
         - id: cloud-uim-route
           uri: lb://cloud-uim
           predicates:
-            - Path=/api/auth/**,/api/user/**,/api/oauth/**,/api/resource/**,/api/sign/**,/api/role/**,/api/organ/**,/api/sys/user/**
+            - Path=/api/auth/**,/api/user/**,/api/oauth/**,/api/resource/**,/api/sign/**,/api/role/**,/api/organ/**,/api/sys/user/**,/api/integral/detail/**,/api/integral/user/**
 #          filters:
 #            - StripPrefix=1
 #      discovery:
