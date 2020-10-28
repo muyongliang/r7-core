@@ -364,9 +364,12 @@ public class Common {
     }
 
     public enum SERVICE_MODE {
-        RECORDING_MODE(0),//down stream
-        SERVER_MODE(1),//up-down stream
-        IOT_MODE(2);//up-down stream
+        RECORDING_MODE(0),
+        //down stream
+        SERVER_MODE(1),
+        //up-down stream
+        IOT_MODE(2);
+        //up-down stream
 
         private SERVICE_MODE(int value) {
         }
@@ -382,8 +385,6 @@ public class Common {
         VIDEO_FORMAT_DEFAULT_TYPE(0),
         /**
          * 1: Video frame in H.264 format.
-         *
-         * @deprecated From v2.9.0. Use VIDEO_FORMAT_ENCODED_FRAME_TYPE(1) instead.
          */
         VIDEO_FORMAT_H264_FRAME_TYPE(1),
         /**

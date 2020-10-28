@@ -2,10 +2,8 @@ package io.agora.recording.common;
 
 
 import io.agora.recording.common.Common.*;
-import lombok.Data;
 import lombok.ToString;
 
-@Data
 @ToString
 public class RecordingConfig {
     /**
@@ -189,7 +187,8 @@ public class RecordingConfig {
      * </ul>
      * See <a href="https://docs.agora.io/en/Recording/cloudproxy_recording?platform=Linux">Use Cloud Proxy</a> for details.
      */
-    public String proxyServer; //format ipv4:port
+    public String proxyServer;
+    //format ipv4:port
     /**
      * If you set {@link RecordingConfig#isMixingEnabled isMixingEnabled} as true, {@link RecordingConfig#mixResolution mixResolution} allows you to set the audio profile of the recording file:
      * <ul>
@@ -290,8 +289,10 @@ public class RecordingConfig {
         defaultVideoBgPath = "";
         defaultUserBgPath = "";
 
-        lowUdpPort = 0;//40000;
-        highUdpPort = 0;//40004;
+        lowUdpPort = 0;
+        //40000;
+        highUdpPort = 0;
+        //40004;
         idleLimitSec = 300;
         captureInterval = 5;
         triggerMode = 0;

@@ -179,8 +179,9 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
 
     @Override
     public void onAudioVolumeIndication(Common.AudioVolumeInfo[] infos) {
-        if (infos.length == 0)
+        if (infos.length == 0) {
             return;
+        }
 
         for (int i = 0; i < infos.length; i++) {
             System.out.println("User:" + Long.toString(infos[i].uid) + ", audio volume:" + infos[i].volume);
@@ -205,10 +206,12 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
         byte[] buf = null;
         long size = 0;
         checkUser(uid, true);
-        if (frame.type == Common.AUDIO_FRAME_TYPE.AUDIO_FRAME_RAW_PCM) {// pcm
+        if (frame.type == Common.AUDIO_FRAME_TYPE.AUDIO_FRAME_RAW_PCM) {
+            // pcm
             buf = frame.pcm.pcmBuf;
             size = frame.pcm.pcmBufSize;
-        } else {// aac
+        } else {
+            // aac
             buf = frame.aac.aacBuf;
             size = frame.aac.aacBufSize;
         }
@@ -223,19 +226,23 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
         checkUser(uid, false);
         // System.out.println("java demovideoFrameReceived,uid:"+uid+",type:"+type);
 
-        if (type == 0) {// yuv
+        if (type == 0) {
+            // yuv
             buf = frame.yuv.buf;
             size = frame.yuv.bufSize;
             if (buf == null) {
                 System.out.println("java demo videoFrameReceived null");
             }
-        } else if (type == 1) {// h264
+        } else if (type == 1) {
+            // h264
             buf = frame.h264.buf;
             size = frame.h264.bufSize;
-        } else if (type == 2) {// h265
+        } else if (type == 2) {
+            // h265
             buf = frame.h265.buf;
             size = frame.h265.bufSize;
-        } else if (type == 3) { // jpg
+        } else if (type == 3) {
+            // jpg
             String path = storageDir + Long.toString(uid) + System.currentTimeMillis() + ".jpg";
             buf = frame.jpg.buf;
             size = frame.jpg.bufSize;
@@ -322,8 +329,9 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
         Iterator it = m_peers.iterator();
         while (it.hasNext()) {
             Long uid = (Long) it.next();
-            if (!config.autoSubscribe && !subscribedVideoUids.contains(uid))
+            if (!config.autoSubscribe && !subscribedVideoUids.contains(uid)) {
                 continue;
+            }
             if (layoutMode == VERTICALPRESENTATION_LAYOUT) {
                 String uc = RecordingSDKInstance.getUserAccountByUid((int) (long) uid);
                 if (uc.length() > 0 || maxuid != 0) {

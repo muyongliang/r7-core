@@ -23,5 +23,5 @@ public class FileUploadVO {
      * 文件是否已经存在
      */
     @ApiModelProperty("文件是否已经上传过")
-    private boolean Exist;
+    private Boolean exist;
 }

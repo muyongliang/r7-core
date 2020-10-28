@@ -12,7 +12,7 @@ public class RecordingEngineProperties {
     /**
      * Get the relative path of the recorded files and recording log.
      */
-    public String GetStorageDir() {
+    public String getStorageDir() {
         return storageDir;
     }
 }

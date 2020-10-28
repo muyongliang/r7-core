@@ -67,7 +67,7 @@ public class FileUploadServiceImpl implements FileUploadService {
         log.info("上传文件大小为：{}，匹配桶名为：{}", available, bucketName);
 
 
-        if (bucketName.equals("small")) {
+        if ("small".equals(bucketName)) {
 //        转换成数组，流被使用一次后会清空,文件太大会导致java.lang.OutOfMemoryError: Java heap space
             byte[] bytes = FileCopyUtils.copyToByteArray(inputStream);
             inputStream = new ByteArrayInputStream(bytes);
