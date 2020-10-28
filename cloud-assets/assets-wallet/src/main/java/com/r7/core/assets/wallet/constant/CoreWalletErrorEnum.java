@@ -1,4 +1,4 @@
-package com.r7.core.assets.constant;
+package com.r7.core.assets.wallet.constant;
 
 import com.r7.core.common.constant.IError;
 

@@ -1,10 +1,10 @@
-package com.r7.core.assets.mapper;
+package com.r7.core.assets.wallet.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.r7.core.assets.model.CoreWallet;
-import com.r7.core.assets.vo.CoreWalletVO;
+import com.r7.core.assets.wallet.model.CoreWallet;
+import com.r7.core.assets.wallet.vo.CoreWalletVO;
 import org.apache.ibatis.annotations.Param;
 
 /**

@@ -1,7 +1,7 @@
-package com.r7.core.assets.controller;
+package com.r7.core.assets.wallet.controller;
 
-import com.r7.core.assets.dto.CoreWalletBillDTO;
-import com.r7.core.assets.service.CoreWalletBillService;
+import com.r7.core.assets.wallet.dto.CoreWalletBillDTO;
+import com.r7.core.assets.wallet.service.CoreWalletBillService;
 import com.r7.core.common.web.ResponseEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

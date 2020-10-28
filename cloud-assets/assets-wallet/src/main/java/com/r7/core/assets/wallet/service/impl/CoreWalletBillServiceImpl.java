@@ -1,15 +1,15 @@
-package com.r7.core.assets.service.impl;
+package com.r7.core.assets.wallet.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.r7.core.assets.constant.CoreWalletErrorEnum;
-import com.r7.core.assets.dto.CoreWalletBillDTO;
-import com.r7.core.assets.mapper.CoreWalletBillMapper;
-import com.r7.core.assets.model.CoreWalletBill;
-import com.r7.core.assets.service.CoreWalletBillService;
-import com.r7.core.assets.vo.CoreWalletBillPageVO;
-import com.r7.core.assets.vo.CoreWalletBillVO;
+import com.r7.core.assets.wallet.constant.CoreWalletErrorEnum;
+import com.r7.core.assets.wallet.dto.CoreWalletBillDTO;
+import com.r7.core.assets.wallet.mapper.CoreWalletBillMapper;
+import com.r7.core.assets.wallet.model.CoreWalletBill;
+import com.r7.core.assets.wallet.service.CoreWalletBillService;
+import com.r7.core.assets.wallet.vo.CoreWalletBillPageVO;
+import com.r7.core.assets.wallet.vo.CoreWalletBillVO;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import io.vavr.control.Option;

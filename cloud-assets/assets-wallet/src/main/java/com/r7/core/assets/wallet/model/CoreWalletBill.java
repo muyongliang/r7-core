@@ -1,10 +1,10 @@
-package com.r7.core.assets.model;
+package com.r7.core.assets.wallet.model;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.r7.core.assets.dto.CoreWalletBillDTO;
-import com.r7.core.assets.vo.CoreWalletBillVO;
+import com.r7.core.assets.wallet.dto.CoreWalletBillDTO;
+import com.r7.core.assets.wallet.vo.CoreWalletBillVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

@@ -1,11 +1,11 @@
-package com.r7.core.assets.service;
+package com.r7.core.assets.wallet.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.r7.core.assets.dto.CoreWalletBillDTO;
-import com.r7.core.assets.model.CoreWalletBill;
-import com.r7.core.assets.vo.CoreWalletBillPageVO;
-import com.r7.core.assets.vo.CoreWalletBillVO;
+import com.r7.core.assets.wallet.dto.CoreWalletBillDTO;
+import com.r7.core.assets.wallet.model.CoreWalletBill;
+import com.r7.core.assets.wallet.vo.CoreWalletBillPageVO;
+import com.r7.core.assets.wallet.vo.CoreWalletBillVO;
 
 /**
  * @author zs

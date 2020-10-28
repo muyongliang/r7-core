@@ -1,4 +1,4 @@
-package com.r7.core.assets;
+package com.r7.core.assets.wallet;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

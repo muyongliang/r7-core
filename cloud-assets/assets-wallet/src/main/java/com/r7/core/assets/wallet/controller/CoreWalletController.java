@@ -1,9 +1,9 @@
-package com.r7.core.assets.controller;
+package com.r7.core.assets.wallet.controller;
 
-import com.r7.core.assets.dto.CoreWalletDTO;
-import com.r7.core.assets.dto.CoreWalletUpdateDTO;
-import com.r7.core.assets.service.CoreWalletService;
-import com.r7.core.assets.vo.CoreWalletVO;
+import com.r7.core.assets.wallet.dto.CoreWalletDTO;
+import com.r7.core.assets.wallet.dto.CoreWalletUpdateDTO;
+import com.r7.core.assets.wallet.service.CoreWalletService;
+import com.r7.core.assets.wallet.vo.CoreWalletVO;
 import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import io.swagger.annotations.Api;

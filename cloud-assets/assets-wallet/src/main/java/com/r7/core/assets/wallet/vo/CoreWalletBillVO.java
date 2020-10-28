@@ -1,4 +1,4 @@
-package com.r7.core.assets.vo;
+package com.r7.core.assets.wallet.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
