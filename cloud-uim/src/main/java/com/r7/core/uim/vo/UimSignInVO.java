@@ -6,6 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 登录返回信息
+ *
+ * @author zhongpingli
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Builder

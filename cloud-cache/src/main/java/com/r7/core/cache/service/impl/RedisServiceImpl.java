@@ -1,7 +1,6 @@
 package com.r7.core.cache.service.impl;
 
 import cn.hutool.json.JSONUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.r7.core.cache.service.RedisService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -18,37 +17,27 @@ import java.util.concurrent.TimeUnit;
 public class RedisServiceImpl implements RedisService {
 
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
-    @Resource
-    private ObjectMapper objectMapper;
 
     @Override
-    public void addValue(String key, Object value) {
+    public void addValue(String key, String value) {
         redisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(value));
     }
 
     @Override
-    public void addValue(String key, Object value, long time, TimeUnit timeUnit) {
+    public void addValue(String key, String value, long time, TimeUnit timeUnit) {
         redisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(value), time, timeUnit);
     }
 
     @Override
-    public <T> T getKey(String key, Class<T> t) {
-        Object value = redisTemplate.opsForValue().get(key);
-        if (value == null) {
-            return null;
-        }
-        return objectMapper.convertValue(value, t);
+    public String getKey(String key) {
+        return redisTemplate.opsForValue().get(key);
     }
 
     @Override
-    public <T> T updateValueByKey(String key, Object newValue, Class<T> t) {
-        Object value = redisTemplate.opsForValue().getAndSet(key, newValue);
-        if (value == null) {
-            return null;
-        }
-        return objectMapper.convertValue(value, t);
+    public String updateValueByKey(String key, String newValue) {
+        return redisTemplate.opsForValue().getAndSet(key, newValue);
     }
 
     @Override

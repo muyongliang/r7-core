@@ -87,7 +87,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
             throw new BusinessException(UimErrorEnum.USER_PHONE_ERROR);
         }
         // 验证码校验
-        String smsCode = redisService.getKey(userSignUpDTO.getPhoneNumber().toString(), String.class);
+        String smsCode = redisService.getKey(userSignUpDTO.getPhoneNumber().toString());
         if (smsCode == null || !smsCode.equals(userSignUpDTO.getCode())) {
             throw new BusinessException(UimErrorEnum.USER_SIGN_UP_SMS_CODE_ERROR);
         }
@@ -111,7 +111,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         uimUser.setOrganId(userByCode.getOrganId());
         uimUser.toUserSingUpDTO(userSignUpDTO);
         uimUser.setCode(userCode);
-        uimUser.setAvatar("abc");
+        uimUser.setAvatar("default");
         uimUser.setIp(ip);
         // 未认证
         uimUser.setIsOauth(2);
@@ -200,7 +200,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         }
         String phoneNumber = phone.toString();
         // 是否一分钟内发送的
-        Option.of(redisService.getKey(phoneNumber, String.class))
+        Option.of(redisService.getKey(phoneNumber))
                 .exists(err -> {
                     throw new BusinessException(UimErrorEnum.USER_SIGN_UP_SMS_SEND_ERROR);
                 });

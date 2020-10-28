@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * @author zs
@@ -35,7 +36,7 @@ public class UimOauthInfoController {
             response = UimOauthInfoVO.class)
     @PostMapping("/{userId}")
     public ResponseEntity saveUimOauthInfo(@PathVariable Long userId,
-                                           @RequestBody UimOauthInfoDTO uimOauthInfoDto) {
+                                           @Valid @RequestBody UimOauthInfoDTO uimOauthInfoDto) {
         return ResponseEntity.success(uimOauthInfoService
                 .saveUimOauthInfo(userId, uimOauthInfoDto, RequestHolder.getAppId(), RequestHolder.getOrganId()));
     }

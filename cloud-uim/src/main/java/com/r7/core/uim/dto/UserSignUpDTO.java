@@ -26,7 +26,7 @@ public class UserSignUpDTO {
     /**
      * 电话
      */
-    @NotEmpty(message = "电话不能为空")
+    @NotNull(message = "电话不能为空")
     @ApiModelProperty("电话")
     private Long phoneNumber;
 
