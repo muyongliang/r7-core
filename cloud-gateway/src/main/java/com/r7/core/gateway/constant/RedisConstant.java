@@ -8,5 +8,6 @@ package com.r7.core.gateway.constant;
 public class RedisConstant {
 
     public static final String REDIS_RESOURCE_ROLE_KEY = "AUTH:REDIS_RESOURCE_ROLE";
+    public static final String REDIS_RESOURCE_KEY = "AUTH:REDIS_RESOURCE";
 
 }
