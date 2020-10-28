@@ -1,11 +1,12 @@
-package com.r7.core.stand.video.recording;
+package com.r7.core.stand.video.common;
 
+import com.r7.core.stand.video.common.Common.*;
 
 public interface RecordingEventHandler {
 
   /** This callback is triggered when a user leaves the channel.
    *
-   * @param reason The reasons why the recording server leaves the channel. See {@link io.agora.recording.common.Common#LEAVE_PATH_CODE LEAVE_PATH_CODE}.
+   * @param reason The reasons why the recording server leaves the channel. See {@link com.r7.core.stand.video.common.Common#LEAVE_PATH_CODE LEAVE_PATH_CODE}.
    */
   void onLeaveChannel(int reason);
 
@@ -14,8 +15,8 @@ public interface RecordingEventHandler {
    * The SDK cannot fix the issue or resume running, which requires intervention
    * from the application and informs the user on the issue.
    *
-   * @param error {@link io.agora.recording.common.Common#ERROR_CODE_TYPE Error codes}.
-   * @param stat_code {@link io.agora.recording.common.Common#STAT_CODE_TYPE State codes}.
+   * @param error {@link com.r7.core.stand.video.common.Common#ERROR_CODE_TYPE Error codes}.
+   * @param stat_code {@link com.r7.core.stand.video.common.Common#STAT_CODE_TYPE State codes}.
    */
   void onError(int error, int stat_code);
 
@@ -24,7 +25,7 @@ public interface RecordingEventHandler {
    * In most cases, the application can ignore the warnings reported by the SDK because
    * the SDK can usually fix the issue and resume running.
    *
-   * @param warn {@link io.agora.recording.common.Common#WARN_CODE_TYPE Warning codes}.
+   * @param warn {@link com.r7.core.stand.video.common.Common#WARN_CODE_TYPE Warning codes}.
    */
   void onWarning(int warn);
 
@@ -39,18 +40,18 @@ public interface RecordingEventHandler {
   /** This callback is triggered when the state of a remote user's video stream changes.
    *
    * @param uid The `uid` of the remote user.
-   * @param state Indicates the current state of the remote user's video stream. For details, see {@link io.agora.recording.common.Common.REMOTE_STREAM_STATE REMOTE_STREAM_STATE}.
-   * @param reason Indicates the reason causing the state change. For details, see {@link io.agora.recording.common.Common.REMOTE_STREAM_STATE_CHANGED_REASON REMOTE_STREAM_STATE_CHANGED_REASON}.
+   * @param state Indicates the current state of the remote user's video stream. For details, see {@link REMOTE_STREAM_STATE REMOTE_STREAM_STATE}.
+   * @param reason Indicates the reason causing the state change. For details, see {@link REMOTE_STREAM_STATE_CHANGED_REASON REMOTE_STREAM_STATE_CHANGED_REASON}.
    */
-  void onRemoteVideoStreamStateChanged(long uid, Common.REMOTE_STREAM_STATE state, Common.REMOTE_STREAM_STATE_CHANGED_REASON reason);
+  void onRemoteVideoStreamStateChanged(long uid, REMOTE_STREAM_STATE state, REMOTE_STREAM_STATE_CHANGED_REASON reason);
 
   /** This callback is triggered when the state of a remote user's audio stream changes.
    * 
    * @param uid The `uid` of the remote user.
-   * @param state Indicates the current state of the remote user's audio stream. For details, see {@link io.agora.recording.common.Common.REMOTE_STREAM_STATE REMOTE_STREAM_STATE}.
-   * @param reason Indicates the reason causing the state change. For details, see {@link io.agora.recording.common.Common.REMOTE_STREAM_STATE_CHANGED_REASON REMOTE_STREAM_STATE_CHANGED_REASON}.
+   * @param state Indicates the current state of the remote user's audio stream. For details, see {@link REMOTE_STREAM_STATE REMOTE_STREAM_STATE}.
+   * @param reason Indicates the reason causing the state change. For details, see {@link REMOTE_STREAM_STATE_CHANGED_REASON REMOTE_STREAM_STATE_CHANGED_REASON}.
    */
-  void onRemoteAudioStreamStateChanged(long uid, Common.REMOTE_STREAM_STATE state, Common.REMOTE_STREAM_STATE_CHANGED_REASON reason);
+  void onRemoteAudioStreamStateChanged(long uid, REMOTE_STREAM_STATE state, REMOTE_STREAM_STATE_CHANGED_REASON reason);
 
   /** This callback is triggered when a user leaves the channel or goes offline.
    *
@@ -59,7 +60,7 @@ public interface RecordingEventHandler {
    * A poor network connection may lead to false detections, so use signaling for reliable offline detection.
    *
    * @param uid The `uid` of the user.
-   * @param reason The rerasons why the user leaves the channel or goes offline. See {@link io.agora.recording.common.Common#USER_OFFLINE_REASON_TYPE USER_OFFLINE_REASON_TYPE}.
+   * @param reason The rerasons why the user leaves the channel or goes offline. See {@link com.r7.core.stand.video.common.Common#USER_OFFLINE_REASON_TYPE USER_OFFLINE_REASON_TYPE}.
    */
   void onUserOffline(long uid, int reason);
 
@@ -88,9 +89,9 @@ public interface RecordingEventHandler {
   /** This callback is triggered when the raw audio data is received.
    *
    * @param uid The `uid` of the user.
-   * @param frame Received raw audio data in PCM or AAC format. See {@link io.agora.recording.common.Common.AudioFrame AudioFrame}.
+   * @param frame Received raw audio data in PCM or AAC format. See {@link AudioFrame AudioFrame}.
    */
-  void audioFrameReceived(long uid, Common.AudioFrame frame);
+  void audioFrameReceived(long uid, AudioFrame frame);
 
   /** This callback is triggered when the raw video data is received.
    *
@@ -107,10 +108,10 @@ public interface RecordingEventHandler {
    *  <li>1: H.264</li>
    *  <li>2: JPEG</li>
    * </ul>
-   * @param frame Received video data in YUV, H.264, or JPEG format. See {@link io.agora.recording.common.Common.VideoFrame VideoFrame}.
+   * @param frame Received video data in YUV, H.264, or JPEG format. See {@link VideoFrame VideoFrame}.
    * @param rotation Rotational angle: 0, 90, 180, or 270.
    */
-  void videoFrameReceived(long uid, int type, Common.VideoFrame frame, int rotation);
+  void videoFrameReceived(long uid, int type, VideoFrame frame, int rotation);
 
   /** This callback reports the relative path of the recorded files.
    *
@@ -120,11 +121,11 @@ public interface RecordingEventHandler {
 
   /** This callback reports the list of users who are speaking and their volumes.
    *
-   * This callback works only when {@link io.agora.recording.common.RecordingConfig#audioIndicationInterval audioIndicationInterval} > 0.
+   * This callback works only when {@link com.r7.core.stand.video.common.RecordingConfig#audioIndicationInterval audioIndicationInterval} > 0.
    *
-   * @param infos    An array containing the user ID and volume information for each speaker. For more information, see {@link io.agora.recording.common.Common#AudioVolumeInfo AudioVolumeInfo}.
+   * @param infos    An array containing the user ID and volume information for each speaker. For more information, see {@link com.r7.core.stand.video.common.Common#AudioVolumeInfo AudioVolumeInfo}.
    */
-  void onAudioVolumeIndication(Common.AudioVolumeInfo[] infos);
+  void onAudioVolumeIndication(AudioVolumeInfo[] infos);
 
   /** This callback is triggered when the first remote video frame is received and decoded.
    *
@@ -153,10 +154,10 @@ public interface RecordingEventHandler {
    *
    * The SDK triggers this callback when it cannot connect to the server 10 seconds after calling {@link RecordingSDK#createChannel() createChannel} regardless of whether it is in the channel or not.
    *
-   * This callback is different from {@link RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted}:
+   * This callback is different from {@link io.agora.recording.RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted}:
    * <ul>
-   *  <li> The SDK triggers the {@link RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted} callback when the SDK loses connection with the server for more than 4 seconds after it joins the channel.</li>
-   *  <li> The SDK triggers the {@link RecordingEventHandler#onConnectionLost onConnectionLost} callback when the SDK loses connection with the server for more than 10 seconds, regardless of whether it joins the channel or not.</li>
+   *  <li> The SDK triggers the {@link io.agora.recording.RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted} callback when the SDK loses connection with the server for more than 4 seconds after it joins the channel.</li>
+   *  <li> The SDK triggers the {@link io.agora.recording.RecordingEventHandler#onConnectionLost onConnectionLost} callback when the SDK loses connection with the server for more than 10 seconds, regardless of whether it joins the channel or not.</li>
    * </ul>
    * For both callbacks, the SDK tries to reconnect to the server until the application calls {@link RecordingSDK#leaveChannel() leaveChannel}.
    */
@@ -166,10 +167,10 @@ public interface RecordingEventHandler {
    *
    * The SDK triggers this callback when it cannot connect to the server 10 seconds after calling {@link RecordingSDK#createChannel() createChannel} regardless of whether it is in the channel or not.
    *
-   * This callback is different from {@link RecordingEventHandler#onConnectionLost onConnectionLost}:
+   * This callback is different from {@link io.agora.recording.RecordingEventHandler#onConnectionLost onConnectionLost}:
    * <ul>
-   *  <li> The SDK triggers the {@link RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted} callback when the SDK loses connection with the server for more than 4 seconds after it joins the channel.</li>
-   *  <li> The SDK triggers the {@link RecordingEventHandler#onConnectionLost onConnectionLost} callback when the SDK loses connection with the server for more than 10 seconds, regardless of whether it joins the channel or not.</li>
+   *  <li> The SDK triggers the {@link io.agora.recording.RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted} callback when the SDK loses connection with the server for more than 4 seconds after it joins the channel.</li>
+   *  <li> The SDK triggers the {@link io.agora.recording.RecordingEventHandler#onConnectionLost onConnectionLost} callback when the SDK loses connection with the server for more than 10 seconds, regardless of whether it joins the channel or not.</li>
    * </ul>
    * For both callbacks, the SDK tries to reconnect to the server until the application calls {@link RecordingSDK#leaveChannel() leaveChannel}.
    */
@@ -187,10 +188,10 @@ public interface RecordingEventHandler {
 
   /** This callback is triggered when the network connection state changes.
    *
-   * @param state The current network connection state. See {@link io.agora.recording.common.Common.CONNECTION_STATE_TYPE CONNECTION_STATE_TYPE}.
-   * @param reason The reason causing the change of the connection state. See {@link io.agora.recording.common.Common.CONNECTION_CHANGED_REASON_TYPE CONNECTION_CHANGED_REASON_TYPE}.
+   * @param state The current network connection state. See {@link CONNECTION_STATE_TYPE CONNECTION_STATE_TYPE}.
+   * @param reason The reason causing the change of the connection state. See {@link CONNECTION_CHANGED_REASON_TYPE CONNECTION_CHANGED_REASON_TYPE}.
    */
-  void onConnectionStateChanged(Common.CONNECTION_STATE_TYPE state, Common.CONNECTION_CHANGED_REASON_TYPE reason);
+  void onConnectionStateChanged(CONNECTION_STATE_TYPE state, CONNECTION_CHANGED_REASON_TYPE reason);
 
   /** This callback reports the statistics of the video stream from the remote user (communication profile)/host (live broadcast profile).
    *
@@ -198,9 +199,9 @@ public interface RecordingEventHandler {
    *
    * @param uid The `uid` of the user sending the video stream.
    *
-   * @param stats The statistics of the received remote video stream. See {@link io.agora.recording.common.Common.RemoteVideoStats RemoteVideoStats}.
+   * @param stats The statistics of the received remote video stream. See {@link RemoteVideoStats RemoteVideoStats}.
    */
-  void onRemoteVideoStats(long uid, Common.RemoteVideoStats stats);
+  void onRemoteVideoStats(long uid, RemoteVideoStats stats);
 
   /** This callback reports the statistics of the audio stream from the remote user (communication profile)/host (live broadcast profile).
    *
@@ -208,17 +209,17 @@ public interface RecordingEventHandler {
    *
    * @param uid The `uid` of the user sending the audio stream.
    *
-   * @param stats The statistics of the received remote audio stream. See {@link io.agora.recording.common.Common.RemoteAudioStats RemoteAudioStats}.
+   * @param stats The statistics of the received remote audio stream. See {@link RemoteAudioStats RemoteAudioStats}.
    */
-  void onRemoteAudioStats(long uid, Common.RemoteAudioStats stats);
+  void onRemoteAudioStats(long uid, RemoteAudioStats stats);
 
   /** This callback reports the statistics of the recording once every two seconds.
    *
-   * @param stats See {@link io.agora.recording.common.Common.RecordingStats RecordingStats}.
+   * @param stats See {@link RecordingStats RecordingStats}.
    */
-  void onRecordingStats(Common.RecordingStats stats);
+  void onRecordingStats(RecordingStats stats);
   
-  /** Occurs when the recording server successfully registers a user account by calling the {@link io.agora.recording.RecordingSDK.createChannelWithUserAccount createChannelWithUserAccount} method. This callback reports the user ID and user account of the recording server.
+  /** Occurs when the recording server successfully registers a user account by calling the {@link RecordingSDK.createChannelWithUserAccount createChannelWithUserAccount} method. This callback reports the user ID and user account of the recording server.
    * 
    * @param uid The `uid` of the recording server.
    * @param userAccount The user account of the recording server. 

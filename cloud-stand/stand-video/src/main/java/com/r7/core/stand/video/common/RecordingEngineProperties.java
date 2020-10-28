@@ -1,4 +1,4 @@
-package com.r7.core.stand.video.recording;
+package com.r7.core.stand.video.common;
 
 /** The recording properties. */
 public class RecordingEngineProperties{

@@ -1,9 +1,7 @@
 package com.r7.core.stand.video.controller;
 
 import com.r7.core.common.web.ResponseEntity;
-import com.r7.core.stand.video.recording.RecordingEngineProperties;
 import com.r7.core.stand.video.service.CoreVideoService;
-import com.r7.core.stand.video.recording.RecordingSDK;
 import com.r7.core.stand.video.vo.CoreVideoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
