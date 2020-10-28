@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 /**
@@ -54,7 +55,7 @@ public class CoreProfitController {
 
     @ApiOperation(value = "添加分润明细", response = CoreProfitVO.class)
     @PostMapping("")
-    public ResponseEntity saveUimResource(@RequestBody CoreProfitDTO coreProfitDTO) {
+    public ResponseEntity saveUimResource(@Valid @RequestBody CoreProfitDTO coreProfitDTO) {
         return ResponseEntity.success(coreProfitService.saveCoreProfit(coreProfitDTO,2L));
     }
 

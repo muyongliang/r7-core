@@ -72,16 +72,31 @@ public class UimSysUser extends Model<UimSysUser> {
      */
     @ApiModelProperty(value = "状态", example = "0")
     private Integer status;
+
     /**
      * 账户密码
      */
     @ApiModelProperty("账户密码")
     private String password;
+
+    /**
+     * 删除;1未删除，2删除(注销)
+     */
+    @ApiModelProperty("删除状态")
+    private Integer del;
+
     /**
      * IP地址
      */
     @ApiModelProperty("IP地址")
     private String ip;
+
+    /**
+     * 邀请码
+     */
+    @ApiModelProperty("邀请码")
+    private String code;
+
     /**
      * 创建人
      */
@@ -112,6 +127,7 @@ public class UimSysUser extends Model<UimSysUser> {
         this.setStatus(uimSysUserUpdateDTO.getStatus());
         this.setPassword(uimSysUserUpdateDTO.getPassword());
 
+
     }
     public void toUimSysUserDTO(UimSysUserDTO uimSysUserDTO){
         this.setBranchId(uimSysUserDTO.getBranchId());
@@ -122,6 +138,7 @@ public class UimSysUser extends Model<UimSysUser> {
         this.setEmail(uimSysUserDTO.getEmail());
         this.setStatus(uimSysUserDTO.getStatus());
         this.setPassword(uimSysUserDTO.getPassword());
+        this.setDel(uimSysUserDTO.getDel());
     }
 
     public UimSysUserVO toUimSysUserVO(){
@@ -138,6 +155,8 @@ public class UimSysUser extends Model<UimSysUser> {
         uimSysUserVO.setStatus(this.getStatus());
         uimSysUserVO.setPassword(this.getPassword());
         uimSysUserVO.setIp(this.getIp());
+        uimSysUserVO.setDel(this.getDel());
+        uimSysUserVO.setCode(this.getCode());
         return uimSysUserVO;
     }
 
