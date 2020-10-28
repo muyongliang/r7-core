@@ -4,6 +4,15 @@ server:
     context-path: /api
 
 spring:
+  application:
+    name: cloud-stand
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.1.49:8848
+        namespace: d685bf52-93ce-4271-942b-688f25725547
   datasource:
     druid:
       url: "${DB_URL:jdbc:mysql://192.168.1.19:3306/core?seUnicode=true&characterEncoding=UTF-8}"

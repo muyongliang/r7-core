@@ -1,134 +1,44 @@
-package com.r7.core.stand.video.common;
+package com.r7.core.stand.video.recording;
 
 
-import com.r7.core.stand.video.common.Common.*;
 
 public class RecordingConfig {
-
   public RecordingConfig() {
-    /**
-     * 纯音频
-     */
     isAudioOnly = false;
-    /**
-     * 纯视频
-     */
     isVideoOnly = false;
-    /**
-     * 启用音视频混合
-     */
     isMixingEnabled = false;
-    /**
-     * 混合音视频
-     */
-    mixedVideoAudio = MIXED_AV_CODEC_TYPE.MIXED_AV_DEFAULT;
-    /**
-     * 混合分辨率
-     */
+    mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.MIXED_AV_DEFAULT;
+
     mixResolution = "";
-    /**
-     * 解密方式
-     */
     decryptionMode = "";
-    /**
-     * 秘钥
-     */
     secret = "";
-    /**
-     * 设置AgoraCoreService的路径
-     */
     appliteDir = "";
-    /**
-     * 记录文件根目录
-     */
     recordFileRootDir = "";
-    /**
-     * cfg文件路径
-     */
     cfgFilePath = "";
-    /**
-     * 代理类型
-     */
     proxyType = 1;
-    /**
-     * 代理服务
-     */
     proxyServer = "";
-    /**
-     * 默认视频背景路径
-     */
     defaultVideoBgPath = "";
-    /**
-     * 默认用户背景路径
-     */
     defaultUserBgPath = "";
-    /**
-     * 设置最低的UDP端口。确保highUdpPort的值-lowUdpPort≥6
-     */
+
     lowUdpPort = 0;//40000;
-    /**
-     * 设置最高的UDP端口。确保highUdpPort的值-lowUdpPort≥6
-     */
     highUdpPort = 0;//40004;
-    /**
-     * 空闲最大时间（秒）
-     */
     idleLimitSec = 300;
-    /**
-     * 屏幕捕获间隔
-     */
     captureInterval = 5;
-    /**
-     * 触发方式，0自动/1手动
-     */
     triggerMode = 0;
-    /**
-     * 是否检测说话用户的间隔
-     */
     audioIndicationInterval = 0;
-    /**
-     * 音频资料
-     */
     audioProfile = 0;
-    /**
-     * 视频解码格式
-     */
-    decodeVideo = VIDEO_FORMAT_TYPE.VIDEO_FORMAT_DEFAULT_TYPE;
-    /**
-     * 音频解码格式
-     */
-    decodeAudio = AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE;
-    /**
-     * 频道信息
-     */
-    channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION;
-    /**
-     * 流类型
-     */
-    streamType = REMOTE_VIDEO_STREAM_TYPE.REMOTE_VIDEO_STREAM_HIGH;
-    /**
-     * 自动订阅
-     */
+
+    decodeVideo = Common.VIDEO_FORMAT_TYPE.VIDEO_FORMAT_DEFAULT_TYPE;
+    decodeAudio = Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE;
+    channelProfile = Common.CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_COMMUNICATION;
+    streamType = Common.REMOTE_VIDEO_STREAM_TYPE.REMOTE_VIDEO_STREAM_HIGH;
+
     autoSubscribe = true;
-    /**
-     * 启用云代理
-     */
     enableCloudProxy = false;
-    /**
-     * 订阅视频的uid
-     */
     subscribeVideoUids = "";
-    /**
-     * 订阅音频的uid
-     */
     subscribeAudioUids = "";
-    /**
-     * 设置是否启用关键帧请求
-     */
+    
     enableIntraRequest = true;
-    /**
-     * 启用H265支持
-     */
     enableH265Support = false;
   }
 
@@ -173,11 +83,11 @@ public class RecordingConfig {
    */
   public boolean isMixingEnabled;
 
-  /** If you set {@link com.r7.core.stand.video.common.RecordingConfig#isMixingEnabled isMixingEnabled} as true, {@link com.r7.core.stand.video.common.RecordingConfig#mixedVideoAudio mixedVideoAudio} allows you to mix the audio and video in an MP4 file in real time. For more information, see {@link Common#MIXED_AV_CODEC_TYPE MIXED_AV_CODEC_TYPE}.
+  /** If you set {@link io.agora.recording.common.RecordingConfig#isMixingEnabled isMixingEnabled} as true, {@link io.agora.recording.common.RecordingConfig#mixedVideoAudio mixedVideoAudio} allows you to mix the audio and video in an MP4 file in real time. For more information, see {@link io.agora.recording.common.Common#MIXED_AV_CODEC_TYPE MIXED_AV_CODEC_TYPE}.
    */
-  public MIXED_AV_CODEC_TYPE mixedVideoAudio;
+  public Common.MIXED_AV_CODEC_TYPE mixedVideoAudio;
 
-  /** If you set {@link com.r7.core.stand.video.common.RecordingConfig#isMixingEnabled isMixingEnabled} as true, {@link com.r7.core.stand.video.common.RecordingConfig#mixResolution mixResolution} allows you to set the video profile, including the width, height, frame rate, and bitrate. The default setting is 360 x 640, 15 fps, 500 Kbps.
+  /** If you set {@link io.agora.recording.common.RecordingConfig#isMixingEnabled isMixingEnabled} as true, {@link io.agora.recording.common.RecordingConfig#mixResolution mixResolution} allows you to set the video profile, including the width, height, frame rate, and bitrate. The default setting is 360 x 640, 15 fps, 500 Kbps.
    *
    * @note Agora only supports the following frame rates: 1 fps, 7 fps, 10 fps, 15 fps, 24 fps, 30 fps and 60 fps. The default value is 15 fps. If you set the frame rate as other values, the SDK uses the default value.
    *
@@ -219,17 +129,17 @@ public class RecordingConfig {
   public String cfgFilePath;
 
   //decodeVideo: default 0 (0:save as file, 1:h.264 or h.265, 2:yuv, 3:jpg buffer, 4:jpg file, 5:jpg file and video file)
-  /** Sets the video decoding format. See {@link Common#VIDEO_FORMAT_TYPE VIDEO_FORMAT_TYPE}.
-   * @note When {@link Common#VIDEO_FORMAT_TYPE VIDEO_FORMAT_TYPE} = 1, 2, 3 or 4, {@link com.r7.core.stand.video.common.RecordingConfig#isMixingEnabled isMixingEnabled} cannot be set as true.
+  /** Sets the video decoding format. See {@link io.agora.recording.common.Common#VIDEO_FORMAT_TYPE VIDEO_FORMAT_TYPE}.
+   * @note When {@link io.agora.recording.common.Common#VIDEO_FORMAT_TYPE VIDEO_FORMAT_TYPE} = 1, 2, 3 or 4, {@link io.agora.recording.common.RecordingConfig#isMixingEnabled isMixingEnabled} cannot be set as true.
    */
-  public VIDEO_FORMAT_TYPE decodeVideo;
+  public Common.VIDEO_FORMAT_TYPE decodeVideo;
 
   //decodeAudio:  (default 0 (0:save as file, 1:aac frame, 2:pcm frame, 3:mixed pcm frame) (Can't combine with isMixingEnabled) /option)
-  /** Sets the audio decoding format. See {@link Common#AUDIO_FORMAT_TYPE AUDIO_FORMAT_TYPE}.
+  /** Sets the audio decoding format. See {@link io.agora.recording.common.Common#AUDIO_FORMAT_TYPE AUDIO_FORMAT_TYPE}.
    *
-   * @note When {@link Common#AUDIO_FORMAT_TYPE AUDIO_FORMAT_TYPE} = 1, 2 or 3, {@link com.r7.core.stand.video.common.RecordingConfig#isMixingEnabled isMixingEnabled} cannot be set as true.
+   * @note When {@link io.agora.recording.common.Common#AUDIO_FORMAT_TYPE AUDIO_FORMAT_TYPE} = 1, 2 or 3, {@link io.agora.recording.common.RecordingConfig#isMixingEnabled isMixingEnabled} cannot be set as true.
   */
-  public AUDIO_FORMAT_TYPE decodeAudio;
+  public Common.AUDIO_FORMAT_TYPE decodeAudio;
 
   /** Sets the lowest UDP port. The default value is 0. Ensure that the value of highUdpPort - lowUdpPort &ge; 6. */
   public int lowUdpPort;
@@ -252,7 +162,7 @@ public class RecordingConfig {
 
   /** Sets the interval of the screen capture. The interval must be longer than 1 second and the default value is 5 seconds.
    *
-   * @note  `captureInterval` is only valid when {@link com.r7.core.stand.video.common.RecordingConfig#decodeVideo decodeVideo} is set as 3, 4 or 5.
+   * @note  `captureInterval` is only valid when {@link io.agora.recording.common.RecordingConfig#decodeVideo decodeVideo} is set as 3, 4 or 5.
    */
   public int captureInterval;
 
@@ -266,14 +176,14 @@ public class RecordingConfig {
   public int audioIndicationInterval;
 
   //channelProfile:0 communicate, 1:braodacast; default is 0
-  /** Sets the channel mode. See {@link Common#CHANNEL_PROFILE_TYPE CHANNEL_PROFILE_TYPE}. */
-  public CHANNEL_PROFILE_TYPE channelProfile;
+  /** Sets the channel mode. See {@link io.agora.recording.common.Common#CHANNEL_PROFILE_TYPE CHANNEL_PROFILE_TYPE}. */
+  public Common.CHANNEL_PROFILE_TYPE channelProfile;
 
   //streamType:0:get high stream 1:get low stream; default is 0
   /** `streamType` takes effect only when the Agora Native SDK/Web SDK enables the dual-stream
-   * mode (high stream by default). See {@link Common#REMOTE_VIDEO_STREAM_TYPE REMOTE_VIDEO_STREAM_TYPE}.
+   * mode (high stream by default). See {@link io.agora.recording.common.Common#REMOTE_VIDEO_STREAM_TYPE REMOTE_VIDEO_STREAM_TYPE}.
    */
-  public REMOTE_VIDEO_STREAM_TYPE streamType;
+  public Common.REMOTE_VIDEO_STREAM_TYPE streamType;
 
   /** Sets whether to start the recording automatically or manually:
    * <ul>
@@ -306,7 +216,7 @@ public class RecordingConfig {
   */
   public String proxyServer; //format ipv4:port
 
-  /** If you set {@link com.r7.core.stand.video.common.RecordingConfig#isMixingEnabled isMixingEnabled} as true, {@link com.r7.core.stand.video.common.RecordingConfig#mixResolution mixResolution} allows you to set the audio profile of the recording file:
+  /** If you set {@link io.agora.recording.common.RecordingConfig#isMixingEnabled isMixingEnabled} as true, {@link io.agora.recording.common.RecordingConfig#mixResolution mixResolution} allows you to set the audio profile of the recording file:
    * <ul>
    *   <li>AUDIO_PROFILE_DEFAULT = 0: (Default) Sampling rate of 48 KHz, communication encoding, mono, and a bitrate of up to 48 Kbps.</li>
    *   <li>AUDIO_PROFILE_MUSIC_HIGH_QUALITY = 1: Sampling rate of 48 KHz, music encoding, mono, and a bitrate of up to 128 Kbps.</li>
@@ -342,7 +252,7 @@ public class RecordingConfig {
    *   <li>false: Record the streams of specified users.</li>
    * </ul>
    *
-   * @note If you set `autoSubscribe` as false, you should set {@link com.r7.core.stand.video.common.RecordingConfig#subscribeVideoUids subscribeVideoUids} or {@link com.r7.core.stand.video.common.RecordingConfig#subscribeAudioUids subscribeAudioUids} to specify users whose video or audio you want to record.
+   * @note If you set `autoSubscribe` as false, you should set {@link io.agora.recording.common.RecordingConfig#subscribeVideoUids subscribeVideoUids} or {@link io.agora.recording.common.RecordingConfig#subscribeAudioUids subscribeAudioUids} to specify users whose video or audio you want to record.
    */
   public boolean autoSubscribe;
   /** Sets whether or not to enable the cloud proxy:
@@ -356,11 +266,11 @@ public class RecordingConfig {
   public boolean enableCloudProxy;
   /** An array of UIDs whose video streams you want to record.
    *
-   * If you set {@link com.r7.core.stand.video.common.RecordingConfig#autoSubscribe autoSubscribe} as false, `subscribeVideoUids` enables you to record the video streams of specified users. */
+   * If you set {@link io.agora.recording.common.RecordingConfig#autoSubscribe autoSubscribe} as false, `subscribeVideoUids` enables you to record the video streams of specified users. */
   public String subscribeVideoUids;
   /** An array of UIDs whose audio streams you want to record.
    *
-   * If you set {@link com.r7.core.stand.video.common.RecordingConfig#autoSubscribe autoSubscribe} as false, `subscribeAudioUids` enables you to record the audio streams of specified users. */
+   * If you set {@link io.agora.recording.common.RecordingConfig#autoSubscribe autoSubscribe} as false, `subscribeAudioUids` enables you to record the audio streams of specified users. */
   public String subscribeAudioUids;
 
   /** Sets whether to enable the keyframe request. The default value is `true`, which can improve the audio and video quality under poor network conditions. To play the video file recorded in individual recording mode from a specified position, you must set `enableIntraRequest` as false.
