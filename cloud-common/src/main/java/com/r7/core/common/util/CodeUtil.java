@@ -2,7 +2,11 @@ package com.r7.core.common.util;
 
 import java.util.Arrays;
 
-
+/**
+ * 邀请码生成算法
+ *
+ * @author zhongpingli
+ */
 public class CodeUtil {
 
     /**

@@ -19,7 +19,7 @@ public interface UimUserMapper extends BaseMapper<UimUser> {
      * 根据id获取用户信息
      *
      * @param login 电话号
-     * @return
+     * @return 返回信息
      */
     UimUserDetailsVO findUserDetailsByLogin(String login);
 

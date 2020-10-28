@@ -6,6 +6,7 @@ import com.r7.core.uim.dto.UimUserUpdateDTO;
 import com.r7.core.uim.dto.UserSignUpDTO;
 import com.r7.core.uim.model.UimUser;
 import com.r7.core.uim.vo.UimUserVO;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 用户服务层
@@ -80,4 +81,11 @@ public interface UimUserService extends IService<UimUser> {
      * @return 返回用户信息
      */
     UimUserVO getUserByPhone(Long phone);
+
+
+    /**
+     * 发送用户注册验证码
+     * @param phone 发送电话号
+     */
+    void sendSmsCode(Long phone);
 }

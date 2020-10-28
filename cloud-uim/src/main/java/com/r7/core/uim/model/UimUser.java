@@ -101,6 +101,7 @@ public class UimUser extends Model<UimUser> {
     public UimUserVO toUimUserVO() {
         UimUserVO uimUserVO = new UimUserVO();
         uimUserVO.setId(this.id);
+        uimUserVO.setOrganId(this.organId);
         uimUserVO.setAvatar(this.avatar);
         uimUserVO.setCode(this.code);
         uimUserVO.setPhoneNumber(this.phoneNumber);
@@ -110,7 +111,6 @@ public class UimUser extends Model<UimUser> {
 
     public void toUserSingUpDTO(UserSignUpDTO userSignUpDTO) {
         this.setPhoneNumber(userSignUpDTO.getPhoneNumber());
-        this.setOrganId(userSignUpDTO.getOrganId());
         this.setUserName(userSignUpDTO.getUserName());
         this.setPassword(userSignUpDTO.getPassword());
         this.setPhoneNumber(userSignUpDTO.getPhoneNumber());

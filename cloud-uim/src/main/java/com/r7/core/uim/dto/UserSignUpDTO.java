@@ -18,13 +18,6 @@ import javax.validation.constraints.NotNull;
 public class UserSignUpDTO {
 
     /**
-     * 组织ID
-     */
-    @NotNull(message = "组织ID不能为空")
-    @ApiModelProperty("组织ID")
-    private Long organId;
-
-    /**
      * 昵称
      */
     @NotEmpty(message = "昵称不能为空")
@@ -33,9 +26,13 @@ public class UserSignUpDTO {
     /**
      * 电话
      */
-    @NotEmpty(message = "电话不能为空")
+    @NotNull(message = "电话不能为空")
     @ApiModelProperty("电话")
     private Long phoneNumber;
+
+    @NotEmpty(message = "验证码不能为空")
+    @ApiModelProperty("验证码")
+    private String code;
 
     /**
      * 账户密码

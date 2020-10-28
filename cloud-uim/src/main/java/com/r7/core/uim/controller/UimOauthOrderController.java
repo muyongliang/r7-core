@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * @author zs
@@ -29,7 +30,7 @@ public class UimOauthOrderController {
 
     @ApiOperation(value = "新增用户认证订单", response = UimOauthOrderVO.class)
     @PostMapping("/")
-    public ResponseEntity saveUimOauthOrder(@RequestBody UimOauthOrderDTO uimOauthOrderDto) {
+    public ResponseEntity saveUimOauthOrder(@Valid @RequestBody UimOauthOrderDTO uimOauthOrderDto) {
         return ResponseEntity.success(uimOauthOrderService
                 .saveUimOauthOrder(uimOauthOrderDto, RequestHolder.getAppId(),
                         RequestHolder.getOrganId(), RequestHolder.getUserId()));
@@ -38,7 +39,7 @@ public class UimOauthOrderController {
     @ApiOperation(value = "修改用户认证订单", response = UimOauthOrderVO.class)
     @PutMapping("/{id}")
     public ResponseEntity updateUimOauthOrder(@PathVariable Long id,
-                                              @RequestBody UimOauthOrderDTO uimOauthOrderDto) {
+                                              @Valid @RequestBody UimOauthOrderDTO uimOauthOrderDto) {
         return ResponseEntity.success(uimOauthOrderService
                 .updateUimOauthOrder(id, uimOauthOrderDto, RequestHolder.getAppId(),
                         RequestHolder.getOrganId(), RequestHolder.getUserId()));

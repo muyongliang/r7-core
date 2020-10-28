@@ -3,8 +3,11 @@ package com.r7.core.uim.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
+import com.r7.core.cache.constant.PushType;
+import com.r7.core.cache.service.RedisListService;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
+import com.r7.core.uim.constant.RedisConstant;
 import com.r7.core.uim.constant.UimErrorEnum;
 import com.r7.core.uim.dto.UimResourceUpdateDTO;
 import com.r7.core.uim.mapper.UimResourceMapper;
@@ -14,11 +17,14 @@ import com.r7.core.uim.service.UimResourceService;
 import com.r7.core.uim.vo.UimResourceInfoVo;
 import com.r7.core.uim.vo.UimResourceNodeVO;
 import com.r7.core.uim.vo.UimResourceVO;
+import com.r7.core.uim.vo.UimRoleResourceVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +38,22 @@ import java.util.stream.Collectors;
 @Service
 public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimResource> implements UimResourceService {
 
+
+    @Resource
+    private RedisListService redisListService;
+
+    /**
+     * 初始化所有资源
+     */
+    @PostConstruct
+    public void init() {
+        List<UimResource> resourceList = list(Wrappers.<UimResource>lambdaQuery()
+                .select(UimResource::getUrl));
+        List<String> resouces = resourceList.stream().map(UimResource::getUrl).collect(Collectors.toList());
+        redisListService.removeByKey(RedisConstant.REDIS_RESOURCE_KEY);
+        redisListService.addListValue(RedisConstant.REDIS_RESOURCE_KEY,
+                resouces, PushType.LEFT);
+    }
 
     @Override
     @Transactional
@@ -51,6 +73,8 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
             log.info("平台:{}新增资源内容失败:{},操作用户:{}", appId, uimResourceSaveDto, userId);
             throw new BusinessException(UimErrorEnum.RESOURCE_SAVE_ERROR);
         }
+        // 初始化资源
+        init();
         log.info("平台:{}新增资源内容成功:{},操作用户:{}", appId, uimResourceSaveDto, userId);
         return getUimResourceById(id, appId);
     }
@@ -71,6 +95,8 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
             log.info("修改资源:{}内容为:{}失败,操作用户:{}", resourceId, uimResourceSaveDto, userId);
             throw new BusinessException(UimErrorEnum.RESOURCE_UPDATE_ERROR);
         }
+        // 初始化资源
+        init();
         log.info("修改资源:{}内容为:{}成功,操作用户:{}", resourceId, uimResourceSaveDto, userId);
         return getUimResourceById(resourceId, appId);
     }
@@ -90,6 +116,8 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
             log.info("删除资源:{}失败,操作用户:{}", resourceId, userId);
             throw new BusinessException(UimErrorEnum.RESOURCE_DELETE_ERROR);
         }
+        // 初始化资源
+        init();
         log.info("删除资源:{}内容为:{}成功,操作用户:{}", resourceId, uimResourceVo, userId);
         return true;
     }

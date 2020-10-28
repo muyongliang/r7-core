@@ -6,7 +6,7 @@
 | cloud-common     | 公共模块     |
 | cloud-assets | 资产模块 包含钱包、资金、积分  |
 | cloud-im| 即时通讯模块 |
-|cloud-integral|文件资源模块|
+|cloud-resource|文件资源模块|
 |cloud-dividend| 红利模块 包含代理、分润|
 |cloud-setting|公共配置模块|
 |cloud-job|任务模块|
@@ -85,6 +85,18 @@ minio/minio server /data
        - "3000:3000"
      networks:
        - loki
+>
+>maven私服
+>
+> mkdir ～/nexus/nexus-data && chown -R 200 ～/nexus/nexus-data
+>
+> 账户admin 密码 yymnexus
+>
+>docker run -d -p 8081:8081 \
+--name nexus \
+-e INSTALL4J_ADD_VM_PARAMS="-Xms2g -Xmx2g -XX:MaxDirectMemorySize=3g  -Djava.util.prefs.userRoot=/some-other-dir" \
+-v /root/nexus/nexus-data:/nexus-data \
+sonatype/nexus3
 
 ## 项目镜像
 >docker run -d \
@@ -101,4 +113,12 @@ minio/minio server /data
  --privileged=true \
  -p 8099:8099 \
  -v /root/core_docker/cloud-integral:/usr/local/ymapp \
+ docker-java-runtime
+
+>docker run -d \
+ --name cloud-uim \
+ --restart=always \
+ --privileged=true \
+ -p 8010:8010 \
+ -v /root/core_docker/cloud-uim:/usr/local/ymapp \
  docker-java-runtime

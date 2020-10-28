@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * 注册
@@ -30,8 +31,15 @@ public class UimSignController {
     @ApiOperation(value = "注册", response = UimUserVO.class)
     @PostMapping("/up/{code}")
     public ResponseEntity signUpUser(@PathVariable("code") String code,
-                                     @RequestBody UserSignUpDTO userSignUpDTO, HttpServletRequest request) {
+                                     @Valid @RequestBody UserSignUpDTO userSignUpDTO, HttpServletRequest request) {
         return ResponseEntity.success(uimUserService.signUpUser(code, userSignUpDTO, request.getRemoteAddr()));
+    }
+
+    @ApiOperation(value = "注册手机验证码", response = UimUserVO.class)
+    @PostMapping("/sms/code/{phone}")
+    public ResponseEntity sendSmsCode(@PathVariable("phone") Long phone) {
+        uimUserService.sendSmsCode(phone);
+        return ResponseEntity.success();
     }
 
 }

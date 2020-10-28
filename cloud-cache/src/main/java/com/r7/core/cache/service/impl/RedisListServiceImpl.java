@@ -1,6 +1,5 @@
 package com.r7.core.cache.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
 import com.r7.core.cache.constant.PushType;
 import com.r7.core.cache.service.RedisListService;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static io.vavr.API.*;
 
@@ -51,24 +49,14 @@ public class RedisListServiceImpl implements RedisListService {
     }
 
     @Override
-    public <T> List<T> getKey(String key, Class<T> t) {
-        List<Object> values = redisTemplate.opsForList().range(key, 0, -1);
-        if (values == null || values.size() == 0) {
-            return null;
-        }
-        return values.stream().map(x -> JSONUtil.toBean(x.toString(), t)).collect(Collectors.toList());
+    public List<Object> getKey(String key) {
+        return redisTemplate.opsForList().range(key, 0, -1);
     }
 
     @Override
-    public <T> T updateValueByKey(String key, T newValue, Integer index, Class<T> t) {
-
+    public Object updateValueByKey(String key, Object newValue, Integer index) {
         redisTemplate.opsForList().set(key, index, newValue);
-        Object value = redisTemplate.opsForList().index(key, index);
-        if (ObjectUtil.isNotEmpty(value)) {
-            return JSONUtil.toBean(value.toString(), t);
-
-        }
-        return null;
+        return redisTemplate.opsForList().index(key, index);
     }
 
     @Override
