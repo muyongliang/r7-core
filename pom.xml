@@ -21,7 +21,6 @@
         <module>cloud-trigger</module>
         <module>cloud-integral</module>
         <module>cloud-cache</module>
-        <module>cloud-assets</module>
     </modules>
 
 
