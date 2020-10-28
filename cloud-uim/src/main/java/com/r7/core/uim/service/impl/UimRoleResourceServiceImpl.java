@@ -91,8 +91,10 @@ public class UimRoleResourceServiceImpl extends ServiceImpl<UimRoleResourceMappe
     public Boolean unBindResourceByRoleId(Long roleId, Long resourceId, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中角色:{}解绑资源:{},操作用户:{}。", appId, organId, roleId, resourceId, userId);
         // 验证
-        uimRoleService.getRoleById(roleId, appId, organId);
-        uimResourceService.getUimResourceById(resourceId, appId);
+        Option.of(uimRoleService.getRoleById(roleId, appId, organId)).getOrElseThrow(() ->
+                new BusinessException(UimErrorEnum.ROLE_IS_NOT_EXISTS));
+        Option.of(uimResourceService.getUimResourceById(resourceId, appId)).getOrElseThrow(() ->
+                new BusinessException(UimErrorEnum.RESOURCE_IS_NOT_EXISTS));
         UimRoleResource uimRoleResource = Option.of(getUimRoleResourceByRoleIdAndResourceId(roleId, resourceId))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_RESOURCE_IS_EXISTS));
         // 删除

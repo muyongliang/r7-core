@@ -58,8 +58,7 @@ public class UimResourceController {
     @ApiOperation(value = "树形展示资源", response = UimResourceNodeVO.class)
     @GetMapping("/tree")
     public ResponseEntity treeUimResource() {
-        return ResponseEntity.success(uimResourceService.treeUimResource(RequestHolder.getAppId(),
-                RequestHolder.getOrganId()));
+        return ResponseEntity.success(uimResourceService.treeUimResource(RequestHolder.getAppId(), 0L));
     }
 
 
