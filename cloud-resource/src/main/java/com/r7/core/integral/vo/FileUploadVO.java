@@ -5,9 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * @Auther muyongliang
- * @Date 2020/10/10
- * @Description FileDataVO
+ * @author muyongliang
+ * @date 2020/10/10
+ * @description FileDataVO
  */
 @Data
 @ApiModel("文件上传结果信息")

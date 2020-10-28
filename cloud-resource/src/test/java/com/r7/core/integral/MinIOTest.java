@@ -15,18 +15,18 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 
 /**
- * @Auther muyongliang
- * @Date 2020/9/28
- * @Description minIO测试类
+ * @author muyongliang
+ * @date 2020/9/28
+ * @description minIO测试类
  */
 @Slf4j
 public class MinIOTest {
     private MinioClient minioClient;
 
     /**
-     * @Author muyongliang
-     * @Date 2020/9/29 15:35
-     * @Description 初始化客户端, client 的putObject处理流数据，uploadObject处理本地文件
+     * @author muyongliang
+     * @date 2020/9/29 15:35
+     * @description 初始化客户端, client 的putObject处理流数据，uploadObject处理本地文件
      */
     @Before
     public void init() throws Exception {
@@ -49,9 +49,9 @@ public class MinIOTest {
 
 
     /**
-     * @Author muyongliang
-     * @Date 2020/9/29 15:35
-     * @Description 上传本地文件，不进行服务端加密
+     * @author muyongliang
+     * @date 2020/9/29 15:35
+     * @description 上传本地文件，不进行服务端加密
      */
     @Test
     public void minIOTest1() throws Exception {
@@ -83,9 +83,9 @@ public class MinIOTest {
     }
 
     /**
-     * @Author muyongliang
-     * @Date 2020/9/29 15:36
-     * @Description 不知道长度的流，进行服务端加密
+     * @author muyongliang
+     * @date 2020/9/29 15:36
+     * @description 不知道长度的流，进行服务端加密
      */
     @Test
     public void minIOTest2() {
@@ -117,9 +117,9 @@ public class MinIOTest {
     }
 
     /**
-     * @Author muyongliang
-     * @Date 2020/9/29 15:36
-     * @Description 本地文件进行服务端加密
+     * @author muyongliang
+     * @date 2020/9/29 15:36
+     * @description 本地文件进行服务端加密
      * md5校验会修改流
      */
     @Test
@@ -155,9 +155,9 @@ public class MinIOTest {
     }
 
     /**
-     * @Author muyongliang
-     * @Date 2020/9/29 15:35
-     * @Description 上传本地文件，不进行服务端加密,本地进行加密
+     * @author muyongliang
+     * @date 2020/9/29 15:35
+     * @description 上传本地文件，不进行服务端加密,本地进行加密
      */
     @Test
     public void minIOTest4() throws Exception {
@@ -195,9 +195,9 @@ public class MinIOTest {
     }
 
     /**
-     * @Author muyongliang
-     * @Date 2020/9/29 15:35
-     * @Description 利用保存的aeskey下载大文件测试
+     * @author muyongliang
+     * @date 2020/9/29 15:35
+     * @description 利用保存的aeskey下载大文件测试
      */
     @Test
     public void minIOTest5() throws Exception {
@@ -225,9 +225,9 @@ public class MinIOTest {
     }
 
     /**
-     * @Author muyongliang
-     * @Date 2020/9/29 15:35
-     * @Description minIO大文件上传测试
+     * @author muyongliang
+     * @date 2020/9/29 15:35
+     * @description minIO大文件上传测试
      */
     @Test
     public void minIOTest6() throws Exception {
@@ -245,9 +245,9 @@ public class MinIOTest {
     }
 
     /**
-     * @Author muyongliang
-     * @Date 2020/9/29 15:35
-     * @Description md5测试, md5会修改流
+     * @author muyongliang
+     * @date 2020/9/29 15:35
+     * @description md5测试, md5会修改流
      */
     @Test
     public void MD5Test1() throws Exception {
@@ -262,9 +262,9 @@ public class MinIOTest {
     }
 
     /**
-     * @Author muyongliang
-     * @Date 2020/9/29 15:35
-     * @Description 摘要算法会修改流
+     * @author muyongliang
+     * @date 2020/9/29 15:35
+     * @description 摘要算法会修改流
      */
     @Test
     public void SHA256Test1() throws Exception {
@@ -279,9 +279,9 @@ public class MinIOTest {
     }
 
     /**
-     * @Author muyongliang
-     * @Date 2020/9/29 15:35
-     * @Description md5测试, md5不会修改文件
+     * @author muyongliang
+     * @date 2020/9/29 15:35
+     * @description md5测试, md5不会修改文件
      */
     @Test
     public void MD5Test12() throws Exception {

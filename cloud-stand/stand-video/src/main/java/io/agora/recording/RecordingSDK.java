@@ -6,7 +6,11 @@ import io.agora.recording.common.RecordingEngineProperties;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author muyongliang
+ * @date 2020/10/28 11:57
+ * @description 视频录制sdk
+ */
 public class RecordingSDK {
 
     /**

@@ -4,8 +4,8 @@ import com.r7.core.common.constant.IError;
 
 /**
  * @Author muyongliang
- * @Date 2020/9/28 10:32
- * @Description 配置模块异常类
+ * @date 2020/9/28 10:32
+ * @description 配置模块异常类
  */
 public enum SettingErrorEnum implements IError {
     /**

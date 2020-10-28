@@ -23,8 +23,8 @@ import java.util.Date;
 
 /**
  * @Author muyongliang
- * @Date 2020/9/27 17:27
- * @Description 公共配置服务实现类
+ * @date 2020/9/27 17:27
+ * @description 公共配置服务实现类
  */
 @Slf4j
 @Service

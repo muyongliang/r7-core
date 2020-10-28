@@ -20,9 +20,9 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Auther muyongliang
- * @Date 2020/10/9
- * @Description MinIOClientConfig
+ * @author muyongliang
+ * @date 2020/10/9
+ * @description MinIOClientConfig
  */
 @Configuration
 @Slf4j

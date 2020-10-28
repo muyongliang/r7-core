@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.r7.core.integral.model.CoreFileDO;
 
 /**
- * @Auther muyongliang
- * @Date 2020/10/13
- * @Description CoreFileMapper
+ * @author muyongliang
+ * @date 2020/10/13
+ * @description CoreFileMapper
  */
 public interface CoreFileMapper extends BaseMapper<CoreFileDO> {
 }

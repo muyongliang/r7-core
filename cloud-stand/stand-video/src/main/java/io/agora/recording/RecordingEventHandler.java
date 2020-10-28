@@ -2,6 +2,11 @@ package io.agora.recording;
 
 import io.agora.recording.common.Common.*;
 
+/**
+ * @author muyongliang
+ * @date 2020/10/28 11:56
+ * @description 视频录制回调处理
+ */
 public interface RecordingEventHandler {
 
     /**

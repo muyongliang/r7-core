@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * @Auther muyongliang
- * @Date 2020/10/27
- * @Description AgoraRecordingEventHandler
+ * @author muyongliang
+ * @date 2020/10/27
+ * @description AgoraRecordingEventHandler
  */
 @Slf4j
 public class AgoraRecordingEventHandler implements RecordingEventHandler {
@@ -25,7 +25,6 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
     HashMap<String, UserInfo> audioChannels = new HashMap();
     HashMap<String, UserInfo> videoChannels = new HashMap();
     Timer cleanTimer = null;
-    // java run status flag
     private boolean isMixMode = false;
     private int width = 0;
     private int height = 0;

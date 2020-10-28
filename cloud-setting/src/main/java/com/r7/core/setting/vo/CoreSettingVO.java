@@ -7,8 +7,8 @@ import lombok.Data;
 import java.util.Date;
 /**
  * @Author muyongliang
- * @Date 2020/9/28 10:37
- * @Description 公共配置信息展示vo
+ * @date 2020/9/28 10:37
+ * @description 公共配置信息展示vo
  */
 @ApiModel(description = "公共配置信息")
 @Data

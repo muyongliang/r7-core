@@ -26,9 +26,9 @@ import java.io.InputStream;
 import java.util.Date;
 
 /**
- * @Auther muyongliang
- * @Date 2020/10/9
- * @Description FileUploadServiceImpl
+ * @author muyongliang
+ * @date 2020/10/9
+ * @description FileUploadServiceImpl
  */
 @Slf4j
 @Service
@@ -39,9 +39,9 @@ public class FileUploadServiceImpl implements FileUploadService {
     private CoreFileMapper coreFileMapper;
 
     /**
-     * @Author muyongliang
-     * @Date 2020/10/12 16:22
-     * @Description 使用md5值作为对象名，用于去重，和防止文件覆盖
+     * @author muyongliang
+     * @date 2020/10/12 16:22
+     * @description 使用md5值作为对象名，用于去重，和防止文件覆盖
      * 优化方案：对小文件去重，大文件不去重，因为大文件太占内存，做md5需要复制流,对象名直接使用originalFileName
      */
     @Override
@@ -151,9 +151,9 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
 
     /**
-     * @Author muyongliang
-     * @Date 2020/10/14 14:07
-     * @Description 根据文件名删除文件，包括minIO服务器和本地数据库数据
+     * @author muyongliang
+     * @date 2020/10/14 14:07
+     * @description 根据文件名删除文件，包括minIO服务器和本地数据库数据
      */
     @Override
     public boolean deleteByBucketNameAndfileName(String bucketName, String fileName) throws Exception {
@@ -166,9 +166,9 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
 
     /**
-     * @Author muyongliang
-     * @Date 2020/10/12 17:44
-     * @Description 文件下载业务
+     * @author muyongliang
+     * @date 2020/10/12 17:44
+     * @description 文件下载业务
      */
 
     @Override
@@ -207,9 +207,9 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
 
     /**
-     * @Author muyongliang
-     * @Date 2020/10/13 17:13
-     * @Description 用filename查询文件信息
+     * @author muyongliang
+     * @date 2020/10/13 17:13
+     * @description 用filename查询文件信息
      */
     @Override
     public CoreFileDO getCoreFileByFileName(String fileName) {
@@ -221,9 +221,9 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
 
     /**
-     * @Author muyongliang
-     * @Date 2020/10/13 17:13
-     * @Description 获取对象信息
+     * @author muyongliang
+     * @date 2020/10/13 17:13
+     * @description 获取对象信息
      */
     public ObjectStat statObject(String bucketName, String objectName, boolean encrypted, String aesKey) {
         try {

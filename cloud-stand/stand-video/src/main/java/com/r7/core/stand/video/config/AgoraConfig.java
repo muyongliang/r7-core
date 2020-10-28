@@ -6,8 +6,8 @@ import javax.annotation.PostConstruct;
 
 /**
  * @Author muyongliang
- * @Date 2020/10/26 18:01
- * @Description 加载agora动态链接库
+ * @date 2020/10/26 18:01
+ * @description 加载agora动态链接库
  */
 @Configuration
 public class AgoraConfig {

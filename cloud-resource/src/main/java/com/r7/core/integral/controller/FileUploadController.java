@@ -20,9 +20,9 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 
 /**
- * @Auther muyongliang
- * @Date 2020/10/9
- * @Description FileUploadController
+ * @author muyongliang
+ * @date 2020/10/9
+ * @description FileUploadController
  */
 @Slf4j
 @RestController
@@ -33,10 +33,10 @@ public class FileUploadController {
     private FileUploadService fileUploadService;
 
     /**
-     * @Author muyongliang
-     * @Date 2020/10/12 15:53
-     * @Description 文件上传接口，目前仅支持multipart/form-data，单文件上传，超过1mb文件不提供去重功能和防止覆盖，由客户端负责
-     * @Description 当encrypted为true时使用服务端加密，false不使用服务端加密，默认为true。
+     * @author muyongliang
+     * @date 2020/10/12 15:53
+     * @description 文件上传接口，目前仅支持multipart/form-data，单文件上传，超过1mb文件不提供去重功能和防止覆盖，由客户端负责
+     * @description 当encrypted为true时使用服务端加密，false不使用服务端加密，默认为true。
      */
     @PostMapping
     @ApiOperation(

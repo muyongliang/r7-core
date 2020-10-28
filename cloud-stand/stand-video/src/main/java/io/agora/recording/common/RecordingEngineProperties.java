@@ -1,7 +1,9 @@
 package io.agora.recording.common;
 
 /**
- * The recording properties.
+ * @author muyongliang
+ * @date 2020/10/28 11:56
+ * @description The recording properties.
  */
 public class RecordingEngineProperties {
     /**

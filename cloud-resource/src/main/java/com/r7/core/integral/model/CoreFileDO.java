@@ -9,9 +9,9 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 /**
- * @Auther muyongliang
- * @Date 2020/10/10
- * @Description FileDataVO
+ * @author muyongliang
+ * @date 2020/10/10
+ * @description FileDataVO
  */
 @Data
 @TableName("core_file")

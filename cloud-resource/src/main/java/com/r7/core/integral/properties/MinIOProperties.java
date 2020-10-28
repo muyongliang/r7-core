@@ -5,9 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * @Auther muyongliang
- * @Date 2020/10/16
- * @Description MinIOProperties
+ * @author muyongliang
+ * @date 2020/10/16
+ * @description MinIOProperties
  */
 @Component
 @ConfigurationProperties(prefix = "minio")

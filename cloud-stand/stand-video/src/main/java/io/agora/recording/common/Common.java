@@ -1,7 +1,11 @@
 package io.agora.recording.common;
 
 import java.nio.ByteBuffer;
-
+/**
+ * @author muyongliang
+ * @date 2020/10/28 11:58
+ * @description 视频录制
+ */
 public class Common {
     /**
      * Error codes.

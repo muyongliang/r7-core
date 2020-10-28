@@ -3,7 +3,11 @@ package io.agora.recording.common;
 
 import io.agora.recording.common.Common.*;
 import lombok.ToString;
-
+/**
+ * @author muyongliang
+ * @date 2020/10/28 11:55
+ * @description 视频录制配置类
+ */
 @ToString
 public class RecordingConfig {
     /**

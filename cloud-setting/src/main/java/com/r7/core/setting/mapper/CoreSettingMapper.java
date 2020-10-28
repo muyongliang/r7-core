@@ -6,8 +6,8 @@ import com.r7.core.setting.model.CoreSettingDO;
 
 /**
  * @Author muyongliang
- * @Date 2020/9/28 10:36
- * @Description 公共配置信息
+ * @date 2020/9/28 10:36
+ * @description 公共配置信息
  */
 public interface CoreSettingMapper extends BaseMapper<CoreSettingDO> {
 }
