@@ -27,7 +27,6 @@ import javax.sql.DataSource;
  */
 @Slf4j
 @Configuration
-
 public class DataSourceConfig {
 
 
