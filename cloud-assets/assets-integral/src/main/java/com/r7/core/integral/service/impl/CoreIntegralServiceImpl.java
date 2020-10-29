@@ -7,14 +7,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.integral.constant.CoreIntegralEnum;
+import com.r7.core.integral.constant.OperateTypeEnum;
+import com.r7.core.integral.constant.RsaEnum;
+import com.r7.core.integral.dto.CoreIntegralChangeDTO;
 import com.r7.core.integral.dto.CoreIntegralDTO;
 import com.r7.core.integral.dto.CoreIntegralDetailDTO;
 import com.r7.core.integral.mapper.CoreIntegralMapper;
 import com.r7.core.integral.model.CoreIntegral;
-import com.r7.core.integral.model.CoreIntegralDetail;
 import com.r7.core.integral.service.CoreIntegralDetailService;
 import com.r7.core.integral.service.CoreIntegralService;
-import com.r7.core.integral.util.Md5Util;
+import com.r7.core.integral.util.RsaUtil;
 import com.r7.core.integral.vo.CoreIntegralVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
@@ -52,8 +54,13 @@ public class CoreIntegralServiceImpl extends ServiceImpl<CoreIntegralMapper, Cor
         coreIntegral.setCreatedBy(userId);
         coreIntegral.setUpdateAt(LocalDateTime.now());
         coreIntegral.setUpdateBy(userId);
-       //把用户的id和积分值合成字符串，生成签名
-        String sign = Md5Util.generate(""+coreIntegralDTO.getUserId()+""+coreIntegralDTO.getTotal());
+       //把用户的id和积分值合成字符串，使用RSA加密生成签名
+
+
+        String sign =
+                RsaUtil.encryptByPublicKey(""+coreIntegralDTO.getUserId()+""+coreIntegralDTO.getTotal(),
+                        RsaEnum.publicKey);
+
         coreIntegral.setSign(sign);
         boolean saveCoreIntegral =   save(coreIntegral);
 
@@ -70,91 +77,85 @@ public class CoreIntegralServiceImpl extends ServiceImpl<CoreIntegralMapper, Cor
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public CoreIntegralVO updateCoreIntegralAddTotal( String businessCode,
-                                                      Integer addInteger,
-                                                      Long userId,
-                                                      Integer sourceType,
+    public CoreIntegralVO updateCoreIntegralAddTotal( CoreIntegralChangeDTO coreIntegralChangeDTO,
                                                       Long appId,Long operationalUserId) {
 
-        log.info("用户ID:{},用户增加的积分数{},操作者:{},开始时间:{}",
-                userId,addInteger,appId,operationalUserId);
+        log.info("用户增加积分信息:{},平台ID:{},操作者:{},开始时间:{}",
+                coreIntegralChangeDTO ,appId,operationalUserId);
         //1、根据签名判断用户的积分数据有没有被非法修改,如何数据被非法修改抛出异常
 
-        CoreIntegralVO coreIntegralVO =  getCoreIntegralByUserId(userId);
-       boolean result = Md5Util.verify(""+coreIntegralVO.getUserId()+""+coreIntegralVO.getTotal(),
-               coreIntegralVO.getSign());
+        CoreIntegralVO coreIntegralVO =  getCoreIntegralByUserId(coreIntegralChangeDTO.getUserId());
+
+        boolean result = RsaUtil.verify(""+coreIntegralVO.getUserId()+""+coreIntegralVO.getTotal()
+                ,coreIntegralVO.getSign(),RsaEnum.privateKey);
+
         if (!result) {
-            log.info("用户ID:{},用户增加的积分数{},操作者:{},时间:{}");
             throw new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_SIGN_ERROR);
         }
 
-        Integer total = coreIntegralVO.getTotal()+addInteger;
+        Integer total = coreIntegralVO.getTotal()+coreIntegralChangeDTO.getChangeNum();
         //2、生成新的签名
-        String sign = Md5Util.generate(""+userId+""+total);
+
+        String sign =
+                RsaUtil.encryptByPublicKey(""+coreIntegralVO.getUserId()+""+total,
+                        RsaEnum.publicKey);
+
         //3、修改总积分和新签名
-        coreIntegralVO = updateCoreIntegralByUserId(userId,total,sign,operationalUserId);
+        coreIntegralVO = updateCoreIntegralByUserId(coreIntegralChangeDTO.getUserId(),total,sign,operationalUserId);
         //4、增加积分详情的记录
         CoreIntegralDetailDTO coreIntegralDetailDTO = new CoreIntegralDetailDTO();
-        coreIntegralDetailDTO.setBusinessCode(businessCode);
-        coreIntegralDetailDTO.setChangeNum(addInteger);
-        coreIntegralDetailDTO.setUserId(userId);
+        coreIntegralDetailDTO.toCoreIntegralChangeDTO(coreIntegralChangeDTO);
         coreIntegralDetailDTO.setLaveNum(total);
-        coreIntegralDetailDTO.setOperateType(1);
-        coreIntegralDetailDTO.setSourceType(sourceType);
-        coreIntegralDetailDTO.setDescription("积分已成功增加");
+        coreIntegralDetailDTO.setOperateType(OperateTypeEnum.ADD);
         coreIntegralDetailService.saveCoreIntegralDetail(coreIntegralDetailDTO,appId,operationalUserId);
-        log.info("用户ID:{},用户增加的积分数成功{},操作者:{},结束时间:{}",
-                userId,addInteger,appId,operationalUserId);
+        log.info("用户增加积分信息:{},平台ID:{},操作者:{},结束时间:{}",
+                coreIntegralChangeDTO ,appId,operationalUserId);
         return coreIntegralVO;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public CoreIntegralVO updateCoreIntegralReduceTotal( String businessCode,
-                                                         Integer reduceInteger,
-                                                         Long userId,
-                                                         Integer sourceType,
+    public CoreIntegralVO updateCoreIntegralReduceTotal( CoreIntegralChangeDTO coreIntegralChangeDTO,
                                                          Long appId,
                                                          Long operationalUserId) {
 
-        log.info("用户ID:{},用户减少的积分数{},操作者:{},开始时间:{}",
-                userId,reduceInteger,operationalUserId,LocalDateTime.now());
+        log.info("用户减少的积分信息:{},平台ID:{},操作者:{},开始时间:{}",
+                coreIntegralChangeDTO ,appId,operationalUserId);
 
         //1、判断用户的id和用户的总积分或者签名有没有被非法修改
-        CoreIntegralVO coreIntegralVO =  getCoreIntegralByUserId(userId);
-        boolean result = Md5Util.verify(""+coreIntegralVO.getUserId()+""+coreIntegralVO.getTotal(),
-                coreIntegralVO.getSign());
+        CoreIntegralVO coreIntegralVO =  getCoreIntegralByUserId(coreIntegralChangeDTO.getUserId());
+        boolean result = RsaUtil.verify(""+coreIntegralVO.getUserId()+""+coreIntegralVO.getTotal()
+                ,coreIntegralVO.getSign(),RsaEnum.privateKey);
         if (!result) {
+
             log.info("用户ID:{},签名验证结果{},操作者:{},时间:{}",
-                    userId,"验证失败",operationalUserId,LocalDateTime.now());
+                    coreIntegralVO.getUserId(),"验证失败",operationalUserId,LocalDateTime.now());
             throw new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_SIGN_ERROR);
         }
 
         //2、判断用户的当前积分是否大于等于需要的积分
-        if (coreIntegralVO.getTotal() < reduceInteger) {
+        if (coreIntegralVO.getTotal() < coreIntegralChangeDTO.getChangeNum()) {
             throw new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_USER_INTEGRAL_IS_NOT_ENOUGH);
         }
 
-        Integer total = coreIntegralVO.getTotal()-reduceInteger;
+        Integer total = coreIntegralVO.getTotal()-coreIntegralChangeDTO.getChangeNum();
         //3、生成新的签名
-        String sign = Md5Util.generate(""+userId+""+total);
+        String sign = RsaUtil.encryptByPublicKey(""+coreIntegralVO.getUserId()+""+total,
+                        RsaEnum.publicKey);
         //4、修改总积分和签名
-        coreIntegralVO = updateCoreIntegralByUserId(userId,total,sign,operationalUserId);
+        coreIntegralVO = updateCoreIntegralByUserId(coreIntegralChangeDTO.getUserId(),total,sign,operationalUserId);
 
         //5、增加减少积分的详情记录
         CoreIntegralDetailDTO coreIntegralDetailDTO = new CoreIntegralDetailDTO();
+        coreIntegralDetailDTO.toCoreIntegralChangeDTO(coreIntegralChangeDTO);
         coreIntegralDetailDTO.setLaveNum(total);
-        coreIntegralDetailDTO.setBusinessCode(businessCode);
-        coreIntegralDetailDTO.setChangeNum(reduceInteger);
-        coreIntegralDetailDTO.setUserId(userId);
-        coreIntegralDetailDTO.setOperateType(2);
-        coreIntegralDetailDTO.setSourceType(sourceType);
-        coreIntegralDetailDTO.setDescription("积分已使用");
+        coreIntegralDetailDTO.setOperateType(OperateTypeEnum.REDUCE);
         coreIntegralDetailService.saveCoreIntegralDetail(coreIntegralDetailDTO,appId,operationalUserId);
 
 
-        log.info("用户ID:{},用户减少的积分数成功{},操作者:{},结束时间:{}",
-                userId,reduceInteger,operationalUserId,LocalDateTime.now());
+
+        log.info("用户减少积分信息:{},平台ID:{},操作者:{},结束时间:{}",
+                coreIntegralChangeDTO ,appId,operationalUserId);
         return coreIntegralVO;
     }
 
