@@ -40,7 +40,8 @@ public class RecordingServiceImpl implements RecordingService {
         //生成token
 //        RtcTokenBuilder token = new RtcTokenBuilder();
 //        int privilegeExpiredTs = (int) (System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
-//        String channelKey = token.buildTokenWithUid(appId, appCertificate, channel, agoraProperties.getServerUid(), RtcTokenBuilder.Role.Role_Subscriber, privilegeExpiredTs);
+//        String channelKey = token.buildTokenWithUid(appId, appCertificate, channel
+//        , agoraProperties.getServerUid(), RtcTokenBuilder.Role.Role_Subscriber, privilegeExpiredTs);
         RecordingConfig recordingConfig = new RecordingConfig();
         recordingConfig.appliteDir = agoraProperties.getAppliteDir();
 //        recordingConfig.isMixingEnabled = agoraProperties.isMixingEnabled();

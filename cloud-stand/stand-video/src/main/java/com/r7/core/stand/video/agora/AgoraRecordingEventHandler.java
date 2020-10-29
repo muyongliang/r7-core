@@ -155,21 +155,32 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
     @Override
     public void onRemoteAudioStats(long uid, Common.RemoteAudioStats stats) {
     /*
-    System.out.println("onRemoteAudioStats, quality: " + stats.quality + ", networkTransportDelay : " + stats.networkTransportDelay + ", jitterBufferDelay:" + stats.jitterBufferDelay + ", audio loss rate : " + stats.audioLossRate);
+    System.out.println("onRemoteAudioStats, quality: " + stats.quality +
+    ", networkTransportDelay : " + stats.networkTransportDelay
+    + ", jitterBufferDelay:" + stats.jitterBufferDelay + ", audio loss rate : " + stats.audioLossRate);
     */
     }
 
     @Override
     public void onRemoteVideoStats(long uid, Common.RemoteVideoStats stats) {
     /*
-    System.out.println("onRemoteVideoStats, delay : " + stats.delay + ", width" + stats.width + ", height : " + stats.height + ", receivedBitrate:" + stats.receivedBitrate + ", decoderOutputFrameRate:" + stats.decoderOutputFrameRate + ", rxStreamType : " + stats.rxStreamType);
+    System.out.println("onRemoteVideoStats, delay : " + stats.delay
+    + ", width" + stats.width + ", height : " + stats.height + ", receivedBitrate:" + stats.receivedBitrate + "
+    , decoderOutputFrameRate:" + stats.decoderOutputFrameRate + ", rxStreamType : " + stats.rxStreamType);
     */
     }
 
     @Override
     public void onRecordingStats(Common.RecordingStats stats) {
     /*
-    System.out.println("onRecordingStats, duration : " + stats.duration + ", rxByets " + stats.rxBytes + ", rxKBitRate: " + stats.rxKBitRate + ", rxAudioKBitRate: " + stats.rxAudioKBitRate + ", rxVideoKBitRate:" + stats.rxVideoKBitRate + ", lastmileDelay : " + stats.lastmileDelay + ", userCount : " + stats.userCount + ", cpuAppUsage : " + stats.cpuAppUsage + ", cpuTotalUsage: " + stats.cpuTotalUsage);
+    System.out.println("onRecordingStats, duration : " + stats.duration
+     + ", rxByets " + stats.rxBytes + ", rxKBitRate: " + stats.rxKBitRate
+      + ", rxAudioKBitRate: " + stats.rxAudioKBitRate
+      + ", rxVideoKBitRate:" + stats.rxVideoKBitRate
+      + ", lastmileDelay : " + stats.lastmileDelay
+      + ", userCount : " + stats.userCount
+      + ", cpuAppUsage : " + stats.cpuAppUsage
+      + ", cpuTotalUsage: " + stats.cpuTotalUsage);
     */
     }
 
