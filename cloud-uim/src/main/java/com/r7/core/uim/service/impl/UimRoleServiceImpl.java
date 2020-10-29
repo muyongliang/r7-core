@@ -84,6 +84,7 @@ public class UimRoleServiceImpl extends ServiceImpl<UimRoleMapper, UimRole> impl
         UimRole uimRole = new UimRole();
         uimRole.setId(id);
         uimRole.toUimRole(uimRoleSaveDto);
+        uimRole.setFeature(1);
         uimRole.setAppId(appId);
         uimRole.setOrganId(organId);
         uimRole.setCreatedAt(new Date());
