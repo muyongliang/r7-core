@@ -56,10 +56,20 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
     private long lastKeepAudioTime = 0;
     private long lastKeepVideoTime = 0;
 
+    public AgoraRecordingEventHandler(RecordingSDK recordingSDK) {
+        this.RecordingSDKInstance = recordingSDK;
+        //        注册回调到sdk
+        recordingSDK.registerOberserver(this);
+    }
+
     public void init(RecordingConfig config, String userAccount, String keepLastFrame, String layoutMode
             , String maxResolutionUid, String maxResolutionUserAccount, Boolean isMixingEnabled, String channelProfile) {
-        this.config = config;
-        this.userAccount = userAccount;
+        if (config != null) {
+            this.config = config;
+        }
+        if (StringUtils.isNotBlank(userAccount)) {
+            this.userAccount = userAccount;
+        }
         if (StringUtils.isNotBlank(keepLastFrame)) {
             this.keepLastFrame = Integer.parseInt(keepLastFrame);
         }
@@ -179,7 +189,7 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
         m_peers.add(uid);
         //PrintUsersInfo(m_peers);
         // When the user joined, we can re-layout the canvas
-        if (userAccount.length() > 0) {
+        if (StringUtils.isNotBlank(userAccount)) {
             if (layoutMode != VERTICALPRESENTATION_LAYOUT || RecordingSDKInstance.getUidByUserAccount(maxResolutionUserAccount) != 0) {
                 SetVideoMixingLayout();
             }
@@ -377,7 +387,7 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
         }
 
         long maxuid = 0;
-        if (userAccount.length() > 0) {
+        if (StringUtils.isNotBlank(userAccount)) {
             maxuid = RecordingSDKInstance.getUidByUserAccount(maxResolutionUserAccount);
         } else {
             maxuid = maxResolutionUid;

@@ -32,10 +32,7 @@ public class RecordingServiceImpl implements RecordingService {
 //        新建sdk
         RecordingSDK recordingSDK = new RecordingSDK();
 //        配置回调处理类
-        AgoraRecordingEventHandler agoraRecordingEventHandler = new AgoraRecordingEventHandler();
-//        注册回调到sdk
-        recordingSDK.registerOberserver(agoraRecordingEventHandler);
-
+        AgoraRecordingEventHandler agoraRecordingEventHandler = new AgoraRecordingEventHandler(recordingSDK);
 //        String appId = agoraProperties.getAppId();
 //        String appCertificate = agoraProperties.getAppCertificate();
 //        Integer expirationTimeInSeconds = agoraProperties.getExpirationTimeInSeconds();
@@ -73,6 +70,7 @@ public class RecordingServiceImpl implements RecordingService {
         agoraRecordingEventHandler.setCleanTimer(new Timer());
         boolean success = recordingSDK.createChannel(appId
                 , channelKey, channel, agoraProperties.getServerUid(), recordingConfig, agoraProperties.getLogLevel());
+        log.info("创建频道成功,channel:{}", channel);
         agoraRecordingEventHandler.getCleanTimer().cancel();
         log.info("jni layer has been exited...");
 //        销毁监听器
