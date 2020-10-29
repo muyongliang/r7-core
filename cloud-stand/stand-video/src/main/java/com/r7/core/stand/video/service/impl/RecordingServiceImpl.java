@@ -7,6 +7,7 @@ import io.agora.recording.RecordingSDK;
 import io.agora.recording.common.Common;
 import io.agora.recording.common.RecordingConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,9 @@ public class RecordingServiceImpl implements RecordingService {
         recordingConfig.appliteDir = agoraProperties.getAppliteDir();
 //        recordingConfig.isMixingEnabled = agoraProperties.isMixingEnabled();
         recordingConfig.isMixingEnabled = true;
-        recordingConfig.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.valueOf(agoraProperties.getMixedVideoAudio());
+        if (StringUtils.isNotBlank(agoraProperties.getMixedVideoAudio())) {
+            recordingConfig.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.valueOf(agoraProperties.getMixedVideoAudio());
+        }
         recordingConfig.mixResolution = agoraProperties.getMixResolution();
         recordingConfig.recordFileRootDir = agoraProperties.getRecordFileRootDir();
         recordingConfig.lowUdpPort = agoraProperties.getLowUdpPort();
@@ -68,7 +71,8 @@ public class RecordingServiceImpl implements RecordingService {
                 , recordingConfig.isMixingEnabled, null);
         // run jni event loop , or start a new thread to do it
         agoraRecordingEventHandler.setCleanTimer(new Timer());
-        boolean success = recordingSDK.createChannel(appId, channelKey, channel, agoraProperties.getServerUid(), recordingConfig, agoraProperties.getLogLevel());
+        boolean success = recordingSDK.createChannel(appId
+                , channelKey, channel, agoraProperties.getServerUid(), recordingConfig, agoraProperties.getLogLevel());
         agoraRecordingEventHandler.getCleanTimer().cancel();
         log.info("jni layer has been exited...");
 //        销毁监听器

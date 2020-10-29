@@ -84,7 +84,9 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
             }
         }
         this.isMixingEnabled = isMixingEnabled;
-        this.profile_type = Common.CHANNEL_PROFILE_TYPE.valueOf(channelProfile);
+        if (StringUtils.isNotBlank(channelProfile)) {
+            this.profile_type = Common.CHANNEL_PROFILE_TYPE.valueOf(channelProfile);
+        }
         if (isMixingEnabled && !config.isAudioOnly) {
 //            解析视频设置参数,格式为：width，hight，fps，kbps，分别对应合流的宽、高、帧率和码率。
             String[] resolution = config.mixResolution.split(",");
