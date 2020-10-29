@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.r7.core.integral.mapper.CoreIntegralDetailMapper">
+  <resultMap id="BaseResultMap" type="com.r7.core.integral.model.CoreIntegralDetail">
+    <!--@mbg.generated-->
+    <!--@Table core_integral_detail-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="app_id" jdbcType="BIGINT" property="appId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="source_type" jdbcType="INTEGER" property="sourceType" />
+    <result column="business_code" jdbcType="VARCHAR" property="businessCode" />
+    <result column="lave_num" jdbcType="INTEGER" property="laveNum" />
+    <result column="change_num" jdbcType="INTEGER" property="changeNum" />
+    <result column="operate_type" jdbcType="INTEGER" property="operateType" />
+    <result column="detailed_date" jdbcType="INTEGER" property="detailedDate" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="created_by" jdbcType="BIGINT" property="createdBy" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="update_by" jdbcType="BIGINT" property="updateBy" />
+    <result column="update_at" jdbcType="TIMESTAMP" property="updateAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, app_id, user_id, source_type, business_code, lave_num, change_num, operate_type, 
+    detailed_date, description, created_by, created_at, update_by, update_at
+  </sql>
+
+  <select id="pageCoreIntegralDetailAll" resultType="com.r7.core.integral.vo.CoreIntegralDetailVO">
+    select id, app_id, user_id, source_type, business_code, lave_num, change_num, operate_type,
+    detailed_date, description
+    from core_integral_detail
+    <where>
+      <if test="appId != null and appId != ''">
+        app_id = #{appId}
+      </if>
+      <if test="businessCode != null and businessCode != ''">
+       and business_code = #{businessCode}
+      </if>
+      <if test="sourceType != null and sourceType != ''">
+        and source_type = #{sourceType}
+      </if>
+      <if test="operateType != null and operateType != ''">
+        and operate_type = #{operateType}
+      </if>
+    </where>
+    order by  `created_at` desc
+  </select>
+
+
+  <select id="pageCoreIntegralDetailByUserId" resultType="com.r7.core.integral.vo.CoreIntegralDetailVO">
+    select id, app_id, user_id, source_type, business_code, lave_num, change_num, operate_type,
+    detailed_date, description
+    from core_integral_detail
+    <where>
+      user_id = #{userId}
+      <if test="appId !=null and appId != ''">
+        and app_id=#{appId}
+      </if>
+      <if test="operateType !=null and operateType != ''">
+        and operate_type=#{operateType}
+      </if>
+      <if test="sourceType !=null and sourceType != ''">
+        and source_type=#{sourceType}
+      </if>
+    </where>
+    order by  `created_at` desc
+
+  </select>
+
+</mapper>

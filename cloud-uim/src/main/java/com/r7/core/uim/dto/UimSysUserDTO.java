@@ -63,4 +63,14 @@ public class UimSysUserDTO {
     @ApiModelProperty("账户密码")
     @NotBlank(message = "账户密码不能为空")
     private String password;
+
+    /**
+     * 删除;1未删除，2删除(注销)
+     */
+    @NotNull(message = "删除状态不能为空")
+    @ApiModelProperty("删除状态")
+    private Integer del;
+
+
+
 }
