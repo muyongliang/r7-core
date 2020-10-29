@@ -43,7 +43,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.r7.core.integral.ResourceApplication</mainClass>
+                    <mainClass>com.r7.core.resource.ResourceApplication</mainClass>
                     <fork>true</fork>
                     <jvmArguments>
                         -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005

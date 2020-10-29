@@ -1,4 +1,4 @@
-package com.r7.core.integral.model;
+package com.r7.core.resource.model;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;

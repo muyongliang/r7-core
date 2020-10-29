@@ -1,4 +1,4 @@
-package com.r7.core.integral.constant;
+package com.r7.core.resource.constant;
 
 /**
  * @author muyongliang

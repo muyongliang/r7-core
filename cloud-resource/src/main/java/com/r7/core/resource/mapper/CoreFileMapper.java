@@ -1,7 +1,7 @@
-package com.r7.core.integral.mapper;
+package com.r7.core.resource.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.r7.core.integral.model.CoreFileDO;
+import com.r7.core.resource.model.CoreFileDO;
 
 /**
  * @author muyongliang

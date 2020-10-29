@@ -1,16 +1,16 @@
-package com.r7.core.integral.service.impl;
+package com.r7.core.resource.service.impl;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.crypto.digest.MD5;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
-import com.r7.core.integral.constant.BucketNameEnum;
-import com.r7.core.integral.constant.FileErrorEnum;
-import com.r7.core.integral.mapper.CoreFileMapper;
-import com.r7.core.integral.model.CoreFileDO;
-import com.r7.core.integral.service.FileUploadService;
-import com.r7.core.integral.vo.FileUploadVO;
+import com.r7.core.resource.constant.BucketNameEnum;
+import com.r7.core.resource.constant.FileErrorEnum;
+import com.r7.core.resource.mapper.CoreFileMapper;
+import com.r7.core.resource.model.CoreFileDO;
+import com.r7.core.resource.service.FileUploadService;
+import com.r7.core.resource.vo.FileUploadVO;
 import io.minio.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;

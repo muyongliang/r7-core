@@ -1,4 +1,4 @@
-package com.r7.core.integral;
+package com.r7.core.resource;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.crypto.digest.DigestUtil;

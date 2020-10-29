@@ -60,7 +60,7 @@ public class CoreRecordIncomeController {
     }
 
     @ApiOperation(value = "查询各个平台成功发放的总积分", response = Integer.class)
-    @GetMapping("/total/integral")
+    @GetMapping("/total/resource")
     public ResponseEntity countTotalIntegralByAppId(
             @RequestParam Long appId){
         return ResponseEntity.success(coreRecordIncomeService.countTotalIntegralByAppId(appId));
@@ -106,14 +106,14 @@ public class CoreRecordIncomeController {
 
 
     @ApiOperation(value = "统计用户发放的总积分", response = Integer.class)
-    @GetMapping("/count/integral")
+    @GetMapping("/count/resource")
     public ResponseEntity countTotalIntegralByUserId(@RequestParam Long userId){
         return ResponseEntity.success(coreRecordIncomeService.countTotalIntegralByUserId(userId));
 
     }
 
     @ApiOperation(value = "分页展示用户成功发放积分的发放记录", response = CoreRecordIncomeVO.class)
-    @GetMapping("/page/integral")
+    @GetMapping("/page/resource")
     public ResponseEntity getCoreRecordIncomeIntegralByUserId(
             @RequestParam Long userId,
             @RequestParam(defaultValue = "1",required = false) Integer pageNum,

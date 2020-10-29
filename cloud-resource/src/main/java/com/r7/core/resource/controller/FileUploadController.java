@@ -1,11 +1,11 @@
-package com.r7.core.integral.controller;
+package com.r7.core.resource.controller;
 
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.web.ResponseEntity;
-import com.r7.core.integral.constant.FileErrorEnum;
-import com.r7.core.integral.model.CoreFileDO;
-import com.r7.core.integral.service.FileUploadService;
-import com.r7.core.integral.vo.FileUploadVO;
+import com.r7.core.resource.constant.FileErrorEnum;
+import com.r7.core.resource.model.CoreFileDO;
+import com.r7.core.resource.service.FileUploadService;
+import com.r7.core.resource.vo.FileUploadVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,7 @@
-package com.r7.core.integral.config;
+package com.r7.core.resource.config;
 
 import cn.hutool.http.ssl.SSLSocketFactoryBuilder;
-import com.r7.core.integral.properties.MinIOProperties;
+import com.r7.core.resource.properties.MinIOProperties;
 import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;

@@ -1,4 +1,4 @@
-package com.r7.core.integral.vo;
+package com.r7.core.resource.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

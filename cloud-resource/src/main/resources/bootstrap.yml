@@ -1,6 +1,6 @@
 spring:
   application:
-    name: cloud-integral
+    name: cloud-resource
   profiles:
     active: dev
   cloud:

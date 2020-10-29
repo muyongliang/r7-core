@@ -1,7 +1,7 @@
-package com.r7.core.integral.service;
+package com.r7.core.resource.service;
 
-import com.r7.core.integral.model.CoreFileDO;
-import com.r7.core.integral.vo.FileUploadVO;
+import com.r7.core.resource.model.CoreFileDO;
+import com.r7.core.resource.vo.FileUploadVO;
 
 import java.io.InputStream;
 

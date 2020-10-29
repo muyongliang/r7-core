@@ -68,7 +68,7 @@ public class CoreProfitController {
 
 
     @ApiOperation(value = "核算待发放积分", response = Integer.class)
-    @PostMapping("/integral")
+    @PostMapping("/resource")
     public ResponseEntity settlementIntegral(@RequestParam Long userId,
                                              @RequestParam Long appId) {
         return ResponseEntity.success(coreProfitService.settlementIntegral(userId,appId,1

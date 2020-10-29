@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Main-Class: com.r7.core.integral.ResourceApplication
+Main-Class: com.r7.core.resource.ResourceApplication
 Class-Path: classmate-1.5.1.jar spring-jcl-5.2.6.RELEASE.jar spring-webm
  vc-5.2.6.RELEASE.jar HikariCP-3.4.5.jar simpleclient-0.5.0.jar httpcore
  -4.4.13.jar logback-core-1.2.3.jar jboss-annotations-api_1.3_spec-2.0.1

@@ -1,5 +1,6 @@
 package com.r7.core.stand.video.service.impl;
 
+import com.r7.core.stand.video.agora.AgoraRecordingEventHandler;
 import com.r7.core.stand.video.properties.AgoraProperties;
 import com.r7.core.stand.video.service.RecordingService;
 import io.agora.recording.RecordingSDK;
@@ -10,6 +11,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Timer;
 
 /**
  * @author zs
@@ -28,10 +30,11 @@ public class RecordingServiceImpl implements RecordingService {
     public boolean createChannel(String appId, String channel, String channelKey, Integer... uids) {
 //        新建sdk
         RecordingSDK recordingSDK = new RecordingSDK();
-//        配置监听回调
+//        配置回调处理类
         AgoraRecordingEventHandler agoraRecordingEventHandler = new AgoraRecordingEventHandler();
-//        注册监听回调到声网
+//        注册回调到sdk
         recordingSDK.registerOberserver(agoraRecordingEventHandler);
+
 //        String appId = agoraProperties.getAppId();
 //        String appCertificate = agoraProperties.getAppCertificate();
 //        Integer expirationTimeInSeconds = agoraProperties.getExpirationTimeInSeconds();
@@ -45,6 +48,7 @@ public class RecordingServiceImpl implements RecordingService {
 //        recordingConfig.isMixingEnabled = agoraProperties.isMixingEnabled();
         recordingConfig.isMixingEnabled = true;
         recordingConfig.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.valueOf(agoraProperties.getMixedVideoAudio());
+        recordingConfig.mixResolution = agoraProperties.getMixResolution();
         recordingConfig.recordFileRootDir = agoraProperties.getRecordFileRootDir();
         recordingConfig.lowUdpPort = agoraProperties.getLowUdpPort();
         recordingConfig.highUdpPort = agoraProperties.getHighUdpPort();
@@ -58,7 +62,15 @@ public class RecordingServiceImpl implements RecordingService {
         log.info("uid: {}", agoraProperties.getServerUid());
         log.info("recordingConfig: {}", recordingConfig.toString());
         log.info("logLevel: {}", agoraProperties.getLogLevel());
+        //        回调处理类初始化
+        agoraRecordingEventHandler.init(recordingConfig
+                , null, null, null, null, null
+                , recordingConfig.isMixingEnabled, null);
+        // run jni event loop , or start a new thread to do it
+        agoraRecordingEventHandler.setCleanTimer(new Timer());
         boolean success = recordingSDK.createChannel(appId, channelKey, channel, agoraProperties.getServerUid(), recordingConfig, agoraProperties.getLogLevel());
+        agoraRecordingEventHandler.getCleanTimer().cancel();
+        log.info("jni layer has been exited...");
 //        销毁监听器
         recordingSDK.unRegisterOberserver(agoraRecordingEventHandler);
         return success;

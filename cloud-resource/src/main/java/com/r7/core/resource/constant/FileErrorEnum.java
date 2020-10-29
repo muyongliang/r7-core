@@ -1,4 +1,4 @@
-package com.r7.core.integral.constant;
+package com.r7.core.resource.constant;
 
 import com.r7.core.common.constant.IError;
 
@@ -15,7 +15,6 @@ public enum FileErrorEnum implements IError {
     PAGE_NUM_IS_NULL("page_num_is_null", "分页页码不能为空"),
     FILE_IS_NOT_EXIST("file_is_not_exist", "文件不存在"),
     FILE_IS_EMPTY("file_is_empty", "配置信息ID不能为空");
-
     /**
      * 错误码
      */

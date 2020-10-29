@@ -46,6 +46,12 @@ public class AgoraProperties {
      */
     private String mixedVideoAudio;
     /**
+     * 如果你启用了合流模式，可以通过该参数设置录制文件的视频属性，
+     * 格式为：width，hight，fps，kbps，分别对应合流的宽、高、帧率和码率。
+     * 默认设置为 360 x 640, 15 fps, 500 Kbps。
+     */
+    private String mixResolution;
+    /**
      * 录制指定 UID 的音视频流。UID 组成的数组，为用逗号隔开的字符串，例如 "1","2","3"。
      * 当 autoSubscribe 为 false时，你可设置此参数来指定 UID 进行录制。该参数设为 NULL 则表示录制所有发流用户的视频。
      */

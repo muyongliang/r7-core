@@ -1,4 +1,4 @@
-package com.r7.core.integral;
+package com.r7.core.resource;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -11,7 +11,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
  *
  * @author zhongpingli
  */
-@MapperScan("com.r7.core.integral.mapper")
+@MapperScan("com.r7.core.resource.mapper")
 @SpringBootApplication(scanBasePackages = {"com.r7.core"})
 @EnableDiscoveryClient
 @RefreshScope

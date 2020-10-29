@@ -1,10 +1,14 @@
-package com.r7.core.stand.video.service.impl;
+package com.r7.core.stand.video.agora;
 
+import com.r7.core.common.constant.CommonErrorEnum;
+import com.r7.core.common.exception.BusinessException;
 import io.agora.recording.RecordingEventHandler;
 import io.agora.recording.RecordingSDK;
 import io.agora.recording.common.Common;
 import io.agora.recording.common.RecordingConfig;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,6 +21,7 @@ import java.util.*;
  * @description AgoraRecordingEventHandler
  */
 @Slf4j
+@Data
 public class AgoraRecordingEventHandler implements RecordingEventHandler {
     public static final int DEFAULT_LAYOUT = 0;
     public static final int BESTFIT_LAYOUT = 1;
@@ -24,8 +29,9 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
     Vector<Long> m_peers = new Vector<Long>();
     HashMap<String, UserInfo> audioChannels = new HashMap();
     HashMap<String, UserInfo> videoChannels = new HashMap();
-    Timer cleanTimer = null;
-    private boolean isMixMode = false;
+    private Timer cleanTimer = null;
+    // java run status flag
+    private boolean isMixingEnabled = false;
     private int width = 0;
     private int height = 0;
     private int fps = 0;
@@ -49,6 +55,57 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
     private long keepMediaTime = 0;
     private long lastKeepAudioTime = 0;
     private long lastKeepVideoTime = 0;
+
+    public void init(RecordingConfig config, String userAccount, String keepLastFrame, String layoutMode
+            , String maxResolutionUid, String maxResolutionUserAccount, Boolean isMixingEnabled, String channelProfile) {
+        this.config = config;
+        this.userAccount = userAccount;
+        if (StringUtils.isNotBlank(keepLastFrame)) {
+            this.keepLastFrame = Integer.parseInt(keepLastFrame);
+        }
+        if (StringUtils.isNotBlank(layoutMode)) {
+            this.layoutMode = Integer.parseInt(layoutMode);
+        }
+        if (StringUtils.isNotBlank(maxResolutionUid)) {
+            this.maxResolutionUid = Integer.parseInt(maxResolutionUid);
+        }
+        if (StringUtils.isNotBlank(maxResolutionUserAccount)) {
+            this.maxResolutionUserAccount = maxResolutionUserAccount;
+        }
+//        如果不是自动订阅，则解析订阅uids
+        if (!config.autoSubscribe) {
+            String[] uids = config.subscribeVideoUids.split(",");
+            for (int i = 0; i < uids.length; i++) {
+                if (StringUtils.isNoneBlank(userAccount)) {
+                    this.subscribedVideoUserAccount.add(uids[i]);
+                } else {
+                    this.subscribedVideoUids.add(Long.parseLong(uids[i]));
+                }
+            }
+        }
+        this.isMixingEnabled = isMixingEnabled;
+        this.profile_type = Common.CHANNEL_PROFILE_TYPE.valueOf(channelProfile);
+        if (isMixingEnabled && !config.isAudioOnly) {
+//            解析视频设置参数,格式为：width，hight，fps，kbps，分别对应合流的宽、高、帧率和码率。
+            String[] resolution = config.mixResolution.split(",");
+            if (resolution.length != 4) {
+                log.error("Illegal resolution:{}", config.mixResolution);
+                throw new BusinessException(CommonErrorEnum.ILLEGAL_ARGUMENT.setMessage("mixResolution配置错误"));
+            }
+            this.width = Integer.parseInt(resolution[0]);
+            this.height = Integer.parseInt(resolution[1]);
+            this.fps = Integer.parseInt(resolution[2]);
+            this.kbps = Integer.parseInt(resolution[3]);
+        }
+        String tmpEnv = System.getenv("KEEPMEDIATIME");
+        if (StringUtils.isNotBlank(tmpEnv)) {
+            keepMediaTime = Integer.parseInt(tmpEnv);
+            log.info("Get system env:KEEPMEDIATIME string:{}, int value:{}", tmpEnv, keepMediaTime);
+        } else {
+            log.info("No system env:KEEPMEDIATIME");
+        }
+
+    }
 
     @Override
     public void onLeaveChannel(int reason) {
@@ -268,10 +325,10 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
     }
 
 
-    protected void clean() {
+    public void clean() {
         synchronized (this) {
+            log.info("执行清理任务");
             long now = System.currentTimeMillis();
-
             Iterator<Map.Entry<String, UserInfo>> audio_it = audioChannels.entrySet().iterator();
             while (audio_it.hasNext()) {
                 Map.Entry<String, UserInfo> entry = audio_it.next();
@@ -313,7 +370,7 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
             return -1;
         }
 
-        if (!IsMixMode()) {
+        if (!isMixingEnabled()) {
             return -1;
         }
 
@@ -419,8 +476,8 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
     }
 
 
-    private boolean IsMixMode() {
-        return isMixMode;
+    private boolean isMixingEnabled() {
+        return this.isMixingEnabled;
     }
 
     private void adjustVerticalPresentationLayout(long maxResolutionUid, Common.VideoMixingLayout.Region[] regionList, Common.VideoMixingLayout layout, Vector<Long> videoUids) {
@@ -770,25 +827,5 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
                 e.printStackTrace();
             }
         }
-    }
-}
-
-class UserInfo {
-    long uid;
-    long last_receive_time;
-    FileOutputStream channel;
-    String fileName;
-}
-
-class RecordingCleanTimer extends TimerTask {
-    AgoraRecordingEventHandler agoraRecordingEventHandler;
-
-    public RecordingCleanTimer(AgoraRecordingEventHandler agoraRecordingEventHandler) {
-        this.agoraRecordingEventHandler = agoraRecordingEventHandler;
-    }
-
-    @Override
-    public void run() {
-        agoraRecordingEventHandler.clean();
     }
 }

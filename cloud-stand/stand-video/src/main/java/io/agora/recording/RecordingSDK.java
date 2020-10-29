@@ -17,14 +17,14 @@ public class RecordingSDK {
      * The maximum length of the user account.
      */
     public static int MAX_USER_ACCOUNT_LENGTH = 256;
-    private List<RecordingEventHandler> recordingEventHandlers = null;
+    private List<RecordingEventHandler> recordingEventHandlers;
     private long nativeHandle = 0;
 
     /**
      * Main methods that can be invoked by your application.
      */
     public RecordingSDK() {
-        recordingEventHandlers = new ArrayList<RecordingEventHandler>();
+        recordingEventHandlers = new ArrayList();
     }
 
     /**

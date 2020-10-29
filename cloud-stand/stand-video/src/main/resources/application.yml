@@ -39,6 +39,8 @@ agora:
   #MIXED_AV_CODEC_V1 1音频和视频混合成一个文件，录制文件格式为 MP4，但播放器支持有限。
   #MIXED_AV_CODEC_V2 2音频和视频混合成一个文件，录制文件格式为 MP4，支持更多播放器。
   mixedVideoAudio: MIXED_AV_CODEC_V2
+  #格式为：width，hight，fps，kbps，分别对应合流的宽、高、帧率和码率。
+  mixResolution: "360,640,15,500"
   autoSubscribe: false
   # 最低的UDP端口。确保highUdpPort的值-lowUdpPort≥6
   lowUdpPort: 40000

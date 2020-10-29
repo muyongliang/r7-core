@@ -1,4 +1,4 @@
-package com.r7.core.integral.properties;
+package com.r7.core.resource.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
