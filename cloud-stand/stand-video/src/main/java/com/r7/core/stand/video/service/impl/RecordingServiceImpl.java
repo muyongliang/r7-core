@@ -43,9 +43,11 @@ public class RecordingServiceImpl implements RecordingService {
 //        String channelKey = token.buildTokenWithUid(appId, appCertificate, channel
 //        , agoraProperties.getServerUid(), RtcTokenBuilder.Role.Role_Subscriber, privilegeExpiredTs);
         RecordingConfig recordingConfig = new RecordingConfig();
+//        系统配置参数
         recordingConfig.appliteDir = agoraProperties.getAppliteDir();
 //        recordingConfig.isMixingEnabled = agoraProperties.isMixingEnabled();
         recordingConfig.isMixingEnabled = true;
+        recordingConfig.idleLimitSec = agoraProperties.getIdleLimitSec();
         if (StringUtils.isNotBlank(agoraProperties.getMixedVideoAudio())) {
             recordingConfig.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.valueOf(agoraProperties.getMixedVideoAudio());
         }
@@ -54,6 +56,9 @@ public class RecordingServiceImpl implements RecordingService {
         recordingConfig.lowUdpPort = agoraProperties.getLowUdpPort();
         recordingConfig.highUdpPort = agoraProperties.getHighUdpPort();
         recordingConfig.autoSubscribe = agoraProperties.isAutoSubscribe();
+
+
+//        自定义参数
         recordingConfig.subscribeVideoUids = uidToSubscribeString(uids);
         recordingConfig.subscribeAudioUids = uidToSubscribeString(uids);
 //        开始调用本地方法进行录制
@@ -69,9 +74,11 @@ public class RecordingServiceImpl implements RecordingService {
                 , recordingConfig.isMixingEnabled, null);
         // run jni event loop , or start a new thread to do it
         agoraRecordingEventHandler.setCleanTimer(new Timer());
+        long start = System.currentTimeMillis();
         boolean success = recordingSDK.createChannel(appId
                 , channelKey, channel, agoraProperties.getServerUid(), recordingConfig, agoraProperties.getLogLevel());
-        log.info("创建频道成功,channel:{}", channel);
+        long end = System.currentTimeMillis();
+        log.info("创建频道是否成功:{},channel:{},用时:{}ms", success, channel, end - start);
         agoraRecordingEventHandler.getCleanTimer().cancel();
         log.info("jni layer has been exited...");
 //        销毁监听器

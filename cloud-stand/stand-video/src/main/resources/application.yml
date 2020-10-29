@@ -33,6 +33,8 @@ agora:
   appCertificate: 6d900e3978e44155b4dc360546eaf67e
   # token过期时间
   expirationTimeInSeconds: 360
+  # 设置空闲频道的超时退出时间。默认值为 300 秒。
+  idleLimitSec: 3
   # true：启用混合录制  false：关闭混合录制
   isMixingEnabled: true
   #MIXED_AV_DEFAULT 0 默认）不混合音频和视频。
