@@ -3,6 +3,8 @@ package com.r7.core.integral.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.integral.constant.OperateTypeEnum;
+import com.r7.core.integral.constant.SourceTypeEnum;
 import com.r7.core.integral.dto.CoreIntegralDetailDTO;
 import com.r7.core.integral.vo.CoreIntegralDetailVO;
 import io.swagger.annotations.ApiModel;
@@ -48,7 +50,7 @@ public class CoreIntegralDetail extends Model<CoreIntegralDetail> {
      * 积分来源类型 游戏1/完成系统任务2/权益转换积分3/现金购买积分4/用户注册成功赠送积分5/权益商品卖出6/
      */
     @ApiModelProperty(value="积分来源类型 游戏1/完成系统任务2/权益转换积分3/现金购买积分4/用户注册成功赠送积分5/权益商品卖出6/")
-    private Integer sourceType;
+    private SourceTypeEnum sourceType;
 
     /**
      * 业务编号 多次调接口区分
@@ -72,7 +74,7 @@ public class CoreIntegralDetail extends Model<CoreIntegralDetail> {
      * 操作类型 增加1/减少2
      */
     @ApiModelProperty(value="操作类型 增加1/减少2")
-    private Integer operateType;
+    private OperateTypeEnum operateType;
 
     /**
      * 日期 yyyyMMdd

@@ -2,11 +2,10 @@ package com.r7.core.integral.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.r7.core.integral.dto.CoreIntegralChangeDTO;
 import com.r7.core.integral.dto.CoreIntegralDTO;
 import com.r7.core.integral.model.CoreIntegral;
 import com.r7.core.integral.vo.CoreIntegralVO;
-
-import java.time.LocalDateTime;
 
 /**
 *
@@ -28,31 +27,23 @@ public interface CoreIntegralService extends IService<CoreIntegral>{
 
     /**
      * 增加积分
-     * @param businessCode 业务编号
-     * @param addInteger 增加的积分
-     * @param userId 用户id
-     * @param sourceType 积分来源类型
+     * @param coreIntegralChangeDTO 用户增加积分信息
      * @param appId 平台Id
      * @param operationalUserId 操作者
      * @return 当前用户积分信息
      */
-    CoreIntegralVO updateCoreIntegralAddTotal(String businessCode,Integer addInteger,Long userId,
-                                              Integer sourceType,
-                                              Long appId,Long operationalUserId);
+    CoreIntegralVO updateCoreIntegralAddTotal(CoreIntegralChangeDTO coreIntegralChangeDTO,
+                                              Long appId, Long operationalUserId);
 
 
     /**
      * 积分减少
-     * @param businessCode 业务编号
-     * @param reduceInteger 减少的积分数
-     * @param userId 用户id
-     * @param sourceType 积分来源类型
+     * @param coreIntegralChangeDTO 用户减少积分信息
      * @param appId 平台Id
      * @param operationalUserId 操作者id
      * @return 当前用户积分信息
      */
-    CoreIntegralVO updateCoreIntegralReduceTotal(String businessCode,Integer reduceInteger,Long userId,
-                                                 Integer sourceType,
+    CoreIntegralVO updateCoreIntegralReduceTotal(CoreIntegralChangeDTO coreIntegralChangeDTO,
                                                  Long appId,Long operationalUserId);
 
 
