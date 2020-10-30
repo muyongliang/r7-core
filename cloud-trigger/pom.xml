@@ -10,10 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>cloud-trigger</artifactId>
     <packaging>pom</packaging>
-    <modules>
-        <module>trigger-core</module>
-        <module>trigger-main</module>
-    </modules>
+
     <dependencies>
         <dependency>
             <groupId>com.r7.core</groupId>
@@ -40,18 +37,6 @@
             <artifactId>spring-context-support</artifactId>
         </dependency>
     </dependencies>
-    <!--不可执行jar打包插件-->
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+
 
 </project>

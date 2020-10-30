@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.r7.core.integral.mapper.CoreIntegralMapper">
+    <resultMap id="BaseResultMap" type="com.r7.core.integral.model.CoreIntegral">
+        <!--@mbg.generated-->
+        <!--@Table core_integral-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="total" jdbcType="INTEGER" property="total"/>
+        <result column="sign" jdbcType="VARCHAR" property="sign"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_at" jdbcType="TIMESTAMP" property="updateAt"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, user_id, total, sign, created_by, created_at, update_by, update_at
+    </sql>
+
+    <select id="pageCoreIntegralPage" resultType="com.r7.core.integral.vo.CoreIntegralVO">
+        select id, user_id, total, sign
+        from core_integral
+        <where>
+            <if test="userId != null and userId != ''">
+                user_id = #{userId}
+            </if>
+
+        </where>
+        order by `created_at` desc
+    </select>
+</mapper>

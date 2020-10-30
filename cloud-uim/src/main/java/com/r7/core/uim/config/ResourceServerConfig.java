@@ -30,7 +30,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             "/swagger-resources/configuration/security",
             "/swagger-ui.html",
             "/webjars/**",
-            "/recording/**"
     };
 
     /**

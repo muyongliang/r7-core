@@ -2,10 +2,8 @@ package com.r7.core.uim.controller;
 
 import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
-import com.r7.core.uim.dto.UimOauthDTO;
 import com.r7.core.uim.dto.UimOauthInfoDTO;
 import com.r7.core.uim.service.UimOauthInfoService;
-import com.r7.core.uim.service.UimOauthService;
 import com.r7.core.uim.vo.UimOauthInfoVO;
 import com.r7.core.uim.vo.UimOauthVO;
 import io.swagger.annotations.Api;
@@ -14,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * @author zs
@@ -35,7 +34,7 @@ public class UimOauthInfoController {
             response = UimOauthInfoVO.class)
     @PostMapping("/{userId}")
     public ResponseEntity saveUimOauthInfo(@PathVariable Long userId,
-                                           @RequestBody UimOauthInfoDTO uimOauthInfoDto) {
+                                           @Valid @RequestBody UimOauthInfoDTO uimOauthInfoDto) {
         return ResponseEntity.success(uimOauthInfoService
                 .saveUimOauthInfo(userId, uimOauthInfoDto, RequestHolder.getAppId(), RequestHolder.getOrganId()));
     }

@@ -4,6 +4,66 @@
 <mapper namespace="com.r7.core.uim.mapper.UimSysUserMapper">
     <select id="findUserDetailsByLogin" resultType="com.r7.core.uim.vo.UimUserDetailsVO">
         SELECT id, organ_id, app_id,user_name, login_name, password, status,del FROM uim_sys_user
-        WHERE  login_name =#{login}
+        WHERE login_name =#{login}
     </select>
+
+    <select id="getUimRoleByUserId" resultType="com.r7.core.uim.vo.UimRoleVO">
+        select role.id, role.code, role.role_name, role.feature, role.sort
+        from uim_sys_user sysuser
+        left join uim_user_role userrole
+        on userrole.user_id = sysuser.id
+        left join uim_role role on role.id = userrole.role_id
+        where sysuser.id = #{id} order by role.sort
+    </select>
+
+    <select id="getUimResourceByUimSysUserId" resultType="com.r7.core.uim.vo.UimResourceVO">
+        select resource.id,
+        resource.app_id,
+        resource.`code`,
+        resource.p_id,
+        resource.resource_name,
+        resource.url,
+        resource.permission,
+        resource.type,
+        resource.sort
+        from
+        uim_sys_user sysuser
+        left join
+        uim_user_role userrole
+        on userrole.user_id = sysuser.id
+        left join
+        uim_role role
+        on role.id = userrole.role_id
+        LEFT JOIN
+        uim_role_resource roleresource
+        on roleresource.role_id = role.id
+        LEFT JOIN
+        uim_resource resource
+        on resource.id = roleresource.resource_id
+        where
+        sysuser.id = #{id}
+        ORDER BY resource.sort
+    </select>
+    <select id="pageUimSysUserByCondition" resultType="com.r7.core.uim.vo.UimSysUserVO">
+        select id, app_id,organ_id,branch_id,login_name,user_name,avatar,phone_number,email,status,password,ip
+        from uim_sys_user
+        <where>
+            <if test="appId != null and appId !=''">
+                app_id = #{appId}
+            </if>
+            <if test="organId != null and organId !=''">
+                and organ_id = #{organId}
+            </if>
+            <if test="branchId != null and branchId !=''">
+                and branch_id = #{branchId}
+            </if>
+            <if test="search!=null and search!=''">
+                and user_name like concat(concat('%',#{search}),'%')
+                or login_name like concat(concat('%',#{search}),'%')
+                or status like concat(concat('%',#{search}),'%')
+            </if>
+        </where>
+        order by `created_at` desc
+    </select>
+
 </mapper>

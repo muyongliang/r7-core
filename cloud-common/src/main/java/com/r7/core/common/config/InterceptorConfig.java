@@ -3,6 +3,7 @@ package com.r7.core.common.config;
 import com.r7.core.common.interceptor.HttpInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 /**
@@ -17,5 +18,14 @@ public class InterceptorConfig extends WebMvcConfigurationSupport {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new HttpInterceptor()).addPathPatterns("/**");
         super.addInterceptors(registry);
+    }
+
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations(
+                "classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations(
+                "classpath:/META-INF/resources/webjars/");
+        super.addResourceHandlers(registry);
     }
 }

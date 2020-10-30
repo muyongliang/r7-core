@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -66,7 +67,7 @@ public class CommonExceptionAdvice {
      * @return
      */
     @ResponseBody
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
     public ResponseEntity handleMethodArgumentNotValidException(HttpServletRequest request, HttpServletResponse response,
                                                                 HttpRequestMethodNotSupportedException ex) {
         // 设置为找不到页面
@@ -83,7 +84,7 @@ public class CommonExceptionAdvice {
      * @return 400 的错误
      */
     @ResponseBody
-    @ExceptionHandler({JsonProcessingException.class, HttpMessageNotReadableException.class})
+    @ExceptionHandler({JsonProcessingException.class, HttpMessageNotReadableException.class, HttpMediaTypeNotSupportedException.class})
     public ResponseEntity handleClientParamException(HttpServletRequest request, Exception ex) {
         log.debug("Request uri[{}] param error, ", request.getRequestURI(), ex);
         return ResponseEntity.failure("param error", "参数不能解析或类型不对");

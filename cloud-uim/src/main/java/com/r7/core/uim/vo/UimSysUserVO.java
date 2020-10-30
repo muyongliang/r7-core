@@ -67,10 +67,22 @@ public class UimSysUserVO {
      */
     @ApiModelProperty("账户密码")
     private String password;
+
+    /**
+     * 删除;1未删除，2删除(注销)
+     */
+    @ApiModelProperty("删除状态")
+    private Integer del;
+
     /**
      * IP地址
      */
     @ApiModelProperty("IP地址")
     private String ip;
 
+    /**
+     * 邀请码
+     */
+    @ApiModelProperty("邀请码")
+    private String code;
 }

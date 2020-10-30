@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
@@ -70,10 +71,10 @@ public class CoreRecordIncomeController {
     //  ======以下接口是测试用============
 
     @ApiOperation(value = "添加发放明细", response = CoreRecordIncomeVO.class)
-    @PostMapping("/")
+    @PostMapping("/{id}")
     public ResponseEntity saveUimResource(@PathVariable("id") Long id,
-                                          @RequestBody CoreRecordIncomeDTO coreRecordIncomeDTO) {
-        return ResponseEntity.success(coreRecordIncomeService.saveCoreRecordIncome(id,coreRecordIncomeDTO,
+                                          @Valid @RequestBody CoreRecordIncomeDTO coreRecordIncomeDTO) {
+        return ResponseEntity.success(coreRecordIncomeService.saveCoreRecordIncome(id, coreRecordIncomeDTO,
                 2L));
     }
 

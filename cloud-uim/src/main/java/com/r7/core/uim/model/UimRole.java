@@ -98,7 +98,6 @@ public class UimRole extends Model<UimRole> {
     public void toUimRole(UimRoleSaveDTO uimRoleSaveDto) {
         this.setCode(uimRoleSaveDto.getCode());
         this.setRoleName(uimRoleSaveDto.getRoleName());
-        this.setFeature(0);
         this.setSort(uimRoleSaveDto.getSort());
     }
 

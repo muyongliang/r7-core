@@ -80,4 +80,12 @@ public interface UimUserService extends IService<UimUser> {
      * @return 返回用户信息
      */
     UimUserVO getUserByPhone(Long phone);
+
+
+    /**
+     * 发送用户注册验证码
+     *
+     * @param phone 发送电话号
+     */
+    void sendSmsCode(Long phone);
 }

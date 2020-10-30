@@ -19,6 +19,8 @@ import java.util.Map;
 /**
  * 自定义Oauth2获取令牌接口
  * Created by macro on 2020/7/17.
+ *
+ * @author zhongpingli
  */
 @Api(value = "/api/oauth", tags = {"登录/刷新token"})
 @RestController

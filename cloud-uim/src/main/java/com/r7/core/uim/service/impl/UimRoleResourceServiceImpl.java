@@ -14,7 +14,10 @@ import com.r7.core.uim.model.UimRoleResource;
 import com.r7.core.uim.service.UimResourceService;
 import com.r7.core.uim.service.UimRoleResourceService;
 import com.r7.core.uim.service.UimRoleService;
-import com.r7.core.uim.vo.*;
+import com.r7.core.uim.vo.UimResourceInfoVo;
+import com.r7.core.uim.vo.UimResourceVO;
+import com.r7.core.uim.vo.UimRoleResourceBindVo;
+import com.r7.core.uim.vo.UimRoleResourceVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -91,8 +94,10 @@ public class UimRoleResourceServiceImpl extends ServiceImpl<UimRoleResourceMappe
     public Boolean unBindResourceByRoleId(Long roleId, Long resourceId, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中角色:{}解绑资源:{},操作用户:{}。", appId, organId, roleId, resourceId, userId);
         // 验证
-        uimRoleService.getRoleById(roleId, appId, organId);
-        uimResourceService.getUimResourceById(resourceId, appId);
+        Option.of(uimRoleService.getRoleById(roleId, appId, organId)).getOrElseThrow(() ->
+                new BusinessException(UimErrorEnum.ROLE_IS_NOT_EXISTS));
+        Option.of(uimResourceService.getUimResourceById(resourceId, appId)).getOrElseThrow(() ->
+                new BusinessException(UimErrorEnum.RESOURCE_IS_NOT_EXISTS));
         UimRoleResource uimRoleResource = Option.of(getUimRoleResourceByRoleIdAndResourceId(roleId, resourceId))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_RESOURCE_IS_EXISTS));
         // 删除

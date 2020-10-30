@@ -14,10 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * @author wutao
  * @Description 代理层级接口
- *
  */
 @Slf4j
 @Api(value = "/api/proxy", tags = {"代理层级接口"})
@@ -30,8 +31,8 @@ public class CoreProxyController {
 
     @ApiOperation(value = "新增层级", response = CoreProxyVO.class)
     @PostMapping("")
-    public ResponseEntity saveUimResource(@RequestBody CoreProxyDTO coreProxyDTO) {
-        return ResponseEntity.success(coreProxyService.saveCoreProxy(coreProxyDTO,1L));
+    public ResponseEntity saveUimResource(@Valid @RequestBody CoreProxyDTO coreProxyDTO) {
+        return ResponseEntity.success(coreProxyService.saveCoreProxy(coreProxyDTO, 1L));
     }
 
     @ApiOperation(value = "根据层级ID获取层级信息", response = CoreProxyVO.class)

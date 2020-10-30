@@ -16,6 +16,9 @@ public class UimUserVO {
     @ApiModelProperty("id")
     private Long id;
 
+    @ApiModelProperty("组织ID")
+    private Long organId;
+
     /**
      * 邀请码
      */
