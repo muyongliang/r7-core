@@ -14,10 +14,7 @@ import com.r7.core.uim.mapper.UimResourceMapper;
 import com.r7.core.uim.model.UimResource;
 import com.r7.core.uim.dto.UimResourceSaveDTO;
 import com.r7.core.uim.service.UimResourceService;
-import com.r7.core.uim.vo.UimResourceInfoVo;
-import com.r7.core.uim.vo.UimResourceNodeVO;
-import com.r7.core.uim.vo.UimResourceVO;
-import com.r7.core.uim.vo.UimRoleResourceVO;
+import com.r7.core.uim.vo.*;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -47,12 +44,9 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
      */
     @PostConstruct
     public void init() {
-        List<UimResource> resourceList = list(Wrappers.<UimResource>lambdaQuery()
-                .select(UimResource::getUrl));
-        List<String> resouces = resourceList.stream().map(UimResource::getUrl).collect(Collectors.toList());
         redisListService.removeByKey(RedisConstant.REDIS_RESOURCE_KEY);
         redisListService.addListValue(RedisConstant.REDIS_RESOURCE_KEY,
-                resouces, PushType.LEFT);
+                listResourceUrlByIds(), PushType.LEFT);
     }
 
     @Override
@@ -215,5 +209,21 @@ public class UimResourceServiceImpl extends ServiceImpl<UimResourceMapper, UimRe
             uimResourceInfoVo.setPermission(x.getPermission());
             return uimResourceInfoVo;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UimResourceUrlVO> listResourceUrlByIds(List<Long> ids) {
+        List<UimResource> resourceList = list(Wrappers.<UimResource>lambdaQuery()
+                .select(UimResource::getId, UimResource::getUrl)
+                .in(UimResource::getId, ids));
+        return resourceList.stream().map(UimResource::toUimResourceUrlVO).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<String> listResourceUrlByIds() {
+        List<UimResource> resourceList = list(Wrappers.<UimResource>lambdaQuery()
+                .select(UimResource::getUrl));
+        return resourceList.stream().map(UimResource::getUrl).collect(Collectors.toList());
     }
 }

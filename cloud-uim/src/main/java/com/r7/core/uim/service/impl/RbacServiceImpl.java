@@ -3,10 +3,11 @@ package com.r7.core.uim.service.impl;
 import cn.hutool.json.JSONUtil;
 import com.google.common.collect.Lists;
 import com.r7.core.cache.service.RedisListService;
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.uim.constant.PermissionEnum;
 import com.r7.core.uim.constant.RedisConstant;
 import com.r7.core.uim.service.RbacService;
-import com.r7.core.uim.service.UimRoleResourceService;
+import com.r7.core.uim.vo.UimChillInfoVO;
 import com.r7.core.uim.vo.UimResourceInfoVo;
 import com.r7.core.uim.vo.UimRoleResourceVO;
 import io.vavr.control.Option;
@@ -38,6 +39,11 @@ public class RbacServiceImpl implements RbacService {
 
     @Override
     public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
+        // 是否为冻结资源
+        boolean chill = resourceChillCheck(RequestHolder.getUserId(), request.getRequestURI());
+        if (chill) {
+            return false;
+        }
         // 访问的是否为公共资源
         boolean exists = publicResourceCheck(request.getRequestURI());
         if (exists) {
@@ -96,6 +102,26 @@ public class RbacServiceImpl implements RbacService {
         // 访问路径不在受保护资源中返回true
         return Option.of(resourceUrls).exists(x ->
                 x.stream().noneMatch(y -> antPathMatcher.match(y, url)));
+    }
+
+
+    /**
+     * 是否有冻结资源
+     *
+     * @param url 访问资源url
+     * @return 返回是否冻结
+     */
+    private boolean resourceChillCheck(Long userId, String url) {
+        List<Object> resourceUrls = redisListService.getKey(RedisConstant.REDIS_CHILL_RESOURCE_KEY);
+        return Option.of(resourceUrls).exists(resourceUrl -> {
+            List<UimChillInfoVO> uimRoleResourceVOList = resourceUrl.stream()
+                    .map(x -> JSONUtil.toBean(x.toString(), UimChillInfoVO.class))
+                    .collect(Collectors.toList());
+            List<String> checkResourceIds = uimRoleResourceVOList.stream().filter(x -> x.getUserId().equals(userId))
+                    .flatMap(x -> x.getResourceUrl().stream()).collect(Collectors.toList());
+            return checkResourceIds.stream().anyMatch(y -> antPathMatcher.match(y, url));
+        });
+
     }
 
 }

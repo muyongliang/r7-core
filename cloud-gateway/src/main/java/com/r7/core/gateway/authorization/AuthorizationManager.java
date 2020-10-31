@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.r7.core.cache.service.RedisListService;
 import com.r7.core.gateway.constant.PermissionEnum;
 import com.r7.core.gateway.constant.RedisConstant;
+import com.r7.core.gateway.vo.UimChillInfoVO;
 import com.r7.core.gateway.vo.UimResourceInfoVo;
 import com.r7.core.gateway.vo.UimRoleResourceVO;
 import io.vavr.control.Option;
@@ -21,6 +22,7 @@ import reactor.core.publisher.Mono;
 import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -55,6 +57,14 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
      * @param request        请求
      */
     private boolean checkAuthorities(Authentication authentication, ServerHttpRequest request) {
+        // 是否为冻结资源
+        Map map = JSONUtil.toBean(JSONUtil.parseObj(authentication.getPrincipal()), Map.class);
+        Object claims = map.get("claims");
+        Map userInfo = JSONUtil.toBean(JSONUtil.parseObj(claims), Map.class);
+        boolean chill = resourceChillCheck(Long.valueOf(userInfo.get("id").toString()), request.getURI().getPath());
+        if (chill) {
+            return false;
+        }
         // 访问的是否为公共资源
         boolean exists = publicResourceCheck(request.getURI().getPath());
         if (exists) {
@@ -113,6 +123,25 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
         // 访问路径不在受保护资源中返回true
         return Option.of(resourceUrls).exists(x ->
                 x.stream().noneMatch(y -> antPathMatcher.match(y, url)));
+    }
+
+    /**
+     * 是否有冻结资源
+     *
+     * @param url 访问资源url
+     * @return 返回是否冻结
+     */
+    private boolean resourceChillCheck(Long userId, String url) {
+        List<Object> resourceUrls = redisListService.getKey(RedisConstant.REDIS_CHILL_RESOURCE_KEY);
+        return Option.of(resourceUrls).exists(resourceUrl -> {
+            List<UimChillInfoVO> uimRoleResourceVOList = resourceUrl.stream()
+                    .map(x -> JSONUtil.toBean(x.toString(), UimChillInfoVO.class))
+                    .collect(Collectors.toList());
+            List<String> checkResourceIds = uimRoleResourceVOList.stream().filter(x -> x.getUserId().equals(userId))
+                    .flatMap(x -> x.getResourceUrl().stream()).collect(Collectors.toList());
+            return checkResourceIds.stream().anyMatch(y -> antPathMatcher.match(y, url));
+        });
+
     }
 
 }
