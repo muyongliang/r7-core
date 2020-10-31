@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.r7.core.uim.dto.UimChillSaveDTO;
 import com.r7.core.uim.dto.UimChillSaveListDTO;
 import com.r7.core.uim.model.UimChill;
+import com.r7.core.uim.vo.UimChillInfoVO;
 import com.r7.core.uim.vo.UimChillVO;
 
 import java.util.List;
@@ -17,16 +18,18 @@ public interface UimChillService extends IService<UimChill> {
 
     /**
      * 新增冻结用户
+     *
      * @param uimChillSaveDto 冻结用户传输实体
-     * @param appId       平台ID
-     * @param organId     组织ID
-     * @param userId      操作人ID
+     * @param appId           平台ID
+     * @param organId         组织ID
+     * @param userId          操作人ID
      * @return 返回是否成功
      */
     UimChillVO saveUimChill(UimChillSaveDTO uimChillSaveDto, Long appId, Long organId, Long userId);
 
     /**
      * 批量冻结用户权限
+     *
      * @param uimChillSaveListDTO 冻结传输实体
      * @param appId               平台id
      * @param organId             组织id
@@ -39,9 +42,9 @@ public interface UimChillService extends IService<UimChill> {
      * 解冻全部
      *
      * @param meltingUserId 解冻用户id
-     * @param appId   平台id
-     * @param organId 组织id
-     * @param userId  操作人id
+     * @param appId         平台id
+     * @param organId       组织id
+     * @param userId        操作人id
      * @return 返回结果
      */
     Boolean meltingUimChillById(Long meltingUserId, Long appId, Long organId, Long userId);
@@ -53,5 +56,13 @@ public interface UimChillService extends IService<UimChill> {
      * @return 返回结果
      */
     List<UimChillVO> listChillByUserId(Long userId);
+
+
+    /**
+     * 根据用户ID获取冻结用户资源
+     *
+     * @return 冻结用户资源
+     */
+    List<UimChillInfoVO> listChillResource();
 
 }

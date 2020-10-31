@@ -8,6 +8,7 @@ import com.r7.core.uim.constant.ResourceEnum;
 import com.r7.core.uim.dto.UimResourceSaveDTO;
 import com.r7.core.uim.dto.UimResourceUpdateDTO;
 import com.r7.core.uim.vo.UimResourceNodeVO;
+import com.r7.core.uim.vo.UimResourceUrlVO;
 import com.r7.core.uim.vo.UimResourceVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -133,6 +134,14 @@ public class UimResource extends Model<UimResource> {
         uimResourceNodeVo.setUrl(this.getUrl());
         uimResourceNodeVo.setType(this.getType());
         return uimResourceNodeVo;
+    }
+
+
+    public UimResourceUrlVO toUimResourceUrlVO() {
+        UimResourceUrlVO uimResourceUrlVO = new UimResourceUrlVO();
+        uimResourceUrlVO.setId(this.getId());
+        uimResourceUrlVO.setUrl(this.getUrl());
+        return uimResourceUrlVO;
     }
 
 }

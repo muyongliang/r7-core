@@ -6,6 +6,7 @@ import com.r7.core.uim.dto.UimResourceUpdateDTO;
 import com.r7.core.uim.model.UimResource;
 import com.r7.core.uim.vo.UimResourceInfoVo;
 import com.r7.core.uim.vo.UimResourceNodeVO;
+import com.r7.core.uim.vo.UimResourceUrlVO;
 import com.r7.core.uim.vo.UimResourceVO;
 
 import java.util.List;
@@ -97,4 +98,19 @@ public interface UimResourceService extends IService<UimResource> {
      * @return 返回资源url集合
      */
     List<UimResourceInfoVo> listResourceUrlsByIds(List<Long> ids);
+
+    /**
+     * 根据资源ID获取资源url
+     *
+     * @param ids 资源ID
+     * @return 资源url
+     */
+    List<UimResourceUrlVO> listResourceUrlByIds(List<Long> ids);
+
+    /**
+     * 获取所有资源url
+     *
+     * @return 返回资源
+     */
+    List<String> listResourceUrlByIds();
 }
