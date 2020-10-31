@@ -1,5 +1,7 @@
 package com.r7.core.integral.dto;
 
+import com.r7.core.integral.constant.OperateTypeEnum;
+import com.r7.core.integral.constant.SourceTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -30,7 +32,7 @@ public class CoreIntegralDetailDTO {
      */
     @NotNull(message = "积分来源类型不能为空")
     @ApiModelProperty(value="积分来源类型 游戏1/完成系统任务2/权益转换积分3/现金购买积分4/用户注册成功赠送积分5/权益商品卖出6/")
-    private Integer sourceType;
+    private SourceTypeEnum sourceType;
 
     /**
      * 业务编号 多次调接口区分
@@ -58,7 +60,7 @@ public class CoreIntegralDetailDTO {
      */
     @NotNull(message = "操作类型不能为空")
     @ApiModelProperty(value="操作类型 增加1/减少2")
-    private Integer operateType;
+    private OperateTypeEnum operateType;
 
     /**
      * 日期 yyyyMMdd
@@ -75,7 +77,13 @@ public class CoreIntegralDetailDTO {
     private String description;
 
 
+    public  void toCoreIntegralChangeDTO(CoreIntegralChangeDTO coreIntegralChangeDTO){
 
-
+        this.setUserId(coreIntegralChangeDTO.getUserId());
+        this.setBusinessCode(coreIntegralChangeDTO.getBusinessCode());
+        this.setChangeNum(coreIntegralChangeDTO.getChangeNum());
+        this.setDescription(coreIntegralChangeDTO.getDescription());
+        this.setSourceType(coreIntegralChangeDTO.getSourceType());
+    }
 
 }

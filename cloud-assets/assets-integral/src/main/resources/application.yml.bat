@@ -17,3 +17,4 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
+  type-enums-package: com.r7.core.integral.constant

@@ -3,6 +3,7 @@ package com.r7.core.integral.controller;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.integral.dto.CoreIntegralDetailDTO;
 import com.r7.core.integral.service.CoreIntegralDetailService;
+import com.r7.core.integral.vo.CoreIntegralDetailVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -24,21 +25,21 @@ public class CoreIntegralDetailController {
     @Resource
     private CoreIntegralDetailService coreIntegralDetailService;
 
-    @ApiOperation(value = "积分详情新增", response = CoreIntegralDetailDTO.class)
+    @ApiOperation(value = "积分详情新增", response = CoreIntegralDetailVO.class)
     @PostMapping("")
     public ResponseEntity saveCoreIntegralDetail(@Valid @RequestBody CoreIntegralDetailDTO coreIntegralDetailDTO) {
         return ResponseEntity.success(coreIntegralDetailService.saveCoreIntegralDetail(coreIntegralDetailDTO,
                  0L,1L));
     }
 
-    @ApiOperation(value = "根据id查询积分详情信息", response = CoreIntegralDetailDTO.class)
+    @ApiOperation(value = "根据id查询积分详情信息", response = CoreIntegralDetailVO.class)
     @GetMapping("/{id}")
     public ResponseEntity getCoreIntegralDetailById(@PathVariable("id") Long id) {
         return ResponseEntity.success(coreIntegralDetailService.getCoreIntegralDetailById(id,
                 0L));
     }
 
-    @ApiOperation(value = "分页查询所有用户的积分详情记录信息", response = CoreIntegralDetailDTO.class)
+    @ApiOperation(value = "分页查询所有用户的积分详情记录信息", response = CoreIntegralDetailVO.class)
     @GetMapping("/page")
     public ResponseEntity pageCoreIntegralDetailAll(
             @RequestParam(value = "businessCode",required = false) String businessCode,
@@ -52,7 +53,7 @@ public class CoreIntegralDetailController {
         ));
     }
 
-    @ApiOperation(value = "分页查询所有用户的积分详情记录信息", response = CoreIntegralDetailDTO.class)
+    @ApiOperation(value = "分页查询所有用户的积分详情记录信息", response = CoreIntegralDetailVO.class)
     @GetMapping("/page/{userId}")
     public ResponseEntity pageCoreIntegralDetailByUserId(
 

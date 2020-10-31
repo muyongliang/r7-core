@@ -1,6 +1,7 @@
 package com.r7.core.integral.controller;
 
 import com.r7.core.common.web.ResponseEntity;
+import com.r7.core.integral.dto.CoreIntegralChangeDTO;
 import com.r7.core.integral.dto.CoreIntegralDTO;
 import com.r7.core.integral.service.CoreIntegralService;
 import com.r7.core.integral.vo.CoreIntegralVO;
@@ -33,23 +34,17 @@ public class CoreIntegralController {
 
     @ApiOperation(value = "增加积分", response = CoreIntegralVO.class)
     @PutMapping("/add")
-    public ResponseEntity updateCoreIntegralAddTotal(@RequestParam String businessCode,
-                                                     @RequestParam Integer addInteger,
-                                                     @RequestParam Long userId,
-                                                     @RequestParam Integer sourceType ) {
+    public ResponseEntity updateCoreIntegralAddTotal(@Valid @RequestBody CoreIntegralChangeDTO oreIntegralChangeDTO) {
         return ResponseEntity.success(coreIntegralService
-                .updateCoreIntegralAddTotal(businessCode,addInteger,userId,sourceType,0L,2L));
+                .updateCoreIntegralAddTotal(oreIntegralChangeDTO,0L,2L));
     }
     @ApiOperation(value = "增加积分", response = CoreIntegralVO.class)
     @PutMapping("/reduce")
-    public ResponseEntity updateCoreIntegralReduceTotal(@RequestParam String businessCode,
-                                                        @RequestParam Integer reduceInteger,
-                                                        @RequestParam Long userId,
-                                                        @RequestParam Integer sourceType) {
+    public ResponseEntity updateCoreIntegralReduceTotal(@Valid @RequestBody CoreIntegralChangeDTO oreIntegralChangeDTO)
+    {
 
         return ResponseEntity.success(coreIntegralService
-                .updateCoreIntegralReduceTotal(businessCode,reduceInteger,userId,sourceType,
-                        0L,2L));
+                .updateCoreIntegralReduceTotal(oreIntegralChangeDTO, 0L,2L));
     }
 
 
