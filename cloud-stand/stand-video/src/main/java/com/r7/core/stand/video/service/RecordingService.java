@@ -16,6 +16,6 @@ public interface RecordingService {
      * @param uids       用户ids
      * @return 返回是否成功
      */
-    public boolean createChannel(String appId, String channel, String channelKey, Integer... uids);
+    public boolean createChannel(String appId, String channel, String channelKey, Integer... uids) throws Exception;
 
 }

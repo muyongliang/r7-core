@@ -61,3 +61,7 @@ agora:
   logLevel: 6
   agoraLib: /root/data/stand_video_backup/librecording.so
 
+
+resource:
+  address: "http://192.168.1.50:8099/api/file"
+

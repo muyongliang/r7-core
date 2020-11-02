@@ -36,7 +36,7 @@
                     <mainClass>com.r7.core.stand.video.VideoApplication</mainClass>
                     <fork>true</fork>
                     <jvmArguments>
-                        -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005
+                        -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
                     </jvmArguments>
                 </configuration>
             </plugin>

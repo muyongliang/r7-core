@@ -1,5 +1,6 @@
 package com.r7.core.stand.video.controller;
 
+import com.r7.core.common.util.SingleThreadPoolExecutor;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.stand.video.service.RecordingService;
 import io.swagger.annotations.Api;
@@ -30,6 +31,9 @@ public class RecordingController {
                                         @RequestParam("channel") String channel,
                                         @RequestParam("channelKey") String channelKey,
                                         @RequestParam("uids") Integer... uids) {
-        return ResponseEntity.success(recordingService.createChannel(appId, channel, channelKey, uids));
+//        异步录制视频
+        SingleThreadPoolExecutor.INSTANCE.execute(() -> recordingService.createChannel(appId, channel, channelKey, uids));
+
+        return ResponseEntity.success();
     }
 }
