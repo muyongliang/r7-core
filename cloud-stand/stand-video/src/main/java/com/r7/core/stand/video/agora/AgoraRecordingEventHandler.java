@@ -121,17 +121,17 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
 
     @Override
     public void onLeaveChannel(int reason) {
-        //System.out.println("RecordingSDK onLeaveChannel,code:" + reason);
+        log.info("回调方法:{},回调参数:{}", "onLeaveChannel", "reason:" + reason);
     }
 
     @Override
     public void onError(int error, int stat_code) {
-        System.out.println("RecordingSDK onError,error:" + error + ",stat code:" + stat_code);
+        log.info("回调方法:{},回调参数:{}", "onError", "error:" + error + ",stat code:" + stat_code);
     }
 
     @Override
     public void onWarning(int warn) {
-        System.out.println("RecordingSDK onWarning,warn:" + warn);
+        log.info("回调方法:{},回调参数:{}", "onWarning", "warn:" + warn);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
         if (config.decodeAudio != Common.AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE) {
             cleanTimer.schedule(new RecordingCleanTimer(this), 10000);
         }
-        System.out.println("RecordingSDK joinChannel success, channelId:" + channelId + ", uid:" + uid);
+        log.info("回调方法:{},回调参数:{}", "onJoinChannelSuccess", "channelId:" + channelId + ", uid:" + uid);
     }
 
     @Override
@@ -195,7 +195,7 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
 
     @Override
     public void onUserJoined(long uid, String recordingDir) {
-        System.out.println("onUserJoined uid:" + uid + ",recordingDir:" + recordingDir);
+        log.info("回调方法:{},回调参数:{}", "onUserJoined", "uid:" + uid + ",recordingDir:" + recordingDir);
         storageDir = recordingDir;
         m_peers.add(uid);
         //PrintUsersInfo(m_peers);
@@ -211,7 +211,7 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
 
     @Override
     public void onLocalUserRegistered(long uid, String userAccount) {
-        System.out.println("onLocalUserRegistered: " + uid + " => " + userAccount);
+        log.info("回调方法:{},回调参数:{}", "onUserJoined", uid + " => " + userAccount);
     }
 
     @Override
@@ -235,7 +235,7 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
 
     @Override
     public void onActiveSpeaker(long uid) {
-        System.out.println("User:" + uid + "is speaking");
+        log.info("回调方法:{},回调参数:{}", "onActiveSpeaker", "uid:" + uid);
     }
 
     @Override
@@ -269,13 +269,13 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
 
     @Override
     public void onFirstRemoteVideoDecoded(long uid, int width, int height, int elapsed) {
-        System.out.println("onFirstRemoteVideoDecoded User:" + Long.toString(uid) + ", width:" + width
+        log.info("回调方法:{},回调参数:{}", "onFirstRemoteVideoDecoded", "User:" + uid + ", width:" + width
                 + ", height:" + height + ", elapsed:" + elapsed);
     }
 
     @Override
     public void onFirstRemoteAudioFrame(long uid, int elapsed) {
-        System.out.println("onFirstRemoteAudioFrame User:" + Long.toString(uid) + ", elapsed:" + elapsed);
+        log.info("回调方法:{},回调参数:{}", "onFirstRemoteAudioFrame", "User:" + uid + ", elapsed:" + elapsed);
     }
 
     @Override
@@ -344,6 +344,7 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
      */
     @Override
     public void recordingPathCallBack(String path) {
+        log.info("回调方法:{},回调参数:{}", "recordingPathCallBack", "path:" + path);
         storageDir = path;
     }
 
