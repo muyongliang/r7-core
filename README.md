@@ -108,11 +108,11 @@ sonatype/nexus3
  docker-java-runtime
 
 >docker run -d \
- --name cloud-integral \
+ --name cloud-resource \
  --restart=always \
  --privileged=true \
  -p 8099:8099 \
- -v /root/core_docker/cloud-integral:/usr/local/ymapp \
+ -v /root/core_docker/cloud-resource:/usr/local/ymapp \
  docker-java-runtime
 
 >docker run -d \

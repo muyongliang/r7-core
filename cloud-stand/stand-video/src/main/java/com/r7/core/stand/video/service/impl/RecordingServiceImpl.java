@@ -72,6 +72,7 @@ public class RecordingServiceImpl implements RecordingService {
         agoraRecordingEventHandler.init(recordingConfig
                 , null, null, null, null, null
                 , recordingConfig.isMixingEnabled, null);
+
         // run jni event loop , or start a new thread to do it
         agoraRecordingEventHandler.setCleanTimer(new Timer());
         long start = System.currentTimeMillis();
@@ -79,6 +80,7 @@ public class RecordingServiceImpl implements RecordingService {
                 , channelKey, channel, agoraProperties.getServerUid(), recordingConfig, agoraProperties.getLogLevel());
         long end = System.currentTimeMillis();
         log.info("创建频道是否成功:{},channel:{},用时:{}ms", success, channel, end - start);
+
         agoraRecordingEventHandler.getCleanTimer().cancel();
         log.info("jni layer has been exited...");
 //        销毁监听器
