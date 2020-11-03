@@ -1,6 +1,7 @@
 package com.r7.core.profit.vo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.r7.core.profit.constant.IncomeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -68,7 +69,7 @@ public class CoreRecordIncomeVO {
      * 发放状态 1未发放2已发放
      */
     @ApiModelProperty(value="发放状态 1未发放2已发放")
-    private Integer status;
+    private IncomeEnum status;
 
     /**
      * 描述

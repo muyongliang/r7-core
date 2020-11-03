@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.r7.core.profit.constant.ProfitTypeEnum;
 import com.r7.core.profit.model.CoreProfit;
 import com.r7.core.profit.vo.CoreProfitVO;
 import org.apache.ibatis.annotations.Param;

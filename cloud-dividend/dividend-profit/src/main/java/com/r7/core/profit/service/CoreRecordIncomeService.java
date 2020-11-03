@@ -1,6 +1,7 @@
 package com.r7.core.profit.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.r7.core.profit.constant.IncomeEnum;
 import com.r7.core.profit.dto.CoreRecordIncomeDTO;
 import com.r7.core.profit.model.CoreRecordIncome;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -42,7 +43,7 @@ public interface CoreRecordIncomeService extends IService<CoreRecordIncome>{
      * @param pageSize 每页显示数
      * @return 返回分页查询结果
      */
-    Page<CoreRecordIncomeVO> pageCoreRecordIncome(Integer status ,
+    Page<CoreRecordIncomeVO> pageCoreRecordIncome(IncomeEnum status ,
                                                   Long userId,
                                                   Long appId,
                                                   Integer pageNum,
@@ -70,7 +71,7 @@ public interface CoreRecordIncomeService extends IService<CoreRecordIncome>{
      * @return 返回查询结果
      */
     List<CoreRecordIncome> getCoreRecordIncomeByUserId(Long userId,
-                                                       Integer status);
+                                                       IncomeEnum status);
 
 
     /**
@@ -80,7 +81,7 @@ public interface CoreRecordIncomeService extends IService<CoreRecordIncome>{
      * @return 返回查询结果
      */
     List<CoreRecordIncome> getCoreRecordIncomeByAppId(Long appId,
-                                                       Integer status);
+                                                      IncomeEnum status);
 
     /**
      * 根据用户id分页查询发放状态为2的发放金额记录明细
@@ -118,7 +119,7 @@ public interface CoreRecordIncomeService extends IService<CoreRecordIncome>{
      */
     CoreRecordIncomeVO updateCoreRecordIncomeStatusById(Long id,
                                                         Long appId,
-                                                        Integer status,
+                                                        IncomeEnum status,
                                                         LocalDateTime distributionAt,
                                                         String description,
                                                         Integer incomeDate,
@@ -129,7 +130,7 @@ public interface CoreRecordIncomeService extends IService<CoreRecordIncome>{
      * @param status 发放装填状态
      * @return 返回查询结果
      */
-    List<CoreRecordIncome> getAllCoreRecordIncomeByStatus(Integer status);
+    List<CoreRecordIncome> getAllCoreRecordIncomeByStatus(IncomeEnum status);
 
     /**
      * 根据平台id统计该平台发放了总的金额

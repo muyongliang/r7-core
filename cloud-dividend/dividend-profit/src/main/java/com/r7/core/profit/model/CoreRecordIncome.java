@@ -3,6 +3,7 @@ package com.r7.core.profit.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.profit.constant.IncomeEnum;
 import com.r7.core.profit.dto.CoreRecordIncomeDTO;
 import com.r7.core.profit.vo.CoreRecordIncomeVO;
 import io.swagger.annotations.ApiModel;
@@ -72,7 +73,7 @@ public class CoreRecordIncome extends Model<CoreRecordIncome> {
      * 发放状态 1未发放2已发放
      */
     @ApiModelProperty(value="发放状态 1未发放2已发放")
-    private Integer status;
+    private IncomeEnum status;
 
     /**
      * 描述

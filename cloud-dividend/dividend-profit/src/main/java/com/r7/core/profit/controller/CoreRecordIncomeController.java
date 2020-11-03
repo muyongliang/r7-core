@@ -1,6 +1,7 @@
 package com.r7.core.profit.controller;
 
 import com.r7.core.common.web.ResponseEntity;
+import com.r7.core.profit.constant.IncomeEnum;
 import com.r7.core.profit.dto.CoreRecordIncomeDTO;
 import com.r7.core.profit.model.CoreRecordIncome;
 import com.r7.core.profit.service.CoreRecordIncomeService;
@@ -43,7 +44,7 @@ public class CoreRecordIncomeController {
     @ApiOperation(value = "根据条件分页查询", response = CoreRecordIncomeVO.class)
     @GetMapping("/page")
     public ResponseEntity pageCoreProfit(
-                                         @RequestParam(required = false) Integer status,
+                                         @RequestParam(required = false) IncomeEnum status,
                                          @RequestParam(required = false) Long userId,
                                          @RequestParam(required = false) Long appId,
                                          @RequestParam(defaultValue = "1",required = false) Integer pageNum,
@@ -78,11 +79,11 @@ public class CoreRecordIncomeController {
                 2L));
     }
 
-    @ApiOperation(value = "根据发放记录ID修改发放记录明细的相关信息", response = CoreRecordIncomeVO.class)
+    @ApiOperation(value = "根据发放记录ID修改发放记录明细的状态为已发放", response = CoreRecordIncomeVO.class)
     @PutMapping("/status")
     public ResponseEntity updateCoreRecordIncomeStatusById(@RequestParam Long id,
                                                            @RequestParam Long appId,
-                                                           @RequestParam Integer status) {
+                                                           @RequestParam IncomeEnum status) {
         return ResponseEntity.success(coreRecordIncomeService.updateCoreRecordIncomeStatusById(
                 id,appId,status,LocalDateTime.now(),"已经发放",
                 Integer.valueOf(new SimpleDateFormat( "yyyyMMdd")
@@ -92,7 +93,7 @@ public class CoreRecordIncomeController {
 
     @ApiOperation(value = "根据发放状态把发放记录明细查询出来", response = CoreRecordIncome.class)
     @GetMapping ("/status")
-    public ResponseEntity getAllCoreRecordIncomeByStatus(@RequestParam Integer status) {
+    public ResponseEntity getAllCoreRecordIncomeByStatus(@RequestParam IncomeEnum status) {
         return ResponseEntity.success(coreRecordIncomeService.getAllCoreRecordIncomeByStatus(status));
     }
 

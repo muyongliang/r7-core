@@ -1,5 +1,7 @@
 package com.r7.core.profit.dto;
 
+import com.r7.core.profit.constant.CalculationStatusEnum;
+import com.r7.core.profit.constant.ProfitTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -75,7 +77,7 @@ public class CoreProfitDTO  {
      */
     @NotNull(message = "计算状态不能为空")
     @ApiModelProperty(value="计算状态 1未计算2已计算")
-    private Integer status;
+    private CalculationStatusEnum status;
 
     /**
      * 分润比例
@@ -89,7 +91,7 @@ public class CoreProfitDTO  {
      */
     @NotNull(message = "分润类型不能为空")
     @ApiModelProperty(value="分润类型 1权益商品2游戏分润")
-    private Integer type;
+    private ProfitTypeEnum type;
 
     /**
      * 分润标识

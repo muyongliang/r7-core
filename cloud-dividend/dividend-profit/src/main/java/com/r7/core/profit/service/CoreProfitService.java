@@ -2,6 +2,8 @@ package com.r7.core.profit.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.r7.core.profit.constant.CalculationStatusEnum;
+import com.r7.core.profit.constant.ProfitTypeEnum;
 import com.r7.core.profit.dto.CoreProfitDTO;
 import com.r7.core.profit.model.CoreProfit;
 import com.r7.core.profit.vo.CoreProfitVO;
@@ -46,7 +48,7 @@ public interface CoreProfitService extends IService<CoreProfit>{
     Page<CoreProfitVO> pageCoreProfit(Long userId,
                                       Long orderId,
                                       Long appId,
-                                      Integer type,
+                                      ProfitTypeEnum type,
                                       Integer pageNum,
                                       Integer pageSize);
 
@@ -61,7 +63,7 @@ public interface CoreProfitService extends IService<CoreProfit>{
      * @return 返回修改结果
      */
     CoreProfitVO updateCoreProfitStatusById(Long id, Long appId,
-                                            Integer status,
+                                            CalculationStatusEnum status,
                                             Long recordIncomeId,
                                             Long optionalUserId);
 
@@ -75,7 +77,7 @@ public interface CoreProfitService extends IService<CoreProfit>{
      * @return 结算结果
      */
     List settlementAmount(Long userId, Long appId,
-                          Integer status, Long recordIncomeId,
+                          CalculationStatusEnum status, Long recordIncomeId,
                           LocalDateTime endTime);
 
     /**
@@ -88,7 +90,7 @@ public interface CoreProfitService extends IService<CoreProfit>{
      * @return 结算结果
      */
     List settlementIntegral(Long userId, Long appId,
-                            Integer status, Long recordIncomeId,
+                            CalculationStatusEnum status, Long recordIncomeId,
                             LocalDateTime endTime);
 
     /**
@@ -100,7 +102,7 @@ public interface CoreProfitService extends IService<CoreProfit>{
      * @return 查询结果
      */
     List<CoreProfit> getCoreProfitByUserId(Long userId, Long appId,
-                                           Integer status , LocalDateTime endTime);
+                                           CalculationStatusEnum status , LocalDateTime endTime);
 
     /**
      * 把未计算的截止时间以前的分润明细查询出来
@@ -108,7 +110,7 @@ public interface CoreProfitService extends IService<CoreProfit>{
      * @param endTime 截止时间
      * @return 查询结果
      */
-    List<CoreProfit> getAllCoreProfitByStatus(Integer status, LocalDateTime endTime);
+    List<CoreProfit> getAllCoreProfitByStatus(CalculationStatusEnum status, LocalDateTime endTime);
 
 
 }
