@@ -1,10 +1,8 @@
 package com.r7.core.assets.wallet.controller;
 
-import com.r7.core.assets.wallet.dto.CoreWalletDTO;
-import com.r7.core.assets.wallet.dto.CoreWalletUpdateDTO;
+import com.r7.core.assets.wallet.dto.*;
 import com.r7.core.assets.wallet.service.CoreWalletService;
 import com.r7.core.assets.wallet.vo.CoreWalletVO;
-import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,18 +32,52 @@ public class CoreWalletController {
             response = Boolean.class)
     @PostMapping("/")
     public ResponseEntity saveWallet(@Valid @RequestBody CoreWalletDTO coreWalletDto) {
-        return ResponseEntity.success(coreWalletService.saveWallet(coreWalletDto,
-                RequestHolder.getAppId(), RequestHolder.getOrganId(), RequestHolder.getUserId()));
+        return ResponseEntity.success(coreWalletService.saveWallet(coreWalletDto, 0L));
     }
 
     @ApiOperation(
-            value = "根据用户id修改钱包数据",
+            value = "根据用户id修改钱包密码",
             response = Boolean.class)
-    @PutMapping("/{userId}")
-    public ResponseEntity updateWalletByUserId(@PathVariable("userId") Long userId,
-                                               @Valid @RequestBody CoreWalletUpdateDTO coreWalletUpdateDto) {
-        return ResponseEntity.success(coreWalletService.updateWalletByUserId(userId, coreWalletUpdateDto,
-                RequestHolder.getAppId(), RequestHolder.getOrganId()));
+    @PutMapping("/update/{userId}")
+    public ResponseEntity updateWalletPayPassword(@PathVariable("userId") Long updateUserId,
+                                                  @RequestParam String changePayPassword) {
+        return ResponseEntity.success(coreWalletService.updateWalletPayPasswordById(updateUserId, changePayPassword, 0L));
+    }
+
+    @ApiOperation(
+            value = "根据用户id增加钱包总余额",
+            response = CoreWalletVO.class)
+    @PutMapping("/add/balance/{updateUserId}")
+    public ResponseEntity updateCoreWalletAddBalance(@PathVariable("updateUserId") Long updateUserId,
+                                                     @Valid @RequestBody CoreWalletBalanceChangeDTO coreWalletBalanceChangeDto) {
+        return ResponseEntity.success(coreWalletService.updateCoreWalletAddBalance(updateUserId, coreWalletBalanceChangeDto, 0L));
+    }
+
+    @ApiOperation(
+            value = "增加钱包不可用余额",
+            response = CoreWalletVO.class)
+    @PutMapping("/add/locking/balance/{updateUserId}")
+    public ResponseEntity updateCoreWalletAddLockingBalance(@PathVariable("updateUserId") Long updateUserId,
+                                                            @Valid @RequestBody CoreWalletLockingBalanceChangeDTO coreWalletLockingBalanceChangeDto) {
+        return ResponseEntity.success(coreWalletService.updateCoreWalletAddLockingBalance(updateUserId, coreWalletLockingBalanceChangeDto, 0L));
+    }
+
+    @ApiOperation(
+            value = "减少钱包总余额",
+            response = CoreWalletVO.class)
+    @PutMapping("/reduce/balance/{updateUserId}")
+    public ResponseEntity updateCoreWalletReduceBalance(@PathVariable("updateUserId") Long updateUserId,
+                                                        @Valid @RequestBody CoreWalletBalanceChangeDTO coreWalletBalanceChangeDto) {
+        return ResponseEntity.success(coreWalletService.updateCoreWalletReduceBalance(updateUserId, coreWalletBalanceChangeDto, 0L));
+    }
+
+    @ApiOperation(
+            value = "减少钱包不可用余额",
+            response = CoreWalletVO.class)
+    @PutMapping("/reduce/locking/balance/{updateUserId}")
+    public ResponseEntity updateCoreWalletReduceLockingBalance(@PathVariable("updateUserId") Long updateUserId,
+                                                               @Valid @RequestBody CoreWalletLockingBalanceChangeDTO coreWalletLockingBalanceChangeDto) {
+        return ResponseEntity.success(coreWalletService.updateCoreWalletReduceLockingBalance(updateUserId, coreWalletLockingBalanceChangeDto, 0L));
     }
 
     @ApiOperation(
@@ -57,17 +89,8 @@ public class CoreWalletController {
     }
 
     @ApiOperation(
-            value = "分页查询所有用户钱包信息",
-            response = CoreWalletVO.class)
-    @GetMapping("/page")
-    public ResponseEntity pageWallet(@RequestParam(defaultValue = "1") Integer pageNum,
-                                     @RequestParam(defaultValue = "10") Integer pageSize) {
-        return ResponseEntity.success(coreWalletService.pageWallet(pageNum, pageSize));
-    }
-
-    @ApiOperation(
             value = "查询钱包总余额",
-            response = CoreWalletVO.class)
+            response = Integer.class)
     @GetMapping("/total")
     public ResponseEntity getTotalBalance() {
         return ResponseEntity.success(coreWalletService.getTotalBalance());

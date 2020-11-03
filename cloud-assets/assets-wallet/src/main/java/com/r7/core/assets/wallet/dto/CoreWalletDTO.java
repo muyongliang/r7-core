@@ -1,5 +1,6 @@
 package com.r7.core.assets.wallet.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -8,10 +9,11 @@ import javax.validation.constraints.NotNull;
 
 /**
  * @author zs
- * @description: 钱包实体传输层
+ * @description: 钱包传输实体
  * @date : 2020-10-27
  */
 @Data
+@ApiModel("钱包传输实体")
 public class CoreWalletDTO {
     /**
      * 用户id
@@ -37,10 +39,4 @@ public class CoreWalletDTO {
     @ApiModelProperty("不可用余额")
     @NotNull(message = "不可用余额不能为空")
     private Integer lockingBalance;
-    /**
-     * 签名;用户ID，钱包支付密码，钱包余额三者进行加密，增减时从数据库中
-     */
-    @ApiModelProperty("签名")
-    @NotBlank(message = "签名不能为空")
-    private String sign;
 }

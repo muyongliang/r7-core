@@ -1,5 +1,7 @@
 package com.r7.core.assets.wallet.vo;
 
+import com.r7.core.assets.wallet.constant.WalletBillStatusEnum;
+import com.r7.core.assets.wallet.constant.WalletBillTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -48,7 +50,7 @@ public class CoreWalletBillPageVO {
      * 交易类型;收入1/支出2/冻结3/解冻4
      */
     @ApiModelProperty(value = "交易类型", example = "收入1/支出2/冻结3/解冻4")
-    private Integer type;
+    private WalletBillTypeEnum type;
     /**
      * 交易来源;如购买商品，余额充值，余额提现
      */
@@ -58,15 +60,11 @@ public class CoreWalletBillPageVO {
      * 交易状态;1交易成功/2待支付/3支付失败
      */
     @ApiModelProperty(value = "交易状态", example = "1交易成功/2待支付/3支付失败")
-    private Integer status;
-    /**
-     * 钱包余额交易描述;如：股票转账、充值、买文章、文章收费、积分购买、权益商品卖出等
-     */
-    @ApiModelProperty(value = "钱包余额交易描述", example = "如：股票转账、充值、买文章、文章收费、积分购买、权益商品卖出等")
-    private String description;
+    private WalletBillStatusEnum status;
     /**
      * 创建时间
      */
     @ApiModelProperty("创建时间")
     private Date createdAt;
+
 }

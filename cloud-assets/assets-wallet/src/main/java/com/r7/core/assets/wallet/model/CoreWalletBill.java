@@ -3,6 +3,9 @@ package com.r7.core.assets.wallet.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.assets.wallet.constant.WalletBillIsShowEnum;
+import com.r7.core.assets.wallet.constant.WalletBillStatusEnum;
+import com.r7.core.assets.wallet.constant.WalletBillTypeEnum;
 import com.r7.core.assets.wallet.dto.CoreWalletBillDTO;
 import com.r7.core.assets.wallet.vo.CoreWalletBillVO;
 import io.swagger.annotations.ApiModel;
@@ -54,10 +57,10 @@ public class CoreWalletBill extends Model<CoreWalletBill> {
     @ApiModelProperty("业务单号;购买订单号")
     private String businessSn;
     /**
-     * 是否展示;1不展示2展示3后台展示所有
+     * 是否展示;1不展示2展示
      */
-    @ApiModelProperty(value = "是否展示", example = "1不展示2展示3后台展示所有")
-    private Integer isShow;
+    @ApiModelProperty(value = "是否展示", example = "1不展示2展示")
+    private WalletBillIsShowEnum isShow;
     /**
      * 交易金额
      */
@@ -67,7 +70,7 @@ public class CoreWalletBill extends Model<CoreWalletBill> {
      * 交易类型;收入1/支出2/冻结3/解冻4
      */
     @ApiModelProperty(value = "交易类型", example = "收入1/支出2/冻结3/解冻4")
-    private Integer type;
+    private WalletBillTypeEnum type;
     /**
      * 交易来源;如购买商品，余额充值，余额提现
      */
@@ -82,7 +85,7 @@ public class CoreWalletBill extends Model<CoreWalletBill> {
      * 交易状态;1交易成功/2待支付/3支付失败
      */
     @ApiModelProperty(value = "交易状态", example = "1交易成功/2待支付/3支付失败")
-    private Integer status;
+    private WalletBillStatusEnum status;
     /**
      * 日期;yyyyMMdd
      */
@@ -122,7 +125,6 @@ public class CoreWalletBill extends Model<CoreWalletBill> {
         this.setTransactionAmount(coreWalletBillDto.getTransactionAmount());
         this.setType(coreWalletBillDto.getType());
         this.setSource(coreWalletBillDto.getSource());
-        this.setBalance(coreWalletBillDto.getBalance());
         this.setStatus(coreWalletBillDto.getStatus());
         this.setDescription(coreWalletBillDto.getDescription());
     }
@@ -136,10 +138,10 @@ public class CoreWalletBill extends Model<CoreWalletBill> {
         coreWalletBillVo.setTransactionUserId(this.getTransactionUserId());
         coreWalletBillVo.setBusinessSn(this.getBusinessSn());
         coreWalletBillVo.setTransactionAmount(this.getTransactionAmount());
-        coreWalletBillVo.setType(this.getType());
+        coreWalletBillVo.setCoreWalletBillType(this.getType());
         coreWalletBillVo.setSource(this.getSource());
         coreWalletBillVo.setBalance(this.getBalance());
-        coreWalletBillVo.setStatus(this.getStatus());
+        coreWalletBillVo.setType(this.getStatus());
         coreWalletBillVo.setTransactionDate(this.getTransactionDate());
         coreWalletBillVo.setDescription(this.getDescription());
         coreWalletBillVo.setCreatedAt(this.getCreatedAt());

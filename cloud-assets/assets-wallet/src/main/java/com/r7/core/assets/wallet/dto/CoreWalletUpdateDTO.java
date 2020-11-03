@@ -1,5 +1,6 @@
 package com.r7.core.assets.wallet.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -8,10 +9,11 @@ import javax.validation.constraints.NotNull;
 
 /**
  * @author zs
- * @description:
+ * @description: 钱包信息修改传输实体
  * @date : 2020-10-27
  */
 @Data
+@ApiModel("钱包信息修改传输实体")
 public class CoreWalletUpdateDTO {
     /**
      * 钱包支付密码;6位数的支付密码
