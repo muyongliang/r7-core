@@ -22,7 +22,6 @@
         <module>cloud-integral</module>
         <module>cloud-cache</module>
         <module>cloud-assets</module>
-        <module>cloud-assets/assets-funds</module>
     </modules>
 
 
