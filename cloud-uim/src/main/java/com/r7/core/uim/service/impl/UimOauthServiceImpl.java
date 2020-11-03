@@ -63,6 +63,7 @@ public class UimOauthServiceImpl extends ServiceImpl<UimOauthServiceMapper, UimO
 
     @Override
     public List<UimOauthVO> listUimOauth(Long userId) {
+        Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_USER_ID_IS_NULL));
         Option.of(uimUserService.getUserById(userId)).getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_USER_ID_IS_Not_EXISTS));
         List<UimOauth> uimOauthList = list(Wrappers.<UimOauth>lambdaQuery()
                 .select(UimOauth::getId, UimOauth::getUserId,

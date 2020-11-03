@@ -50,6 +50,7 @@ public class UimOauthInfoServiceImpl
 
     @Override
     public UimOauthInfoVO getUimOauthInfoByUserId(Long userId) {
+        Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         UimOauthInfo uimOauthInfo = Option.of(getOne(Wrappers.<UimOauthInfo>lambdaQuery().eq(UimOauthInfo::getUserId, userId)))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NOT_EXIST));
         return uimOauthInfo.toUimOauthInfoVo();

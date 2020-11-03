@@ -10,5 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>cloud-assets</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>assets-funds</module>
+    </modules>
 
 </project>

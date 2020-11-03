@@ -81,16 +81,13 @@ public class CoreWallet extends Model<CoreWallet> {
         coreWalletVo.setUserId(this.getUserId());
         coreWalletVo.setBalance(this.getBalance());
         coreWalletVo.setLockingBalance(this.getLockingBalance());
-        coreWalletVo.setSign(this.getSign());
         return coreWalletVo;
     }
 
     public void toCoreWallet(CoreWalletDTO coreWalletDto) {
         this.setUserId(coreWalletDto.getUserId());
-        this.setPayPassword(coreWalletDto.getPayPassword());
         this.setBalance(coreWalletDto.getBalance());
         this.setLockingBalance(coreWalletDto.getLockingBalance());
-        this.setSign(coreWalletDto.getSign());
     }
 
     public void toCoreWalletUpdateDto(CoreWalletUpdateDTO coreWalletUpdateDto) {

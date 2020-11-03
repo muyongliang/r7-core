@@ -10,7 +10,7 @@ import lombok.Data;
  * @date : 2020-10-26
  */
 @Data
-@ApiModel("钱包展示视图")
+@ApiModel("钱包展示")
 public class CoreWalletVO {
     /**
      * id
@@ -32,9 +32,4 @@ public class CoreWalletVO {
      */
     @ApiModelProperty("不可用余额")
     private Integer lockingBalance;
-    /**
-     * 签名;用户ID，钱包支付密码，钱包余额三者进行加密，增减时从数据库中
-     */
-    @ApiModelProperty("签名")
-    private String sign;
 }

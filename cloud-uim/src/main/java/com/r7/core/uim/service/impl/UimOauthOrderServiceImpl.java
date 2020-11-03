@@ -30,6 +30,7 @@ public class UimOauthOrderServiceImpl
                                              Long appId, Long organId, Long userId) {
         Long oauthUserId = uimOauthOrderDto.getUserId();
         log.info("平台:{}中的组织:{}用户:{}创建认证订单，操作人:{}。", appId, organId, oauthUserId, userId);
+        Option.of(oauthUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_USER_ID_IS_Not_EXISTS));
         Long id = SnowflakeUtil.getSnowflakeId();
         UimOauthOrder uimOauthOrder = new UimOauthOrder();
         uimOauthOrder.setId(id);

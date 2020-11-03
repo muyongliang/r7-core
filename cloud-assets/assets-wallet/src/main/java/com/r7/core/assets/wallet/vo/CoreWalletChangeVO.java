@@ -2,24 +2,26 @@ package com.r7.core.assets.wallet.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
- * @author zs
- * @description: 钱包分页展示
- * @date : 2020-10-27
- */
-@ApiModel("钱包分页展示视图")
-public class CoreWalletPageVO {
-    /**
-     * id
-     */
-    @ApiModelProperty("id")
-    private Long id;
+ * @author: zs
+ * @description: 钱包修改展示实体
+ * @date: 2020-10-31
+ **/
+@Data
+@ApiModel("钱包修改展示实体")
+public class CoreWalletChangeVO {
     /**
      * 用户id
      */
     @ApiModelProperty("用户id")
     private Long userId;
+    /**
+     * 钱包支付密码;6位数的支付密码
+     */
+    @ApiModelProperty(value = "钱包支付密码", example = "123456")
+    private String payPassword;
     /**
      * 钱包总余额
      */

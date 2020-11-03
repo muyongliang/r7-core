@@ -1,11 +1,7 @@
 package com.r7.core.assets.wallet.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.r7.core.assets.wallet.model.CoreWallet;
-import com.r7.core.assets.wallet.vo.CoreWalletVO;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * @author zs
@@ -13,12 +9,4 @@ import org.apache.ibatis.annotations.Param;
  * @date : 2020-10-26
  */
 public interface CoreWalletMapper extends BaseMapper<CoreWallet> {
-
-    /**
-     * 分页查询钱包
-     *
-     * @param page 分页
-     * @return 返回查询结果
-     */
-    IPage<CoreWalletVO> pageWallet(@Param("page") Page<CoreWalletVO> page);
 }

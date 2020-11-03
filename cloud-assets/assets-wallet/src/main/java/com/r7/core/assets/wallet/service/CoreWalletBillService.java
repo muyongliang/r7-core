@@ -48,10 +48,42 @@ public interface CoreWalletBillService extends IService<CoreWalletBill> {
     /**
      * 分页查询全部账单
      *
-     * @param userId   用户id
-     * @param pageNum  当前页数
-     * @param pageSize 每页展示个数
-     * @return 返回分页结果
+     * @param userId    用户id
+     * @param type      交易类型
+     * @param source    交易来源
+     * @param status    交易状态
+     * @param startDate 开始时间
+     * @param endDate   结束时间
+     * @param pageNum   当前页
+     * @param pageSize  每页条数
+     * @return 返回查询结果
      */
-    IPage<CoreWalletBillPageVO> pageWalletBill(Long userId, Integer pageNum, Integer pageSize);
+    IPage<CoreWalletBillPageVO> pageWalletBillByUserId(Long userId, Integer type, String source, Integer status,
+                                                       String startDate, String endDate, Integer pageNum, Integer pageSize);
+
+    /**
+     * 根据条件查询分页查询平台所有用户钱包账单信息
+     *
+     * @param appId     平台id
+     * @param type      交易类型
+     * @param source    交易来源
+     * @param status    交易状态
+     * @param startDate 开始时间
+     * @param endDate   结束时间
+     * @param pageNum   当前页
+     * @param pageSize  每页条数
+     * @return 返回查询结果
+     */
+    IPage<CoreWalletBillPageVO> pageWalletBillByAppId(Long appId, Integer type, String source, Integer status,
+                                                      String startDate, String endDate, Integer pageNum, Integer pageSize);
+
+    /**
+     * 根据平台id和条件获取用户消费总余额
+     *
+     * @param appId     平台
+     * @param startDate 开始时间
+     * @param endDate   结束时间
+     * @return 返回消费总余额
+     */
+    Integer getTotalConsumptionBalance(Long appId, String startDate, String endDate);
 }
