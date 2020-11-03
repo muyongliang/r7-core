@@ -2,6 +2,8 @@ package com.r7.core.profit.service.impl;
 
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
+import com.r7.core.profit.constant.CalculationStatusEnum;
+import com.r7.core.profit.constant.IncomeEnum;
 import com.r7.core.profit.constant.SettlementEnum;
 import com.r7.core.profit.dto.CoreRecordIncomeDTO;
 import com.r7.core.profit.model.CoreProfit;
@@ -33,8 +35,11 @@ public class SettlementServiceImpl implements SettlementService {
     public int settlementAll(LocalDateTime endTime) {
         //扫描分润明细表，查询出需要核算哪些
 
-        List<CoreProfit> list =  coreProfitService.getAllCoreProfitByStatus(1, endTime);
-
+        List<CoreProfit> list =  coreProfitService
+                .getAllCoreProfitByStatus(CalculationStatusEnum.NOTCALCULATED, endTime);
+        if (list == null  || list.size()==0) {
+            return 1;
+        }
         //核算截止时间以前且未核算过的所有分润明细
         //核算完成一个添加一条发放记录明细
         list.forEach(x -> {
@@ -44,14 +49,16 @@ public class SettlementServiceImpl implements SettlementService {
             //1、单条核算
             if (x.getAmount() == 0  && x.getIntegral() !=0) {
                 //核算积分
-                List listIntegral =  coreProfitService.settlementIntegral(x.getUserId(),x.getAppId(),1
+                List listIntegral =  coreProfitService
+                        .settlementIntegral(x.getUserId(),x.getAppId(),CalculationStatusEnum.NOTCALCULATED
                         ,recordIncomeId,endTime);
              //设置发放记录的积分，分润条数
                 coreRecordIncomeDTO.setDistributionIntegral((int) listIntegral.get(0));
                 coreRecordIncomeDTO.setCountNum((int) listIntegral.get(1));
             }else if(x.getIntegral() == 0 && x.getAmount() != 0){
                 //核算金额
-                List listAmount =  coreProfitService.settlementAmount(x.getUserId(),x.getAppId(),1,
+                List listAmount =  coreProfitService
+                        .settlementAmount(x.getUserId(),x.getAppId(),CalculationStatusEnum.NOTCALCULATED,
                         recordIncomeId, endTime);
                 //设置发放记录的金额，分润条数
                 coreRecordIncomeDTO.setDistributionAmount((int) listAmount.get(0));
@@ -64,7 +71,7 @@ public class SettlementServiceImpl implements SettlementService {
 
             coreRecordIncomeDTO.setAppId(x.getAppId());
             coreRecordIncomeDTO.setUserId(x.getUserId());
-            coreRecordIncomeDTO.setStatus(1);
+            coreRecordIncomeDTO.setStatus(IncomeEnum.NOTISSUED);
             coreRecordIncomeDTO.setDescription("已经核算,待发放");
             coreRecordIncomeService.saveCoreRecordIncome(recordIncomeId,coreRecordIncomeDTO,4L);
 

@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
+import com.r7.core.profit.constant.CalculationStatusEnum;
 import com.r7.core.profit.constant.CoreProfitEnum;
+import com.r7.core.profit.constant.ProfitTypeEnum;
 import com.r7.core.profit.constant.SettlementEnum;
 import com.r7.core.profit.dto.CoreProfitDTO;
 import com.r7.core.profit.mapper.CoreProfitMapper;
@@ -94,13 +96,13 @@ public class CoreProfitServiceImpl extends ServiceImpl<CoreProfitMapper, CorePro
 
     @Override
     public Page<CoreProfitVO> pageCoreProfit(Long userId, Long orderId,
-                                             Long appId, Integer type,
+                                             Long appId, ProfitTypeEnum type,
                                              Integer pageNum, Integer pageSize) {
 
         log.info("分页查询分润参数1：{}，参数二：{}，参数三：{}，参数四：{}，参数五：{}，参数六：{}，开始时间：{}",
                 userId,orderId,appId,type,pageNum,pageSize,LocalDateTime.now());
 
-        Page<CoreProfitVO> page = baseMapper.pageCoreProfit( userId,  orderId, appId,  type,
+        Page<CoreProfitVO> page = baseMapper.pageCoreProfit( userId,  orderId, appId,  type.getValue(),
                 new Page(pageNum, pageSize));
 
         log.info("分页查询分润参数1：{}，参数二：{}，参数三：{}，参数四：{}，参数五：{}，参数六：{}，结束时间：{}",
@@ -111,7 +113,7 @@ public class CoreProfitServiceImpl extends ServiceImpl<CoreProfitMapper, CorePro
     @Transactional(rollbackFor = Exception.class)
     @Override
     public CoreProfitVO updateCoreProfitStatusById(Long id, Long appId,
-                                                   Integer status,
+                                                   CalculationStatusEnum status,
                                                    Long recordIncomeId,
                                                    Long optionalUserId) {
         log.info("分润明细id：{}，修改内容：{}，操作人：{}，修改开始时间：{}"
@@ -136,7 +138,7 @@ public class CoreProfitServiceImpl extends ServiceImpl<CoreProfitMapper, CorePro
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public List settlementAmount(Long userId, Long appId, Integer status,
+    public List settlementAmount(Long userId, Long appId, CalculationStatusEnum status,
                                  Long recordIncomeId, LocalDateTime endTime) {
         log.info("合并需要发放金额的用户id：{}，平台id：{}，合并开始时间：{}",
                 userId,appId,LocalDateTime.now());
@@ -149,7 +151,7 @@ public class CoreProfitServiceImpl extends ServiceImpl<CoreProfitMapper, CorePro
         //统计分润的条数
         int countNumAmount = list.size();
         //把核算过的分润明细的计算状态，修改为2即已计算
-        list.forEach(x -> updateCoreProfitStatusById(x.getId(),x.getAppId(),2,recordIncomeId,0L));
+        list.forEach(x -> updateCoreProfitStatusById(x.getId(),x.getAppId(),CalculationStatusEnum.CALCULATED,recordIncomeId,0L));
         arrayList.add(settlementTotalAmount);
         arrayList.add(countNumAmount);
 
@@ -161,7 +163,7 @@ public class CoreProfitServiceImpl extends ServiceImpl<CoreProfitMapper, CorePro
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public List settlementIntegral(Long userId, Long appId, Integer status,
+    public List settlementIntegral(Long userId, Long appId, CalculationStatusEnum status,
                                    Long recordIncomeId, LocalDateTime endTime) {
 
         log.info("合并需要发放积分的用户id：{}，平台id：{}，合并开始时间：{}",
@@ -176,7 +178,7 @@ public class CoreProfitServiceImpl extends ServiceImpl<CoreProfitMapper, CorePro
         //2、统计分润的条数
         int countNumIntegral =  list.size();
         //3、把核算过的分润明细的计算状态，修改为2即已计算
-        list.forEach(x -> updateCoreProfitStatusById(x.getId(),x.getAppId(),2,recordIncomeId,0L));
+        list.forEach(x -> updateCoreProfitStatusById(x.getId(),x.getAppId(),CalculationStatusEnum.CALCULATED,recordIncomeId,0L));
         //4、把用户分润的积分和分润条数放进集合中
         arrayList.add(settlementTotalIntegral);
         arrayList.add(countNumIntegral);
@@ -188,7 +190,7 @@ public class CoreProfitServiceImpl extends ServiceImpl<CoreProfitMapper, CorePro
 
     @Override
     public List<CoreProfit> getCoreProfitByUserId(Long userId, Long appId,
-                                                  Integer status, LocalDateTime endTime) {
+                                                  CalculationStatusEnum status, LocalDateTime endTime) {
 
         Option.of(userId).getOrElseThrow(()-> new BusinessException(CoreProfitEnum.CORE_PROFIT_USER_ID_NOT_NULL));
 
@@ -213,7 +215,7 @@ public class CoreProfitServiceImpl extends ServiceImpl<CoreProfitMapper, CorePro
     }
 
     @Override
-    public List<CoreProfit> getAllCoreProfitByStatus(Integer status, LocalDateTime endTime) {
+    public List<CoreProfit> getAllCoreProfitByStatus(CalculationStatusEnum status, LocalDateTime endTime) {
 
         //查询出截止时间以前未计算的分润明细
 
@@ -226,9 +228,7 @@ public class CoreProfitServiceImpl extends ServiceImpl<CoreProfitMapper, CorePro
                 .lt(CoreProfit::getCreatedAt,endTime)
                 .eq(CoreProfit::getStatus,status)))
                 .getOrNull();
-        if (list == null || list.size()==0) {
-                throw  new BusinessException(CoreProfitEnum.CORE_PROFIT_USER_ID_IS_NOT_EXISTS);
-        }
+
 
         list.forEach(x ->{
             if (x.getAmount()!=0 && x.getIntegral()!=0) {
