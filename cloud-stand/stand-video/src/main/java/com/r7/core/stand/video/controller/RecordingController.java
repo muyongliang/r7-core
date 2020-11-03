@@ -5,6 +5,7 @@ import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.stand.video.service.RecordingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import javax.annotation.Resource;
 @Api(value = "/api/recording", tags = {"视频录制接口"})
 @RestController
 @RequestMapping("/recording")
+@Slf4j
 public class RecordingController {
 
     @Resource
@@ -32,7 +34,17 @@ public class RecordingController {
                                         @RequestParam("channelKey") String channelKey,
                                         @RequestParam("uids") Integer... uids) {
 //        异步录制视频
-        SingleThreadPoolExecutor.INSTANCE.execute(() -> recordingService.createChannel(appId, channel, channelKey, uids));
+        SingleThreadPoolExecutor.INSTANCE.execute(() -> {
+            try {
+                recordingService.createChannel(appId,
+                        channel,
+                        channelKey,
+                        uids);
+            } catch (Exception e) {
+                e.printStackTrace();
+                log.error(e.getMessage());
+            }
+        });
 
         return ResponseEntity.success();
     }
