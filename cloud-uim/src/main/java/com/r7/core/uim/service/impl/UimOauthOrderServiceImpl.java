@@ -12,6 +12,7 @@ import com.r7.core.uim.vo.UimOauthOrderVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -26,6 +27,7 @@ public class UimOauthOrderServiceImpl
         extends ServiceImpl<UimOauthOrderMapper, UimOauthOrder> implements UimOauthOrderService {
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public UimOauthOrderVO saveUimOauthOrder(UimOauthOrderDTO uimOauthOrderDto,
                                              Long appId, Long organId, Long userId) {
         Long oauthUserId = uimOauthOrderDto.getUserId();
@@ -51,6 +53,7 @@ public class UimOauthOrderServiceImpl
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public UimOauthOrderVO updateUimOauthOrder(Long id, UimOauthOrderDTO uimOauthOrderDto,
                                                Long appId, Long organId, Long userId) {
         Long oauthUserId = uimOauthOrderDto.getUserId();

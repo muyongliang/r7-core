@@ -15,6 +15,7 @@ import com.r7.core.uim.vo.UimOauthVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class UimOauthServiceImpl extends ServiceImpl<UimOauthServiceMapper, UimO
     private UimOauthOrderService uimOauthOrderService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean saveUimOauth(UimOauthDTO uimOauthDto, Long appId, Long organId, Long userId) {
         Long oauthUserId = uimOauthDto.getUserId();
         uimUserService.getUserById(oauthUserId);
