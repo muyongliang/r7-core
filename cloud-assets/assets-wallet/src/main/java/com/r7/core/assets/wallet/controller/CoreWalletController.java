@@ -3,6 +3,7 @@ package com.r7.core.assets.wallet.controller;
 import com.r7.core.assets.wallet.dto.*;
 import com.r7.core.assets.wallet.service.CoreWalletService;
 import com.r7.core.assets.wallet.vo.CoreWalletVO;
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +33,7 @@ public class CoreWalletController {
             response = Boolean.class)
     @PostMapping("/")
     public ResponseEntity saveWallet(@Valid @RequestBody CoreWalletDTO coreWalletDto) {
-        return ResponseEntity.success(coreWalletService.saveWallet(coreWalletDto, 0L));
+        return ResponseEntity.success(coreWalletService.saveWallet(coreWalletDto, RequestHolder.getUserId()));
     }
 
     @ApiOperation(
@@ -41,7 +42,7 @@ public class CoreWalletController {
     @PutMapping("/update/{userId}")
     public ResponseEntity updateWalletPayPassword(@PathVariable("userId") Long updateUserId,
                                                   @RequestParam String changePayPassword) {
-        return ResponseEntity.success(coreWalletService.updateWalletPayPasswordById(updateUserId, changePayPassword, 0L));
+        return ResponseEntity.success(coreWalletService.updateWalletPayPasswordById(updateUserId, changePayPassword, RequestHolder.getUserId()));
     }
 
     @ApiOperation(
@@ -50,7 +51,8 @@ public class CoreWalletController {
     @PutMapping("/add/balance/{updateUserId}")
     public ResponseEntity updateCoreWalletAddBalance(@PathVariable("updateUserId") Long updateUserId,
                                                      @Valid @RequestBody CoreWalletBalanceChangeDTO coreWalletBalanceChangeDto) {
-        return ResponseEntity.success(coreWalletService.updateCoreWalletAddBalance(updateUserId, coreWalletBalanceChangeDto, 0L));
+        return ResponseEntity.success(coreWalletService.updateCoreWalletAddBalance(
+                updateUserId, coreWalletBalanceChangeDto, RequestHolder.getUserId()));
     }
 
     @ApiOperation(
@@ -59,7 +61,8 @@ public class CoreWalletController {
     @PutMapping("/add/locking/balance/{updateUserId}")
     public ResponseEntity updateCoreWalletAddLockingBalance(@PathVariable("updateUserId") Long updateUserId,
                                                             @Valid @RequestBody CoreWalletLockingBalanceChangeDTO coreWalletLockingBalanceChangeDto) {
-        return ResponseEntity.success(coreWalletService.updateCoreWalletAddLockingBalance(updateUserId, coreWalletLockingBalanceChangeDto, 0L));
+        return ResponseEntity.success(coreWalletService.updateCoreWalletAddLockingBalance(
+                updateUserId, coreWalletLockingBalanceChangeDto, RequestHolder.getUserId()));
     }
 
     @ApiOperation(
@@ -68,7 +71,8 @@ public class CoreWalletController {
     @PutMapping("/reduce/balance/{updateUserId}")
     public ResponseEntity updateCoreWalletReduceBalance(@PathVariable("updateUserId") Long updateUserId,
                                                         @Valid @RequestBody CoreWalletBalanceChangeDTO coreWalletBalanceChangeDto) {
-        return ResponseEntity.success(coreWalletService.updateCoreWalletReduceBalance(updateUserId, coreWalletBalanceChangeDto, 0L));
+        return ResponseEntity.success(coreWalletService.updateCoreWalletReduceBalance(
+                updateUserId, coreWalletBalanceChangeDto, RequestHolder.getUserId()));
     }
 
     @ApiOperation(
@@ -77,7 +81,8 @@ public class CoreWalletController {
     @PutMapping("/reduce/locking/balance/{updateUserId}")
     public ResponseEntity updateCoreWalletReduceLockingBalance(@PathVariable("updateUserId") Long updateUserId,
                                                                @Valid @RequestBody CoreWalletLockingBalanceChangeDTO coreWalletLockingBalanceChangeDto) {
-        return ResponseEntity.success(coreWalletService.updateCoreWalletReduceLockingBalance(updateUserId, coreWalletLockingBalanceChangeDto, 0L));
+        return ResponseEntity.success(coreWalletService.updateCoreWalletReduceLockingBalance(
+                updateUserId, coreWalletLockingBalanceChangeDto, RequestHolder.getUserId()));
     }
 
     @ApiOperation(

@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.assets.funds.constant.CoreFundsErrorEnum;
+import com.r7.core.assets.funds.constant.FundsChannelEnum;
+import com.r7.core.assets.funds.constant.FundsStatusEnum;
+import com.r7.core.assets.funds.constant.FundsTransactionStatusEnum;
 import com.r7.core.assets.funds.dto.CoreFundsDTO;
 import com.r7.core.assets.funds.mapper.CoreFundsMapper;
 import com.r7.core.assets.funds.model.CoreFunds;
@@ -71,15 +74,21 @@ public class CoreFundsServiceImpl extends ServiceImpl<CoreFundsMapper, CoreFunds
     }
 
     @Override
-    public IPage<CoreFundsPageVO> pageFundsByUserId(Long userId, Integer status, Integer transactionStatus, Integer channel, String startDate, String endDate, Integer pageNum, Integer pageSize) {
+    public IPage<CoreFundsPageVO> pageFundsByUserId(Long userId, FundsStatusEnum status, FundsTransactionStatusEnum transactionStatus, FundsChannelEnum channel, String startDate, String endDate, Integer pageNum, Integer pageSize) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(CoreFundsErrorEnum.FUNDS_USER_ID_IS_NULL));
         Page<CoreFundsPageVO> page = new Page<>(pageNum, pageSize);
-        return baseMapper.pageFundsByUserId(userId, status, transactionStatus, channel, startDate, endDate, page);
+        Integer statusValue = status.getValue();
+        Integer transactionStatusValue = transactionStatus.getValue();
+        Integer channelValue = channel.getValue();
+        return baseMapper.pageFundsByUserId(userId, statusValue, transactionStatusValue, channelValue, startDate, endDate, page);
     }
 
     @Override
-    public IPage<CoreFundsPageVO> pageFundsByAppId(Long appId, Integer status, Integer transactionStatus, Integer channel, String startDate, String endDate, Integer pageNum, Integer pageSize) {
+    public IPage<CoreFundsPageVO> pageFundsByAppId(Long appId, FundsStatusEnum status, FundsTransactionStatusEnum transactionStatus, FundsChannelEnum channel, String startDate, String endDate, Integer pageNum, Integer pageSize) {
         Page<CoreFundsPageVO> page = new Page<>(pageNum, pageSize);
-        return baseMapper.pageFundsByAppId(appId, status, transactionStatus, channel, startDate, endDate, page);
+        Integer statusValue = status.getValue();
+        Integer transactionStatusValue = transactionStatus.getValue();
+        Integer channelValue = channel.getValue();
+        return baseMapper.pageFundsByAppId(appId, statusValue, transactionStatusValue, channelValue, startDate, endDate, page);
     }
 }

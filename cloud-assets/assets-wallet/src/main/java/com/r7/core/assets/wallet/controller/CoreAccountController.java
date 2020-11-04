@@ -3,6 +3,7 @@ package com.r7.core.assets.wallet.controller;
 import com.r7.core.assets.wallet.dto.CoreAccountDTO;
 import com.r7.core.assets.wallet.service.CoreAccountService;
 import com.r7.core.assets.wallet.vo.CoreAccountVO;
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +31,7 @@ public class CoreAccountController {
     @PostMapping("")
     public ResponseEntity saveAccount(@Valid @RequestBody CoreAccountDTO coreAccountDto) {
         return ResponseEntity.success(coreAccountService
-                .saveCoreAccount(coreAccountDto, 0L, 0L, 0L));
+                .saveCoreAccount(coreAccountDto, RequestHolder.getAppId(), RequestHolder.getOrganId(), RequestHolder.getUserId()));
     }
 
     @ApiOperation(value = "根据用户id查询用户账户", response = CoreAccountVO.class)

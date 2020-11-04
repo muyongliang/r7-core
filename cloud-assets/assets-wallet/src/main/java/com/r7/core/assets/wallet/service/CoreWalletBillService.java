@@ -2,6 +2,8 @@ package com.r7.core.assets.wallet.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.r7.core.assets.wallet.constant.WalletBillStatusEnum;
+import com.r7.core.assets.wallet.constant.WalletBillTypeEnum;
 import com.r7.core.assets.wallet.dto.CoreWalletBillDTO;
 import com.r7.core.assets.wallet.model.CoreWalletBill;
 import com.r7.core.assets.wallet.vo.CoreWalletBillPageVO;
@@ -58,7 +60,7 @@ public interface CoreWalletBillService extends IService<CoreWalletBill> {
      * @param pageSize  每页条数
      * @return 返回查询结果
      */
-    IPage<CoreWalletBillPageVO> pageWalletBillByUserId(Long userId, Integer type, String source, Integer status,
+    IPage<CoreWalletBillPageVO> pageWalletBillByUserId(Long userId, WalletBillTypeEnum type, String source, WalletBillStatusEnum status,
                                                        String startDate, String endDate, Integer pageNum, Integer pageSize);
 
     /**
@@ -74,7 +76,7 @@ public interface CoreWalletBillService extends IService<CoreWalletBill> {
      * @param pageSize  每页条数
      * @return 返回查询结果
      */
-    IPage<CoreWalletBillPageVO> pageWalletBillByAppId(Long appId, Integer type, String source, Integer status,
+    IPage<CoreWalletBillPageVO> pageWalletBillByAppId(Long appId, WalletBillTypeEnum type, String source, WalletBillStatusEnum status,
                                                       String startDate, String endDate, Integer pageNum, Integer pageSize);
 
     /**

@@ -3,6 +3,8 @@ package com.r7.core.assets.wallet.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.r7.core.assets.wallet.constant.WalletBillStatusEnum;
+import com.r7.core.assets.wallet.constant.WalletBillTypeEnum;
 import com.r7.core.assets.wallet.constant.WalletErrorEnum;
 import com.r7.core.assets.wallet.dto.CoreWalletBillDTO;
 import com.r7.core.assets.wallet.mapper.CoreWalletBillMapper;
@@ -97,17 +99,21 @@ public class CoreWalletBillServiceImpl
     }
 
     @Override
-    public IPage<CoreWalletBillPageVO> pageWalletBillByUserId(Long userId, Integer type, String source, Integer status,
+    public IPage<CoreWalletBillPageVO> pageWalletBillByUserId(Long userId, WalletBillTypeEnum type, String source, WalletBillStatusEnum status,
                                                               String startDate, String endDate, Integer pageNum, Integer pageSize) {
         Page<CoreWalletBillPageVO> page = new Page<>(pageNum, pageSize);
-        return baseMapper.pageWalletBillByUserId(userId, type, source, status, startDate, endDate, page);
+        Integer typeValue = type.getValue();
+        Integer statusValue = status.getValue();
+        return baseMapper.pageWalletBillByUserId(userId, typeValue, source, statusValue, startDate, endDate, page);
     }
 
     @Override
-    public IPage<CoreWalletBillPageVO> pageWalletBillByAppId(Long appId, Integer type, String source, Integer status,
+    public IPage<CoreWalletBillPageVO> pageWalletBillByAppId(Long appId, WalletBillTypeEnum type, String source, WalletBillStatusEnum status,
                                                              String startDate, String endDate, Integer pageNum, Integer pageSize) {
         Page<CoreWalletBillPageVO> page = new Page<>(pageNum, pageSize);
-        return baseMapper.pageWalletBillByAppId(appId, type, source, status, startDate, endDate, page);
+        Integer typeValue = type.getValue();
+        Integer statusValue = status.getValue();
+        return baseMapper.pageWalletBillByAppId(appId, typeValue, source, statusValue, startDate, endDate, page);
     }
 
     @Override

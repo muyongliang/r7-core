@@ -2,6 +2,9 @@ package com.r7.core.assets.funds.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.r7.core.assets.funds.constant.FundsChannelEnum;
+import com.r7.core.assets.funds.constant.FundsStatusEnum;
+import com.r7.core.assets.funds.constant.FundsTransactionStatusEnum;
 import com.r7.core.assets.funds.dto.CoreFundsDTO;
 import com.r7.core.assets.funds.model.CoreFunds;
 import com.r7.core.assets.funds.vo.CoreFundsPageVO;
@@ -46,7 +49,7 @@ public interface CoreFundsService extends IService<CoreFunds> {
      * @param pageSize          总页数
      * @return 返回查询结果
      */
-    IPage<CoreFundsPageVO> pageFundsByUserId(Long userId, Integer status, Integer transactionStatus, Integer channel,
+    IPage<CoreFundsPageVO> pageFundsByUserId(Long userId, FundsStatusEnum status, FundsTransactionStatusEnum transactionStatus, FundsChannelEnum channel,
                                              String startDate, String endDate, Integer pageNum, Integer pageSize);
 
     /**
@@ -62,7 +65,7 @@ public interface CoreFundsService extends IService<CoreFunds> {
      * @param pageSize          总页数
      * @return 返回查询结果
      */
-    IPage<CoreFundsPageVO> pageFundsByAppId(Long appId, Integer status, Integer transactionStatus, Integer channel,
+    IPage<CoreFundsPageVO> pageFundsByAppId(Long appId, FundsStatusEnum status, FundsTransactionStatusEnum transactionStatus, FundsChannelEnum channel,
                                             String startDate, String endDate, Integer pageNum, Integer pageSize);
 
 }

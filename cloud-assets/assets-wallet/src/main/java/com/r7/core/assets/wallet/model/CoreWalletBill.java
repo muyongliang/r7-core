@@ -138,10 +138,10 @@ public class CoreWalletBill extends Model<CoreWalletBill> {
         coreWalletBillVo.setTransactionUserId(this.getTransactionUserId());
         coreWalletBillVo.setBusinessSn(this.getBusinessSn());
         coreWalletBillVo.setTransactionAmount(this.getTransactionAmount());
-        coreWalletBillVo.setCoreWalletBillType(this.getType());
+        coreWalletBillVo.setType(this.getType());
         coreWalletBillVo.setSource(this.getSource());
         coreWalletBillVo.setBalance(this.getBalance());
-        coreWalletBillVo.setType(this.getStatus());
+        coreWalletBillVo.setStatus(this.getStatus());
         coreWalletBillVo.setTransactionDate(this.getTransactionDate());
         coreWalletBillVo.setDescription(this.getDescription());
         coreWalletBillVo.setCreatedAt(this.getCreatedAt());

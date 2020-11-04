@@ -57,7 +57,7 @@ public class CoreFundsDTO {
     /**
      * 支付状态;-1交易失败，1交易成功，2待支付，3取消支付
      */
-    @ApiModelProperty(value = "支付状态", example = "-1交易失败，1交易成功，2待支付，3取消支付")
+    @ApiModelProperty(value = "支付状态", example = "，1交易成功，2交易失败，3待支付，4取消支付")
     @NotNull(message = "支付状态不能为空")
     private FundsStatusEnum status;
     /**

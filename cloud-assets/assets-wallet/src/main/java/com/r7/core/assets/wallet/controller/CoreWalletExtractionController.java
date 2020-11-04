@@ -4,6 +4,7 @@ import com.r7.core.assets.wallet.dto.CoreWalletExtractionSaveDTO;
 import com.r7.core.assets.wallet.dto.CoreWalletExtractionUpdateDTO;
 import com.r7.core.assets.wallet.service.CoreWalletExtractionService;
 import com.r7.core.assets.wallet.vo.CoreWalletExtractionVO;
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +33,7 @@ public class CoreWalletExtractionController {
     @PostMapping("")
     public ResponseEntity saveWalletExtraction(@Valid @RequestBody CoreWalletExtractionSaveDTO coreWalletExtractionSaveDto) {
         return ResponseEntity.success(coreWalletExtractionService
-                .saveWalletExtraction(coreWalletExtractionSaveDto, 0L, 0L, 0L));
+                .saveWalletExtraction(coreWalletExtractionSaveDto, RequestHolder.getAppId(), RequestHolder.getOrganId(), RequestHolder.getUserId()));
     }
 
     @ApiOperation(value = "根据id修改钱包提现明细", response = CoreWalletExtractionVO.class)
@@ -40,7 +41,7 @@ public class CoreWalletExtractionController {
     public ResponseEntity updateWalletExtraction(@PathVariable("id") Long id,
                                                  @Valid @RequestBody CoreWalletExtractionUpdateDTO coreWalletExtractionUpdateDto) {
         return ResponseEntity.success(coreWalletExtractionService
-                .updateWalletExtractionById(id, coreWalletExtractionUpdateDto, 0L, 0L, 0L));
+                .updateWalletExtractionById(id, coreWalletExtractionUpdateDto, RequestHolder.getAppId(), RequestHolder.getOrganId(), RequestHolder.getUserId()));
     }
 
     @ApiOperation(value = "根据id获取钱包提现明细", response = CoreWalletExtractionVO.class)
