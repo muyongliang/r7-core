@@ -593,7 +593,8 @@ public class RecordingSDK {
 
     void onConnectionStateChanged(int state, int reason) {
         for (RecordingEventHandler observer : recordingEventHandlers) {
-            observer.onConnectionStateChanged(CONNECTION_STATE_TYPE.values()[state], CONNECTION_CHANGED_REASON_TYPE.values()[reason]);
+//            sdk错误,ArrayIndexOutOfBoundsException
+            observer.onConnectionStateChanged(CONNECTION_STATE_TYPE.values()[state - 1], CONNECTION_CHANGED_REASON_TYPE.values()[reason]);
         }
     }
 

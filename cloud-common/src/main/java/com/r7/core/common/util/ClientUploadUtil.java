@@ -4,7 +4,6 @@ package com.r7.core.common.util;
 import okhttp3.*;
 
 import java.io.File;
-import java.net.URLEncoder;
 
 /**
  * @author muyongliang
@@ -20,7 +19,7 @@ public class ClientUploadUtil {
                         RequestBody.create(MediaType.parse("multipart/form-data"), new File(filePath)))
                 .build();
         Request request = new Request.Builder()
-                .url(URLEncoder.encode(url, "UTF-8"))
+                .url(url)
                 .post(requestBody)
                 .build();
 
