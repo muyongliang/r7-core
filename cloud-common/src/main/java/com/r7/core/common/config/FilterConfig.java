@@ -5,6 +5,8 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
+
 /**
  * 过滤器配置
  *
@@ -14,12 +16,12 @@ import org.springframework.context.annotation.Configuration;
 public class FilterConfig {
 
     @Bean
-    public FilterRegistrationBean registFilter() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
+    public FilterRegistrationBean<Filter> registFilter() {
+        FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<Filter>();
         registration.setFilter(new UserInfoFilter());
         registration.addUrlPatterns("/*");
         registration.setName("userInfoFilter");
-        registration.setOrder(1);
+        registration.setOrder(Integer.MAX_VALUE);
         return registration;
     }
 
