@@ -66,7 +66,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         // 普通用户使用电话号 & 系统用户登录账号
         UimUserDetailsVO uimUserDetailsVO = Option.of(baseMapper.findUserDetailsByLogin(loginName))
                 .getOrElse(uimSysUserService.findUserDetailsByLogin(loginName));
-        Option.of(uimUserDetailsVO).getOrElseThrow(() -> new UsernameNotFoundException(UimErrorEnum.USER_LOGIN_NAME_ERROR.getMessage()));
+        Option.of(uimUserDetailsVO).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_LOGIN_NAME_ERROR));
 
         // 添加角色
         List<String> listRoleCode = uimUserRoleService.listRoleCode(uimUserDetailsVO.getId());
