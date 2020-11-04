@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.enums.IEnum;
 
 /**
  * @author: zs
- * @description:
+ * @description: 钱包账单交易状态枚举
  * @date: 2020-11-02
  **/
 public enum WalletBillStatusEnum implements IEnum<Integer> {

@@ -65,7 +65,7 @@ public class CoreFundsVO {
     /**
      * 支付状态;-1交易失败，1交易成功，2待支付，3取消支付
      */
-    @ApiModelProperty(value = "支付状态", example = "-1交易失败，1交易成功，2待支付，3取消支付")
+    @ApiModelProperty(value = "支付状态", example = "1交易成功，2交易失败，3待支付，4取消支付")
     private FundsStatusEnum status;
     /**
      * 交易状态;1待支付2已支付3支付失败

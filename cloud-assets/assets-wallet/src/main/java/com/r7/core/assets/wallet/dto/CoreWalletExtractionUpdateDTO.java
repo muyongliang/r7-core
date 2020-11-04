@@ -50,9 +50,9 @@ public class CoreWalletExtractionUpdateDTO {
     @NotNull(message = "手续费不能为空")
     private Integer fee;
     /**
-     * 审核状态;-1审核驳回1待审核2审核中3审核通过
+     * 审核状态;1待审核2审核中3审核通过4审核驳回
      */
-    @ApiModelProperty(value = "审核状态", example = "1审核驳回1待审核2审核中3审核通过")
+    @ApiModelProperty(value = "审核状态", example = "1待审核2审核中3审核通过4审核驳回")
     @NotNull(message = "审核状态不能为空")
     private WalletExtractionStatusEnum status;
     /**

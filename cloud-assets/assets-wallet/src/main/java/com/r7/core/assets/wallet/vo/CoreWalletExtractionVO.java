@@ -66,9 +66,9 @@ public class CoreWalletExtractionVO {
     @ApiModelProperty("手续费")
     private Integer fee;
     /**
-     * 审核状态;-1审核驳回1待审核2审核中3审核通过
+     * 审核状态;1待审核2审核中3审核通过4审核驳回
      */
-    @ApiModelProperty(value = "审核状态", example = "1审核驳回1待审核2审核中3审核通过")
+    @ApiModelProperty(value = "审核状态", example = "1待审核2审核中3审核通过4审核驳回")
     private WalletExtractionStatusEnum status;
     /**
      * 提现进度状态;1提现审核中、2提现中、3提现失败、4提现成功
