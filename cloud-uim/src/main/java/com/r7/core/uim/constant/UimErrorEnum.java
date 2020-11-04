@@ -31,6 +31,7 @@ public enum UimErrorEnum implements IError {
     OAUTH_ORDER_UPDATE_ERROR("oauth_order_update_error", "认证订单修改失败"),
     OAUTH_SAVE_ERROR("oauth_save_error", "用户认证保存失败"),
     OAUTH_USER_ID_IS_Not_EXISTS("oauth_user_id_is_not_exists", "认证用户id不存在"),
+    OAUTH_USER_ID_IS_NULL("oauth_user_id_is_null", "认证用户id不能为null"),
 
     /**
      * 冻结

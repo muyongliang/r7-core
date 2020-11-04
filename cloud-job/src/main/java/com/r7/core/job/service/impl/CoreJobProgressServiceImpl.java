@@ -12,6 +12,7 @@ import com.r7.core.job.vo.CoreJobProgressVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -27,6 +28,7 @@ public class CoreJobProgressServiceImpl
         implements CoreJobProgressService {
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CoreJobProgressVO saveJobProgress(CoreJobProgressDTO coreJobProgressDto, Long userId) {
         log.info("新增用户任务进度：{}，操作人：{}，开始时间：{}", coreJobProgressDto, userId, new Date());
         CoreJobProgress coreJobProgress = new CoreJobProgress();
@@ -40,11 +42,12 @@ public class CoreJobProgressServiceImpl
         coreJobProgress.setUpdatedBy(userId);
         coreJobProgress.setUpdatedAt(new Date());
         baseMapper.insert(coreJobProgress);
-        log.info("新增用户任务进度：{}成功，开始时间：{}", coreJobProgressDto, userId, new Date());
+        log.info("新增用户任务进度传输实体：{}成功，操作人:{},操作时间：{}", coreJobProgressDto, userId, new Date());
         return coreJobProgress.toCoreJobProgressVo();
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CoreJobProgressVO updateJobById(Long id, CoreJobProgressDTO coreJobProgressDto, Long userId) {
         log.info("修改用户任务进度：{}，操作人：{}，修改内容：{}", id, userId, coreJobProgressDto);
         id = Option.of(id)
@@ -54,8 +57,12 @@ public class CoreJobProgressServiceImpl
         coreJobProgress.toCoreJobProgress(coreJobProgressDto);
         coreJobProgress.setUpdatedBy(userId);
         coreJobProgress.setUpdatedAt(new Date());
-        baseMapper.updateById(coreJobProgress);
-        log.info("修改用户任务进度：{}，操作人：{}，完成", id, userId, coreJobProgressDto);
+        boolean update = updateById(coreJobProgress);
+        if (!update) {
+            log.info("修改用户任务进度：{}失败，操作人：{}，完成", id, userId);
+            throw new BusinessException(JobErrorEnum.JOB_UPDATE_ERROR);
+        }
+        log.info("修改用户任务进度：{}成功，操作人：{}，完成", id, userId);
         return coreJobProgress.toCoreJobProgressVo();
     }
 

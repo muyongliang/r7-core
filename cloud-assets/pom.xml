@@ -12,8 +12,9 @@
     <artifactId>cloud-assets</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>assets-funds</module>
         <module>assets-integral</module>
+        <module>assets-wallet</module>
     </modules>
-
 
 </project>
