@@ -2,7 +2,7 @@ package com.r7.core.integral.controller;
 
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.web.ResponseEntity;
-import com.r7.core.integral.constant.FileErrorEnum;
+import com.r7.core.integral.FileErrorEnum;
 import com.r7.core.integral.model.CoreFileDO;
 import com.r7.core.integral.service.FileUploadService;
 import com.r7.core.integral.vo.FileUploadVO;

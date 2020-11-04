@@ -1,0 +1,42 @@
+server:
+  port: 8012
+  servlet:
+    context-path: /api
+
+
+spring:
+  datasource:
+    druid:
+      url: "jdbc:mysql://192.168.1.48:3306/core?seUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai"
+      username: "root"
+      password: "root.R7db@192.168.1.48"
+      driver-class-name: "com.mysql.cj.jdbc.Driver"
+
+  redis:
+    host: 192.168.1.48
+    port: 6379
+
+xxl:
+  job:
+    admin:
+      ### xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+      addresses: http://127.0.0.1:8080/xxl-job-admin
+    ### xxl-job executor address
+    executor:
+      appname: profit
+      address: ""
+      ip: ""
+      port: 9998
+      ### xxl-job log path
+      logpath: /data/applogs/xxl-job/jobhandler
+      ### xxl-job log retention days
+      logretentiondays: 30
+    ### xxl-job, access token
+    accessToken: ""
+logging:
+  config: classpath:logback-spring.xml
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  type-enums-package: com.r7.core.profit.constant
+

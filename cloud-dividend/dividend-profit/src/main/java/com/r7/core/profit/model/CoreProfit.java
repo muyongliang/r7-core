@@ -3,6 +3,8 @@ package com.r7.core.profit.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.profit.constant.CalculationStatusEnum;
+import com.r7.core.profit.constant.ProfitTypeEnum;
 import com.r7.core.profit.dto.CoreProfitDTO;
 import com.r7.core.profit.vo.CoreProfitVO;
 import io.swagger.annotations.ApiModel;
@@ -88,7 +90,7 @@ public class CoreProfit extends Model<CoreProfit> {
      * 计算状态 1未计算2已计算
      */
     @ApiModelProperty(value="计算状态 1未计算2已计算")
-    private Integer status;
+    private CalculationStatusEnum status;
 
     /**
      * 分润比例
@@ -100,7 +102,7 @@ public class CoreProfit extends Model<CoreProfit> {
      * 分润类型 1权益商品2游戏分润
      */
     @ApiModelProperty(value="分润类型 1权益商品2游戏分润")
-    private Integer type;
+    private ProfitTypeEnum type;
 
     /**
      * 日期 yyyyMMdd

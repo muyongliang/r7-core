@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * @author wutao
  * @Description 代理层级接口
@@ -30,7 +32,7 @@ public class CoreProxyController {
 
     @ApiOperation(value = "新增层级", response = CoreProxyVO.class)
     @PostMapping("")
-    public ResponseEntity saveUimResource(@RequestBody CoreProxyDTO coreProxyDTO) {
+    public ResponseEntity saveUimResource(@Valid @RequestBody CoreProxyDTO coreProxyDTO) {
         return ResponseEntity.success(coreProxyService.saveCoreProxy(coreProxyDTO,1L));
     }
 
