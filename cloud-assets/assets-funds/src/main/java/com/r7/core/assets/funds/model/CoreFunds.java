@@ -135,7 +135,7 @@ public class CoreFunds extends Model<CoreFunds> {
         coreFundsVo.setId(this.getId());
         coreFundsVo.setAppId(this.getAppId());
         coreFundsVo.setInOrderSn(this.getInOrderSn());
-        coreFundsVo.setOutOrderSn(this.getUserId());
+        coreFundsVo.setOutOrderSn(this.getOutOrderSn());
         coreFundsVo.setOrganId(this.getOrganId());
         coreFundsVo.setPayLink(this.getPayLink());
         coreFundsVo.setAmount(this.getAmount());
