@@ -72,5 +72,4 @@ public class UimSysUserDTO {
     private Integer del;
 
 
-
 }

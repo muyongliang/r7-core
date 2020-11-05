@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 /**
  * @Author muyongliang
- * @Date 2020/9/28 10:38
- * @Description 公共配置模块启动类
+ * @date 2020/9/28 10:38
+ * @description 公共配置模块启动类
  */
 @SpringBootApplication(scanBasePackages = {"com.r7.core"})
 @MapperScan("com.r7.core.setting.mapper")

@@ -1,0 +1,39 @@
+server:
+  port: 8099
+  undertow:
+    io-threads: "50"
+    worker-threads: "100"
+  servlet:
+    context-path: /api
+
+spring:
+  servlet:
+    multipart:
+      max-request-size: 1024MB
+      max-file-size: 1024MB
+
+  datasource:
+    druid:
+      url: "jdbc:mysql://192.168.1.48:3306/core?seUnicode=true&characterEncoding=UTF-8&useSSL=false"
+      username: "root"
+      password: "root.R7db@192.168.1.48"
+      driver-class-name: "com.mysql.cj.jdbc.Driver"
+
+  redis:
+    host: 192.168.1.48
+    port: 6379
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+
+minio:
+  endpoint: "https://192.168.1.49:9000"
+  access-key: admin
+  secret-key: admin123456
+
+
+
+logging:
+  level:
+    com.r7.core.resource.mapper: debug
+    com.alibaba.nacos: error

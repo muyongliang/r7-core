@@ -10,7 +10,8 @@ public interface RedisExpireService {
 
     /**
      * 设置有效期
-     * @param key 缓存的key
+     *
+     * @param key  缓存的key
      * @param time 有效时间
      * @param type 时间类型
      */

@@ -19,7 +19,7 @@ public class RedisExpireServiceImpl implements RedisExpireService {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public void setExpire(String key, long time,TimeUnit type) {
-        redisTemplate.expire(key,time, type);
+    public void setExpire(String key, long time, TimeUnit type) {
+        redisTemplate.expire(key, time, type);
     }
 }
