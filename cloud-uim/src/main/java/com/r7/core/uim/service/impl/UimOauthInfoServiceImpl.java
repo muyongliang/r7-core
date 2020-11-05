@@ -30,8 +30,10 @@ public class UimOauthInfoServiceImpl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean saveUimOauthInfo(Long userId, UimOauthInfoDTO uimOauthInfoDto, Long appId, Long organId) {
-        // todo 认证的操作人id是否是用户本身
         log.info("平台:{}下的组织:{}用户:{}认证信息保存，操作人id:{}。", appId, organId, userId, userId);
+        if (userId.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.OAUTH_INFO_USER_ID_LENGTH_INCORRECT);
+        }
         Long id = SnowflakeUtil.getSnowflakeId();
         UimOauthInfo uimOauthInfo = new UimOauthInfo();
         uimOauthInfo.setId(id);
@@ -53,6 +55,9 @@ public class UimOauthInfoServiceImpl
     @Override
     public UimOauthInfoVO getUimOauthInfoByUserId(Long userId) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
+        if (userId.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.OAUTH_INFO_USER_ID_LENGTH_INCORRECT);
+        }
         UimOauthInfo uimOauthInfo = Option.of(getOne(Wrappers.<UimOauthInfo>lambdaQuery().eq(UimOauthInfo::getUserId, userId)))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NOT_EXIST));
         return uimOauthInfo.toUimOauthInfoVo();

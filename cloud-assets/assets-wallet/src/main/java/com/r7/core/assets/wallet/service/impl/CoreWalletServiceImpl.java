@@ -42,6 +42,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
     public Boolean saveWallet(CoreWalletDTO coreWalletDto, Long userId) {
         Long walletUserId = coreWalletDto.getUserId();
         log.info("钱包新增传输实体:{},操作时间:{}创建钱包,操作者:{}", walletUserId, LocalDateTime.now(), userId);
+        int standard = 19;
+        if (walletUserId.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
+        }
         Long id = SnowflakeUtil.getSnowflakeId();
         CoreWallet coreWallet = new CoreWallet();
         String payPassword = passwordEncoder.encode(coreWalletDto.getPayPassword());
@@ -69,6 +73,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
     public Boolean updateWalletPayPasswordById(Long updateUserId, String changePayPassword, Long userId) {
         log.info("用户id:{},操作时间:{},操作者:{}", updateUserId, LocalDateTime.now(), userId);
         Option.of(updateUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_ID_IS_NULL));
+        int standard = 19;
+        if (updateUserId.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
+        }
         CoreWallet coreWallet = Option.of(getWalletChangeByUserId(updateUserId))
                 .getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NOT_EXISTS));
         Integer balance = coreWallet.getBalance();
@@ -101,6 +109,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
             Long updateUserId, CoreWalletBalanceChangeDTO coreWalletBalanceChangeDto, Long userId) {
         log.info("用户id:{},新增用户钱包余额信息:{},操作者:{}", updateUserId, coreWalletBalanceChangeDto, userId);
         Option.of(updateUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NULL));
+        int standard = 19;
+        if (updateUserId.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
+        }
         Option.of(updateUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NOT_EXISTS));
         CoreWallet coreWallet = getWalletChangeByUserId(updateUserId);
         String encoderPayPassword = coreWallet.getPayPassword();
@@ -142,6 +154,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
             Long updateUserId, CoreWalletLockingBalanceChangeDTO coreWalletLockingBalanceChangeDto, Long userId) {
         log.info("新增用户钱包不可用余额实体:{},操作时间:{},操作者:{}", coreWalletLockingBalanceChangeDto, LocalDateTime.now(), userId);
         Option.of(updateUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NULL));
+        int standard = 19;
+        if (updateUserId.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
+        }
         CoreWallet coreWallet = Option.of(getWalletChangeByUserId(updateUserId))
                 .getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NOT_EXISTS));
         String encoderPayPassword = coreWallet.getPayPassword();
@@ -186,6 +202,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
             Long updateUserId, CoreWalletBalanceChangeDTO coreWalletBalanceChangeDto, Long userId) {
         log.info("用户id:{}, 减少用户钱包总余额实体:{},操作时间:{},操作者:{}", updateUserId, coreWalletBalanceChangeDto, LocalDateTime.now(), userId);
         Option.of(updateUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NULL));
+        int standard = 19;
+        if (updateUserId.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
+        }
         Option.of(updateUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NOT_EXISTS));
         CoreWallet coreWallet = getWalletChangeByUserId(updateUserId);
         Integer oldBalance = coreWallet.getBalance();
@@ -227,6 +247,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
             Long updateUserId, CoreWalletLockingBalanceChangeDTO coreWalletLockingBalanceChangeDto, Long userId) {
         log.info("用户id:{}, 钱包不可用余额修改实体:{},操作修改,操作时间:{},操作者:{}", updateUserId, coreWalletLockingBalanceChangeDto, LocalDateTime.now(), userId);
         Option.of(updateUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NULL));
+        int standard = 19;
+        if (updateUserId.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
+        }
         Option.of(updateUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NOT_EXISTS));
         CoreWallet coreWallet = getWalletChangeByUserId(updateUserId);
         Integer balance = coreWallet.getBalance();
@@ -266,6 +290,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
     @Override
     public CoreWalletVO getWalletByUserId(Long userId) {
         userId = Option.of(userId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.USER_ID_IS_NULL));
+        int standard = 19;
+        if (userId.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
+        }
         return Option.of(getOne(Wrappers.<CoreWallet>lambdaQuery()
                 .select(CoreWallet::getId, CoreWallet::getUserId,
                         CoreWallet::getBalance, CoreWallet::getLockingBalance)
@@ -276,6 +304,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
     @Override
     public Integer getWalletBalanceByUserId(Long userId) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.USER_ID_IS_NULL));
+        int standard = 19;
+        if (userId.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
+        }
         return Option.of(getOne(Wrappers.<CoreWallet>lambdaQuery()
                 .select(CoreWallet::getBalance)
                 .eq(CoreWallet::getUserId, userId)))
@@ -285,6 +317,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
     @Override
     public CoreWallet getWalletChangeByUserId(Long userId) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NULL));
+        int standard = 19;
+        if (userId.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
+        }
         CoreWallet coreWallet = Option.of(getOne(Wrappers.<CoreWallet>lambdaQuery().eq(CoreWallet::getUserId, userId)))
                 .getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_IS_NOT_EXISTS));
         return coreWallet;
@@ -292,6 +328,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
 
     @Override
     public CoreWalletVO getWalletById(Long id) {
+        int standard = 19;
+        if (id.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
+        }
         CoreWallet coreWallet = Option.of(getOne(Wrappers.<CoreWallet>lambdaQuery()
                 .select(CoreWallet::getId, CoreWallet::getUserId,
                         CoreWallet::getBalance, CoreWallet::getLockingBalance)

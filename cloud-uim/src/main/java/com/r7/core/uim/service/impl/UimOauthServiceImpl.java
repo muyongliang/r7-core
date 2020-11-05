@@ -45,6 +45,10 @@ public class UimOauthServiceImpl extends ServiceImpl<UimOauthServiceMapper, UimO
         Long oauthOrderId = uimOauthDto.getOauthOrderId();
         log.info("平台:{}中的组织:{}用户:{}新增认证，操作人:{}。", appId, organId, oauthUserId, userId);
         Option.of(uimOauthOrderService.getUimOauthOrderById(oauthOrderId)).getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_ORDER_IS_NOT_EXISTS));
+        String str = oauthUserId.toString();
+        if (str.length() != 19) {
+            throw new BusinessException(UimErrorEnum.OAUTH_SERVICE_USER_ID_LENGTH_INCORRECT);
+        }
         Long id = SnowflakeUtil.getSnowflakeId();
         UimOauth uimOauth = new UimOauth();
         uimOauth.setId(id);
@@ -66,6 +70,10 @@ public class UimOauthServiceImpl extends ServiceImpl<UimOauthServiceMapper, UimO
     @Override
     public List<UimOauthVO> listUimOauth(Long userId) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_USER_ID_IS_NULL));
+        String str = userId.toString();
+        if (str.length() != 19) {
+            throw new BusinessException(UimErrorEnum.OAUTH_SERVICE_USER_ID_LENGTH_INCORRECT);
+        }
         Option.of(uimUserService.getUserById(userId)).getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_USER_ID_IS_Not_EXISTS));
         List<UimOauth> uimOauthList = list(Wrappers.<UimOauth>lambdaQuery()
                 .select(UimOauth::getId, UimOauth::getUserId,

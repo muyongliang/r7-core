@@ -74,6 +74,9 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
         log.info("修改任务id:{}，操作人{}，修改内容：{}", id, userId, coreJobStatusDto);
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_ID_IS_NULL));
+        if (id.toString().length() != 19) {
+            throw new BusinessException(JobErrorEnum.JOB_ID_LENGTH_IS_INCORRECT);
+        }
         CoreJob coreJob = Option.of(baseMapper.selectById(id))
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_IS_NOT_EXISTS));
         coreJob.toCoreJobStatusVo(coreJobStatusDto);
@@ -94,6 +97,10 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
 
     @Override
     public CoreJobVO findJobById(Long id) {
+        Option.of(id).getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_ID_IS_NULL));
+        if (id.toString().length() != 19) {
+            throw new BusinessException(JobErrorEnum.JOB_ID_LENGTH_IS_INCORRECT);
+        }
         CoreJobVO coreJobVo = new CoreJobVO();
         CoreJob coreJob = baseMapper.selectById(id);
         BeanUtils.copyProperties(coreJob, coreJobVo);

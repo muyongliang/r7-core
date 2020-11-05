@@ -32,6 +32,9 @@ public class UimOauthOrderServiceImpl
                                              Long appId, Long organId, Long userId) {
         Long oauthUserId = uimOauthOrderDto.getUserId();
         log.info("平台:{}中的组织:{}用户:{}创建认证订单，操作人:{}。", appId, organId, oauthUserId, userId);
+        if (oauthUserId.toString() .length() != 19) {
+            throw new BusinessException(UimErrorEnum.OAUTH_ORDER_USER_ID_LENGTH_INCORRECT);
+        }
         Option.of(oauthUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_USER_ID_IS_Not_EXISTS));
         Long id = SnowflakeUtil.getSnowflakeId();
         UimOauthOrder uimOauthOrder = new UimOauthOrder();
@@ -59,6 +62,14 @@ public class UimOauthOrderServiceImpl
         Long oauthUserId = uimOauthOrderDto.getUserId();
         log.info("平台:{}中的组织:{}用户:{}修改认证订单，操作人:{}。", appId, organId, oauthUserId, userId);
         id = Option.of(id).getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_ORDER_ID_IS_NULL));
+
+        if (id.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.OAUTH_ORDER_ID_LENGTH_INCORRECT);
+        }
+        String str = oauthUserId.toString();
+        if (str.length() != 19) {
+            throw new BusinessException(UimErrorEnum.OAUTH_ORDER_USER_ID_LENGTH_INCORRECT);
+        }
         UimOauthOrder uimOauthOrder = Option.of(baseMapper.selectById(id))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_ORDER_IS_NOT_EXISTS));
         uimOauthOrder.toUimOauthOrder(uimOauthOrderDto);
@@ -76,6 +87,9 @@ public class UimOauthOrderServiceImpl
     @Override
     public UimOauthOrderVO getUimOauthOrderById(Long id) {
         id = Option.of(id).getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_ORDER_ID_IS_NULL));
+        if (id.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.OAUTH_ORDER_ID_LENGTH_INCORRECT);
+        }
         UimOauthOrder uimOauthOrder = Option.of(baseMapper.selectById(id))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_ORDER_IS_NOT_EXISTS));
         return uimOauthOrder.toUimOauthOrderVo();

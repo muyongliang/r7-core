@@ -33,6 +33,10 @@ public class CoreAccountServiceImpl extends ServiceImpl<CoreAccountMapper, CoreA
     public Boolean saveCoreAccount(CoreAccountDTO coreAccountDto, Long appId, Long organId, Long userId) {
         Long accountUserId = coreAccountDto.getUserId();
         log.info("平台:{}下组织:{}中用户:{}新增账户,操作者:{}", appId, organId, accountUserId, userId);
+        int standard = 19;
+        if (accountUserId.toString().length() != standard) {
+            throw new BusinessException(AccountErrorEnum.ACCOUNT_USER_ID_LENGTH_IS_INCORRECT);
+        }
         Long id = SnowflakeUtil.getSnowflakeId();
         CoreAccount coreAccount = new CoreAccount();
         coreAccount.setId(id);
@@ -55,6 +59,10 @@ public class CoreAccountServiceImpl extends ServiceImpl<CoreAccountMapper, CoreA
     @Override
     public List<CoreAccountVO> listAccountByUserId(Long userId) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(AccountErrorEnum.ACCOUNT_USER_ID_IS_NULL));
+        int standard = 19;
+        if (userId.toString().length() != standard) {
+            throw new BusinessException(AccountErrorEnum.ACCOUNT_USER_ID_LENGTH_IS_INCORRECT);
+        }
         List<CoreAccount> accountList = Option.of(list(Wrappers.<CoreAccount>lambdaQuery()
                 .select(CoreAccount::getId, CoreAccount::getAppId, CoreAccount::getOrganId,
                         CoreAccount::getUserId, CoreAccount::getAccount, CoreAccount::getChannel,

@@ -45,7 +45,7 @@ public class CoreFunds extends Model<CoreFunds> {
      * 外部订单号
      */
     @ApiModelProperty("外部订单号")
-    private Long outOrderSn;
+    private String outOrderSn;
     /**
      * 用户id
      */

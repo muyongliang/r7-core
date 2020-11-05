@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,12 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
         log.info("平台:{}对组织:{}中用户:{}绑定角色:{},操作用户:{}。", appId, organId, bindUserId, roleId, userId);
         Option.of(bindUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         Option.of(roleId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
+        if (bindUserId.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.USER_ID_LENGTH_IS_INCORRECT);
+        }
+        if (roleId.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.ROLE_ID_LENGTH_IS_INCORRECT);
+        }
         Option.of(uimUserService.getUserById(bindUserId))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NOT_EXIST));
         uimRoleService.getRoleById(roleId, appId, organId);
@@ -76,6 +83,13 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
         log.info("平台:{}对组织:{}中用户:{}解绑角色:{},操作用户:{}。", appId, organId, unBindUserId, roleId, userId);
         Option.of(roleId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
         Option.of(unBindUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
+        if (roleId.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.ROLE_ID_LENGTH_IS_INCORRECT);
+        }
+        if (unBindUserId.toString().length() != 19) {
+            log.info("角色id:{}长度校验结果:{},校验时间:{},操作人:{}", unBindUserId, "角色id长度不正确", LocalDateTime.now(), userId);
+            throw new BusinessException(UimErrorEnum.USER_ID_LENGTH_IS_INCORRECT);
+        }
         uimRoleService.getRoleById(roleId, appId, organId);
         UimUserRole uimUserRole = Option.of(getUimUserRoleByUserIdAndRoleId(unBindUserId, roleId))
                 .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ROLE_IS_EXISTS));
@@ -93,9 +107,19 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     public Boolean bindRoleByUserId(Long bindUserId, List<Long> roleIds, Long appId, Long organId, Long userId) {
         Option.of(bindUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         Option.of(roleIds).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
+        if (bindUserId.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.USER_ID_LENGTH_IS_INCORRECT);
+        }
         //先解绑所有再绑定
         unBindRoleByUserId(bindUserId, appId, organId, userId);
-        roleIds.forEach(x -> bindRoleByUserId(bindUserId, x, appId, organId, userId));
+        for (Long roleId : roleIds) {
+            int roleIdLength = roleId.toString().length();
+            if (roleIdLength != 19) {
+                log.info("角色id:{}长度校验结果:{},校验时间:{},操作人:{}", roleId, "角色id长度不正确", LocalDateTime.now(), userId);
+                throw new BusinessException(UimErrorEnum.ROLE_ID_LENGTH_IS_INCORRECT);
+            }
+            bindRoleByUserId(bindUserId, roleId, appId, organId, userId);
+        }
         return true;
     }
 
@@ -104,7 +128,15 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     public Boolean unBindRoleByUserId(Long unBindUserId, List<Long> roleIds, Long appId, Long organId, Long userId) {
         Option.of(unBindUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         Option.of(roleIds).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
-        roleIds.forEach(x -> unBindRoleByUserId(unBindUserId, x, appId, organId, userId));
+        if (unBindUserId.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.USER_ID_LENGTH_IS_INCORRECT);
+        }
+        roleIds.forEach(roleId -> {
+            if (roleId.toString().length() != 19) {
+                throw new BusinessException(UimErrorEnum.ROLE_ID_LENGTH_IS_INCORRECT);
+            }
+            unBindRoleByUserId(unBindUserId, roleId, appId, organId, userId);
+        });
         return true;
     }
 
@@ -113,6 +145,9 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     public Boolean unBindRoleByUserId(Long unBindUserId, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中用户:{}解绑所有角色, 操作用户:{}。", appId, organId, unBindUserId, userId);
         Option.of(unBindUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
+        if (unBindUserId.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.USER_ID_LENGTH_IS_INCORRECT);
+        }
         List<UimUserRole> uimUserRoleList =
                 list(Wrappers.<UimUserRole>lambdaQuery()
                         .select(UimUserRole::getId)
@@ -133,6 +168,9 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     @Override
     public List<UimUserRoleBindVO> listUimUserRole(Long userId, Long organId, Long appId) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
+        if (userId.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.USER_ID_LENGTH_IS_INCORRECT);
+        }
         List<UimUserRole> uimUserRoleList =
                 list(Wrappers.<UimUserRole>lambdaQuery()
                         .select(UimUserRole::getId)
@@ -166,6 +204,12 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     public UimUserRole getUimUserRoleByUserIdAndRoleId(Long userId, Long roleId) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         Option.of(roleId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.ROLE_ID_IS_NULL));
+        if (userId.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.USER_ID_LENGTH_IS_INCORRECT);
+        }
+        if (roleId.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.ROLE_ID_LENGTH_IS_INCORRECT);
+        }
         return getOne(Wrappers.<UimUserRole>lambdaQuery()
                 .eq(UimUserRole::getUserId, userId)
                 .eq(UimUserRole::getRoleId, roleId));
@@ -174,6 +218,9 @@ public class UimUserRoleServiceImpl extends ServiceImpl<UimUserRoleMapper, UimUs
     @Override
     public List<String> listRoleCode(Long userId) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
+        if (userId.toString().length() != 19) {
+            throw new BusinessException(UimErrorEnum.USER_ID_LENGTH_IS_INCORRECT);
+        }
         List<UimUserRole> uimUserRoleList =
                 list(Wrappers.<UimUserRole>lambdaQuery()
                         .select(UimUserRole::getId)

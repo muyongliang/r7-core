@@ -42,8 +42,16 @@ public class CoreWalletBillServiceImpl
     @Transactional(rollbackFor = Exception.class)
     public Boolean saveWalletBill(CoreWalletBillDTO coreWalletBillDto, Long appId, Long organId, Long userId) {
         Long billUserId = coreWalletBillDto.getUserId();
+        String businessSn = coreWalletBillDto.getBusinessSn();
         log.info("平台:{}对组织:{}中的用户:{}创建了钱包账单,操作人:{}。", appId, organId, billUserId, userId);
-
+        int standard = 19;
+        if (billUserId.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_BILL_USER_ID_LENGTH_INCORRECT);
+        }
+        //业务订单号是否需要校验长度
+        if (businessSn.length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_BILL_BUSINESS_SN_LENGTH_INCORRECT);
+        }
         Integer balance = coreWalletService.getWalletBalanceByUserId(billUserId);
 
         Long id = SnowflakeUtil.getSnowflakeId();
@@ -75,6 +83,10 @@ public class CoreWalletBillServiceImpl
     public CoreWalletBillVO updateWalletBillById(Long id, CoreWalletBillDTO coreWalletBillDto, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中的钱包账单:{}进行修改,操作人:{}。", appId, organId, id, userId);
         id = Option.of(id).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_BILL_ID_IS_NULL));
+        int standard = 19;
+        if (id.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_BILL_ID_LENGTH_IS_INCORRECT);
+        }
         CoreWalletBill coreWalletBill = Option.of(
                 baseMapper.selectById(id)).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_BILL_IS_NOT_EXISTS));
         coreWalletBill.toCoreWalletBill(coreWalletBillDto);
@@ -92,6 +104,10 @@ public class CoreWalletBillServiceImpl
     @Override
     public CoreWalletBillVO getWalletBillById(Long id) {
         Option.of(id).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_BILL_ID_IS_NULL));
+        int standard = 19;
+        if (id.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_BILL_ID_LENGTH_IS_INCORRECT);
+        }
         CoreWalletBillVO coreWalletBillVo = new CoreWalletBillVO();
         CoreWalletBill coreWalletBill = baseMapper.selectById(id);
         BeanUtils.copyProperties(coreWalletBill, coreWalletBillVo);
@@ -99,11 +115,26 @@ public class CoreWalletBillServiceImpl
     }
 
     @Override
-    public IPage<CoreWalletBillPageVO> pageWalletBillByUserId(Long userId, WalletBillTypeEnum type, String source, WalletBillStatusEnum status,
-                                                              String startDate, String endDate, Integer pageNum, Integer pageSize) {
+    public IPage<CoreWalletBillPageVO> pageWalletBillByUserId(Long userId, WalletBillTypeEnum type, String source,
+                                                              WalletBillStatusEnum status, String startDate,
+                                                              String endDate, Integer pageNum, Integer pageSize) {
+        int standard = 19;
+        if (userId.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_BILL_USER_ID_LENGTH_INCORRECT);
+        }
         Page<CoreWalletBillPageVO> page = new Page<>(pageNum, pageSize);
-        Integer typeValue = type.getValue();
-        Integer statusValue = status.getValue();
+        Integer typeValue;
+        if (type.getValue() == null) {
+            typeValue = 0;
+        } else {
+            typeValue = type.getValue();
+        }
+        Integer statusValue;
+        if (status.getValue() == null) {
+            statusValue = 0;
+        } else {
+            statusValue = status.getValue();
+        }
         return baseMapper.pageWalletBillByUserId(userId, typeValue, source, statusValue, startDate, endDate, page);
     }
 
@@ -111,8 +142,18 @@ public class CoreWalletBillServiceImpl
     public IPage<CoreWalletBillPageVO> pageWalletBillByAppId(Long appId, WalletBillTypeEnum type, String source, WalletBillStatusEnum status,
                                                              String startDate, String endDate, Integer pageNum, Integer pageSize) {
         Page<CoreWalletBillPageVO> page = new Page<>(pageNum, pageSize);
-        Integer typeValue = type.getValue();
-        Integer statusValue = status.getValue();
+        Integer typeValue;
+        if (type.getValue() == null) {
+            typeValue = 0;
+        } else {
+            typeValue = type.getValue();
+        }
+        Integer statusValue;
+        if (status.getValue() == null) {
+            statusValue = 0;
+        } else {
+            statusValue = status.getValue();
+        }
         return baseMapper.pageWalletBillByAppId(appId, typeValue, source, statusValue, startDate, endDate, page);
     }
 

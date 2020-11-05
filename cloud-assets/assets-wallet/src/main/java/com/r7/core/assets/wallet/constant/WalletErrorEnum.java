@@ -17,10 +17,10 @@ public enum WalletErrorEnum implements IError {
     WALLET_BILL_UPDATE_ERROR("wallet_bill_update_error", "钱包账单修改失败"),
     WALLET_BILL_ID_IS_NULL("wallet_bill_id_is_null", "钱包账单id不能为空"),
     WALLET_BILL_IS_NOT_EXISTS("wallet_bill_is_not_exists", "钱包账单不存在"),
+    WALLET_BILL_USER_ID_LENGTH_INCORRECT("wallet_bill_user_id_length_is_incorrect", "钱包账单用户id长度不正确"),
     WALLET_BALANCE_SHORTAGE("wallet_balance_shortage", "钱包余额不足"),
+    WALLET_BILL_BUSINESS_SN_LENGTH_INCORRECT("wallet_bill_business_sn_length_is_incorrect", "业务订单号长度不正确"),
 
-    WALLET_EXTRACTION_SAVE_ERROR("wallet_extraction_save_error", "钱包提现明细保存失败"),
-    WALLET_EXTRACTION_ID_IS_NULL("wallet_extraction_id_is_null", "钱包提现明细id不能为空"),
     /**
      * 钱包返回异常
      */
@@ -40,7 +40,9 @@ public enum WalletErrorEnum implements IError {
     WALLET_PAY_PASSWORD_UPDATE_ERROR("wallet_pay_password_update_error", "钱包密码修改错误"),
     WALLET_ID_IS_NOT_EXISTS("wallet_id_is_not_exists", "钱包id不存在"),
     WALLET_ID_IS_NULL("WALLET_ID_IS_NULL", "钱包用户id不能为空"),
-    WALLET_PAY_PASSWORD_ERROR("wallet_pay_password_error", "钱包密码错误");
+    WALLET_PAY_PASSWORD_ERROR("wallet_pay_password_error", "钱包密码错误"),
+    WALLET_BILL_ID_LENGTH_IS_INCORRECT("wallet_bill_id_length_is_incorrect", "钱包账单id长度不正确"),
+    WALLET_USER_ID_LENGTH_INCORRECT("wallet_user_id_length_incorrect", "钱包用户id长度不正确");
 
     /**
      * 错误码

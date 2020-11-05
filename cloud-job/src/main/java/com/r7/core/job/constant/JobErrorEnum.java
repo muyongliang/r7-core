@@ -16,7 +16,8 @@ public enum JobErrorEnum implements IError {
     JOB_PROGRESS_ID_IS_NULL("job_id_is_null", "任务进度id不能为空"),
     JOB_SAVE_ERROR("job_save_error", "任务保存失败"),
     JOB_UPDATE_ERROR("job_update_error", "任务修改失败"),
-    JOB_OFF_SHELF_ERROR("job_off_shelf_error", "结束时间大于开始时间");
+    JOB_OFF_SHELF_ERROR("job_off_shelf_error", "结束时间大于开始时间"),
+    JOB_ID_LENGTH_IS_INCORRECT("job_id_length_is_incorrect", "任务id长度不正确");
 
     /**
      * 错误码
