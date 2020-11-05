@@ -37,6 +37,38 @@ public interface UimUserService extends IService<UimUser> {
     UimUserVO updateUser(Long id, UimUserUpdateDTO uimUserUpdateDTO, Long userId);
 
     /**
+     * 修改头像
+     *
+     * @param id     用户ID
+     * @param avatar 用户修改后头像
+     * @return 算法修改
+     */
+    boolean updateUserAvatar(Long id, String avatar);
+
+
+    /**
+     * 换绑手机号
+     *
+     * @param id          用户ID
+     * @param phoneNumber 手机号
+     * @param code        手机验证码
+     * @return 是否成功
+     */
+    boolean bindUserPhone(Long id, Long phoneNumber, Long code);
+
+
+    /**
+     * 修改密码
+     *
+     * @param id          用户ID
+     * @param code        验证码
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
+     * @return
+     */
+    boolean updateUserPassword(Long id, Long code, String oldPassword, String newPassword);
+
+    /**
      * 根据用户id获取用户信息
      *
      * @param id 用户ID
@@ -85,7 +117,9 @@ public interface UimUserService extends IService<UimUser> {
 
     /**
      * 发送用户注册验证码
-     * @param phone 发送电话号
+     *
+     * @param phone        发送电话号
+     * @param templateCode 短信模板
      */
-    void sendSmsCode(Long phone);
+    void sendSmsCode(Long phone, String templateCode);
 }

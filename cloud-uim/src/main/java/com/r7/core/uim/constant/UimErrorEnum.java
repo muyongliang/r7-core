@@ -46,13 +46,14 @@ public enum UimErrorEnum implements IError {
     USER_CODE_IS_EXISTS("user_code_is_exists", "用户邀请码已存在"),
     USER_ID_IS_NULL("user_id_is_null", "用户ID不能为空。"),
     USER_UPDATE_ERROR("user_update_error", "用户修改失败。"),
+    USER_OLD_PASSWORD_ERROR("user_old_password_error", "旧密码输入错误。"),
     USER_DELETE_ERROR("user_delete_error", "用户删除失败。"),
     USER_SAVE_ERROR("user_save_error", "用户注册失败。"),
     USER_PHONE_EXISTS("user_phone_exists", "电话号已经存在。"),
     USER_PHONE_ERROR("user_phone_error", "请填写正确的手机号。"),
     USER_LOGIN_NAME_ERROR("user_login_name_error", "用户名或密码错误。"),
-    USER_SIGN_UP_SMS_SEND_ERROR("user_sign_up_sms_send_error","请一分钟后再次发送验证码。"),
-    USER_SIGN_UP_SMS_CODE_ERROR("user_sign_up_sms_code_error","验证码错误或已失效，请重新发送验证码。"),
+    USER_SIGN_UP_SMS_SEND_ERROR("user_sign_up_sms_send_error", "请一分钟后再次发送验证码。"),
+    USER_SIGN_UP_SMS_CODE_ERROR("user_sign_up_sms_code_error", "验证码错误或已失效，请重新发送验证码。"),
 
     /**
      * 用户角色

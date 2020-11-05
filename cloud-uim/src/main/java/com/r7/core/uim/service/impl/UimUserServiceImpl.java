@@ -154,6 +154,50 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
     }
 
     @Override
+    public boolean updateUserAvatar(Long id, String avatar) {
+        UimUser uimUser = Option.of(getById(id))
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_IS_NOT_EXISTS));
+        uimUser.setAvatar(avatar);
+        uimUser.setUpdatedBy(id);
+        uimUser.setUpdatedAt(new Date());
+        return updateById(uimUser);
+    }
+
+    @Override
+    public boolean bindUserPhone(Long id, Long phoneNumber, Long code) {
+        // 验证码校验
+        String smsCode = redisService.getKey(phoneNumber.toString());
+        if (smsCode == null || !smsCode.equals(code.toString())) {
+            throw new BusinessException(UimErrorEnum.USER_SIGN_UP_SMS_CODE_ERROR);
+        }
+        UimUser uimUser = Option.of(getById(id))
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_IS_NOT_EXISTS));
+        uimUser.setPhoneNumber(phoneNumber);
+        uimUser.setUpdatedBy(id);
+        uimUser.setUpdatedAt(new Date());
+        return updateById(uimUser);
+    }
+
+    @Override
+    public boolean updateUserPassword(Long id, Long code, String oldPassword, String newPassword) {
+        UimUser uimUser = Option.of(getById(id))
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_IS_NOT_EXISTS));
+        // 验证码校验
+        String smsCode = redisService.getKey(uimUser.getPhoneNumber().toString());
+        if (smsCode == null || !smsCode.equals(code.toString())) {
+            throw new BusinessException(UimErrorEnum.USER_SIGN_UP_SMS_CODE_ERROR);
+        }
+        if (!passwordEncoder.encode(oldPassword).equals(uimUser.getPassword())) {
+            throw new BusinessException(UimErrorEnum.USER_OLD_PASSWORD_ERROR);
+        }
+        uimUser.setPassword(passwordEncoder.encode(newPassword));
+        uimUser.setUpdatedBy(id);
+        uimUser.setUpdatedAt(new Date());
+        return updateById(uimUser);
+    }
+
+
+    @Override
     public UimUserVO getUserById(Long id) {
         UimUser uimUser = getOne(Wrappers.<UimUser>lambdaQuery()
                 .select(UimUser::getId, UimUser::getAvatar,
@@ -193,7 +237,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
     }
 
     @Override
-    public void sendSmsCode(Long phone) {
+    public void sendSmsCode(Long phone, String templateCode) {
         // 手机格式
         if (!ValidatorUtil.validatorPhoneNumber(phone)) {
             throw new BusinessException(UimErrorEnum.USER_PHONE_ERROR);
@@ -207,7 +251,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         Map<String, Object> map = Maps.newHashMapWithExpectedSize(1);
         String code = String.valueOf(Math.round((Math.random() + 1) * 100000));
         map.put("code", code);
-        smsService.sendSms(phoneNumber, "SMS_165215126", JSONUtil.toJsonStr(map));
+        smsService.sendSms(phoneNumber, templateCode, JSONUtil.toJsonStr(map));
         redisService.addValue(phoneNumber, code, 60, TimeUnit.SECONDS);
     }
 }
