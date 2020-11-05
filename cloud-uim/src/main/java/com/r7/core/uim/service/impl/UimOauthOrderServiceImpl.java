@@ -12,6 +12,7 @@ import com.r7.core.uim.vo.UimOauthOrderVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -26,10 +27,12 @@ public class UimOauthOrderServiceImpl
         extends ServiceImpl<UimOauthOrderMapper, UimOauthOrder> implements UimOauthOrderService {
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public UimOauthOrderVO saveUimOauthOrder(UimOauthOrderDTO uimOauthOrderDto,
                                              Long appId, Long organId, Long userId) {
         Long oauthUserId = uimOauthOrderDto.getUserId();
         log.info("平台:{}中的组织:{}用户:{}创建认证订单，操作人:{}。", appId, organId, oauthUserId, userId);
+        Option.of(oauthUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_USER_ID_IS_Not_EXISTS));
         Long id = SnowflakeUtil.getSnowflakeId();
         UimOauthOrder uimOauthOrder = new UimOauthOrder();
         uimOauthOrder.setId(id);
@@ -50,6 +53,7 @@ public class UimOauthOrderServiceImpl
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public UimOauthOrderVO updateUimOauthOrder(Long id, UimOauthOrderDTO uimOauthOrderDto,
                                                Long appId, Long organId, Long userId) {
         Long oauthUserId = uimOauthOrderDto.getUserId();

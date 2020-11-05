@@ -63,7 +63,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
         http.authorizeRequests()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
-                .anyRequest().authenticated();
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin()
+                .permitAll();
     }
 
 }

@@ -15,6 +15,7 @@ import com.r7.core.uim.vo.UimOauthVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class UimOauthServiceImpl extends ServiceImpl<UimOauthServiceMapper, UimO
     private UimOauthOrderService uimOauthOrderService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean saveUimOauth(UimOauthDTO uimOauthDto, Long appId, Long organId, Long userId) {
         Long oauthUserId = uimOauthDto.getUserId();
         uimUserService.getUserById(oauthUserId);
@@ -63,6 +65,7 @@ public class UimOauthServiceImpl extends ServiceImpl<UimOauthServiceMapper, UimO
 
     @Override
     public List<UimOauthVO> listUimOauth(Long userId) {
+        Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_USER_ID_IS_NULL));
         Option.of(uimUserService.getUserById(userId)).getOrElseThrow(() -> new BusinessException(UimErrorEnum.OAUTH_USER_ID_IS_Not_EXISTS));
         List<UimOauth> uimOauthList = list(Wrappers.<UimOauth>lambdaQuery()
                 .select(UimOauth::getId, UimOauth::getUserId,

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.profit.constant.CoreRecordIncomeEnum;
+import com.r7.core.profit.constant.IncomeEnum;
 import com.r7.core.profit.dto.CoreRecordIncomeDTO;
 import com.r7.core.profit.mapper.CoreRecordIncomeMapper;
 import com.r7.core.profit.model.CoreRecordIncome;
@@ -90,7 +91,7 @@ public class CoreRecordIncomeServiceImpl extends ServiceImpl<CoreRecordIncomeMap
     }
 
     @Override
-    public Page<CoreRecordIncomeVO> pageCoreRecordIncome(Integer status,
+    public Page<CoreRecordIncomeVO> pageCoreRecordIncome(IncomeEnum status,
                                                          Long userId,
                                                          Long appId,
                                                          Integer pageNum,
@@ -99,7 +100,7 @@ public class CoreRecordIncomeServiceImpl extends ServiceImpl<CoreRecordIncomeMap
         log.info("分页查询发放记录参数1：{}，参数二：{}，参数三：{}，参数四：{}，参数五：{}，开始时间：{}",
                 status,userId,appId,pageNum,pageSize,LocalDateTime.now());
 
-        Page<CoreRecordIncomeVO> page = baseMapper.pageCoreRecordIncome(status,userId,appId,
+        Page<CoreRecordIncomeVO> page = baseMapper.pageCoreRecordIncome(status.getValue(),userId,appId,
                 new Page(pageNum, pageSize));
 
         log.info("分页查询发放记录参数1：{}，参数二：{}，参数三：{}，参数四：{}，参数五：{}，结束时间：{}",
@@ -112,7 +113,7 @@ public class CoreRecordIncomeServiceImpl extends ServiceImpl<CoreRecordIncomeMap
 
         log.info("统计用户id的总金额：{}，平台id:{},开始时间：{}",userId,LocalDateTime.now());
         //根据用户id平台id把发放记录明细查出来
-        List<CoreRecordIncome> list  = getCoreRecordIncomeByUserId(userId,2);
+        List<CoreRecordIncome> list  = getCoreRecordIncomeByUserId(userId,IncomeEnum.ISSUED);
         //对发放金额进行统计
         int amount= list.stream().collect(Collectors.summingInt(CoreRecordIncome::getDistributionAmount));
         log.info("统计用户id的总金额：{}，平台id:{},结束时间：{}",userId,LocalDateTime.now());
@@ -124,7 +125,7 @@ public class CoreRecordIncomeServiceImpl extends ServiceImpl<CoreRecordIncomeMap
     public int countTotalIntegralByUserId(Long userId) {
 
         log.info("统计用户id的总积分：{}，平台id:{},开始时间：{}",userId,LocalDateTime.now());
-        List<CoreRecordIncome> list  = getCoreRecordIncomeByUserId(userId,2);
+        List<CoreRecordIncome> list  = getCoreRecordIncomeByUserId(userId,IncomeEnum.ISSUED);
         //对发放积分进行统计
         int integral= list.stream().mapToInt(CoreRecordIncome::getDistributionIntegral).sum();
         log.info("统计用户id的总积分：{}，平台id:{},结束时间：{}",userId,LocalDateTime.now());
@@ -133,7 +134,7 @@ public class CoreRecordIncomeServiceImpl extends ServiceImpl<CoreRecordIncomeMap
     }
 
     @Override
-    public List<CoreRecordIncome> getCoreRecordIncomeByUserId(Long userId, Integer status) {
+    public List<CoreRecordIncome> getCoreRecordIncomeByUserId(Long userId, IncomeEnum status) {
 
         List<CoreRecordIncome> list = Option.of(list(Wrappers.<CoreRecordIncome>lambdaQuery()
                 .select(CoreRecordIncome::getDistributionIntegral,
@@ -186,7 +187,7 @@ public class CoreRecordIncomeServiceImpl extends ServiceImpl<CoreRecordIncomeMap
     @Transactional(rollbackFor = Exception.class)
     @Override
     public CoreRecordIncomeVO updateCoreRecordIncomeStatusById(Long id, Long appId,
-                                                               Integer status ,
+                                                               IncomeEnum status ,
                                                                LocalDateTime distributionAt,
                                                                String description,
                                                                Integer incomeDate,
@@ -214,7 +215,7 @@ public class CoreRecordIncomeServiceImpl extends ServiceImpl<CoreRecordIncomeMap
     }
 
     @Override
-    public List<CoreRecordIncome> getAllCoreRecordIncomeByStatus(Integer status) {
+    public List<CoreRecordIncome> getAllCoreRecordIncomeByStatus(IncomeEnum status) {
 
         log.info("查询参数发放状态:{},开始时间：{}",status,LocalDateTime.now());
         List<CoreRecordIncome> list = Option.of(list(Wrappers.<CoreRecordIncome>lambdaQuery()
@@ -225,7 +226,8 @@ public class CoreRecordIncomeServiceImpl extends ServiceImpl<CoreRecordIncomeMap
                         CoreRecordIncome::getDistributionIntegral,
                         CoreRecordIncome::getCountNum,
                         CoreRecordIncome::getStatus,
-                        CoreRecordIncome::getDescription)
+                        CoreRecordIncome::getDescription,
+                        CoreRecordIncome::getDistributionAt)
                 .eq(CoreRecordIncome::getStatus,status).orderByAsc(CoreRecordIncome::getCreatedAt)))
                 .getOrNull();
         if (list.size() == 0) {
@@ -237,7 +239,7 @@ public class CoreRecordIncomeServiceImpl extends ServiceImpl<CoreRecordIncomeMap
     }
 
     @Override
-    public List<CoreRecordIncome> getCoreRecordIncomeByAppId(Long appId, Integer status) {
+    public List<CoreRecordIncome> getCoreRecordIncomeByAppId(Long appId, IncomeEnum status) {
 
         List<CoreRecordIncome> listCoreRecordIncome = Option.of(list(Wrappers.<CoreRecordIncome>lambdaQuery()
                 .select(CoreRecordIncome::getDistributionIntegral,CoreRecordIncome::getDistributionAmount,
@@ -253,14 +255,14 @@ public class CoreRecordIncomeServiceImpl extends ServiceImpl<CoreRecordIncomeMap
     }
     @Override
     public int countTotalAmountByAppId(Long appId) {
-        List<CoreRecordIncome> list  = getCoreRecordIncomeByAppId(appId,2);
+        List<CoreRecordIncome> list  = getCoreRecordIncomeByAppId(appId,IncomeEnum.ISSUED);
         int totalAmount= list.stream().mapToInt(CoreRecordIncome::getDistributionAmount).sum();
         return totalAmount;
     }
 
     @Override
     public int countTotalIntegralByAppId(Long appId) {
-        List<CoreRecordIncome> list  = getCoreRecordIncomeByAppId(appId,2);
+        List<CoreRecordIncome> list  = getCoreRecordIncomeByAppId(appId,IncomeEnum.ISSUED);
         int totalIntegral= list.stream().mapToInt(CoreRecordIncome::getDistributionIntegral).sum();
         return totalIntegral;
     }

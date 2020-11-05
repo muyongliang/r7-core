@@ -7,7 +7,18 @@ package com.r7.core.gateway.constant;
  */
 public class RedisConstant {
 
+    /**
+     * 资源角色
+     */
     public static final String REDIS_RESOURCE_ROLE_KEY = "AUTH:REDIS_RESOURCE_ROLE";
+    /**
+     * 所有保护资源
+     */
     public static final String REDIS_RESOURCE_KEY = "AUTH:REDIS_RESOURCE";
+
+    /**
+     * 用户冻结的资源
+     */
+    public static final String REDIS_CHILL_RESOURCE_KEY = "AUTH:REDIS_CHILL_RESOURCE";
 
 }
