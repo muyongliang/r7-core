@@ -49,7 +49,7 @@ public class CoreWalletBillServiceImpl
         if (billUserId.toString().length() != standard) {
             throw new BusinessException(WalletErrorEnum.WALLET_BILL_USER_ID_LENGTH_INCORRECT);
         }
-        //业务订单号是否需要校验长度
+        //todo 业务订单号是否需要校验长度
         if (businessSn.length() != standard) {
             throw new BusinessException(WalletErrorEnum.WALLET_BILL_BUSINESS_SN_LENGTH_INCORRECT);
         }
