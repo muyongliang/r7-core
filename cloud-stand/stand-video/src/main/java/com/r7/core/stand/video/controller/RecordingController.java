@@ -1,15 +1,14 @@
 package com.r7.core.stand.video.controller;
 
 import com.r7.core.common.util.SingleThreadPoolExecutor;
+import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.stand.video.service.RecordingService;
+import io.agora.media.RtcTokenBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -27,25 +26,28 @@ public class RecordingController {
     @Resource
     private RecordingService recordingService;
 
-    @ApiOperation(value = "开始认证录制")
+    @ApiOperation(value = "开始认证录制", response = String.class, notes = "data的值为录制视频的文件名")
     @PostMapping
-    public ResponseEntity createChannel(@RequestParam("appId") String appId,
-                                        @RequestParam("channel") String channel,
-                                        @RequestParam("channelKey") String channelKey,
+    public ResponseEntity createChannel(@RequestParam("channel") String channel,
                                         @RequestParam("uids") Integer... uids) {
+//        生成唯一文件名,用于上传文件和立刻返回
+        String fileName = SnowflakeUtil.getSnowflakeId().toString();
 //        异步录制视频
         SingleThreadPoolExecutor.INSTANCE.execute(() -> {
             try {
-                recordingService.createChannel(appId,
-                        channel,
-                        channelKey,
-                        uids);
+                recordingService.createChannel(fileName, channel, uids);
             } catch (Exception e) {
                 e.printStackTrace();
                 log.error(e.getMessage());
             }
         });
 
-        return ResponseEntity.success();
+        return ResponseEntity.success(fileName);
+    }
+
+    @ApiOperation(value = "获取录制token", response = String.class, notes = "data的值为token")
+    @GetMapping("/token")
+    public ResponseEntity token(@RequestParam("channel") String channel) {
+        return ResponseEntity.success(recordingService.generateToken(channel, RtcTokenBuilder.Role.Role_Publisher));
     }
 }

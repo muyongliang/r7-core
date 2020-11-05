@@ -6,6 +6,8 @@ import com.r7.core.stand.video.agora.AgoraRecordingEventHandler;
 import com.r7.core.stand.video.constant.RecordErrorEnum;
 import com.r7.core.stand.video.properties.AgoraProperties;
 import com.r7.core.stand.video.service.RecordingService;
+import io.agora.media.RtcTokenBuilder;
+import io.agora.media.RtcTokenBuilder.Role;
 import io.agora.recording.RecordingSDK;
 import io.agora.recording.common.Common;
 import io.agora.recording.common.RecordingConfig;
@@ -18,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Timer;
 
@@ -37,25 +42,19 @@ public class RecordingServiceImpl implements RecordingService {
     private String resourceAddress;
 
     @Override
-    public boolean createChannel(String appId, String channel, String channelKey, Integer... uids) throws Exception {
+    public boolean createChannel(String fileName, String channel, Integer... uids) throws Exception {
 //        新建sdk
         RecordingSDK recordingSDK = new RecordingSDK();
 //        配置回调处理类
         AgoraRecordingEventHandler agoraRecordingEventHandler = new AgoraRecordingEventHandler(recordingSDK);
-//        String appId = agoraProperties.getAppId();
-//        String appCertificate = agoraProperties.getAppCertificate();
-//        Integer expirationTimeInSeconds = agoraProperties.getExpirationTimeInSeconds();
-
-        //生成token
-//        RtcTokenBuilder token = new RtcTokenBuilder();
-//        int privilegeExpiredTs = (int) (System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
-//        String channelKey = token.buildTokenWithUid(appId, appCertificate, channel
-//        , agoraProperties.getServerUid(), RtcTokenBuilder.Role.Role_Subscriber, privilegeExpiredTs);
+        String appId = agoraProperties.getAppId();
+        String channelKey = generateToken(channel, Role.Role_Subscriber);
+//        设置录制config
         RecordingConfig recordingConfig = new RecordingConfig();
 //        系统配置参数
         recordingConfig.appliteDir = agoraProperties.getAppliteDir();
-//        recordingConfig.isMixingEnabled = agoraProperties.isMixingEnabled();
-        recordingConfig.isMixingEnabled = true;
+//        合流模式设置为true
+        recordingConfig.isMixingEnabled = agoraProperties.isMixingEnabled();
         recordingConfig.idleLimitSec = agoraProperties.getIdleLimitSec();
         if (StringUtils.isNotBlank(agoraProperties.getMixedVideoAudio())) {
             recordingConfig.mixedVideoAudio = Common.MIXED_AV_CODEC_TYPE.valueOf(agoraProperties.getMixedVideoAudio());
@@ -98,12 +97,28 @@ public class RecordingServiceImpl implements RecordingService {
         if (mp4 == null) {
             throw new BusinessException(RecordErrorEnum.VIDEO_NOT_EXIST);
         }
+//        上传到资源服务器的视频默认不加密,并且修改文件名为雪花id,保证能马上返回给前端文件名
         String url = resourceAddress + "?encrypted=false";
-        Response upload = ClientUploadUtil.upload(url, mp4.getAbsolutePath(), mp4.getName());
+//        修改文件名
+        Path mp4Path = mp4.toPath();
+        String s = mp4Path.getParent().toString() + fileName;
+        Files.move(mp4Path, Paths.get(s));
+        Response upload = ClientUploadUtil.upload(url, s, fileName);
         if (upload == null || 200 != upload.code()) {
             throw new BusinessException(RecordErrorEnum.FAILURE_UPLOAD_FILE);
         }
+        log.info("资源服务器响应为:{}", upload.toString());
         return true;
+    }
+
+    @Override
+    public String generateToken(String channel, RtcTokenBuilder.Role Role) {
+        Integer expirationTimeInSeconds = agoraProperties.getExpirationTimeInSeconds();
+        RtcTokenBuilder token = new RtcTokenBuilder();
+        int privilegeExpiredTs = (int) (System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
+        String channelKey = token.buildTokenWithUid(agoraProperties.getAppId(), agoraProperties.getAppCertificate(), channel
+                , agoraProperties.getServerUid(), Role, privilegeExpiredTs);
+        return channelKey;
     }
 
     private File getMP4(String path) {

@@ -29,10 +29,10 @@ mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
 
 agora:
-  appId: c02f35742ed94202b4b8fe2f91101da6
-  appCertificate: 6d900e3978e44155b4dc360546eaf67e
+  appId: b2fc1118e42c419da44802375a2508bd
+  appCertificate: 1a98cbaafff74b4eb6714a772c97a149
   # token过期时间
-  expirationTimeInSeconds: 360
+  expirationTimeInSeconds: 60*60*24
   # 设置空闲频道的超时退出时间。默认值为 300 秒。
   idleLimitSec: 3
   # true：启用混合录制  false：关闭混合录制
