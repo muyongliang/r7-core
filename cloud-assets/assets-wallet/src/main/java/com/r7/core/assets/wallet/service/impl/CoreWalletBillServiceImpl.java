@@ -44,6 +44,7 @@ public class CoreWalletBillServiceImpl
         Long billUserId = coreWalletBillDto.getUserId();
         String businessSn = coreWalletBillDto.getBusinessSn();
         log.info("平台:{}对组织:{}中的用户:{}创建了钱包账单,操作人:{}。", appId, organId, billUserId, userId);
+        Option.of(billUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NULL));
         int standard = 19;
         if (billUserId.toString().length() != standard) {
             throw new BusinessException(WalletErrorEnum.WALLET_BILL_USER_ID_LENGTH_INCORRECT);
@@ -83,9 +84,14 @@ public class CoreWalletBillServiceImpl
     public CoreWalletBillVO updateWalletBillById(Long id, CoreWalletBillDTO coreWalletBillDto, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中的钱包账单:{}进行修改,操作人:{}。", appId, organId, id, userId);
         id = Option.of(id).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_BILL_ID_IS_NULL));
+        Long updateUserId = coreWalletBillDto.getUserId();
+        Option.of(updateUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NULL));
         int standard = 19;
         if (id.toString().length() != standard) {
-            throw new BusinessException(WalletErrorEnum.WALLET_BILL_ID_LENGTH_IS_INCORRECT);
+            throw new BusinessException(WalletErrorEnum.WALLET_BILL_ID_LENGTH_INCORRECT);
+        }
+        if (updateUserId.toString().length() != standard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_BILL_ID_LENGTH_INCORRECT);
         }
         CoreWalletBill coreWalletBill = Option.of(
                 baseMapper.selectById(id)).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_BILL_IS_NOT_EXISTS));
@@ -106,10 +112,11 @@ public class CoreWalletBillServiceImpl
         Option.of(id).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_BILL_ID_IS_NULL));
         int standard = 19;
         if (id.toString().length() != standard) {
-            throw new BusinessException(WalletErrorEnum.WALLET_BILL_ID_LENGTH_IS_INCORRECT);
+            throw new BusinessException(WalletErrorEnum.WALLET_BILL_ID_LENGTH_INCORRECT);
         }
         CoreWalletBillVO coreWalletBillVo = new CoreWalletBillVO();
-        CoreWalletBill coreWalletBill = baseMapper.selectById(id);
+        CoreWalletBill coreWalletBill = Option.of(baseMapper.selectById(id))
+                .getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_ID_IS_NOT_EXISTS));
         BeanUtils.copyProperties(coreWalletBill, coreWalletBillVo);
         return coreWalletBillVo;
     }
@@ -118,19 +125,20 @@ public class CoreWalletBillServiceImpl
     public IPage<CoreWalletBillPageVO> pageWalletBillByUserId(Long userId, WalletBillTypeEnum type, String source,
                                                               WalletBillStatusEnum status, String startDate,
                                                               String endDate, Integer pageNum, Integer pageSize) {
+        Option.of(userId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NULL));
         int standard = 19;
         if (userId.toString().length() != standard) {
             throw new BusinessException(WalletErrorEnum.WALLET_BILL_USER_ID_LENGTH_INCORRECT);
         }
         Page<CoreWalletBillPageVO> page = new Page<>(pageNum, pageSize);
         Integer typeValue;
-        if (type.getValue() == null) {
+        if (type == null) {
             typeValue = 0;
         } else {
             typeValue = type.getValue();
         }
         Integer statusValue;
-        if (status.getValue() == null) {
+        if (status == null) {
             statusValue = 0;
         } else {
             statusValue = status.getValue();
@@ -143,13 +151,13 @@ public class CoreWalletBillServiceImpl
                                                              String startDate, String endDate, Integer pageNum, Integer pageSize) {
         Page<CoreWalletBillPageVO> page = new Page<>(pageNum, pageSize);
         Integer typeValue;
-        if (type.getValue() == null) {
+        if (type == null) {
             typeValue = 0;
         } else {
             typeValue = type.getValue();
         }
         Integer statusValue;
-        if (status.getValue() == null) {
+        if (status == null) {
             statusValue = 0;
         } else {
             statusValue = status.getValue();

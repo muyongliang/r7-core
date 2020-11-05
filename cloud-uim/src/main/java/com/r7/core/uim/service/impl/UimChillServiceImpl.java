@@ -19,6 +19,7 @@ import com.r7.core.uim.service.UimUserService;
 import com.r7.core.uim.vo.UimChillInfoVO;
 import com.r7.core.uim.vo.UimChillVO;
 import com.r7.core.uim.vo.UimResourceUrlVO;
+import com.r7.core.uim.vo.UimUserVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -66,14 +67,18 @@ public class UimChillServiceImpl extends ServiceImpl<UimChillMapper, UimChill> i
     public UimChillVO saveUimChill(UimChillSaveDTO uimChillSaveDto, Long appId, Long organId, Long userId) {
         Long chillUserId = uimChillSaveDto.getUserId();
         Long resourceId = uimChillSaveDto.getResourceId();
-        if (chillUserId.toString().length() != 19) {
+        Option.of(chillUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.CHILL_USER_ID_IS_NULL));
+        Option.of(resourceId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_ID_IS_NULL));
+        int standard = 19;
+        if (chillUserId.toString().length() != standard) {
             throw new BusinessException(UimErrorEnum.CHILL_USER_ID_LENGTH_INCORRECT);
         }
-        if (resourceId.toString().length() != 19) {
+        if (resourceId.toString().length() != standard) {
             throw new BusinessException(UimErrorEnum.CHILL_RESOURCE_ID_LENGTH_INCORRECT);
         }
         log.info("平台:{}对组织:{}中的用户{}资源:{}操作冻结,操作人：{}。", appId, organId, chillUserId, resourceId, userId);
-        uimUserService.getUserById(chillUserId);
+        Option.of(uimUserService.getUserById(chillUserId))
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NOT_EXIST));
         uimResourceService.getUimResourceById(resourceId, appId);
         Long id = SnowflakeUtil.getSnowflakeId();
         UimChill uimChill = new UimChill();
@@ -100,9 +105,14 @@ public class UimChillServiceImpl extends ServiceImpl<UimChillMapper, UimChill> i
         Long chillUserId = uimChillSaveListDTO.getUserId();
         log.info("平台:{}对组织:{}中的用户{}权限进行批量冻结,操作人：{}。", appId, organId, chillUserId, userId);
         Option.of(chillUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.CHILL_USER_ID_IS_NULL));
-        if (chillUserId.toString().length() != 19) {
+        int standard = 19;
+        if (chillUserId.toString().length() != standard) {
             throw new BusinessException(UimErrorEnum.CHILL_USER_ID_LENGTH_INCORRECT);
         }
+
+        Option.of(uimUserService.getUserById(chillUserId))
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NOT_EXIST));
+
         List<Long> resourceIds = uimChillSaveListDTO.getResourceIds();
         //解冻全部
         meltingUimChillById(chillUserId, appId, organId, userId);
@@ -114,9 +124,12 @@ public class UimChillServiceImpl extends ServiceImpl<UimChillMapper, UimChill> i
         //再冻结
         for (Long resourceId : resourceIds) {
             log.info("平台:{}对组织:{}中的用户{}权限进行批量冻结,操作人：{}。", appId, organId, chillUserId, userId);
-            if (resourceId.toString().length() != 19) {
+            Option.of(resourceId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.RESOURCE_ID_IS_NULL));
+            if (resourceId.toString().length() != standard) {
                 throw new BusinessException(UimErrorEnum.CHILL_RESOURCE_ID_LENGTH_INCORRECT);
             }
+            //引用方法已判断资源不存在
+            uimResourceService.getUimResourceById(resourceId, appId);
             uimChillSaveDTO.setResourceId(resourceId);
             saveUimChill(uimChillSaveDTO, appId, organId, userId);
         }
@@ -131,12 +144,14 @@ public class UimChillServiceImpl extends ServiceImpl<UimChillMapper, UimChill> i
     public Boolean meltingUimChillById(Long meltingUserId, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中的用户:{}进行解冻操作,操作人:{}", appId, organId, meltingUserId, userId);
         Option.of(meltingUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.CHILL_USER_ID_IS_NULL));
-        if (meltingUserId.toString().length() != 19) {
+        int standard = 19;
+        if (meltingUserId.toString().length() != standard) {
             throw new BusinessException(UimErrorEnum.CHILL_USER_ID_LENGTH_INCORRECT);
         }
+        List<UimChill> uimChillList = Option.of(list(Wrappers.<UimChill>lambdaQuery()
+                .select(UimChill::getId).eq(UimChill::getUserId, meltingUserId)))
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NOT_EXIST));
 
-        List<UimChill> uimChillList = list(Wrappers.<UimChill>lambdaQuery()
-                .select(UimChill::getId).eq(UimChill::getUserId, meltingUserId));
         if (uimChillList == null || uimChillList.size() == 0) {
             return true;
         }
@@ -145,7 +160,7 @@ public class UimChillServiceImpl extends ServiceImpl<UimChillMapper, UimChill> i
         boolean remove = removeByIds(ids);
         if (!remove) {
             log.info("平台:{}对组织:{}中的用户:{}进行解冻失败,操作人:{}", appId, organId, meltingUserId, userId);
-            throw new BusinessException(UimErrorEnum.CHILL_ID_IS_NOT_EXISTS);
+            throw new BusinessException(UimErrorEnum.CHILL_REMOVE_ERROR);
         }
         log.info("平台:{}对组织:{}中的用户:{}进行解冻成功,操作人:{}", appId, organId, meltingUserId, userId);
         return true;
@@ -154,14 +169,15 @@ public class UimChillServiceImpl extends ServiceImpl<UimChillMapper, UimChill> i
     @Override
     public List<UimChillVO> listChillByUserId(Long userId) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.CHILL_USER_ID_IS_NULL));
-        String str = userId.toString();
-        if (str.length() != 19) {
+        int standard = 19;
+        if (userId.toString().length() != standard) {
             throw new BusinessException(UimErrorEnum.CHILL_USER_ID_LENGTH_INCORRECT);
         }
-        List<UimChill> uimChillList = list(Wrappers.<UimChill>lambdaQuery()
+        List<UimChill> uimChillList = Option.of(list(Wrappers.<UimChill>lambdaQuery()
                 .select(UimChill::getId, UimChill::getUserId,
                         UimChill::getResourceId, UimChill::getDescription)
-                .in(UimChill::getUserId, userId));
+                .in(UimChill::getUserId, userId)))
+                .getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NOT_EXIST));
         if (uimChillList == null || uimChillList.size() == 0) {
             return null;
         }

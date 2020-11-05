@@ -37,6 +37,7 @@ public enum UimErrorEnum implements IError {
     OAUTH_ORDER_USER_ID_LENGTH_INCORRECT("oauth_order_user_id_length_is_incorrect", "认证订单用户id长度不正确"),
     OAUTH_ORDER_ID_LENGTH_INCORRECT("oauth_order_id_length_is_incorrect", "认证订单id长度不正确"),
     OAUTH_SERVICE_USER_ID_LENGTH_INCORRECT("oauth_service_user_id_length_is_incorrect", "认证服务用户id长度不正确"),
+    OAUTH_ORDER_USER_ID_IS_NULL("oauth_order_user_id_is_null", "认证订单用户id不能为空"),
 
     /**
      * 冻结
@@ -46,6 +47,7 @@ public enum UimErrorEnum implements IError {
     CHILL_USER_ID_IS_NULL("chill_user_id_is_null", "冻结用户id不能为空"),
     CHILL_USER_ID_LENGTH_INCORRECT("chill_user_id_length_is_incorrect", "冻结用户id长度不正确"),
     CHILL_RESOURCE_ID_LENGTH_INCORRECT("chill_resource_id_length_is_incorrect", "冻结资源id长度不正确"),
+    CHILL_REMOVE_ERROR("chill_remove_error", "冻结用户解绑失败"),
 
     /**
      * 用户
@@ -115,7 +117,7 @@ public enum UimErrorEnum implements IError {
     ROLE_SAVE_ERROR("role_save_error", "角色新增失败。"),
     ROLE_UPDATE_ERROR("role_update_error", "角色修改失败。"),
     ROLE_DELETE_ERROR("role_delete_error", "角色删除失败。"),
-    ROLE_ID_LENGTH_IS_INCORRECT("role_id_length_is_incorrect", "角色id长度不正确");
+    ROLE_ID_LENGTH_INCORRECT("role_id_length_is_incorrect", "角色id长度不正确");
 
     /**
      * 错误码

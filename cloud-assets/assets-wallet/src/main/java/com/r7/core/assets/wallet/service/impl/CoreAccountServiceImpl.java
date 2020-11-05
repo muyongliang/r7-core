@@ -33,6 +33,7 @@ public class CoreAccountServiceImpl extends ServiceImpl<CoreAccountMapper, CoreA
     public Boolean saveCoreAccount(CoreAccountDTO coreAccountDto, Long appId, Long organId, Long userId) {
         Long accountUserId = coreAccountDto.getUserId();
         log.info("平台:{}下组织:{}中用户:{}新增账户,操作者:{}", appId, organId, accountUserId, userId);
+        Option.of(accountUserId).getOrElseThrow(() -> new BusinessException(AccountErrorEnum.ACCOUNT_USER_ID_IS_NULL));
         int standard = 19;
         if (accountUserId.toString().length() != standard) {
             throw new BusinessException(AccountErrorEnum.ACCOUNT_USER_ID_LENGTH_IS_INCORRECT);

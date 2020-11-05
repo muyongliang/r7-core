@@ -41,14 +41,21 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
     @Transactional(rollbackFor = Exception.class)
     public Boolean saveWallet(CoreWalletDTO coreWalletDto, Long userId) {
         Long walletUserId = coreWalletDto.getUserId();
+        String originalPayPassword = coreWalletDto.getPayPassword();
         log.info("钱包新增传输实体:{},操作时间:{}创建钱包,操作者:{}", walletUserId, LocalDateTime.now(), userId);
+        Option.of(walletUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NULL));
         int standard = 19;
         if (walletUserId.toString().length() != standard) {
             throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
         }
+        int payPasswordStandard = 6;
+        if (originalPayPassword.length() != payPasswordStandard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_PAY_PASSWORD_LENGTH_INCORRECT);
+        }
+
         Long id = SnowflakeUtil.getSnowflakeId();
         CoreWallet coreWallet = new CoreWallet();
-        String payPassword = passwordEncoder.encode(coreWalletDto.getPayPassword());
+        String payPassword = passwordEncoder.encode(originalPayPassword);
         coreWallet.setId(id);
         String sign = RsaUtil.encryptByPublicKey("" + walletUserId + payPassword +
                 coreWalletDto.getBalance() + coreWalletDto.getLockingBalance(), RsaEnum.PUBLIC_KEY);
@@ -70,26 +77,38 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean updateWalletPayPasswordById(Long updateUserId, String changePayPassword, Long userId) {
+    public Boolean updateWalletPayPasswordById(Long updateUserId, String oldPayPassword, String changePayPassword, Long userId) {
         log.info("用户id:{},操作时间:{},操作者:{}", updateUserId, LocalDateTime.now(), userId);
         Option.of(updateUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_ID_IS_NULL));
         int standard = 19;
         if (updateUserId.toString().length() != standard) {
             throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
         }
+        int payPasswordStandard = 6;
+        if (oldPayPassword.length() != payPasswordStandard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_PAY_PASSWORD_LENGTH_INCORRECT);
+        }
+        if (changePayPassword.length() != payPasswordStandard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_PAY_PASSWORD_LENGTH_INCORRECT);
+        }
         CoreWallet coreWallet = Option.of(getWalletChangeByUserId(updateUserId))
                 .getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NOT_EXISTS));
         Integer balance = coreWallet.getBalance();
         Integer lockingBalance = coreWallet.getLockingBalance();
-        String oldPayPassword = coreWallet.getPayPassword();
-        String payPassword = passwordEncoder.encode(changePayPassword);
-        boolean result = RsaUtil.verify("" + updateUserId + oldPayPassword + balance + lockingBalance, coreWallet.getSign(), RsaEnum.PRIVATE_KEY);
+        //校验旧密码，加密新密码
+        String encoderPayPassword = passwordEncoder.encode(changePayPassword);
+        String oldEncoderPassword = coreWallet.getPayPassword();
+        boolean matches = passwordEncoder.matches(oldPayPassword, oldEncoderPassword);
+        if (!matches) {
+            throw new BusinessException(WalletErrorEnum.WALLET_PAY_PASSWORD_ERROR);
+        }
+        boolean result = RsaUtil.verify("" + updateUserId + oldEncoderPassword + balance + lockingBalance, coreWallet.getSign(), RsaEnum.PRIVATE_KEY);
         if (!result) {
             log.info("用户id:{},操作时间:{},操作者:{}", updateUserId, LocalDateTime.now(), userId);
             throw new BusinessException(WalletErrorEnum.WALLET_SIGN_ERROR);
         }
-        String sign = RsaUtil.encryptByPublicKey("" + updateUserId + "" + payPassword + "" + balance + "" + lockingBalance, RsaEnum.PUBLIC_KEY);
-        coreWallet.setPayPassword(payPassword);
+        String sign = RsaUtil.encryptByPublicKey("" + updateUserId + "" + encoderPayPassword + "" + balance + "" + lockingBalance, RsaEnum.PUBLIC_KEY);
+        coreWallet.setPayPassword(encoderPayPassword);
         coreWallet.setSign(sign);
         coreWallet.setUpdateBy(userId);
         coreWallet.setUpdateAt(new Date());
@@ -113,10 +132,13 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
         if (updateUserId.toString().length() != standard) {
             throw new BusinessException(WalletErrorEnum.WALLET_USER_ID_LENGTH_INCORRECT);
         }
-        Option.of(updateUserId).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NOT_EXISTS));
-        CoreWallet coreWallet = getWalletChangeByUserId(updateUserId);
+        CoreWallet coreWallet = Option.of(getWalletChangeByUserId(updateUserId)).getOrElseThrow(() -> new BusinessException(WalletErrorEnum.WALLET_USER_ID_IS_NOT_EXISTS));
         String encoderPayPassword = coreWallet.getPayPassword();
         String payPassword = coreWalletBalanceChangeDto.getPayPassword();
+        int payPasswordStandard = 6;
+        if (payPassword.length() != payPasswordStandard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_PAY_PASSWORD_LENGTH_INCORRECT);
+        }
         boolean matches = passwordEncoder.matches(payPassword, encoderPayPassword);
         if (!matches) {
             log.info("新增用户id:{}, 密码验证结果:{},操作者:{},操作时间:{}", updateUserId, "密码验证错误", userId, LocalDateTime.now());
@@ -164,6 +186,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
         String payPassword = coreWalletLockingBalanceChangeDto.getPayPassword();
         Integer balance = coreWallet.getBalance();
         Integer oldLockingBalance = coreWallet.getLockingBalance();
+        int payPasswordStandard = 6;
+        if (payPassword.length() != payPasswordStandard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_PAY_PASSWORD_LENGTH_INCORRECT);
+        }
         boolean matches = passwordEncoder.matches(payPassword, encoderPayPassword);
         if (!matches) {
             log.info("新增用户id:{}, 密码验证结果:{},操作者:{},操作时间:{}", updateUserId, "密码验证错误", userId, LocalDateTime.now());
@@ -212,6 +238,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
         Integer lockingBalance = coreWallet.getLockingBalance();
         String encoderPayPassword = coreWallet.getPayPassword();
         String payPassword = coreWalletBalanceChangeDto.getPayPassword();
+        int payPasswordStandard = 6;
+        if (payPassword.length() != payPasswordStandard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_PAY_PASSWORD_LENGTH_INCORRECT);
+        }
         boolean matches = passwordEncoder.matches(payPassword, encoderPayPassword);
         if (!matches) {
             log.info("新增用户id:{}, 密码验证结果:{},操作者:{},操作时间:{}", updateUserId, "密码验证错误", userId, LocalDateTime.now());
@@ -257,6 +287,10 @@ public class CoreWalletServiceImpl extends ServiceImpl<CoreWalletMapper, CoreWal
         Integer oldLockingBalance = coreWallet.getLockingBalance();
         String encoderPayPassword = coreWallet.getPayPassword();
         String payPassword = coreWalletLockingBalanceChangeDto.getPayPassword();
+        int payPasswordStandard = 6;
+        if (payPassword.length() != payPasswordStandard) {
+            throw new BusinessException(WalletErrorEnum.WALLET_PAY_PASSWORD_LENGTH_INCORRECT);
+        }
         boolean matches = passwordEncoder.matches(payPassword, encoderPayPassword);
         if (!matches) {
             log.info("新增用户id:{}, 密码验证结果:{},操作者:{},操作时间:{}", updateUserId, "密码验证错误", userId, LocalDateTime.now());

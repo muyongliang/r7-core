@@ -41,8 +41,9 @@ public enum WalletErrorEnum implements IError {
     WALLET_ID_IS_NOT_EXISTS("wallet_id_is_not_exists", "钱包id不存在"),
     WALLET_ID_IS_NULL("WALLET_ID_IS_NULL", "钱包用户id不能为空"),
     WALLET_PAY_PASSWORD_ERROR("wallet_pay_password_error", "钱包密码错误"),
-    WALLET_BILL_ID_LENGTH_IS_INCORRECT("wallet_bill_id_length_is_incorrect", "钱包账单id长度不正确"),
-    WALLET_USER_ID_LENGTH_INCORRECT("wallet_user_id_length_incorrect", "钱包用户id长度不正确");
+    WALLET_BILL_ID_LENGTH_INCORRECT("wallet_bill_id_length_is_incorrect", "钱包账单id长度不正确"),
+    WALLET_USER_ID_LENGTH_INCORRECT("wallet_user_id_length_incorrect", "钱包用户id长度不正确"),
+    WALLET_PAY_PASSWORD_LENGTH_INCORRECT("wallet_pay_password_length_incorrect", "钱包密码长度不正确");
 
     /**
      * 错误码

@@ -19,7 +19,8 @@ public enum WalletExtractionErrorEnum implements IError {
     WALLET_EXTRACTION_ID_IS_NULL("wallet_extraction_id_is_null", "钱包提现明细id不能为空"),
     WALLET_EXCEPTION_USER_ID_LENGTH_INCORRECT("wallet_exception_user_id_length_is_incorrect", "钱包提现明细用户id长度不正确"),
     WALLET_EXCEPTION_ID_LENGTH_IS_INCORRECT("wallet_exception_id_length_is_incorrect", "钱包提现明细id长度不正确"),
-    WALLET_EXCEPTION_OUT_ORDER_SN_LENGTH_IS_INCORRECT("wallet_exception_out_order_sn_length_is_incorrect", "钱包提现明细外部订单号长度不正确");
+    WALLET_EXCEPTION_OUT_ORDER_SN_LENGTH_IS_INCORRECT("wallet_exception_out_order_sn_length_is_incorrect", "钱包提现明细外部订单号长度不正确"),
+    WALLET_EXCEPTION_USER_ID_IS_NULL("wallet_exception_user_id_is_null", "钱包提现明细用户id不能为空");
 
     /**
      * 错误码

@@ -19,10 +19,10 @@ import javax.validation.Valid;
  * @description: 用户认证接口
  * @date : 2020-10-14
  */
-@Api(value = "/api/oauth", tags = {"用户认证接口"})
+@Api(value = "/api/user/oauth", tags = {"用户认证接口"})
 @Slf4j
 @RestController
-@RequestMapping("/oauth")
+@RequestMapping("/user/oauth")
 public class UimOauthController {
 
     @Resource
