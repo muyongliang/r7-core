@@ -58,7 +58,7 @@ public class CoreProfitController {
     @ApiOperation(value = "添加分润明细", response = CoreProfitVO.class)
     @PostMapping("")
     public ResponseEntity saveUimResource(@Valid @RequestBody CoreProfitDTO coreProfitDTO) {
-        return ResponseEntity.success(coreProfitService.saveCoreProfit(coreProfitDTO,2L));
+        return ResponseEntity.success(coreProfitService.saveCoreProfit(coreProfitDTO, 2L));
     }
 
     @ApiOperation(value = "核算待发放金额", response = Integer.class)
@@ -72,7 +72,7 @@ public class CoreProfitController {
 
 
     @ApiOperation(value = "核算待发放积分", response = Integer.class)
-    @PostMapping("/integral")
+    @PostMapping("/resource")
     public ResponseEntity settlementIntegral(@RequestParam Long userId,
                                              @RequestParam Long appId) {
         return ResponseEntity.success(coreProfitService.settlementIntegral(userId,appId

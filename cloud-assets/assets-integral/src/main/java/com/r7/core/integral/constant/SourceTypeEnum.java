@@ -41,7 +41,7 @@ public enum SourceTypeEnum implements IEnum<Integer> {
 
     private Integer sourceType;
 
-    SourceTypeEnum(Integer sourceType){
+    SourceTypeEnum(Integer sourceType) {
         this.sourceType = sourceType;
     }
 

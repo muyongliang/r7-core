@@ -20,10 +20,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 /**
- * 
- * @Description 积分详情实现类
  * @author wt
- * 
+ * @Description 积分详情实现类
  */
 @Slf4j
 @Service
@@ -40,7 +38,7 @@ public class CoreIntegralDetailServiceImpl extends ServiceImpl<CoreIntegralDetai
         CoreIntegralDetail coreIntegralDetail = new CoreIntegralDetail();
         coreIntegralDetail.toCoreIntegralDetailDTO(coreIntegralDetailDTO);
         Long id = SnowflakeUtil.getSnowflakeId();
-        coreIntegralDetail.setDetailedDate(Integer.valueOf(new SimpleDateFormat( "yyyyMMdd")
+        coreIntegralDetail.setDetailedDate(Integer.valueOf(new SimpleDateFormat("yyyyMMdd")
                 .format(System.currentTimeMillis())));
         coreIntegralDetail.setId(id);
         coreIntegralDetail.setAppId(appId);
@@ -49,7 +47,7 @@ public class CoreIntegralDetailServiceImpl extends ServiceImpl<CoreIntegralDetai
         coreIntegralDetail.setUpdateAt(LocalDateTime.now());
         coreIntegralDetail.setUpdateBy(userId);
         boolean saveCoreIntegralDetail = save(coreIntegralDetail);
-        if (!saveCoreIntegralDetail ) {
+        if (!saveCoreIntegralDetail) {
             log.info("新增积分详情失败：{}，平台ID：{}，操作者：{}，失败时间：{}");
             throw new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_DETAIL_SAVE_ERROR);
         }
@@ -62,12 +60,12 @@ public class CoreIntegralDetailServiceImpl extends ServiceImpl<CoreIntegralDetai
     @Override
     public CoreIntegralDetailVO getCoreIntegralDetailById(Long id, Long appId) {
         log.info("积分详情ID：{},平台ID：{},查询开始时间：{}",
-                id,appId,LocalDateTime.now());
+                id, appId, LocalDateTime.now());
         Option.of(id)
-                .getOrElseThrow(()-> new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_DETAIL_ID_IS_NOT_NULL));
+                .getOrElseThrow(() -> new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_DETAIL_ID_IS_NOT_NULL));
 
 
-        CoreIntegralDetail coreIntegralDetail=    Option.of(getOne(Wrappers.<CoreIntegralDetail>lambdaQuery()
+        CoreIntegralDetail coreIntegralDetail = Option.of(getOne(Wrappers.<CoreIntegralDetail>lambdaQuery()
                 .select(CoreIntegralDetail::getId,
                         CoreIntegralDetail::getAppId,
                         CoreIntegralDetail::getUserId,
@@ -79,12 +77,12 @@ public class CoreIntegralDetailServiceImpl extends ServiceImpl<CoreIntegralDetai
                         CoreIntegralDetail::getOperateType,
                         CoreIntegralDetail::getDetailedDate,
                         CoreIntegralDetail::getDescription)
-                .eq(CoreIntegralDetail::getId,id).eq(CoreIntegralDetail::getAppId,appId)))
+                .eq(CoreIntegralDetail::getId, id).eq(CoreIntegralDetail::getAppId, appId)))
                 .getOrElseThrow(() -> new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_DETAIL_IS_NOT_EXISTS));
 
 
         log.info("积分详情ID：{}，平台ID：{}，查询结束时间：{}",
-                id,appId,LocalDateTime.now());
+                id, appId, LocalDateTime.now());
         return coreIntegralDetail.toCoreIntegralDetailVO();
     }
 
@@ -96,8 +94,8 @@ public class CoreIntegralDetailServiceImpl extends ServiceImpl<CoreIntegralDetai
                                                                 Long pageNum,
                                                                 Long pageSize) {
 
-        return baseMapper.pageCoreIntegralDetailAll(businessCode,sourceType,appId,operateType,
-                new Page<>(pageNum,pageSize));
+        return baseMapper.pageCoreIntegralDetailAll(businessCode, sourceType, appId, operateType,
+                new Page<>(pageNum, pageSize));
     }
 
     @Override
@@ -107,10 +105,7 @@ public class CoreIntegralDetailServiceImpl extends ServiceImpl<CoreIntegralDetai
                                                                      Long pageNum, Long pageSize) {
 
 
-
-
-
-        return baseMapper.pageCoreIntegralDetailByUserId(userId,appId,operateType,sourceType,
-                new Page<>(pageNum,pageSize) );
+        return baseMapper.pageCoreIntegralDetailByUserId(userId, appId, operateType, sourceType,
+                new Page<>(pageNum, pageSize));
     }
 }

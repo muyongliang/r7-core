@@ -3,7 +3,6 @@ package com.r7.core.uim.controller;
 import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.uim.dto.UimOauthDTO;
-import com.r7.core.uim.model.UimOauth;
 import com.r7.core.uim.service.UimOauthService;
 import com.r7.core.uim.vo.UimOauthVO;
 import io.swagger.annotations.Api;

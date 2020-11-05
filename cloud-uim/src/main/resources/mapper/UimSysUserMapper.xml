@@ -4,7 +4,7 @@
 <mapper namespace="com.r7.core.uim.mapper.UimSysUserMapper">
     <select id="findUserDetailsByLogin" resultType="com.r7.core.uim.vo.UimUserDetailsVO">
         SELECT id, organ_id, app_id,user_name, login_name, password, status,del FROM uim_sys_user
-        WHERE  login_name =#{login}
+        WHERE login_name =#{login}
     </select>
 
     <select id="getUimRoleByUserId" resultType="com.r7.core.uim.vo.UimRoleVO">
@@ -36,7 +36,7 @@
         on role.id = userrole.role_id
         LEFT JOIN
         uim_role_resource roleresource
-        on	roleresource.role_id = role.id
+        on roleresource.role_id = role.id
         LEFT JOIN
         uim_resource resource
         on resource.id = roleresource.resource_id

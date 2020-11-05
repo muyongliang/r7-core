@@ -19,7 +19,7 @@
         <module>cloud-dividend</module>
         <module>cloud-stand</module>
         <module>cloud-trigger</module>
-        <module>cloud-integral</module>
+        <module>cloud-resource</module>
         <module>cloud-cache</module>
     </modules>
 
@@ -46,6 +46,11 @@
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
         <nimbus.version>8.9</nimbus.version>
         <minio.version>7.1.4</minio.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencies>
@@ -66,7 +71,7 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
 
-       <!--第三方工具包-->
+        <!--第三方工具包-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -110,6 +115,19 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencyManagement>
         <dependencies>
