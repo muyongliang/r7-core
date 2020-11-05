@@ -23,7 +23,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Timer;
 
 /**
@@ -67,7 +66,7 @@ public class RecordingServiceImpl implements RecordingService {
 
 
 //        自定义参数
-        String uidStr = Arrays.toString(uids).replace("[", "").replace("]", "");
+        String uidStr = uidToSubscribeString(uids);
         recordingConfig.subscribeVideoUids = uidStr;
         recordingConfig.subscribeAudioUids = uidStr;
 //        开始调用本地方法进行录制
@@ -101,7 +100,7 @@ public class RecordingServiceImpl implements RecordingService {
         String url = resourceAddress + "?encrypted=false";
 //        修改文件名
         Path mp4Path = mp4.toPath();
-        String s = mp4Path.getParent().toString() + fileName;
+        String s = mp4Path.getParent().toString() + File.separator + fileName;
         Files.move(mp4Path, Paths.get(s));
         Response upload = ClientUploadUtil.upload(url, s, fileName);
         if (upload == null || 200 != upload.code()) {
@@ -118,6 +117,7 @@ public class RecordingServiceImpl implements RecordingService {
         int privilegeExpiredTs = (int) (System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
         String channelKey = token.buildTokenWithUid(agoraProperties.getAppId(), agoraProperties.getAppCertificate(), channel
                 , agoraProperties.getServerUid(), Role, privilegeExpiredTs);
+        log.info("生成的token为:{}", channelKey);
         return channelKey;
     }
 
@@ -134,6 +134,16 @@ public class RecordingServiceImpl implements RecordingService {
             }
         }
         return null;
+    }
+
+    public String uidToSubscribeString(Integer... uid) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < uid.length - 1; i++) {
+            sb.append(uid[i]);
+            sb.append(',');
+        }
+        sb.append(uid[uid.length - 1]);
+        return sb.toString();
     }
 }
 

@@ -32,7 +32,7 @@ agora:
   appId: b2fc1118e42c419da44802375a2508bd
   appCertificate: 1a98cbaafff74b4eb6714a772c97a149
   # token过期时间
-  expirationTimeInSeconds: 60*60*24
+  expirationTimeInSeconds: 86400
   # 设置空闲频道的超时退出时间。默认值为 300 秒。
   idleLimitSec: 3
   # true：启用混合录制  false：关闭混合录制

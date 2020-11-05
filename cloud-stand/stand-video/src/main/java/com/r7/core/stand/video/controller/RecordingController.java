@@ -31,7 +31,8 @@ public class RecordingController {
     public ResponseEntity createChannel(@RequestParam("channel") String channel,
                                         @RequestParam("uids") Integer... uids) {
 //        生成唯一文件名,用于上传文件和立刻返回
-        String fileName = SnowflakeUtil.getSnowflakeId().toString();
+        String fileName = SnowflakeUtil.getSnowflakeId().toString() + ".mp4";
+        log.info("生成的文件名为:{}", fileName);
 //        异步录制视频
         SingleThreadPoolExecutor.INSTANCE.execute(() -> {
             try {
