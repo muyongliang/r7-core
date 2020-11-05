@@ -6,7 +6,6 @@ import com.r7.core.uim.dto.UimUserUpdateDTO;
 import com.r7.core.uim.dto.UserSignUpDTO;
 import com.r7.core.uim.model.UimUser;
 import com.r7.core.uim.vo.UimUserVO;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 用户服务层

@@ -15,6 +15,7 @@ import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -27,6 +28,7 @@ import java.util.Date;
 public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> implements CoreJobService {
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CoreJobVO saveJob(CoreJobDTO coreJobDto, Long appId, Long userId) {
         log.info("新增任务：{}，操作人{}，开始时间：{}", coreJobDto, userId, new Date());
         CoreJob coreJob = new CoreJob();
@@ -48,6 +50,7 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CoreJobVO updateJobById(Long id, CoreJobDTO coreJobDto, Long userId) {
         log.info("修改任务id：{}，操作人{}，修改内容：{}", id, userId, coreJobDto);
         id = Option.of(id)
@@ -66,6 +69,7 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CoreJobVO updateJobStatusById(Long id, CoreJobStatusDTO coreJobStatusDto, Long userId) {
         log.info("修改任务id:{}，操作人{}，修改内容：{}", id, userId, coreJobStatusDto);
         id = Option.of(id)

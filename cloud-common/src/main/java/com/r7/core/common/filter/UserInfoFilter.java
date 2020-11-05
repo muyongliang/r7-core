@@ -3,10 +3,8 @@ package com.r7.core.common.filter;
 import cn.hutool.json.JSONUtil;
 import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.model.UserInfo;
-import org.springframework.core.annotation.Order;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 

@@ -12,8 +12,8 @@ import java.util.Date;
 
 /**
  * @Author liang
- * @Date 2020/9/25 11:04
- * @Description 配置表实体类
+ * @date 2020/9/25 11:04
+ * @description 配置表实体类
  */
 @ApiModel(description = "公共配置信息")
 @TableName("core_setting")

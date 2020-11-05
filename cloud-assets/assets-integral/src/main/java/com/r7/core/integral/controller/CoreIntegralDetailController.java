@@ -29,7 +29,7 @@ public class CoreIntegralDetailController {
     @PostMapping("")
     public ResponseEntity saveCoreIntegralDetail(@Valid @RequestBody CoreIntegralDetailDTO coreIntegralDetailDTO) {
         return ResponseEntity.success(coreIntegralDetailService.saveCoreIntegralDetail(coreIntegralDetailDTO,
-                 0L,1L));
+                0L, 1L));
     }
 
     @ApiOperation(value = "根据id查询积分详情信息", response = CoreIntegralDetailVO.class)
@@ -42,14 +42,14 @@ public class CoreIntegralDetailController {
     @ApiOperation(value = "分页查询所有用户的积分详情记录信息", response = CoreIntegralDetailVO.class)
     @GetMapping("/page")
     public ResponseEntity pageCoreIntegralDetailAll(
-            @RequestParam(value = "businessCode",required = false) String businessCode,
-            @RequestParam(value = "sourceType",required = false)   Integer sourceType,
-            @RequestParam(value = "appId",required = false) Long appId,
-            @RequestParam(value = "operateType",required = false) Integer operateType,
-            @RequestParam(value = "pageNum",defaultValue = "1") Long pageNum,
-            @RequestParam(value = "pageSize",defaultValue = "2") Long pageSize) {
+            @RequestParam(value = "businessCode", required = false) String businessCode,
+            @RequestParam(value = "sourceType", required = false) Integer sourceType,
+            @RequestParam(value = "appId", required = false) Long appId,
+            @RequestParam(value = "operateType", required = false) Integer operateType,
+            @RequestParam(value = "pageNum", defaultValue = "1") Long pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "2") Long pageSize) {
         return ResponseEntity.success(coreIntegralDetailService.pageCoreIntegralDetailAll(
-                businessCode,sourceType,appId,operateType,pageNum,pageSize
+                businessCode, sourceType, appId, operateType, pageNum, pageSize
         ));
     }
 
@@ -58,17 +58,15 @@ public class CoreIntegralDetailController {
     public ResponseEntity pageCoreIntegralDetailByUserId(
 
             @PathVariable("userId") Long userId,
-            @RequestParam(value = "sourceType",required = false)   Integer sourceType,
-            @RequestParam(value = "appId",required = false) Long appId,
-            @RequestParam(value = "operateType",required = false) Integer operateType,
-            @RequestParam(value = "pageNum",defaultValue = "1") Long pageNum,
-            @RequestParam(value = "pageSize",defaultValue = "2") Long pageSize) {
+            @RequestParam(value = "sourceType", required = false) Integer sourceType,
+            @RequestParam(value = "appId", required = false) Long appId,
+            @RequestParam(value = "operateType", required = false) Integer operateType,
+            @RequestParam(value = "pageNum", defaultValue = "1") Long pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "2") Long pageSize) {
         return ResponseEntity.success(coreIntegralDetailService.pageCoreIntegralDetailByUserId(
-                userId,appId,operateType,sourceType,pageNum,pageSize
+                userId, appId, operateType, sourceType, pageNum, pageSize
         ));
     }
-
-
 
 
 }

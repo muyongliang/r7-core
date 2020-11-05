@@ -13,8 +13,8 @@ import javax.validation.Valid;
 
 /**
  * @Author liang
- * @Date 2020/9/27 11:26
- * @Description 公共配置接口
+ * @date 2020/9/27 11:26
+ * @description 公共配置接口
  */
 @Api(value = "/api/setting", tags = {"公共配置接口"})
 @RestController

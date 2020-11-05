@@ -62,7 +62,7 @@ public class UimChillServiceImpl extends ServiceImpl<UimChillMapper, UimChill> i
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public UimChillVO saveUimChill(UimChillSaveDTO uimChillSaveDto, Long appId, Long organId, Long userId) {
         Long chillUserId = uimChillSaveDto.getUserId();
         Long resourceId = uimChillSaveDto.getResourceId();
@@ -89,11 +89,12 @@ public class UimChillServiceImpl extends ServiceImpl<UimChillMapper, UimChill> i
 
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Boolean frostUimChill(UimChillSaveListDTO uimChillSaveListDTO, Long appId, Long organId, Long userId) {
         Long chillUserId = uimChillSaveListDTO.getUserId();
+        log.info("平台:{}对组织:{}中的用户{}权限进行批量冻结,操作人：{}。", appId, organId, chillUserId, userId);
+        Option.of(chillUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NOT_EXIST));
         List<Long> resourceIds = uimChillSaveListDTO.getResourceIds();
-
         //解冻全部
         meltingUimChillById(chillUserId, appId, organId, userId);
 
@@ -103,19 +104,23 @@ public class UimChillServiceImpl extends ServiceImpl<UimChillMapper, UimChill> i
         uimChillSaveDTO.setDescription(description);
         //再冻结
         for (Long resourceId : resourceIds) {
+            log.info("平台:{}对组织:{}中的用户{}权限进行批量冻结,操作人：{}。", appId, organId, chillUserId, userId);
             uimChillSaveDTO.setResourceId(resourceId);
             saveUimChill(uimChillSaveDTO, appId, organId, userId);
         }
         init();
+        log.info("平台:{}对组织:{}中的用户{}权限进行批量冻结操作成功,操作人：{}。", appId, organId, chillUserId, userId);
         return true;
     }
 
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Boolean meltingUimChillById(Long meltingUserId, Long appId, Long organId, Long userId) {
         log.info("平台:{}对组织:{}中的用户:{}进行解冻操作,操作人:{}", appId, organId, meltingUserId, userId);
-        List<UimChill> uimChillList = list(Wrappers.<UimChill>lambdaQuery().eq(UimChill::getUserId, meltingUserId));
+        Option.of(meltingUserId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
+        List<UimChill> uimChillList = list(Wrappers.<UimChill>lambdaQuery()
+                .select(UimChill::getId).eq(UimChill::getUserId, meltingUserId));
         if (uimChillList == null || uimChillList.size() == 0) {
             return true;
         }
@@ -132,6 +137,7 @@ public class UimChillServiceImpl extends ServiceImpl<UimChillMapper, UimChill> i
 
     @Override
     public List<UimChillVO> listChillByUserId(Long userId) {
+        Option.of(userId).getOrElseThrow(() -> new BusinessException(UimErrorEnum.USER_ID_IS_NULL));
         List<UimChill> uimChillList = list(Wrappers.<UimChill>lambdaQuery()
                 .select(UimChill::getId, UimChill::getUserId,
                         UimChill::getResourceId, UimChill::getDescription)

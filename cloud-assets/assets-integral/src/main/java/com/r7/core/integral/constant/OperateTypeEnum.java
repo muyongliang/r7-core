@@ -15,13 +15,12 @@ public enum OperateTypeEnum implements IEnum<Integer> {
     /**
      * 积分减少
      */
-    REDUCE(2)
-    ;
+    REDUCE(2);
 
 
-    private  Integer operateType;
+    private Integer operateType;
 
-    OperateTypeEnum(Integer operateType){
+    OperateTypeEnum(Integer operateType) {
         this.operateType = operateType;
     }
 

@@ -34,10 +34,10 @@ public class UimSysUserController {
     @ApiOperation(value = "系统用户新增", response = UimSysUserVO.class)
     @PostMapping("{code}")
     public ResponseEntity saveUimSysUser(@PathVariable("code") String code,
-            @Valid @RequestBody UimSysUserDTO uimSysUserDTO,
-                                     HttpServletRequest request) {
-        return ResponseEntity.success(uimSysUserService.saveUimSysUser(code,uimSysUserDTO,
-                request.getRemoteAddr(), RequestHolder.getAppId(), RequestHolder.getOrganId(),RequestHolder.getUserId()));
+                                         @Valid @RequestBody UimSysUserDTO uimSysUserDTO,
+                                         HttpServletRequest request) {
+        return ResponseEntity.success(uimSysUserService.saveUimSysUser(code, uimSysUserDTO,
+                request.getRemoteAddr(), RequestHolder.getAppId(), RequestHolder.getOrganId(), RequestHolder.getUserId()));
     }
 
 
@@ -51,7 +51,7 @@ public class UimSysUserController {
     @ApiOperation(value = "根据用户id删除系统用户信息", response = UimSysUserVO.class)
     @DeleteMapping("/{id}")
     public ResponseEntity removeUimSysUserById(@PathVariable Long id) {
-        return ResponseEntity.success(uimSysUserService.removeUimSysUserById(id,RequestHolder.getUserId()));
+        return ResponseEntity.success(uimSysUserService.removeUimSysUserById(id, RequestHolder.getUserId()));
     }
 
     @ApiOperation(value = "根据id查询系统用户角色", response = UimRoleVO.class)
@@ -73,28 +73,28 @@ public class UimSysUserController {
     public ResponseEntity updateUimSysUserById(@PathVariable Long id,
                                                @Valid @RequestBody UimSysUserUpdateDTO uimSysUserUpdateDTO) {
         return ResponseEntity.success(uimSysUserService.updateUimSysUserById(
-                id,uimSysUserUpdateDTO,RequestHolder.getUserId()));
+                id, uimSysUserUpdateDTO, RequestHolder.getUserId()));
     }
 
 
     @ApiOperation(value = "分页查询系统用户信息", response = UimResourceVO.class)
     @GetMapping("/page")
-    public ResponseEntity pageUimSysUserByCondition(@RequestParam(value = "search",required = false) String search,
-                                                    @RequestParam(value = "appId",required = false) Long appId,
-                                                    @RequestParam(value = "organId",required = false) Long organId,
-                                                    @RequestParam(value = "branchId",required = false) Long branchId,
-                                                    @RequestParam(defaultValue  = "1",value = "pageNum") int pageNum,
-                                                    @RequestParam(defaultValue = "2",value = "pageSize")int pageSize) {
+    public ResponseEntity pageUimSysUserByCondition(@RequestParam(value = "search", required = false) String search,
+                                                    @RequestParam(value = "appId", required = false) Long appId,
+                                                    @RequestParam(value = "organId", required = false) Long organId,
+                                                    @RequestParam(value = "branchId", required = false) Long branchId,
+                                                    @RequestParam(defaultValue = "1", value = "pageNum") int pageNum,
+                                                    @RequestParam(defaultValue = "2", value = "pageSize") int pageSize) {
         return ResponseEntity.success(uimSysUserService.pageUimSysUserByCondition(search,
-                appId,organId,branchId,pageNum,pageSize));
+                appId, organId, branchId, pageNum, pageSize));
     }
 
     @ApiOperation(value = "根据id查询修改系统用户状态", response = UimResourceVO.class)
     @PutMapping("/status/{id}")
     public ResponseEntity updateUimSysUserStatusById(@PathVariable Long id,
-                                               @RequestParam Integer status) {
+                                                     @RequestParam Integer status) {
         return ResponseEntity.success(uimSysUserService.updateUimSysUserStatusById(
-                id,status,RequestHolder.getUserId()));
+                id, status, RequestHolder.getUserId()));
     }
 
 
