@@ -29,7 +29,7 @@ public class UimOauthDTO {
     /**
      * 认证类型 1实名认证，2视频认证，3电子签认证
      */
-    @ApiModelProperty("认证类型")
+    @ApiModelProperty(value = "认证类型", example = "1实名认证，2视频认证，3电子签认证")
     @NotNull(message = "认证类型不能为空")
     private Integer type;
     /**

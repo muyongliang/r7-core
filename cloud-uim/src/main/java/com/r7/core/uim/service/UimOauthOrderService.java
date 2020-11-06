@@ -2,6 +2,7 @@ package com.r7.core.uim.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.r7.core.uim.dto.UimOauthOrderDTO;
+import com.r7.core.uim.dto.UimOauthOrderUpdateDTO;
 import com.r7.core.uim.model.UimOauthOrder;
 import com.r7.core.uim.vo.UimOauthOrderVO;
 
@@ -27,18 +28,19 @@ public interface UimOauthOrderService extends IService<UimOauthOrder> {
     /**
      * 修改认证订单
      *
-     * @param id               订单id
-     * @param uimOauthOrderDto 认证订单传输实体
-     * @param appId            平台id
-     * @param organId          组织id
-     * @param userId           操作人id
+     * @param id                     订单id
+     * @param uimOauthOrderUpdateDto 认证订单修改传输实体
+     * @param appId                  平台id
+     * @param organId                组织id
+     * @param userId                 操作人id
      * @return 返回修改结果
      */
-    UimOauthOrderVO updateUimOauthOrder(Long id, UimOauthOrderDTO uimOauthOrderDto,
+    UimOauthOrderVO updateUimOauthOrder(Long id, UimOauthOrderUpdateDTO uimOauthOrderUpdateDto,
                                         Long appId, Long organId, Long userId);
 
     /**
      * 根据id查询认证订单信息
+     *
      * @param id 认证订单id
      * @return 返回查询结果
      */

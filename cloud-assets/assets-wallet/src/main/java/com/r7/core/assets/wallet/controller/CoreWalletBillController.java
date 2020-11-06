@@ -68,7 +68,7 @@ public class CoreWalletBillController {
 
     @ApiOperation(value = "根据平台id和交易来源分页展示钱包账单", response = CoreWalletBillPageVO.class)
     @GetMapping("/page")
-    public ResponseEntity pageAppIdWalletBillByType(@RequestParam(value = "type", required = false) WalletBillTypeEnum type,
+    public ResponseEntity pageWalletBillByAppId(@RequestParam(value = "type", required = false) WalletBillTypeEnum type,
                                                     @RequestParam(value = "source", required = false) String source,
                                                     @RequestParam(value = "status", required = false) WalletBillStatusEnum status,
                                                     @RequestParam(value = "startDate", required = false) String startDate,

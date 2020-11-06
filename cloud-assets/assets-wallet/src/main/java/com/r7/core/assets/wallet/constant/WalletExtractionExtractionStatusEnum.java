@@ -15,7 +15,7 @@ public enum WalletExtractionExtractionStatusEnum implements IEnum<Integer> {
     /**
      * 已到账
      */
-    Has_arrived(2),
+    HAS_ARRIVED(2),
     /**
      * 提现失败
      */
