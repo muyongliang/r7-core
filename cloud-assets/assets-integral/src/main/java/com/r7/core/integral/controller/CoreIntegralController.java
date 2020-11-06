@@ -33,13 +33,13 @@ public class CoreIntegralController {
     }
 
     @ApiOperation(value = "增加积分", response = CoreIntegralVO.class)
-    @PutMapping("/add")
+    @PutMapping("/increase")
     public ResponseEntity updateCoreIntegralAddTotal(@Valid @RequestBody CoreIntegralChangeDTO oreIntegralChangeDTO) {
         return ResponseEntity.success(coreIntegralService
                 .updateCoreIntegralAddTotal(oreIntegralChangeDTO, 0L, 2L));
     }
 
-    @ApiOperation(value = "增加积分", response = CoreIntegralVO.class)
+    @ApiOperation(value = "减少积分", response = CoreIntegralVO.class)
     @PutMapping("/reduce")
     public ResponseEntity updateCoreIntegralReduceTotal(@Valid @RequestBody CoreIntegralChangeDTO oreIntegralChangeDTO) {
 
@@ -63,7 +63,7 @@ public class CoreIntegralController {
     }
 
 
-    @ApiOperation(value = "根据用户积分信息id查询积分信息", response = CoreIntegralVO.class)
+    @ApiOperation(value = "分页查询积分信息", response = CoreIntegralVO.class)
     @GetMapping("/page")
     public ResponseEntity pageCoreIntegralPage(
             @RequestParam(value = "userId", required = false) Long userId,

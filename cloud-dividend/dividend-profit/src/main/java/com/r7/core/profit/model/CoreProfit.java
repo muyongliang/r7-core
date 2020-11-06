@@ -151,7 +151,6 @@ public class CoreProfit extends Model<CoreProfit> {
         this.setAppId(coreProfitDTO.getAppId());
         this.setPlanId(coreProfitDTO.getPlanId());
         this.setUserId(coreProfitDTO.getUserId());
-        this.setRecordIncomeId(coreProfitDTO.getRecordIncomeId());
         this.setOrderId(coreProfitDTO.getOrderId());
         this.setLevel(coreProfitDTO.getLevel());
         this.setAmount(coreProfitDTO.getAmount());

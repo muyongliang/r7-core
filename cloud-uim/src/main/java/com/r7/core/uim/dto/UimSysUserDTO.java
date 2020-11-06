@@ -1,5 +1,7 @@
 package com.r7.core.uim.dto;
 
+import com.r7.core.uim.constant.UimSysUserDelEnum;
+import com.r7.core.uim.constant.UimSysUserStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -37,8 +39,7 @@ public class UimSysUserDTO {
      * 头像
      */
     @ApiModelProperty("头像")
-    @NotBlank(message = "头像不能为空")
-    private String avatar;
+    private String avatar ;
     /**
      * 电话
      */
@@ -51,12 +52,7 @@ public class UimSysUserDTO {
     @ApiModelProperty("邮箱")
     @NotBlank(message = "邮箱不能为空")
     private String email;
-    /**
-     * 状态;0正常，1冻结，2注销
-     */
-    @NotNull(message = "状态不能为空")
-    @ApiModelProperty(value = "状态", example = "0")
-    private Integer status;
+
     /**
      * 账户密码
      */
@@ -64,12 +60,6 @@ public class UimSysUserDTO {
     @NotBlank(message = "账户密码不能为空")
     private String password;
 
-    /**
-     * 删除;1未删除，2删除(注销)
-     */
-    @NotNull(message = "删除状态不能为空")
-    @ApiModelProperty("删除状态")
-    private Integer del;
 
 
 }

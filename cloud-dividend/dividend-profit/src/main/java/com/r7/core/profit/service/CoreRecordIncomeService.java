@@ -145,4 +145,12 @@ public interface CoreRecordIncomeService extends IService<CoreRecordIncome>{
      * @return 统计结果
      */
     int countTotalIntegralByAppId(Long appId);
+
+
+    /**
+     * 验证id长度是不是19位
+     * @param id id值
+     * @return 验证结果
+     */
+    boolean checkIdLength(Long id);
 }

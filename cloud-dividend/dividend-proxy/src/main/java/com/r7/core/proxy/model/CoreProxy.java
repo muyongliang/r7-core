@@ -3,6 +3,7 @@ package com.r7.core.proxy.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.proxy.constant.ProxyTypeEnum;
 import com.r7.core.proxy.dto.CoreProxyDTO;
 import com.r7.core.proxy.dto.CoreProxyUpdateDTO;
 import com.r7.core.proxy.vo.CoreProxyNodeVO;
@@ -60,7 +61,7 @@ public class CoreProxy extends Model<CoreProxy> {
      * 层级类型 销售代/其他
      */
     @ApiModelProperty(value="层级类型 销售代/其他")
-    private Integer type;
+    private ProxyTypeEnum type;
 
     /**
      * 当前层级 用户的当前层级
@@ -93,10 +94,7 @@ public class CoreProxy extends Model<CoreProxy> {
     private LocalDateTime updatedAt;
 
     public void toCoreProxyUpdateDTO(CoreProxyUpdateDTO coreProxyUpdateDTO){
-        this.setPId(coreProxyUpdateDTO.getPId());
-        this.setUserId(coreProxyUpdateDTO.getUserId());
         this.setOrganId(coreProxyUpdateDTO.getOrganId());
-        this.setLevel(coreProxyUpdateDTO.getLevel());
         this.setType(coreProxyUpdateDTO.getType());
 
     }

@@ -2,6 +2,8 @@ package com.r7.core.uim.controller;
 
 import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
+import com.r7.core.uim.constant.UimSysUserDelEnum;
+import com.r7.core.uim.constant.UimSysUserStatusEnum;
 import com.r7.core.uim.dto.UimSysUserDTO;
 import com.r7.core.uim.dto.UimSysUserUpdateDTO;
 import com.r7.core.uim.service.UimSysUserService;
@@ -19,7 +21,7 @@ import javax.validation.Valid;
 
 /**
  * @author wt
- * @Description
+ * @Description 系统用户接口
  */
 @Slf4j
 @Api(value = "/api/sys", tags = {"系统用户接口"})
@@ -41,12 +43,27 @@ public class UimSysUserController {
     }
 
 
+    @ApiOperation(value = "根据id查询修改系统用户密码", response = UimResourceVO.class)
+    @PutMapping("/pwd/{id}")
+    public ResponseEntity updateUimSysUserPasswordById(@PathVariable Long id,
+                                                       @RequestParam String oldPassword,
+                                                       @RequestParam String password) {
+        return ResponseEntity.success(uimSysUserService.updateUimSysUserPasswordById(
+                id, oldPassword, password, RequestHolder.getUserId()));
+    }
+
+
     @ApiOperation(value = "根据id查询系统用户信息", response = UimSysUserVO.class)
     @GetMapping("/{id}")
-    public ResponseEntity signUpUser(@PathVariable Long id) {
+    public ResponseEntity getUimSysUserById(@PathVariable Long id) {
         return ResponseEntity.success(uimSysUserService.getUimSysUserById(id));
     }
 
+    @ApiOperation(value = "根据id查询系统用户信息", response = UimSysUserVO.class)
+    @GetMapping("/")
+    public ResponseEntity getUimSysUserById() {
+        return ResponseEntity.success(uimSysUserService.getUimSysUserById(RequestHolder.getUserId()));
+    }
 
     @ApiOperation(value = "根据用户id删除系统用户信息", response = UimSysUserVO.class)
     @DeleteMapping("/{id}")
@@ -83,16 +100,18 @@ public class UimSysUserController {
                                                     @RequestParam(value = "appId", required = false) Long appId,
                                                     @RequestParam(value = "organId", required = false) Long organId,
                                                     @RequestParam(value = "branchId", required = false) Long branchId,
+                                                    @RequestParam(value = "statusTag", required = false) UimSysUserStatusEnum statusTag,
+                                                    @RequestParam(value = "delTag", required = false) UimSysUserDelEnum delTag,
                                                     @RequestParam(defaultValue = "1", value = "pageNum") int pageNum,
                                                     @RequestParam(defaultValue = "2", value = "pageSize") int pageSize) {
         return ResponseEntity.success(uimSysUserService.pageUimSysUserByCondition(search,
-                appId, organId, branchId, pageNum, pageSize));
+                appId, organId, branchId, statusTag, delTag, pageNum, pageSize));
     }
 
     @ApiOperation(value = "根据id查询修改系统用户状态", response = UimResourceVO.class)
     @PutMapping("/status/{id}")
     public ResponseEntity updateUimSysUserStatusById(@PathVariable Long id,
-                                                     @RequestParam Integer status) {
+                                                     @RequestParam UimSysUserStatusEnum status) {
         return ResponseEntity.success(uimSysUserService.updateUimSysUserStatusById(
                 id, status, RequestHolder.getUserId()));
     }
@@ -116,5 +135,19 @@ public class UimSysUserController {
     @GetMapping("/userName")
     public ResponseEntity getUimSysUserByUserName(@RequestParam String userName) {
         return ResponseEntity.success(uimSysUserService.getUimSysUserByUserName(userName));
+    }
+
+
+    @ApiOperation(value = "根据部门id查询系统用户信息", response = UimSysUserVO.class)
+    @GetMapping("/branch")
+    public ResponseEntity getUimSysUserByBranchId(@RequestParam Long branchId) {
+        return ResponseEntity.success(uimSysUserService.getUimSysUserByBranchId(branchId));
+    }
+
+
+    @ApiOperation(value = "验证id", response = boolean.class)
+    @GetMapping("/check")
+    public ResponseEntity checkSysUserById(@RequestParam Long id) {
+        return ResponseEntity.success(uimSysUserService.checkSysUserById(id));
     }
 }

@@ -54,7 +54,7 @@ public class CoreProxyController {
     public ResponseEntity updateCoreProxy(@RequestParam Long id,
                                           @RequestBody CoreProxyUpdateDTO coreProxyUpdateDto) {
         return ResponseEntity.success(coreProxyService.updateCoreProxy(id,
-                coreProxyUpdateDto,3L));
+                coreProxyUpdateDto, 3L));
     }
 
     @ApiOperation(value = "树形展示层级", response = CoreProxyNodeVO.class)
@@ -75,23 +75,21 @@ public class CoreProxyController {
     @PutMapping("/level")
     public ResponseEntity updateCoreProxyLevelById(@RequestParam Long id,
                                                    @RequestParam Integer level) {
-        return ResponseEntity.success(coreProxyService.updateCoreProxyLevelById(id,level,
-                1311197443478200378L,6L));
+        return ResponseEntity.success(coreProxyService.updateCoreProxyLevelById(id, level,
+                1311197443478200378L, 6L));
     }
 
     @ApiOperation(value = "把某个节点改到指定节点下面", response = CoreProxyNodeVO.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id",value = "要移动的层级id"),
-            @ApiImplicitParam(name = "userId",value = "目标层级的用户id")
+            @ApiImplicitParam(name = "id", value = "要移动的层级id"),
+            @ApiImplicitParam(name = "userId", value = "目标层级的用户id")
     })
     @PutMapping("/proxy/level")
     public ResponseEntity updateCoreProxyLevel(@RequestParam Long id,
                                                @RequestParam Long userId) {
-        return ResponseEntity.success(coreProxyService.updateCoreProxyLevel(id,userId,
-                1311197443478200378L,9L));
+        return ResponseEntity.success(coreProxyService.updateCoreProxyLevel(id, userId,
+                1311197443478200378L, 9L));
     }
-
-
 
 
     //============以下是不对外开放接口，测试用================
@@ -102,7 +100,7 @@ public class CoreProxyController {
     public ResponseEntity updateSubordinateNumById(@RequestParam Long userId,
                                                    @RequestParam Integer subordinateNum) {
         return ResponseEntity.success(coreProxyService.updateSubordinateNumById(userId,
-                subordinateNum,1311197443478200378L,3L));
+                subordinateNum, 1311197443478200378L, 3L));
     }
 
     @ApiOperation(value = "得到指定用户的所有下级", response = CoreProxyVO.class)
@@ -110,21 +108,21 @@ public class CoreProxyController {
     public ResponseEntity getAllSubordinateCoreProxy(
             @RequestParam Long userId,
             @RequestParam Long organId) {
-        return ResponseEntity.success(coreProxyService.getAllSubordinateCoreProxy(userId,organId));
+        return ResponseEntity.success(coreProxyService.getAllSubordinateCoreProxy(userId, organId));
     }
 
 
     @ApiOperation(value = "验证目标层级是否存在于移动层级的下级集合中",
             response = Boolean.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "id",value = "要移动的层级id"),
-            @ApiImplicitParam(name = "userId",value = "目标层级的用户id")
+            @ApiImplicitParam(name = "id", value = "要移动的层级id"),
+            @ApiImplicitParam(name = "userId", value = "目标层级的用户id")
     })
     @PostMapping("/check")
     public ResponseEntity checkCoreProxyIsExistList(
             @RequestParam Long userId,
             @RequestParam Long id) {
-        return ResponseEntity.success(coreProxyService.checkCoreProxyIsExistList(id,userId,
+        return ResponseEntity.success(coreProxyService.checkCoreProxyIsExistList(id, userId,
                 1311197443478200378L));
     }
 
@@ -132,14 +130,14 @@ public class CoreProxyController {
     @PutMapping("/pid")
     public ResponseEntity updateCoreProxyPidById(@RequestParam Long id,
                                                  @RequestParam Long userId) {
-        return ResponseEntity.success(coreProxyService.updateCoreProxyPidById(id,userId,
-                1311197443478200378L,6L));
+        return ResponseEntity.success(coreProxyService.updateCoreProxyPidById(id, userId,
+                1311197443478200378L, 6L));
     }
 
     @ApiOperation(value = "重新计算并修改指定组织下节点的层级值", response = CoreProxyVO.class)
     @PutMapping("/organ/all")
     public ResponseEntity updateAndCountCoreProxyLevelByOrganId(@RequestParam Long organId) {
-        return ResponseEntity.success(coreProxyService.updateAndCountCoreProxyLevelByOrganId(organId,8L));
+        return ResponseEntity.success(coreProxyService.updateAndCountCoreProxyLevelByOrganId(organId, 8L));
     }
 
     @ApiOperation(value = "根据组织ID查询该组织下所有层级", response = CoreProxyVO.class)
@@ -151,7 +149,7 @@ public class CoreProxyController {
     @ApiOperation(value = "计算某个节点的层级", response = CoreProxyVO.class)
     @PostMapping("/user/id")
     public ResponseEntity countLevel(@RequestParam Long userId) {
-        return ResponseEntity.success(coreProxyService.countLevel(userId,1311197443478200378L));
+        return ResponseEntity.success(coreProxyService.countLevel(userId, 1311197443478200378L));
     }
 
     @ApiOperation(value = "根据层级父ID查询直接下级层级信息", response = CoreProxyVO.class)

@@ -1,9 +1,14 @@
 package com.r7.core.uim.vo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.r7.core.uim.constant.UimSysUserDelEnum;
+import com.r7.core.uim.constant.UimSysUserStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author wt
@@ -42,26 +47,31 @@ public class UimSysUserVO {
      */
     @ApiModelProperty("昵称")
     private String userName;
+
     /**
      * 头像
      */
     @ApiModelProperty("头像")
     private String avatar;
+
     /**
      * 电话
      */
     @ApiModelProperty("电话")
     private String phoneNumber;
+
     /**
      * 邮箱
      */
     @ApiModelProperty("邮箱")
     private String email;
+
     /**
-     * 状态;0正常，1冻结，2注销
+     * 状态;1正常，2冻结
      */
-    @ApiModelProperty(value = "状态", example = "0")
-    private Integer status;
+    @ApiModelProperty(value = "状态", example = "1")
+    private UimSysUserStatusEnum status;
+
     /**
      * 账户密码
      */
@@ -72,7 +82,7 @@ public class UimSysUserVO {
      * 删除;1未删除，2删除(注销)
      */
     @ApiModelProperty("删除状态")
-    private Integer del;
+    private UimSysUserDelEnum del;
 
     /**
      * IP地址
