@@ -33,7 +33,16 @@ public class CoreWalletExtractionServiceImpl
     public Boolean saveWalletExtraction(CoreWalletExtractionSaveDTO coreWalletExtractionSaveDto,
                                         Long appId, Long organId, Long userId) {
         Long extractionUserId = coreWalletExtractionSaveDto.getUserId();
+        String outOrderSn = coreWalletExtractionSaveDto.getOutOrderSn();
         log.info("组织:{}为中的用户:{}创建钱包提现明细,操作者:{}", organId, extractionUserId, userId);
+        Option.of(extractionUserId).getOrElseThrow(() -> new BusinessException(WalletExtractionErrorEnum.WALLET_EXCEPTION_USER_ID_IS_NULL));
+        int standard = 19;
+        if (extractionUserId.toString().length() != standard) {
+            throw new BusinessException(WalletExtractionErrorEnum.WALLET_EXCEPTION_USER_ID_LENGTH_INCORRECT);
+        }
+        if (outOrderSn.length() != standard) {
+            throw new BusinessException(WalletExtractionErrorEnum.WALLET_EXCEPTION_OUT_ORDER_SN_LENGTH_IS_INCORRECT);
+        }
         Long id = SnowflakeUtil.getSnowflakeId();
         CoreWalletExtraction coreWalletExtraction = new CoreWalletExtraction();
         coreWalletExtraction.setId(id);
@@ -59,25 +68,37 @@ public class CoreWalletExtractionServiceImpl
     public CoreWalletExtractionVO updateWalletExtractionById(Long id, CoreWalletExtractionUpdateDTO coreWalletExtractionUpdateDto,
                                                              Long appId, Long organId, Long userId) {
         Option.of(id).getOrElseThrow(() -> new BusinessException(WalletExtractionErrorEnum.WALLET_EXTRACTION_ID_IS_NULL));
+        Long updateUserId = coreWalletExtractionUpdateDto.getUserId();
+        int standard = 19;
+        if (id.toString().length() != standard) {
+            throw new BusinessException(WalletExtractionErrorEnum.WALLET_EXCEPTION_ID_LENGTH_IS_INCORRECT);
+        }
+        if (updateUserId.toString().length() != standard) {
+            throw new BusinessException(WalletExtractionErrorEnum.WALLET_EXCEPTION_USER_ID_LENGTH_INCORRECT);
+        }
         CoreWalletExtraction coreWalletExtraction = Option.of(getById(id))
                 .getOrElseThrow(() -> new BusinessException(WalletExtractionErrorEnum.WALLET_EXTRACTION_ID_IS_NOT_EXISTS));
         Long extractionUserId = coreWalletExtraction.getUserId();
-        log.info("平台:{}下组织:{}中的用户:{}进行钱包提现:{}，操作者:{}", appId, organId, extractionUserId, userId);
+        log.info("平台:{}下组织:{},用户进行钱包提现:{}，操作者:{}", appId, organId, extractionUserId, userId);
         coreWalletExtraction.toCoreWalletExtraction(coreWalletExtractionUpdateDto);
         coreWalletExtraction.setUpdatedBy(userId);
         coreWalletExtraction.setUpdatedAt(new Date());
         boolean update = updateById(coreWalletExtraction);
         if (!update) {
-            log.info("平台:{}下组织:{}中的用户:{}进行钱包提现:{}失败，操作者:{}", appId, organId, extractionUserId, userId);
+            log.info("平台:{}下组织:{},用户进行钱包提现:{}失败，操作者:{}", appId, organId, extractionUserId, userId);
             throw new BusinessException(WalletExtractionErrorEnum.WALLET_EXTRACTION_UPDATE_ERROR);
         }
-        log.info("平台:{}下组织:{}中的用户:{}进行钱包提现:{}成功，操作者:{}", appId, organId, extractionUserId, userId);
+        log.info("平台:{}下组织:{},用户进行钱包提现:{}成功，操作者:{}", appId, organId, extractionUserId, userId);
         return coreWalletExtraction.toCoreWalletExtractionVo();
     }
 
     @Override
     public CoreWalletExtractionVO getWalletExtractionById(Long id) {
         Option.of(id).getOrElseThrow(() -> new BusinessException(WalletExtractionErrorEnum.WALLET_EXTRACTION_ID_IS_NULL));
+        int standard = 19;
+        if (id.toString().length() != standard) {
+            throw new BusinessException(WalletExtractionErrorEnum.WALLET_EXCEPTION_ID_LENGTH_IS_INCORRECT);
+        }
         CoreWalletExtraction coreWalletExtraction = Option.of(getById(id))
                 .getOrElseThrow(() -> new BusinessException(WalletExtractionErrorEnum.WALLET_EXTRACTION_ID_IS_NOT_EXISTS));
         return coreWalletExtraction.toCoreWalletExtractionVo();

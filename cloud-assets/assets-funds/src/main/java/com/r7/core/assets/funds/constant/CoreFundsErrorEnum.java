@@ -18,7 +18,11 @@ public enum CoreFundsErrorEnum implements IError {
     FUNDS_IS_NOT_EXISTS("FUNDS_IS_NOT_EXISTS", "资金记录不存在"),
     FUNDS_USER_ID_IS_NOT_EXISTS("FUNDS_USER_ID_IS_NOT_EXISTS", "资金用户id不存在"),
     FUNDS_ID_IS_NULL("funds_id_is_null", "资金id不能为空"),
-    FUNDS_USER_ID_IS_NULL("funds_user_id_is_null", "资金用户id不能为空");
+    FUNDS_USER_ID_IS_NULL("funds_user_id_is_null", "资金用户id不能为空"),
+    FUNDS_USER_ID_LENGTH_INCORRECT("funds_user_id_length_is_incorrect", "资金用户id长度不正确"),
+    FUNDS_ID_LENGTH_IS_INCORRECT("funds_id_length_is_incorrect", "资金id长度不正确"),
+    FUNDS_IN_ORDER_SN_LENGTH_INCORRECT("funds_in_order_sn_length_incorrect", "资金内部订单长度不正确"),
+    FUNDS_OUT_ORDER_SN_LENGTH_INCORRECT("funds_out_order_sn_length_incorrect", "资金外部订单长度不正确");
 
     /**
      * 错误码

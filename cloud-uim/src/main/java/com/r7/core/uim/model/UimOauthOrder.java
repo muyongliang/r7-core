@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.r7.core.uim.dto.UimOauthOrderDTO;
+import com.r7.core.uim.dto.UimOauthOrderUpdateDTO;
 import com.r7.core.uim.vo.UimOauthOrderVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -109,5 +110,11 @@ public class UimOauthOrder extends Model<UimOauthOrder> {
         this.setStatus(uimOauthOrderDto.getStatus());
         this.setSort(uimOauthOrderDto.getSort());
         this.setDescription(uimOauthOrderDto.getDescription());
+    }
+
+    public void toUimOauthOrder(UimOauthOrderUpdateDTO uimOauthOrderUpdateDto) {
+        this.setContext(uimOauthOrderUpdateDto.getContext());
+        this.setStatus(uimOauthOrderUpdateDto.getStatus());
+        this.setDescription(uimOauthOrderUpdateDto.getDescription());
     }
 }

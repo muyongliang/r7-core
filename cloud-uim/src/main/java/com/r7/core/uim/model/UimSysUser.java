@@ -3,6 +3,8 @@ package com.r7.core.uim.model;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.r7.core.uim.constant.UimSysUserDelEnum;
+import com.r7.core.uim.constant.UimSysUserStatusEnum;
 import com.r7.core.uim.dto.UimSysUserDTO;
 import com.r7.core.uim.dto.UimSysUserUpdateDTO;
 import com.r7.core.uim.vo.UimSysUserVO;
@@ -68,10 +70,10 @@ public class UimSysUser extends Model<UimSysUser> {
     @ApiModelProperty("邮箱")
     private String email;
     /**
-     * 状态;0正常，1冻结，2注销
+     * 状态;1正常，2冻结
      */
-    @ApiModelProperty(value = "状态", example = "0")
-    private Integer status;
+    @ApiModelProperty(value = "状态", example = "1")
+    private UimSysUserStatusEnum status;
 
     /**
      * 账户密码
@@ -83,7 +85,7 @@ public class UimSysUser extends Model<UimSysUser> {
      * 删除;1未删除，2删除(注销)
      */
     @ApiModelProperty("删除状态")
-    private Integer del;
+    private UimSysUserDelEnum del;
 
     /**
      * IP地址
@@ -136,9 +138,7 @@ public class UimSysUser extends Model<UimSysUser> {
         this.setAvatar(uimSysUserDTO.getAvatar());
         this.setPhoneNumber(uimSysUserDTO.getPhoneNumber());
         this.setEmail(uimSysUserDTO.getEmail());
-        this.setStatus(uimSysUserDTO.getStatus());
         this.setPassword(uimSysUserDTO.getPassword());
-        this.setDel(uimSysUserDTO.getDel());
     }
 
     public UimSysUserVO toUimSysUserVO(){

@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.integral.constant.CoreIntegralDetailEnum;
+import com.r7.core.integral.constant.OperateTypeEnum;
+import com.r7.core.integral.constant.SourceTypeEnum;
 import com.r7.core.integral.dto.CoreIntegralDetailDTO;
 import com.r7.core.integral.mapper.CoreIntegralDetailMapper;
 import com.r7.core.integral.model.CoreIntegralDetail;
@@ -20,8 +22,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 /**
- * @author wt
+ * 
  * @Description 积分详情实现类
+ * @author wt
+ * 
  */
 @Slf4j
 @Service
@@ -35,10 +39,17 @@ public class CoreIntegralDetailServiceImpl extends ServiceImpl<CoreIntegralDetai
 
         log.info("新增积分详情：{}，平台ID：{}，操作者：{}，开始时间：{}");
 
+        //对dto中用户id长度进行验证
+        int length =19;
+
+        if (String.valueOf(coreIntegralDetailDTO.getUserId().longValue()).length() != length) {
+            throw new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_LENGTH_ERROR);
+        }
+
         CoreIntegralDetail coreIntegralDetail = new CoreIntegralDetail();
         coreIntegralDetail.toCoreIntegralDetailDTO(coreIntegralDetailDTO);
         Long id = SnowflakeUtil.getSnowflakeId();
-        coreIntegralDetail.setDetailedDate(Integer.valueOf(new SimpleDateFormat("yyyyMMdd")
+        coreIntegralDetail.setDetailedDate(Integer.valueOf(new SimpleDateFormat( "yyyyMMdd")
                 .format(System.currentTimeMillis())));
         coreIntegralDetail.setId(id);
         coreIntegralDetail.setAppId(appId);
@@ -47,7 +58,7 @@ public class CoreIntegralDetailServiceImpl extends ServiceImpl<CoreIntegralDetai
         coreIntegralDetail.setUpdateAt(LocalDateTime.now());
         coreIntegralDetail.setUpdateBy(userId);
         boolean saveCoreIntegralDetail = save(coreIntegralDetail);
-        if (!saveCoreIntegralDetail) {
+        if (!saveCoreIntegralDetail ) {
             log.info("新增积分详情失败：{}，平台ID：{}，操作者：{}，失败时间：{}");
             throw new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_DETAIL_SAVE_ERROR);
         }
@@ -60,12 +71,16 @@ public class CoreIntegralDetailServiceImpl extends ServiceImpl<CoreIntegralDetai
     @Override
     public CoreIntegralDetailVO getCoreIntegralDetailById(Long id, Long appId) {
         log.info("积分详情ID：{},平台ID：{},查询开始时间：{}",
-                id, appId, LocalDateTime.now());
+                id,appId,LocalDateTime.now());
         Option.of(id)
-                .getOrElseThrow(() -> new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_DETAIL_ID_IS_NOT_NULL));
+                .getOrElseThrow(()-> new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_DETAIL_ID_IS_NOT_NULL));
 
+        int length =19;
+        if ( String.valueOf(id).length() != length) {
+            throw new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_LENGTH_ERROR);
+        }
 
-        CoreIntegralDetail coreIntegralDetail = Option.of(getOne(Wrappers.<CoreIntegralDetail>lambdaQuery()
+        CoreIntegralDetail coreIntegralDetail=    Option.of(getOne(Wrappers.<CoreIntegralDetail>lambdaQuery()
                 .select(CoreIntegralDetail::getId,
                         CoreIntegralDetail::getAppId,
                         CoreIntegralDetail::getUserId,
@@ -77,35 +92,91 @@ public class CoreIntegralDetailServiceImpl extends ServiceImpl<CoreIntegralDetai
                         CoreIntegralDetail::getOperateType,
                         CoreIntegralDetail::getDetailedDate,
                         CoreIntegralDetail::getDescription)
-                .eq(CoreIntegralDetail::getId, id).eq(CoreIntegralDetail::getAppId, appId)))
+                .eq(CoreIntegralDetail::getId,id).eq(CoreIntegralDetail::getAppId,appId)))
                 .getOrElseThrow(() -> new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_DETAIL_IS_NOT_EXISTS));
 
 
         log.info("积分详情ID：{}，平台ID：{}，查询结束时间：{}",
-                id, appId, LocalDateTime.now());
+                id,appId,LocalDateTime.now());
         return coreIntegralDetail.toCoreIntegralDetailVO();
     }
 
     @Override
     public Page<CoreIntegralDetailVO> pageCoreIntegralDetailAll(String businessCode,
-                                                                Integer sourceType,
+                                                                SourceTypeEnum sourceType,
                                                                 Long appId,
-                                                                Integer operateType,
+                                                                OperateTypeEnum operateType,
                                                                 Long pageNum,
                                                                 Long pageSize) {
 
-        return baseMapper.pageCoreIntegralDetailAll(businessCode, sourceType, appId, operateType,
-                new Page<>(pageNum, pageSize));
+
+
+
+        Integer source ;
+
+        if (sourceType == null ) {
+            source = 0;
+        }else {
+            source = sourceType.getValue();
+        }
+
+        Integer operate;
+        if (operateType == null) {
+            operate = 0;
+        }else {
+            operate = operateType.getValue();
+        }
+
+        //对参数进行长度验证
+        int length =19;
+
+        if (businessCode!=null && length != businessCode.length()) {
+            throw new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_LENGTH_ERROR);
+        }
+
+        if (appId !=null && String.valueOf(appId).length() != length) {
+            throw new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_LENGTH_ERROR);
+        }
+
+        return  baseMapper.pageCoreIntegralDetailAll(businessCode,source,appId,operate,
+                new Page<>(pageNum,pageSize)) ;
     }
 
     @Override
     public Page<CoreIntegralDetailVO> pageCoreIntegralDetailByUserId(Long userId, Long appId,
-                                                                     Integer operateType,
-                                                                     Integer sourceType,
+                                                                     OperateTypeEnum operateType,
+                                                                     SourceTypeEnum sourceType,
                                                                      Long pageNum, Long pageSize) {
 
+        int length =19;
 
-        return baseMapper.pageCoreIntegralDetailByUserId(userId, appId, operateType, sourceType,
-                new Page<>(pageNum, pageSize));
+        if (userId != null && String.valueOf(userId).length() != length) {
+            throw new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_LENGTH_ERROR);
+        }
+
+        if (appId != null && String.valueOf(appId).length() != length) {
+            throw new BusinessException(CoreIntegralDetailEnum.CORE_INTEGRAL_LENGTH_ERROR);
+        }
+
+
+        Integer source ;
+
+        if (sourceType == null ) {
+            source = 0;
+        }else {
+            source = sourceType.getValue();
+        }
+
+        Integer operate;
+        if (operateType != null) {
+            operate = operateType.getValue();
+
+        }else {
+            operate = 0;
+        }
+
+
+        return baseMapper.pageCoreIntegralDetailByUserId(userId,appId,operate,source,
+                new Page<>(pageNum,pageSize) );
     }
 }

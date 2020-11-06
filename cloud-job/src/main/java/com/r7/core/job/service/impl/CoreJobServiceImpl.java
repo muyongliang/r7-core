@@ -55,6 +55,10 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
         log.info("修改任务id：{}，操作人{}，修改内容：{}", id, userId, coreJobDto);
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_ID_IS_NULL));
+        int standard = 19;
+        if (id.toString().length() != standard) {
+            throw new BusinessException(JobErrorEnum.JOB_USER_ID_LENGTH_INCORRECT);
+        }
         CoreJob coreJob = Option.of(baseMapper.selectById(id))
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_IS_NOT_EXISTS));
         coreJob.toCoreJob(coreJobDto);
@@ -74,6 +78,10 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
         log.info("修改任务id:{}，操作人{}，修改内容：{}", id, userId, coreJobStatusDto);
         id = Option.of(id)
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_ID_IS_NULL));
+        int standard = 19;
+        if (id.toString().length() != standard) {
+            throw new BusinessException(JobErrorEnum.JOB_USER_ID_LENGTH_INCORRECT);
+        }
         CoreJob coreJob = Option.of(baseMapper.selectById(id))
                 .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_IS_NOT_EXISTS));
         coreJob.toCoreJobStatusVo(coreJobStatusDto);
@@ -94,8 +102,14 @@ public class CoreJobServiceImpl extends ServiceImpl<CoreJobMapper, CoreJob> impl
 
     @Override
     public CoreJobVO findJobById(Long id) {
+        Option.of(id).getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_ID_IS_NULL));
+        int standard = 19;
+        if (id.toString().length() != standard) {
+            throw new BusinessException(JobErrorEnum.JOB_USER_ID_LENGTH_INCORRECT);
+        }
         CoreJobVO coreJobVo = new CoreJobVO();
-        CoreJob coreJob = baseMapper.selectById(id);
+        CoreJob coreJob = Option.of(baseMapper.selectById(id))
+                .getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_ID_IS_NOT_EXISTS));
         BeanUtils.copyProperties(coreJob, coreJobVo);
         return coreJobVo;
     }

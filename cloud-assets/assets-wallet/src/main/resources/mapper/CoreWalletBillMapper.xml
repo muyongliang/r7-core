@@ -33,6 +33,7 @@
         transaction_amount, type, source, status, created_at
         from core_wallet_bill
         <where>
+
             app_id=#{appId}
             <if test="type!=null and type!=''">
                 and type=#{type}

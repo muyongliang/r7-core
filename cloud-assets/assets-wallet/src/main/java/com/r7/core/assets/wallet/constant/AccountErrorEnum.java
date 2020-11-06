@@ -14,7 +14,8 @@ public enum AccountErrorEnum implements IError {
      */
     ACCOUNT_SAVE_ERROR("account_save_error", "用户账户新增失败"),
     USER_ID_IS_NOT_EXISTS("user_id_is_not_exists", "用户id不存在"),
-    ACCOUNT_USER_ID_IS_NULL("account_user_id_is_null", "用户id不能为空");
+    ACCOUNT_USER_ID_IS_NULL("account_user_id_is_null", "用户id不能为空"),
+    ACCOUNT_USER_ID_LENGTH_IS_INCORRECT("account_user_id_length_is_incorrect", "账户用户id长度不正确");
 
     /**
      * 错误码

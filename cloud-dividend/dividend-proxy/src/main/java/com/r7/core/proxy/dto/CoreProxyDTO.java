@@ -1,5 +1,6 @@
 package com.r7.core.proxy.dto;
 
+import com.r7.core.proxy.constant.ProxyTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -49,12 +50,11 @@ public class CoreProxyDTO  {
      */
     @NotNull(message = "层级类型不能为空")
     @ApiModelProperty(value="层级类型 销售代/其他")
-    private Integer type;
+    private ProxyTypeEnum type;
 
     /**
      * 当前层级 用户的当前层级
      */
-    @NotNull(message = "当前用户的层级不能为空")
     @ApiModelProperty(value="当前层级 用户的当前层级")
     private Integer level;
 

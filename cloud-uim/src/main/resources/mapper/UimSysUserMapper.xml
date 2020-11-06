@@ -48,19 +48,30 @@
         select id, app_id,organ_id,branch_id,login_name,user_name,avatar,phone_number,email,status,password,ip
         from uim_sys_user
         <where>
+
             <if test="appId != null and appId !=''">
                 app_id = #{appId}
             </if>
+
             <if test="organId != null and organId !=''">
                 and organ_id = #{organId}
             </if>
+
             <if test="branchId != null and branchId !=''">
                 and branch_id = #{branchId}
             </if>
+
+            <if test="status != null and status !=''">
+                and  status  = #{status}
+            </if>
+
+            <if test="del != null and del !=''">
+                and  del  = #{del}
+            </if>
+
             <if test="search!=null and search!=''">
                 and user_name like concat(concat('%',#{search}),'%')
                 or login_name like concat(concat('%',#{search}),'%')
-                or status like concat(concat('%',#{search}),'%')
             </if>
         </where>
         order by `created_at` desc

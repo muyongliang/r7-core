@@ -68,6 +68,11 @@ public class CoreJobProgressServiceImpl
 
     @Override
     public CoreJobProgressVO getJobProgressByUserId(Long userId) {
+        Option.of(userId).getOrElseThrow(() -> new BusinessException(JobErrorEnum.JOB_USER_ID_IS_NULL));
+        int standard = 19;
+        if (userId.toString().length() != standard) {
+            throw new BusinessException(JobErrorEnum.JOB_USER_ID_LENGTH_INCORRECT);
+        }
         return baseMapper.getJobProgressByUserId(userId);
     }
 }

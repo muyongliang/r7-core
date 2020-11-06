@@ -1,6 +1,7 @@
 package com.r7.core.proxy.vo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.r7.core.proxy.constant.ProxyTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -52,7 +53,7 @@ public class CoreProxyNodeVO {
      * 层级类型 销售代/其他
      */
     @ApiModelProperty(value="层级类型 销售代/其他")
-    private Integer type;
+    private ProxyTypeEnum type;
 
     /**
      * 当前层级 用户的当前层级

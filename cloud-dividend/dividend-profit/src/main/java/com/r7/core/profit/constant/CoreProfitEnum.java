@@ -18,7 +18,8 @@ public enum CoreProfitEnum implements IError {
     CORE_PROFIT_UPDATE_STATUS_ERROR("core_profit_update_status_error","修改分润明细的计算状态失败"),
     CORE_PROFIT_USER_ID_IS_NOT_EXISTS("core_profit_user_id_is_not_exists",
             "截止时间之前用户在该平台的分润明细不存在"),
-    CORE_PROFIT_USER_ID_NOT_NULL("core_profit_user_id_not_null","用户id不能为空")
+    CORE_PROFIT_USER_ID_NOT_NULL("core_profit_user_id_not_null","用户id不能为空"),
+    CORE_ID_LENGTH_ERROR("core_id_length_error","id长度必须是19位")
     ;
 
     /**

@@ -41,8 +41,9 @@ public class CoreWalletController {
             response = Boolean.class)
     @PutMapping("/update/{userId}")
     public ResponseEntity updateWalletPayPassword(@PathVariable("userId") Long updateUserId,
+                                                  @RequestParam String oldPayPassword,
                                                   @RequestParam String changePayPassword) {
-        return ResponseEntity.success(coreWalletService.updateWalletPayPasswordById(updateUserId, changePayPassword, RequestHolder.getUserId()));
+        return ResponseEntity.success(coreWalletService.updateWalletPayPasswordById(updateUserId, oldPayPassword, changePayPassword, RequestHolder.getUserId()));
     }
 
     @ApiOperation(
