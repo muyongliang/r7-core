@@ -40,23 +40,12 @@ public class CoreProxyDTO  {
     private Long organId;
 
     /**
-     * 下级人数
-     */
-    @ApiModelProperty(value="下级人数")
-    private Integer subordinateNum;
-
-    /**
      * 层级类型 销售代/其他
      */
     @NotNull(message = "层级类型不能为空")
     @ApiModelProperty(value="层级类型 销售代/其他")
     private ProxyTypeEnum type;
 
-    /**
-     * 当前层级 用户的当前层级
-     */
-    @ApiModelProperty(value="当前层级 用户的当前层级")
-    private Integer level;
 
 
 }

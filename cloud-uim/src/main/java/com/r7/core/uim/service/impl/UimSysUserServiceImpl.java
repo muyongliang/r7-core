@@ -391,7 +391,7 @@ public class UimSysUserServiceImpl extends ServiceImpl<UimSysUserMapper, UimSysU
                 .getOrElseThrow(() -> new BusinessException(UimSysUserEnum.USER_SYS_IS_NOT_EXISTS));
         //判断旧的密码是否正确
         if (!passwordEncoder.matches(oldPassword, uimSysUserVO.getPassword())) {
-            throw new BusinessException(UimSysUserEnum.USER_SYS_PASSWORD_ERRORUIM_SYS_USER_ENUM);
+            throw new BusinessException(UimSysUserEnum.USER_SYS_OLD_PASSWORD_ERROR);
         }
         password = passwordEncoder.encode(password);
         boolean updateUimSysUserPasswordById = update(Wrappers.<UimSysUser>lambdaUpdate()

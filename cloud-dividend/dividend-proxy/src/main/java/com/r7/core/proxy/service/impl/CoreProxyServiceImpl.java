@@ -45,10 +45,10 @@ public class CoreProxyServiceImpl extends ServiceImpl<CoreProxyMapper, CoreProxy
         checkIdLength(coreProxyDto.getOrganId());
         // todo 判断用户父id是否存在，用户id是否存在，组织id是否存在
         CoreProxy coreProxy = new CoreProxy();
+        //下级人数默认为0
+        coreProxy.setSubordinateNum(0);
         //新增层级的层级值默认为1
-        if (coreProxyDto.getLevel() == null) {
-            coreProxyDto.setLevel(1);
-        }
+        coreProxy.setLevel(1);
         coreProxy.setId(SnowflakeUtil.getSnowflakeId());
         coreProxy.setCreatedBy(optionalUserId);
         coreProxy.setCreatedAt(LocalDateTime.now());
