@@ -57,6 +57,7 @@ public enum UimErrorEnum implements IError {
     USER_CODE_IS_EXISTS("user_code_is_exists", "用户邀请码已存在"),
     USER_ID_IS_NULL("user_id_is_null", "用户ID不能为空。"),
     USER_UPDATE_ERROR("user_update_error", "用户修改失败。"),
+    USER_OLD_PASSWORD_ERROR("user_old_password_error", "旧密码输入错误。"),
     USER_DELETE_ERROR("user_delete_error", "用户删除失败。"),
     USER_SAVE_ERROR("user_save_error", "用户注册失败。"),
     USER_PHONE_EXISTS("user_phone_exists", "电话号已经存在。"),

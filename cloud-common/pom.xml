@@ -64,17 +64,6 @@
         </dependency>
     </dependencies>
 
-    <distributionManagement>
-        <!-- 用于上传的仓库 -->
-        <repository>
-            <!-- 这里的id需要和settings.xml中的server的id一致 -->
-            <id>dev</id>
-            <name>maven-snapshots</name>
-            <!-- third是一个hosted类型的仓库，用于存放第三方或自己的jar包 -->
-            <url>http://scyym.f3322.net:8081/repository/maven-snapshots/</url>
-        </repository>
-    </distributionManagement>
-
     <build>
         <plugins>
             <!-- 要将源码放上去，需要加入这个插件 -->

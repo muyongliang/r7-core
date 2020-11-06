@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonView;
  */
 @JsonView(Views.Public.class)
 public class ResponseEntity {
-    private boolean isSuccess;
+    private boolean success;
     private Object data;
     private String errorCode;
     private String errorMsg;
@@ -65,11 +65,11 @@ public class ResponseEntity {
 
 
     public boolean isSuccess() {
-        return isSuccess;
+        return success;
     }
 
     public void setSuccess(boolean success) {
-        isSuccess = success;
+        this.success = success;
     }
 
     public Object getData() {
