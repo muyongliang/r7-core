@@ -6,9 +6,9 @@ import com.r7.core.setting.service.CoreSettingService;
 import com.r7.core.setting.vo.CoreSettingVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 /**
@@ -21,7 +21,7 @@ import javax.validation.Valid;
 @RequestMapping("/setting")
 public class CoreSettingController {
 
-    @Autowired
+    @Resource
     private CoreSettingService coreSettingService;
 
     @ApiOperation(

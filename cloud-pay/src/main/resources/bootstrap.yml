@@ -1,6 +1,6 @@
 spring:
   application:
-    name: cloud-resource
+    name: cloud-pay
   profiles:
     active: dev
   cloud:
