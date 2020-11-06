@@ -33,7 +33,7 @@ public enum UimSysUserEnum implements IError {
     USER_SYS_BRANCH_IS_NOT_EXISTS("user_sys_branch_is_not_exists","部门不存在"),
     USER_SYS_ID_LENGTH_ERROR("user_sys_id_length_error","用户id长度必须是19位"),
     USER_SYS_LENGTH_ERROR("user_sys_length_error","长度必须是19位"),
-    USER_SYS_PASSWORD_ERRORUIM_SYS_USER_ENUM("user_sys_password_error","密码错误")
+    USER_SYS_OLD_PASSWORD_ERROR("user_sys_password_error","旧密码输入错误")
     ;
     /**
      * 错误码

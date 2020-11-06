@@ -98,6 +98,14 @@ minio/minio server /data
 -v /root/nexus/nexus-data:/nexus-data \
 sonatype/nexus3
 
+## xxl-job
+>指定拉取xxl-job的版本：docker pull xuxueli/xxl-job-admin:2.2.0
+>docker run \
+  -e PARAMS="--server.port=8088 --spring.datasource.url=jdbc:mysql://192.168.1.48:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai --spring.datasource.username=root --spring.datasource.password=root.R7db@192.168.1.48 --spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver --spring.mail.username=2430141154@qq.com --spring.mail.from=2430141154@qq.com --spring.mail.password=jpxgjiijhlffeccc" \
+  -p 8088:8088 -v /tmp:/data/applogs \
+  --name xxl-job-admin xuxueli/xxl-job-admin:2.2.0 
+
+
 ## 项目镜像
 >docker run -d \
  --name cloud-gateway \

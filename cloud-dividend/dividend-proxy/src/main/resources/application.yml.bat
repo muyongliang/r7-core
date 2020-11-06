@@ -4,19 +4,9 @@ server:
     context-path: /api
 
 spring:
-  application:
-    name: dividend-proxy
-  profiles:
-    active: dev
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 192.168.1.49:8848
-        namespace: d685bf52-93ce-4271-942b-688f25725547
-
   datasource:
     druid:
-      url: "${DB_URL:jdbc:mysql://192.168.1.48:3306/core?seUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai}"
+      url: "jdbc:mysql://192.168.1.48:3306/core?seUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai"
       username: "root"
       password: "root.R7db@192.168.1.48"
       driver-class-name: "com.mysql.cj.jdbc.Driver"
@@ -24,6 +14,10 @@ spring:
   redis:
     host: 192.168.1.48
     port: 6379
+
+feign:
+  okhttp:
+    enabled: true
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml

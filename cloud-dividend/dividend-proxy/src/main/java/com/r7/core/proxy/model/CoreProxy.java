@@ -102,10 +102,8 @@ public class CoreProxy extends Model<CoreProxy> {
     public void  toCoreProxyDto(CoreProxyDTO coreProxyDto){
         this.setPId(coreProxyDto.getPId());
         this.setOrganId(coreProxyDto.getOrganId());
-        this.setLevel(coreProxyDto.getLevel());
         this.setType(coreProxyDto.getType());
         this.setUserId(coreProxyDto.getUserId());
-        this.setSubordinateNum(coreProxyDto.getSubordinateNum());
     }
     public CoreProxyVO toCoreProxyVo(){
         CoreProxyVO coreProxyVo = new CoreProxyVO();
