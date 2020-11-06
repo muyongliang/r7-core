@@ -21,6 +21,7 @@
         <module>cloud-trigger</module>
         <module>cloud-resource</module>
         <module>cloud-cache</module>
+        <module>cloud-pay</module>
     </modules>
 
 
