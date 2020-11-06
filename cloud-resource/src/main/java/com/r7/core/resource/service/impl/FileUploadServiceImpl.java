@@ -15,10 +15,10 @@ import io.minio.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
+import javax.annotation.Resource;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayInputStream;
@@ -33,9 +33,9 @@ import java.util.Date;
 @Slf4j
 @Service
 public class FileUploadServiceImpl implements FileUploadService {
-    @Autowired
+    @Resource
     private MinioClient minioClient;
-    @Autowired
+    @Resource
     private CoreFileMapper coreFileMapper;
 
     /**

@@ -16,11 +16,11 @@ import com.r7.core.pay.entity.WxPayBean;
 import com.r7.core.pay.vo.AjaxResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -47,7 +47,7 @@ import java.util.Map;
 public class WxPayController {
 
     private static final String USER_PAYING = "USERPAYING";
-    @Autowired
+    @Resource
     WxPayBean wxPayBean;
     private String notifyUrl;
     private String refundNotifyUrl;

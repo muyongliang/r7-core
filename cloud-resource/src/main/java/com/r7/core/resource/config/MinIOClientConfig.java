@@ -6,10 +6,10 @@ import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Resource;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @Slf4j
 public class MinIOClientConfig {
-    @Autowired
+    @Resource
     private MinIOProperties minIOProperties;
 
     @Bean

@@ -10,10 +10,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
@@ -29,7 +29,7 @@ import java.net.URLEncoder;
 @RequestMapping("/file")
 @Api(value = "/api/file", tags = {"文件上传接口"})
 public class FileUploadController {
-    @Autowired
+    @Resource
     private FileUploadService fileUploadService;
 
     /**
