@@ -11,8 +11,9 @@ import com.ijpay.unionpay.enums.ServiceEnum;
 import com.ijpay.unionpay.model.*;
 import com.r7.core.pay.entity.UnionPayBean;
 import com.r7.core.pay.vo.AjaxResult;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,15 +29,16 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/unionPay")
-@Slf4j
 public class UnionPayController {
+    private static final Logger logger = LoggerFactory.getLogger(UnionPayController.class);
+
     @Resource
-    UnionPayBean unionPayBean;
+    private UnionPayBean unionPayBean;
 
     @RequestMapping("")
     @ResponseBody
     public String index() {
-        log.info("欢迎使用 IJPay 中的云闪付	- by Javen");
+        logger.info("欢迎使用 IJPay 中的云闪付	- by Javen");
         return "欢迎使用 IJPay 中的云闪付	- by Javen";
     }
 
@@ -74,10 +76,10 @@ public class UnionPayController {
                     .build()
                     .createSign(unionPayBean.getKey(), SignType.MD5);
 
-            log.info("请求参数:" + JSONUtil.toJsonStr(params));
+            logger.info("请求参数:" + JSONUtil.toJsonStr(params));
 
             String xmlResult = UnionPayApi.execution(unionPayBean.getServerUrl(), params);
-            log.info("xmlResult:" + xmlResult);
+            logger.info("xmlResult:" + xmlResult);
             Map<String, String> result = WxPayKit.xmlToMap(xmlResult);
             String returnCode = result.get("status");
             String resultCode = result.get("result_code");
@@ -114,7 +116,7 @@ public class UnionPayController {
                     .createSign(unionPayBean.getKey(), SignType.MD5);
 
             String xmlResult = UnionPayApi.execution(unionPayBean.getServerUrl(), params);
-            log.info("xmlResult:" + xmlResult);
+            logger.info("xmlResult:" + xmlResult);
             Map<String, String> result = WxPayKit.xmlToMap(xmlResult);
             if (!WxPayKit.verifyNotify(result, unionPayBean.getKey(), SignType.MD5)) {
                 return new AjaxResult().addError("签名异常");
@@ -140,7 +142,7 @@ public class UnionPayController {
                     .createSign(unionPayBean.getKey(), SignType.MD5);
 
             String xmlResult = UnionPayApi.execution(unionPayBean.getServerUrl(), params);
-            log.info("xmlResult:" + xmlResult);
+            logger.info("xmlResult:" + xmlResult);
             Map<String, String> result = WxPayKit.xmlToMap(xmlResult);
             return new AjaxResult().success(result);
         } catch (Exception e) {
@@ -175,7 +177,7 @@ public class UnionPayController {
                     .createSign(unionPayBean.getKey(), SignType.MD5);
 
             String xmlResult = UnionPayApi.execution(unionPayBean.getServerUrl(), params);
-            log.info("xmlResult:" + xmlResult);
+            logger.info("xmlResult:" + xmlResult);
             Map<String, String> result = WxPayKit.xmlToMap(xmlResult);
             return new AjaxResult().success(result);
         } catch (Exception e) {
@@ -212,7 +214,7 @@ public class UnionPayController {
                     .createSign(unionPayBean.getKey(), SignType.MD5);
 
             String xmlResult = UnionPayApi.execution(unionPayBean.getServerUrl(), params);
-            log.info("xmlResult:" + xmlResult);
+            logger.info("xmlResult:" + xmlResult);
             Map<String, String> result = WxPayKit.xmlToMap(xmlResult);
             return new AjaxResult().success(result);
         } catch (Exception e) {
@@ -235,7 +237,7 @@ public class UnionPayController {
                     .createSign(unionPayBean.getKey(), SignType.MD5);
 
             String xmlResult = UnionPayApi.execution(unionPayBean.getServerUrl(), params);
-            log.info("xmlResult:" + xmlResult);
+            logger.info("xmlResult:" + xmlResult);
             Map<String, String> result = WxPayKit.xmlToMap(xmlResult);
             return new AjaxResult().success(result);
         } catch (Exception e) {
@@ -270,7 +272,7 @@ public class UnionPayController {
                     .createSign(unionPayBean.getKey(), SignType.MD5);
 
             String xmlResult = UnionPayApi.execution(unionPayBean.getServerUrl(), params);
-            log.info("xmlResult:" + xmlResult);
+            logger.info("xmlResult:" + xmlResult);
             Map<String, String> result = WxPayKit.xmlToMap(xmlResult);
             return new AjaxResult().success(result);
         } catch (Exception e) {
@@ -315,7 +317,7 @@ public class UnionPayController {
             System.out.println(params);
 
             String xmlResult = UnionPayApi.execution(unionPayBean.getServerUrl(), params);
-            log.info("xmlResult:" + xmlResult);
+            logger.info("xmlResult:" + xmlResult);
             Map<String, String> result = WxPayKit.xmlToMap(xmlResult);
             return new AjaxResult().success(result);
         } catch (Exception e) {
@@ -358,7 +360,7 @@ public class UnionPayController {
             System.out.println(params);
 
             String xmlResult = UnionPayApi.execution(unionPayBean.getServerUrl(), params);
-            log.info("xmlResult:" + xmlResult);
+            logger.info("xmlResult:" + xmlResult);
             Map<String, String> result = WxPayKit.xmlToMap(xmlResult);
             if (!WxPayKit.verifyNotify(result, unionPayBean.getKey(), SignType.MD5)) {
                 return new AjaxResult().addError("签名异常");
@@ -415,7 +417,7 @@ public class UnionPayController {
             System.out.println(params);
 
             String xmlResult = UnionPayApi.execution(unionPayBean.getServerUrl(), params);
-            log.info("xmlResult:" + xmlResult);
+            logger.info("xmlResult:" + xmlResult);
             Map<String, String> result = WxPayKit.xmlToMap(xmlResult);
             return new AjaxResult().success(result);
         } catch (Exception e) {
@@ -430,7 +432,7 @@ public class UnionPayController {
     public void unionPayUserAuth(HttpServletResponse response) throws IOException {
         String notifyUrl = unionPayBean.getDomain().concat("/unionPay/callBack");
         String authUrl = UnionPayApi.buildAuthUrl(notifyUrl);
-        log.info("authUrl:" + authUrl);
+        logger.info("authUrl:" + authUrl);
         response.sendRedirect(authUrl);
     }
 
@@ -486,7 +488,7 @@ public class UnionPayController {
             System.out.println(params);
 
             String xmlResult = UnionPayApi.execution(unionPayBean.getServerUrl(), params);
-            log.info("xmlResult:" + xmlResult);
+            logger.info("xmlResult:" + xmlResult);
             Map<String, String> result = WxPayKit.xmlToMap(xmlResult);
             return new AjaxResult().success(result);
         } catch (Exception e) {
@@ -513,7 +515,7 @@ public class UnionPayController {
             System.out.println(params);
 
             String result = UnionPayApi.execution(unionPayBean.getServerUrl(), params);
-            log.info("result:" + result);
+            logger.info("result:" + result);
             return new AjaxResult().success(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -528,19 +530,19 @@ public class UnionPayController {
     @ResponseBody
     public String payNotify(HttpServletRequest request) {
         String xmlMsg = HttpKit.readData(request);
-        log.info("支付通知=" + xmlMsg);
+        logger.info("支付通知=" + xmlMsg);
         Map<String, String> params = WxPayKit.xmlToMap(xmlMsg);
 
         String status = params.get("status");
         String returnCode = params.get("result_code");
 
-        log.info(status + " " + returnCode);
+        logger.info(status + " " + returnCode);
 
         if ("0".equals(status) && "0".equals(returnCode)) {
             // 注意重复通知的情况，同一订单号可能收到多次通知，请注意一定先判断订单状态
             // 注意此处签名方式需与统一下单的签名类型一致
             if (WxPayKit.verifyNotify(params, unionPayBean.getKey(), SignType.MD5)) {
-                log.info("支付成功....");
+                logger.info("支付成功....");
                 // 更新订单信息
                 // 发送通知等
                 return "success";
