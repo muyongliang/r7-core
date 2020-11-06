@@ -1,6 +1,8 @@
 package com.r7.core.integral.controller;
 
 import com.r7.core.common.web.ResponseEntity;
+import com.r7.core.integral.constant.OperateTypeEnum;
+import com.r7.core.integral.constant.SourceTypeEnum;
 import com.r7.core.integral.dto.CoreIntegralDetailDTO;
 import com.r7.core.integral.service.CoreIntegralDetailService;
 import com.r7.core.integral.vo.CoreIntegralDetailVO;
@@ -43,9 +45,9 @@ public class CoreIntegralDetailController {
     @GetMapping("/page")
     public ResponseEntity pageCoreIntegralDetailAll(
             @RequestParam(value = "businessCode", required = false) String businessCode,
-            @RequestParam(value = "sourceType", required = false) Integer sourceType,
+            @RequestParam(value = "sourceType", required = false) SourceTypeEnum sourceType,
             @RequestParam(value = "appId", required = false) Long appId,
-            @RequestParam(value = "operateType", required = false) Integer operateType,
+            @RequestParam(value = "operateType", required = false) OperateTypeEnum operateType,
             @RequestParam(value = "pageNum", defaultValue = "1") Long pageNum,
             @RequestParam(value = "pageSize", defaultValue = "2") Long pageSize) {
         return ResponseEntity.success(coreIntegralDetailService.pageCoreIntegralDetailAll(
@@ -58,9 +60,9 @@ public class CoreIntegralDetailController {
     public ResponseEntity pageCoreIntegralDetailByUserId(
 
             @PathVariable("userId") Long userId,
-            @RequestParam(value = "sourceType", required = false) Integer sourceType,
+            @RequestParam(value = "sourceType", required = false) SourceTypeEnum sourceType,
             @RequestParam(value = "appId", required = false) Long appId,
-            @RequestParam(value = "operateType", required = false) Integer operateType,
+            @RequestParam(value = "operateType", required = false) OperateTypeEnum operateType,
             @RequestParam(value = "pageNum", defaultValue = "1") Long pageNum,
             @RequestParam(value = "pageSize", defaultValue = "2") Long pageSize) {
         return ResponseEntity.success(coreIntegralDetailService.pageCoreIntegralDetailByUserId(

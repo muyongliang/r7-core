@@ -153,4 +153,11 @@ public interface CoreProxyService extends IService<CoreProxy>{
      * @return 验证结果
      */
     boolean checkCoreProxyIsExistList(Long id, Long userId,Long organId);
+
+    /**
+     * 对传过来的各种id进行长度验证
+     * @param id 用户id/组织id等等
+     * @return 验证结果
+     */
+    boolean checkIdLength(Long id);
 }

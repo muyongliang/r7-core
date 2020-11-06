@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 /**
  * @author wutao
  * @Description 分润明细接口
- *
  */
 @Slf4j
 @Api(value = "/api/profit", tags = {"分润明细接口"})
@@ -35,7 +34,7 @@ public class CoreProfitController {
     @GetMapping("/{id}")
     public ResponseEntity getCoreProfitById(@PathVariable("id") Long id,
                                             @RequestParam Long appId) {
-        return ResponseEntity.success(coreProfitService.getCoreProfitById(id,appId));
+        return ResponseEntity.success(coreProfitService.getCoreProfitById(id, appId));
     }
 
 
@@ -45,12 +44,11 @@ public class CoreProfitController {
                                          @RequestParam(required = false) Long orderId,
                                          @RequestParam(required = false) Long appId,
                                          @RequestParam(required = false) ProfitTypeEnum type,
-                                         @RequestParam(defaultValue = "1",required = false) Integer pageNum,
-                                         @RequestParam(defaultValue = "2",required = false) Integer pageSize) {
-        return ResponseEntity.success(coreProfitService.pageCoreProfit(userId,orderId,appId,type,
-                pageNum,pageSize));
+                                         @RequestParam(defaultValue = "1", required = false) Integer pageNum,
+                                         @RequestParam(defaultValue = "2", required = false) Integer pageSize) {
+        return ResponseEntity.success(coreProfitService.pageCoreProfit(userId, orderId, appId, type,
+                pageNum, pageSize));
     }
-
 
 
     //====================以下测试用============================
@@ -65,19 +63,19 @@ public class CoreProfitController {
     @PostMapping("/amount")
     public ResponseEntity settlementAmount(@RequestParam Long userId,
                                            @RequestParam Long appId) {
-        return ResponseEntity.success(coreProfitService.settlementAmount(userId,appId,
-                CalculationStatusEnum.NOTCALCULATED,10L,
+        return ResponseEntity.success(coreProfitService.settlementAmount(userId, appId,
+                CalculationStatusEnum.NOTCALCULATED, 10L,
                 LocalDateTime.now()));
     }
 
 
     @ApiOperation(value = "核算待发放积分", response = Integer.class)
-    @PostMapping("/resource")
+    @PostMapping("/integral")
     public ResponseEntity settlementIntegral(@RequestParam Long userId,
                                              @RequestParam Long appId) {
-        return ResponseEntity.success(coreProfitService.settlementIntegral(userId,appId
-                ,CalculationStatusEnum.NOTCALCULATED
-                ,10L,LocalDateTime.now()
+        return ResponseEntity.success(coreProfitService.settlementIntegral(userId, appId
+                , CalculationStatusEnum.NOTCALCULATED
+                , 10L, LocalDateTime.now()
         ));
     }
 
@@ -87,7 +85,7 @@ public class CoreProfitController {
     @GetMapping("/status")
     public ResponseEntity getAllCoreProfitByStatus(@RequestParam CalculationStatusEnum status) {
         return ResponseEntity.success(coreProfitService.getAllCoreProfitByStatus(
-                status,LocalDateTime.now()));
+                status, LocalDateTime.now()));
     }
 
 }

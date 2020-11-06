@@ -22,7 +22,9 @@ public enum CoreProxyEnum implements IError {
     CORE_PROXY_UPDATE_PID_ERROR("core_proxy_update_pid_error","层级的父id修改失败"),
     CORE_PROXY_UPDATE_LEVEL_ERROR("core_proxy_update_level_error","层级值修改失败"),
     CORE_PROXY_SUB_IS_EXISTS("core_proxy_sub_is_exists",
-            "不能移动到自己的下级下面");
+            "不能移动到自己的下级下面"),
+    CORE_ID_LENGTH_ERROR("core_id_length_error","id长度必须是19位")
+    ;
 
 
     /**

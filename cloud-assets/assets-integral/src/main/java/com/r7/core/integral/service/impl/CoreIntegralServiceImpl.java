@@ -42,6 +42,15 @@ public class CoreIntegralServiceImpl extends ServiceImpl<CoreIntegralMapper, Cor
     public CoreIntegralVO saveCoreIntegral(CoreIntegralDTO coreIntegralDTO, Long userId) {
         log.info("新增用户积分信息:{},操作者：{}，开始时间：{}", coreIntegralDTO, userId, LocalDateTime.now());
 
+        //对dto中的用户id进行长度验证
+        int length = 19;
+        if (coreIntegralDTO.getUserId() != length) {
+            throw new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_LENGTH_ERROR);
+        }
+        //验证当前用户积分信息是否已经存在，存在抛出异常
+        if (getCoreIntegralByUserId(coreIntegralDTO.getUserId()) != null) {
+            throw new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_IS_EXISTS);
+        }
 
         Long id = SnowflakeUtil.getSnowflakeId();
         CoreIntegral coreIntegral = new CoreIntegral();
@@ -79,6 +88,11 @@ public class CoreIntegralServiceImpl extends ServiceImpl<CoreIntegralMapper, Cor
 
         log.info("用户增加积分信息:{},平台ID:{},操作者:{},开始时间:{}",
                 coreIntegralChangeDTO, appId, operationalUserId);
+
+        //对用户id和用户积分信息存在与否进行验证
+        checkCoreIntegralUserId(coreIntegralChangeDTO.getUserId());
+
+
         //1、根据签名判断用户的积分数据有没有被非法修改,如何数据被非法修改抛出异常
 
         CoreIntegralVO coreIntegralVO = getCoreIntegralByUserId(coreIntegralChangeDTO.getUserId());
@@ -119,6 +133,8 @@ public class CoreIntegralServiceImpl extends ServiceImpl<CoreIntegralMapper, Cor
         log.info("用户减少的积分信息:{},平台ID:{},操作者:{},开始时间:{}",
                 coreIntegralChangeDTO, appId, operationalUserId);
 
+        //对用户id和用户积分信息存在与否进行验证
+        checkCoreIntegralUserId(coreIntegralChangeDTO.getUserId());
         //1、判断用户的id和用户的总积分或者签名有没有被非法修改
         CoreIntegralVO coreIntegralVO = getCoreIntegralByUserId(coreIntegralChangeDTO.getUserId());
         boolean result = RsaUtil.verify("" + coreIntegralVO.getUserId() + "" + coreIntegralVO.getTotal()
@@ -157,24 +173,34 @@ public class CoreIntegralServiceImpl extends ServiceImpl<CoreIntegralMapper, Cor
 
     @Override
     public CoreIntegralVO getCoreIntegralByUserId(Long userId) {
-        log.info("用户id:{},开始查询时间:{}");
-        Option.of(userId).getOrElseThrow(() -> new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_USER_ID_IS_NOT_NULL));
-        CoreIntegral coreIntegral = Option.of(getOne(Wrappers.<CoreIntegral>lambdaQuery()
-                .select(CoreIntegral::getId,
-                        CoreIntegral::getTotal,
-                        CoreIntegral::getUserId,
-                        CoreIntegral::getSign)
-                .eq(CoreIntegral::getUserId, userId)))
-                .getOrElseThrow(() -> new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_IS_NOT_EXISTS));
-        log.info("用户id:{},查询结束时间:{}");
+        Option.of(userId)
+                .getOrElseThrow(() -> new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_USER_ID_IS_NOT_NULL));
+
+        //对userId长度进行验证
+        int length = 19;
+        if (String.valueOf(userId).length() != length) {
+            throw new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_LENGTH_ERROR);
+        }
+        CoreIntegral coreIntegral = baseMapper.selectOne(Wrappers.<CoreIntegral>lambdaQuery()
+                .select(CoreIntegral::getId, CoreIntegral::getUserId, CoreIntegral::getSign, CoreIntegral::getTotal)
+                .eq(CoreIntegral::getUserId, userId));
+        if (coreIntegral == null) {
+            return null;
+        }
         return coreIntegral.toCoreIntegralVO();
     }
 
     @Override
     public CoreIntegralVO getCoreIntegralById(Long id) {
-        log.info("用户积分信息ID:{},查询开始时间:{}", id, LocalDateTime.now());
 
         Option.of(id).getOrElseThrow(() -> new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_ID_IS_NOT_NULL));
+
+        int length = 19;
+        if (String.valueOf(id).length() != length) {
+            throw new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_LENGTH_ERROR);
+        }
+
+
         CoreIntegral coreIntegral = baseMapper.selectOne(Wrappers.<CoreIntegral>lambdaQuery()
                 .select(CoreIntegral::getId,
                         CoreIntegral::getUserId,
@@ -186,7 +212,6 @@ public class CoreIntegralServiceImpl extends ServiceImpl<CoreIntegralMapper, Cor
             return null;
         }
 
-        log.info("用户积分信息ID:{},查询结束时间:{}", id, LocalDateTime.now());
         return coreIntegral.toCoreIntegralVO();
     }
 
@@ -199,11 +224,12 @@ public class CoreIntegralServiceImpl extends ServiceImpl<CoreIntegralMapper, Cor
 
         log.info("用户ID:{},修改用户的总积分数{},新的签名:{},操作者:{},开始时间:{}",
                 userId, totalInteger, sign, operationalUserId);
+        //被增加/减少积分时调用
         boolean updateCoreIntegralAddTotal = update(Wrappers.<CoreIntegral>lambdaUpdate()
                 .set(CoreIntegral::getTotal, totalInteger)
                 .set(CoreIntegral::getSign, sign)
                 .set(CoreIntegral::getUpdateAt, LocalDateTime.now())
-                .set(CoreIntegral::getUpdateBy, userId)
+                .set(CoreIntegral::getUpdateBy, operationalUserId)
                 .eq(CoreIntegral::getUserId, userId));
         if (!updateCoreIntegralAddTotal) {
             log.info("用户ID:{},修改用户的总积分数失败{},新的签名:{},操作者:{},失败时间:{}",
@@ -216,11 +242,33 @@ public class CoreIntegralServiceImpl extends ServiceImpl<CoreIntegralMapper, Cor
         return getCoreIntegralByUserId(userId);
     }
 
+
+
     @Override
     public Page<CoreIntegralVO> pageCoreIntegralPage(
             Long userId, Long pageNum, Long pageSize) {
+
+        //在用户id存在的情况下验证用户id的长度
+        int length = 19;
+        if (userId != null && String.valueOf(userId).length() != length) {
+            throw new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_LENGTH_ERROR);
+        }
+
         return baseMapper.pageCoreIntegralPage(userId, new Page<>(pageNum, pageSize));
     }
 
+    @Override
+    public boolean checkCoreIntegralUserId(Long userId) {
 
+        int length = 19;
+        if (String.valueOf(userId).length() != length) {
+            throw new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_LENGTH_ERROR);
+        }
+        //验证当前用户积分信息是否已经存在,不存在抛出异常
+        if (getCoreIntegralByUserId(userId) == null) {
+            throw new BusinessException(CoreIntegralEnum.CORE_INTEGRAL_IS_NOT_EXISTS);
+        }
+
+        return true;
+    }
 }

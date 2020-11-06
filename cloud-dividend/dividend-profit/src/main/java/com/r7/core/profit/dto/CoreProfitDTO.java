@@ -6,8 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 /**
  * @author wutao
@@ -37,12 +36,6 @@ public class CoreProfitDTO  {
     @NotNull(message = "分润用户id不能为空")
     @ApiModelProperty(value="分润用户id")
     private Long userId;
-
-    /**
-     * 发放记录id
-     */
-    @ApiModelProperty(value="发放记录id")
-    private Long recordIncomeId;
 
     /**
      * 订单ID
