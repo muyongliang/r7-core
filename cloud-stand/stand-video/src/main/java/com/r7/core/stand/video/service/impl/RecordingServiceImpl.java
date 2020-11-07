@@ -1,7 +1,8 @@
 package com.r7.core.stand.video.service.impl;
 
 import com.r7.core.common.exception.BusinessException;
-import com.r7.core.common.util.ClientUploadUtil;
+import com.r7.core.common.fegin.ResourceFeign;
+import com.r7.core.common.web.ResponseEntity;
 import com.r7.core.stand.video.agora.AgoraRecordingEventHandler;
 import com.r7.core.stand.video.constant.RecordErrorEnum;
 import com.r7.core.stand.video.properties.AgoraProperties;
@@ -12,11 +13,13 @@ import io.agora.recording.RecordingSDK;
 import io.agora.recording.common.Common;
 import io.agora.recording.common.RecordingConfig;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.Response;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -37,6 +40,8 @@ public class RecordingServiceImpl implements RecordingService {
 
     @Resource
     private AgoraProperties agoraProperties;
+    @Resource
+    private ResourceFeign resourceFeign;
     @Value("${resource.address}")
     private String resourceAddress;
 
@@ -97,13 +102,23 @@ public class RecordingServiceImpl implements RecordingService {
             throw new BusinessException(RecordErrorEnum.VIDEO_NOT_EXIST);
         }
 //        上传到资源服务器的视频默认不加密,并且修改文件名为雪花id,保证能马上返回给前端文件名
-        String url = resourceAddress + "?encrypted=false";
 //        修改文件名
         Path mp4Path = mp4.toPath();
         String s = mp4Path.getParent().toString() + File.separator + fileName;
-        Files.move(mp4Path, Paths.get(s));
-        Response upload = ClientUploadUtil.upload(url, s, fileName);
-        if (upload == null || 200 != upload.code()) {
+        Path path = Paths.get(s);
+        Files.move(mp4Path, path);
+
+        DiskFileItem fileItem = new DiskFileItem("file",
+                Files.probeContentType(path),
+                false,
+                fileName,
+                1024 * 1024,
+                null);
+        fileItem.setDefaultCharset("UTF-8");
+        MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+//        不加密上传
+        ResponseEntity upload = resourceFeign.upload(multipartFile, false);
+        if (upload == null || !upload.isSuccess()) {
             throw new BusinessException(RecordErrorEnum.FAILURE_UPLOAD_FILE);
         }
         log.info("资源服务器响应为:{}", upload.toString());
