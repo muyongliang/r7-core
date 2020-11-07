@@ -7,9 +7,11 @@ import com.r7.core.uim.constant.UimSysUserStatusEnum;
 import com.r7.core.uim.dto.UimSysUserDTO;
 import com.r7.core.uim.dto.UimSysUserUpdateDTO;
 import com.r7.core.uim.service.UimSysUserService;
+import com.r7.core.uim.service.UimUserService;
 import com.r7.core.uim.vo.UimResourceVO;
 import com.r7.core.uim.vo.UimRoleVO;
 import com.r7.core.uim.vo.UimSysUserVO;
+import com.r7.core.uim.vo.UimUserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +33,8 @@ public class UimSysUserController {
 
     @Resource
     private UimSysUserService uimSysUserService;
-
+    @Resource
+    private UimUserService uimUserService;
 
     @ApiOperation(value = "系统用户新增", response = UimSysUserVO.class)
     @PostMapping("{code}")
@@ -149,5 +152,47 @@ public class UimSysUserController {
     @GetMapping("/check")
     public ResponseEntity checkSysUserById(@RequestParam Long id) {
         return ResponseEntity.success(uimSysUserService.checkSysUserById(id));
+    }
+
+
+    @ApiOperation(value = "根据id修改系统用户头像", response = boolean.class)
+    @PutMapping("/avatar/{id}")
+    public ResponseEntity updateSysUserAvatar(@PathVariable Long id,
+                                              @RequestParam String avatar) {
+        return ResponseEntity.success(uimSysUserService.updateSysUserAvatar(id, avatar));
+    }
+
+
+    @ApiOperation(value = "修改系统用户绑定的手机号", response = boolean.class)
+    @PutMapping("/phoneNumber/code/{id}")
+    public ResponseEntity updateSysUserPhoneNumber(@PathVariable Long id,
+                                                   @RequestParam String phoneNumber,
+                                                   @RequestParam Long code) {
+        return ResponseEntity.success(uimSysUserService.updateSysUserPhoneNumber(id, phoneNumber, code));
+    }
+
+
+    @ApiOperation(value = "根据手机号重新设置密码", response = boolean.class)
+    @PutMapping("/phoneNumber/code/")
+    public ResponseEntity updateSysUserPasswordByPhoneNumber(@RequestParam String phoneNumber,
+                                                             @RequestParam String newPassword,
+                                                             @RequestParam Long code) {
+        return ResponseEntity.success(uimSysUserService
+                .updateSysUserPasswordByPhoneNumber(phoneNumber, newPassword, code));
+    }
+
+
+    @ApiOperation(value = "手机换绑验证码", response = UimSysUserVO.class)
+    @PostMapping("/sms/code/{phone}")
+    public ResponseEntity sendBindPhoneSmsCode(@PathVariable("phone") Long phone) {
+        uimUserService.sendSmsCode(phone, "SMS_165215124");
+        return ResponseEntity.success();
+    }
+
+    @ApiOperation(value = "修改密码验证码", response = UimSysUserVO.class)
+    @PostMapping("/sms/code/pwd/{phone}")
+    public ResponseEntity sendUpdatePasswordSmsCode(@PathVariable("phone") Long phone) {
+        uimUserService.sendSmsCode(phone, "SMS_165215125");
+        return ResponseEntity.success();
     }
 }

@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.r7.core.common.exception.BusinessException;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.proxy.constant.CoreProxyEnum;
+import com.r7.core.proxy.constant.ProxyTypeEnum;
 import com.r7.core.proxy.dto.CoreProxyDTO;
 import com.r7.core.proxy.dto.CoreProxyUpdateDTO;
 import com.r7.core.proxy.mapper.CoreProxyMapper;
@@ -45,16 +46,20 @@ public class CoreProxyServiceImpl extends ServiceImpl<CoreProxyMapper, CoreProxy
         checkIdLength(coreProxyDto.getOrganId());
         // todo 判断用户父id是否存在，用户id是否存在，组织id是否存在
         CoreProxy coreProxy = new CoreProxy();
+        coreProxy.toCoreProxyDto(coreProxyDto);
         //下级人数默认为0
         coreProxy.setSubordinateNum(0);
         //新增层级的层级值默认为1
         coreProxy.setLevel(1);
+        //默认层级类型：销售代
+        coreProxy.setType(ProxyTypeEnum.SALESPROXY);
+
         coreProxy.setId(SnowflakeUtil.getSnowflakeId());
         coreProxy.setCreatedBy(optionalUserId);
         coreProxy.setCreatedAt(LocalDateTime.now());
         coreProxy.setUpdatedBy(optionalUserId);
         coreProxy.setUpdatedAt(LocalDateTime.now());
-        coreProxy.toCoreProxyDto(coreProxyDto);
+
         //执行层级信息添加操作
         boolean save = save(coreProxy);
         //判断是否添加成功

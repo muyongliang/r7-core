@@ -1,6 +1,8 @@
 package com.r7.core.integral.controller;
 
+import com.r7.core.common.holder.RequestHolder;
 import com.r7.core.common.web.ResponseEntity;
+import com.r7.core.integral.constant.SourceTypeEnum;
 import com.r7.core.integral.dto.CoreIntegralChangeDTO;
 import com.r7.core.integral.dto.CoreIntegralDTO;
 import com.r7.core.integral.service.CoreIntegralService;
@@ -11,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 
 /**
  * @author wt
@@ -28,23 +29,52 @@ public class CoreIntegralController {
 
     @ApiOperation(value = "积分详情新增", response = CoreIntegralVO.class)
     @PostMapping("")
-    public ResponseEntity saveCoreIntegralDetail(@Valid @RequestBody CoreIntegralDTO coreIntegralDTO) {
-        return ResponseEntity.success(coreIntegralService.saveCoreIntegral(coreIntegralDTO, 0L));
+    public ResponseEntity saveCoreIntegralDetail(@RequestParam Long userId,
+                                                 @RequestParam Integer total) {
+        CoreIntegralDTO coreIntegralDTO = new CoreIntegralDTO();
+        coreIntegralDTO.setUserId(userId);
+        coreIntegralDTO.setTotal(total);
+        return ResponseEntity.success(coreIntegralService.saveCoreIntegral(coreIntegralDTO, RequestHolder.getUserId()));
     }
 
     @ApiOperation(value = "增加积分", response = CoreIntegralVO.class)
     @PutMapping("/increase")
-    public ResponseEntity updateCoreIntegralAddTotal(@Valid @RequestBody CoreIntegralChangeDTO oreIntegralChangeDTO) {
+    public ResponseEntity updateCoreIntegralAddTotal(@RequestParam Long userId,
+                                                     @RequestParam Integer changeNum,
+                                                     @RequestParam String businessCode,
+                                                     @RequestParam SourceTypeEnum sourceType,
+                                                     @RequestParam String description) {
+
+        CoreIntegralChangeDTO coreIntegralChangeDTO = new CoreIntegralChangeDTO();
+        coreIntegralChangeDTO.setUserId(userId);
+        coreIntegralChangeDTO.setChangeNum(changeNum);
+        coreIntegralChangeDTO.setBusinessCode(businessCode);
+        coreIntegralChangeDTO.setSourceType(sourceType);
+        coreIntegralChangeDTO.setDescription(description);
+
         return ResponseEntity.success(coreIntegralService
-                .updateCoreIntegralAddTotal(oreIntegralChangeDTO, 0L, 2L));
+                .updateCoreIntegralAddTotal(coreIntegralChangeDTO, RequestHolder.getAppId(), RequestHolder.getUserId()));
     }
 
     @ApiOperation(value = "减少积分", response = CoreIntegralVO.class)
     @PutMapping("/reduce")
-    public ResponseEntity updateCoreIntegralReduceTotal(@Valid @RequestBody CoreIntegralChangeDTO oreIntegralChangeDTO) {
+    public ResponseEntity updateCoreIntegralReduceTotal(@RequestParam Long userId,
+                                                        @RequestParam Integer changeNum,
+                                                        @RequestParam String businessCode,
+                                                        @RequestParam SourceTypeEnum sourceType,
+                                                        @RequestParam String description) {
+        CoreIntegralChangeDTO coreIntegralChangeDTO = new CoreIntegralChangeDTO();
+
+        coreIntegralChangeDTO.setUserId(userId);
+        coreIntegralChangeDTO.setChangeNum(changeNum);
+        coreIntegralChangeDTO.setBusinessCode(businessCode);
+        coreIntegralChangeDTO.setSourceType(sourceType);
+        coreIntegralChangeDTO.setDescription(description);
+
 
         return ResponseEntity.success(coreIntegralService
-                .updateCoreIntegralReduceTotal(oreIntegralChangeDTO, 0L, 2L));
+                .updateCoreIntegralReduceTotal(coreIntegralChangeDTO, RequestHolder.getAppId()
+                        , RequestHolder.getUserId()));
     }
 
 

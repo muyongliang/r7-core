@@ -60,7 +60,8 @@ public class UimUserController {
                                              @RequestParam String oldPassword,
                                              @RequestParam String newPassword) {
         return ResponseEntity.success(uimUserService
-                .updateUserPassword(RequestHolder.getUserId(), code, oldPassword, newPassword));
+                .updateUserPassword(1324628255541809152L, code, oldPassword, newPassword));
+//                .updateUserPassword(RequestHolder.getUserId(), code, oldPassword, newPassword));
     }
 
     @ApiOperation(value = "手机换绑验证码", response = UimUserVO.class)
@@ -69,4 +70,27 @@ public class UimUserController {
         uimUserService.sendSmsCode(phone, "SMS_165215124");
         return ResponseEntity.success();
     }
+
+    @ApiOperation(value = "修改密码验证码", response = UimUserVO.class)
+    @PostMapping("/sms/code/pwd/{phone}")
+    public ResponseEntity sendUpdatePasswordSmsCode(@PathVariable("phone") Long phone) {
+        uimUserService.sendSmsCode(phone, "SMS_165215125");
+        return ResponseEntity.success();
+    }
+
+    @ApiOperation(value = "根据手机号查询用户", response = UimUserVO.class)
+    @GetMapping("/phone")
+    public ResponseEntity getUserByPhone(@RequestParam Long phoneNumber) {
+        return ResponseEntity.success(uimUserService.getUserByPhone(phoneNumber));
+    }
+
+    @ApiOperation(value = "根据手机号重新设置密码", response = boolean.class)
+    @PutMapping("/phoneNumber/code")
+    public ResponseEntity updateSysUserPasswordByPhoneNumber(@RequestParam Long phoneNumber,
+                                                             @RequestParam String newPassword,
+                                                             @RequestParam Long code) {
+        return ResponseEntity.success(uimUserService
+                .updateUserPasswordByPhoneNumber(phoneNumber, code, newPassword));
+    }
+
 }
