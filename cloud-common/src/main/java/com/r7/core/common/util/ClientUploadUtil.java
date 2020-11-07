@@ -11,6 +11,13 @@ import java.io.File;
  * @description ClientUploadUtil
  */
 public class ClientUploadUtil {
+    /**
+     * @param url      资源服务器url
+     * @param filePath 上传文件路径
+     * @param fileName 原始文件名
+     * @return
+     * @throws Exception
+     */
     public static Response upload(String url, String filePath, String fileName) throws Exception {
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder()

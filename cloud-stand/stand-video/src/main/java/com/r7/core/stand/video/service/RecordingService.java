@@ -1,5 +1,7 @@
 package com.r7.core.stand.video.service;
 
+import io.agora.media.RtcTokenBuilder;
+
 /**
  * @author zs
  * @description: 录制服务层
@@ -16,6 +18,13 @@ public interface RecordingService {
      * @param uids       用户ids
      * @return 返回是否成功
      */
-    public boolean createChannel(String appId, String channel, String channelKey, Integer... uids) throws Exception;
+    public boolean createChannel(String fileName, String channel, Integer... uids) throws Exception;
+
+    /**
+     * @param channel 频道名
+     * @param Role    角色
+     * @return
+     */
+    public String generateToken(String channel, RtcTokenBuilder.Role Role);
 
 }

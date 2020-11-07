@@ -16,9 +16,9 @@ import com.r7.core.setting.service.CoreSettingService;
 import com.r7.core.setting.vo.CoreSettingVO;
 import io.vavr.control.Option;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -30,7 +30,7 @@ import java.util.Date;
 @Service
 public class CoreSettingServiceImpl extends ServiceImpl<CoreSettingMapper, CoreSettingDO> implements CoreSettingService {
 
-    @Autowired
+    @Resource
     private CoreSettingMapper coreSettingMapper;
 
     @Override

@@ -29,7 +29,7 @@ public class AgoraProperties {
      */
     private String appCertificate;
     /**
-     * token到期时间
+     * token到期时间,最大值1天
      */
     private Integer expirationTimeInSeconds;
     /**
