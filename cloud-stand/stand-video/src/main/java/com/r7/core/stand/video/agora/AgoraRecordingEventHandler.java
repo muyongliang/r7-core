@@ -1,7 +1,7 @@
 package com.r7.core.stand.video.agora;
 
-import com.r7.core.common.constant.CommonErrorEnum;
 import com.r7.core.common.exception.BusinessException;
+import com.r7.core.stand.video.constant.RecordErrorEnum;
 import io.agora.recording.RecordingEventHandler;
 import io.agora.recording.RecordingSDK;
 import io.agora.recording.common.Common;
@@ -102,7 +102,7 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
             String[] resolution = config.mixResolution.split(",");
             if (resolution.length != 4) {
                 log.error("Illegal resolution:{}", config.mixResolution);
-                throw new BusinessException(CommonErrorEnum.ILLEGAL_ARGUMENT.setMessage("mixResolution配置错误"));
+                throw new BusinessException(RecordErrorEnum.MIX__RESOLUTION_ERROR);
             }
             this.width = Integer.parseInt(resolution[0]);
             this.height = Integer.parseInt(resolution[1]);

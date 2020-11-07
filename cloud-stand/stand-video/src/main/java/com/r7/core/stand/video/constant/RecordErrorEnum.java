@@ -13,6 +13,7 @@ public enum RecordErrorEnum implements IError {
      * 异常
      */
     VIDEO_NOT_EXIST("录制视频不存在,录制失败"),
+    MIX__RESOLUTION_ERROR("mixResolution配置错误"),
     FAILURE_UPLOAD_FILE("上传文件失败");
     /**
      * 错误信息
