@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
 /**
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
 @RequestMapping("/settlement")
 public class SettlementController {
 
-    @Autowired
+    @Resource
     private SettlementService settlementService;
 
     @ApiOperation(value = "核算指定时间以前的所有未计算的分润明细", response = Integer.class)

@@ -13,7 +13,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  *
  * @author zhongpingli
  */
-@EnableFeignClients
+@EnableFeignClients(basePackages = "com.r7.core.common")
 @MapperScan("com.r7.core.uim.mapper")
 @SpringBootApplication(scanBasePackages = {"com.r7.core"})
 @EnableDiscoveryClient

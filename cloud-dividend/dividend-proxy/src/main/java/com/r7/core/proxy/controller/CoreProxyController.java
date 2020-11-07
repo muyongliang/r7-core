@@ -14,8 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 /**
  * @author wutao
  * @Description 代理层级接口
@@ -31,7 +29,13 @@ public class CoreProxyController {
 
     @ApiOperation(value = "新增层级", response = CoreProxyVO.class)
     @PostMapping("")
-    public ResponseEntity saveUimResource(@Valid @RequestBody CoreProxyDTO coreProxyDTO) {
+    public ResponseEntity saveCoreProxy(@RequestParam Long pId,
+                                        @RequestParam Long userId,
+                                        @RequestParam Long organId) {
+        CoreProxyDTO coreProxyDTO = new CoreProxyDTO();
+        coreProxyDTO.setPId(pId);
+        coreProxyDTO.setUserId(userId);
+        coreProxyDTO.setOrganId(organId);
         return ResponseEntity.success(coreProxyService.saveCoreProxy(coreProxyDTO, 1L));
     }
 
@@ -84,7 +88,7 @@ public class CoreProxyController {
             @ApiImplicitParam(name = "id", value = "要移动的层级id"),
             @ApiImplicitParam(name = "userId", value = "目标层级的用户id")
     })
-    @PutMapping("/proxy/level")
+    @PutMapping("/move/level")
     public ResponseEntity updateCoreProxyLevel(@RequestParam Long id,
                                                @RequestParam Long userId) {
         return ResponseEntity.success(coreProxyService.updateCoreProxyLevel(id, userId,

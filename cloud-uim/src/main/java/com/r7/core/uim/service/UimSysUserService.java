@@ -163,4 +163,31 @@ public interface UimSysUserService extends IService<UimSysUser> {
      * @return 验证结果
      */
     boolean checkSysUserById(Long id);
+
+    /**
+     * 根据系统用户id修改系统用户的头像
+     * @param id 系统用户的id
+     * @param avatar 系统用户新头像
+     * @return 返回修改结果
+     */
+    boolean updateSysUserAvatar(Long id, String avatar);
+
+    /**
+     * 根据系统用户id修改系统用户的手机号
+     * @param id 系统用户id
+     * @param phoneNumber 新手机号
+     * @param code 验证码
+     * @return 返回修改结果
+     */
+    boolean updateSysUserPhoneNumber(Long id, String phoneNumber, Long code);
+
+
+    /**
+     * 通过手机号重新设置密码
+     * @param phoneNumber 手机号
+     * @param newPassword 新密码
+     * @param code 验证码
+     * @return 返回设置密码结果
+     */
+    boolean updateSysUserPasswordByPhoneNumber(String phoneNumber,String newPassword,Long code);
 }

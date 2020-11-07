@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Maps;
 import com.r7.core.cache.service.RedisService;
 import com.r7.core.common.exception.BusinessException;
+import com.r7.core.common.fegin.IntegralFeign;
+import com.r7.core.common.fegin.ProxyFeign;
 import com.r7.core.common.util.CodeUtil;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.common.util.ValidatorUtil;
@@ -32,6 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +48,13 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Service
 public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> implements UimUserService, UserDetailsService {
+
+
+    @Resource
+    private IntegralFeign integralFeign;
+
+    @Resource
+    private ProxyFeign feignProxyService;
 
     @Resource
     private UimSysUserService uimSysUserService;
@@ -82,6 +92,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
     public UimUserVO signUpUser(String code, UserSignUpDTO userSignUpDTO, String ip) {
         userSignUpDTO.setPassword(passwordEncoder.encode(userSignUpDTO.getPassword()));
         log.info("新用户注册：{},IP地址{}", userSignUpDTO, ip);
+
         // 手机格式
         if (!ValidatorUtil.validatorPhoneNumber(userSignUpDTO.getPhoneNumber())) {
             throw new BusinessException(UimErrorEnum.USER_PHONE_ERROR);
@@ -125,11 +136,17 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         uimUser.setUpdatedBy(id);
 
         boolean save = save(uimUser);
-        // todo 层级
+
         if (!save) {
             log.info("新用户注册：{}失败,IP地址{}", userSignUpDTO, ip);
             throw new BusinessException(UimErrorEnum.USER_SAVE_ERROR);
         }
+        // 用户注册完，新增层级
+        feignProxyService.saveCoreProxy(userByCode.getId(), id, userByCode.getOrganId());
+        //增加新注册用户的积分信息
+        integralFeign.saveCoreIntegralDetail(id, 0);
+        //钱包余额初始化
+
         log.info("新用户注册：{}成功,IP地址{}", userSignUpDTO, ip);
         return getUserById(id);
     }
@@ -153,6 +170,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         return getUserById(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateUserAvatar(Long id, String avatar) {
         UimUser uimUser = Option.of(getById(id))
@@ -163,6 +181,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         return updateById(uimUser);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean bindUserPhone(Long id, Long phoneNumber, Long code) {
         // 验证码校验
@@ -178,6 +197,7 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         return updateById(uimUser);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateUserPassword(Long id, Long code, String oldPassword, String newPassword) {
         UimUser uimUser = Option.of(getById(id))
@@ -187,7 +207,8 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         if (smsCode == null || !smsCode.equals(code.toString())) {
             throw new BusinessException(UimErrorEnum.USER_SIGN_UP_SMS_CODE_ERROR);
         }
-        if (!passwordEncoder.encode(oldPassword).equals(uimUser.getPassword())) {
+
+        if (!passwordEncoder.matches(oldPassword, uimUser.getPassword())) {
             throw new BusinessException(UimErrorEnum.USER_OLD_PASSWORD_ERROR);
         }
         uimUser.setPassword(passwordEncoder.encode(newPassword));
@@ -253,5 +274,44 @@ public class UimUserServiceImpl extends ServiceImpl<UimUserMapper, UimUser> impl
         map.put("code", code);
         smsService.sendSms(phoneNumber, templateCode, JSONUtil.toJsonStr(map));
         redisService.addValue(phoneNumber, code, 60, TimeUnit.SECONDS);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean updateUserPasswordByPhoneNumber(Long phone, Long code, String newPassword) {
+
+        //1、验证手机格式
+        if (!ValidatorUtil.validatorPhoneNumber(phone)) {
+            throw new BusinessException(UimErrorEnum.USER_PHONE_ERROR);
+        }
+        //2、验证该手机用户是否存在
+        UimUserVO uimUserVO = getUserByPhone(phone);
+        if (uimUserVO == null) {
+            throw new BusinessException(UimErrorEnum.USER_IS_NOT_EXISTS);
+        }
+
+        //3、验证验证码的正确性和有效性
+        String smsCode = redisService.getKey(phone.toString());
+        if (smsCode == null || !smsCode.equals(code.toString())) {
+            throw new BusinessException(UimErrorEnum.USER_SIGN_UP_SMS_CODE_ERROR);
+        }
+        log.info("手机号:{},验证码:{},新密码:{},操作者:{},开始时间:{}",
+                phone, code, newPassword, uimUserVO.getId(), LocalDateTime.now());
+        //4、进行密码重新设置
+        String password = passwordEncoder.encode(newPassword);
+        boolean updateUserPasswordByPhoneNumber = update(Wrappers.<UimUser>lambdaUpdate()
+                .set(UimUser::getPassword, password)
+                .set(UimUser::getUpdatedAt, new Date())
+                .set(UimUser::getUpdatedBy, uimUserVO.getId())
+                .eq(UimUser::getId, uimUserVO.getId()));
+
+        if (!updateUserPasswordByPhoneNumber) {
+            log.info("手机号:{},验证码:{},新密码:{},操作者:{},普通用户密码重新设置失败时间:{}",
+                    phone, code, newPassword, uimUserVO.getId(), LocalDateTime.now());
+            return false;
+        }
+        log.info("手机号:{},验证码:{},新密码:{},操作者:{},重新设置结束时间:{}",
+                phone, code, newPassword, uimUserVO.getId(), LocalDateTime.now());
+        return true;
     }
 }

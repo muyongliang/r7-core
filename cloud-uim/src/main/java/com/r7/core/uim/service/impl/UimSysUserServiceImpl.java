@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.r7.core.cache.service.RedisService;
 import com.r7.core.common.exception.BusinessException;
+import com.r7.core.common.fegin.ProxyFeign;
 import com.r7.core.common.util.CodeUtil;
 import com.r7.core.common.util.SnowflakeUtil;
 import com.r7.core.common.util.ValidatorUtil;
@@ -43,11 +45,16 @@ import java.util.Optional;
 @Service
 public class UimSysUserServiceImpl extends ServiceImpl<UimSysUserMapper, UimSysUser>
         implements UimSysUserService {
+    @Resource
+    private ProxyFeign feignProxyService;
 
     @Resource
     private UimUserService uimUserService;
+
     @Resource
     private PasswordEncoder passwordEncoder;
+    @Resource
+    private RedisService redisService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -101,7 +108,8 @@ public class UimSysUserServiceImpl extends ServiceImpl<UimSysUserMapper, UimSysU
         Long id = SnowflakeUtil.getSnowflakeId();
 
         //验证邀请码是否存在
-        if (!Optional.ofNullable(getUimSysUserCode(code)).isPresent()
+        UimSysUserVO uimSysUserVO = getUimSysUserCode(code);
+        if (!Optional.ofNullable(uimSysUserVO).isPresent()
                 && !Optional.ofNullable(uimUserService.getUserByCode(code)).isPresent()) {
             throw new BusinessException(UimSysUserEnum.USER_SYS_CODE_IS_NOT_EXISTS);
         }
@@ -132,14 +140,14 @@ public class UimSysUserServiceImpl extends ServiceImpl<UimSysUserMapper, UimSysU
         uimSysUser.setUpdatedAt(new Date());
         uimSysUser.setCreatedBy(userId);
         uimSysUser.setUpdatedBy(userId);
-
         boolean saveUimSysUser = save(uimSysUser);
         if (!saveUimSysUser) {
             log.info("系统新增用户信息失败：{}，新增用户IP：{}，平台ID：{}，组织ID：{}，操作者ID：{},新增失败时间：{}",
                     uimSysUserDTO, ip, appId, organId, userId, LocalDateTime.now());
             throw new BusinessException(UimSysUserEnum.USER_SYS_SAVE_ERROR);
         }
-
+        //新增层级
+        feignProxyService.saveCoreProxy(uimSysUserVO.getId(), id, uimSysUserVO.getOrganId());
         log.info("系统新增用户信息：{}，新增用户IP：{}，平台ID：{}，组织ID：{}，操作者ID：{},新增结束时间：{}",
                 uimSysUserDTO, ip, appId, organId, userId, LocalDateTime.now());
         return uimSysUser.toUimSysUserVO();
@@ -378,6 +386,7 @@ public class UimSysUserServiceImpl extends ServiceImpl<UimSysUserMapper, UimSysU
         return uimSysUser.toUimSysUserVO();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public UimSysUserVO updateUimSysUserPasswordById(Long id, String oldPassword, String password, Long userId) {
         log.info("系统用户ID：{}，旧密码:{},新密码：{}，操作者：{}，开始时间：{}",
@@ -393,9 +402,9 @@ public class UimSysUserServiceImpl extends ServiceImpl<UimSysUserMapper, UimSysU
         if (!passwordEncoder.matches(oldPassword, uimSysUserVO.getPassword())) {
             throw new BusinessException(UimSysUserEnum.USER_SYS_OLD_PASSWORD_ERROR);
         }
-        password = passwordEncoder.encode(password);
+        String newPassword = passwordEncoder.encode(password);
         boolean updateUimSysUserPasswordById = update(Wrappers.<UimSysUser>lambdaUpdate()
-                .set(UimSysUser::getPassword, password)
+                .set(UimSysUser::getPassword, newPassword)
                 .set(UimSysUser::getUpdatedBy, userId)
                 .set(UimSysUser::getUpdatedAt, new Date())
                 .eq(UimSysUser::getId, id));
@@ -436,6 +445,112 @@ public class UimSysUserServiceImpl extends ServiceImpl<UimSysUserMapper, UimSysU
         //验证系统用户是否存在
         Option.of(getUimSysUserById(id))
                 .getOrElseThrow(() -> new BusinessException(UimSysUserEnum.USER_SYS_IS_NOT_EXISTS));
+
+        return true;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean updateSysUserAvatar(Long id, String avatar) {
+        log.info("系统用户id:{},系统用户的新头像:{}开始时间:{}",
+                id, avatar, LocalDateTime.now());
+        UimSysUser uimSysUser = baseMapper.selectById(id);
+        if (uimSysUser == null) {
+            throw new BusinessException(UimSysUserEnum.USER_SYS_IS_NOT_EXISTS);
+        }
+        uimSysUser.setAvatar(avatar);
+        uimSysUser.setUpdatedBy(id);
+        uimSysUser.setUpdatedAt(new Date());
+        boolean updateSysUserAvatar = updateById(uimSysUser);
+        if (!updateSysUserAvatar) {
+            log.info("系统用户id:{},系统用户的新头像:{}头像修改失败时间:{}",
+                    id, avatar, LocalDateTime.now());
+            return false;
+        }
+
+        log.info("系统用户id:{},系统用户的新头像:{}修改结束时间:{}",
+                id, avatar, LocalDateTime.now());
+        return true;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean updateSysUserPhoneNumber(Long id, String phoneNumber, Long code) {
+        log.info("系统用户id:{},系统用户的手机号:{}开始时间:{}",
+                id, phoneNumber, LocalDateTime.now());
+
+        //验证手机格式
+        if (!ValidatorUtil.validatorPhoneNumber(Long.valueOf(phoneNumber))) {
+            throw new BusinessException(UimErrorEnum.USER_PHONE_ERROR);
+        }
+        //验证新手机号是否已经存在
+        if (Optional.ofNullable(getUimSysUserPhoneNumber(phoneNumber))
+                .isPresent()) {
+            throw new BusinessException(UimSysUserEnum.USER_SYS_PHONE_IS_EXISTS);
+        }
+        String smsCode = redisService.getKey(phoneNumber);
+        if (smsCode == null || !smsCode.equals(code.toString())) {
+            throw new BusinessException(UimErrorEnum.USER_SIGN_UP_SMS_CODE_ERROR);
+        }
+        //修改用户的手机号
+        UimSysUser uimSysUser = baseMapper.selectById(id);
+        if (uimSysUser == null) {
+            throw new BusinessException(UimSysUserEnum.USER_SYS_IS_NOT_EXISTS);
+        }
+        uimSysUser.setPhoneNumber(phoneNumber);
+        uimSysUser.setUpdatedAt(new Date());
+        uimSysUser.setUpdatedBy(id);
+
+        boolean updateSysUserPhoneNumber = updateById(uimSysUser);
+
+        if (!updateSysUserPhoneNumber) {
+            log.info("系统用户id:{},系统用户的手机号:{}修改失败时间:{}",
+                    id, phoneNumber, LocalDateTime.now());
+            return false;
+        }
+
+        log.info("系统用户id:{},系统用户的手机号:{}修改结束时间:{}",
+                id, phoneNumber, LocalDateTime.now());
+        return true;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean updateSysUserPasswordByPhoneNumber(String phoneNumber, String newPassword
+            , Long code) {
+
+        //1、验证手机格式
+        if (!ValidatorUtil.validatorPhoneNumber(Long.valueOf(phoneNumber))) {
+            throw new BusinessException(UimErrorEnum.USER_PHONE_ERROR);
+        }
+        //2、验证该手机号的用户是否存在
+        UimSysUserVO uimSysUserVO = getUimSysUserPhoneNumber(phoneNumber);
+        if (uimSysUserVO == null) {
+            throw new BusinessException(UimSysUserEnum.USER_SYS_IS_NOT_EXISTS);
+        }
+        log.info("手机号:{},验证码:{},新密码:{},操作人:{},开始时间:{}",
+                phoneNumber, newPassword, uimSysUserVO.getId(), LocalDateTime.now());
+        //3、验证验证码是否失效即正确性
+        String smsCode = redisService.getKey(phoneNumber);
+        if (smsCode == null || !smsCode.equals(code.toString())) {
+            throw new BusinessException(UimErrorEnum.USER_SIGN_UP_SMS_CODE_ERROR);
+        }
+        //4、重新设置密码
+        String password = passwordEncoder.encode(newPassword);
+        boolean updateSysUserPhoneNumberPasswordByPhoneNumber =
+                update(Wrappers.<UimSysUser>lambdaUpdate().set(UimSysUser::getPassword, password)
+                        .set(UimSysUser::getUpdatedBy, uimSysUserVO.getId())
+                        .set(UimSysUser::getUpdatedAt, new Date()).eq(UimSysUser::getId, uimSysUserVO.getId()));
+        if (!updateSysUserPhoneNumberPasswordByPhoneNumber) {
+
+            log.info("手机号:{},验证码:{},新密码:{},操作人:{},重新设置密码失败时间:{}",
+                    phoneNumber, newPassword, uimSysUserVO.getId(), LocalDateTime.now());
+
+            return false;
+        }
+
+        log.info("手机号:{},验证码:{},新密码:{},操作人:{},重新设置密码结束时间:{}",
+                phoneNumber, newPassword, uimSysUserVO.getId(), LocalDateTime.now());
 
         return true;
     }

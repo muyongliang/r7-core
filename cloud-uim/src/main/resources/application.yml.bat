@@ -21,6 +21,12 @@ spring:
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
   type-enums-package: com.r7.core.uim.constant
+feign:
+  okhttp:
+    enabled: true
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
 
 sms:
   config:
