@@ -2,6 +2,8 @@ package com.r7.core.integral.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.r7.core.integral.constant.OperateTypeEnum;
+import com.r7.core.integral.constant.SourceTypeEnum;
 import com.r7.core.integral.dto.CoreIntegralDetailDTO;
 import com.r7.core.integral.model.CoreIntegralDetail;
 import com.r7.core.integral.vo.CoreIntegralDetailVO;
@@ -44,9 +46,9 @@ public interface CoreIntegralDetailService extends IService<CoreIntegralDetail> 
      * @return 积分详情记录
      */
     Page<CoreIntegralDetailVO> pageCoreIntegralDetailAll(String businessCode,
-                                                         Integer sourceType,
+                                                         SourceTypeEnum sourceType,
                                                          Long appId,
-                                                         Integer operateType,
+                                                         OperateTypeEnum operateType,
                                                          Long pageNum, Long pageSize);
 
     /**
@@ -61,8 +63,8 @@ public interface CoreIntegralDetailService extends IService<CoreIntegralDetail> 
      * @return 该用户的积分详情记录
      */
     Page<CoreIntegralDetailVO> pageCoreIntegralDetailByUserId(Long userId, Long appId,
-                                                              Integer operateType,
-                                                              Integer sourceType, Long pageNum,
+                                                              OperateTypeEnum operateType,
+                                                              SourceTypeEnum sourceType, Long pageNum,
                                                               Long pageSize);
 
 }

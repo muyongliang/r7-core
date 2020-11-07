@@ -37,8 +37,8 @@ public class UimSignController {
 
     @ApiOperation(value = "注册手机验证码", response = UimUserVO.class)
     @PostMapping("/sms/code/{phone}")
-    public ResponseEntity sendSmsCode(@PathVariable("phone") Long phone) {
-        uimUserService.sendSmsCode(phone);
+    public ResponseEntity sendSignSmsCode(@PathVariable("phone") Long phone) {
+        uimUserService.sendSmsCode(phone, "SMS_165215126");
         return ResponseEntity.success();
     }
 

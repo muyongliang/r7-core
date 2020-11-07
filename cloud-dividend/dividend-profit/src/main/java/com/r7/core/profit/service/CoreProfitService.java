@@ -112,5 +112,10 @@ public interface CoreProfitService extends IService<CoreProfit>{
      */
     List<CoreProfit> getAllCoreProfitByStatus(CalculationStatusEnum status, LocalDateTime endTime);
 
-
+    /**
+     * 验证id长度是不是19位
+     * @param id id值
+     * @return 验证结果
+     */
+    boolean checkIdLength(Long id);
 }

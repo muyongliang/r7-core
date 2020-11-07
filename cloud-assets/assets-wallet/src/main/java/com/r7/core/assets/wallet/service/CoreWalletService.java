@@ -28,11 +28,12 @@ public interface CoreWalletService extends IService<CoreWallet> {
      * 根据用户id修改钱包密码
      *
      * @param updateUserId      用户id
+     * @param oldPayPassword    旧的密码
      * @param changePayPassword 修改的密码
      * @param userId            操作者id
      * @return 返回是否成功
      */
-    Boolean updateWalletPayPasswordById(Long updateUserId, String changePayPassword, Long userId);
+    Boolean updateWalletPayPasswordById(Long updateUserId, String oldPayPassword, String changePayPassword, Long userId);
 
 
     /**

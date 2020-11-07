@@ -1,5 +1,6 @@
 package com.r7.core.uim.dto;
 
+import com.r7.core.uim.constant.UimSysUserStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -46,11 +47,11 @@ public class UimSysUserUpdateDTO {
     @NotBlank(message = "邮箱不能为空")
     private String email;
     /**
-     * 状态;0正常，1冻结，2注销
+     * 状态;1正常，2冻结
      */
     @NotNull(message = "状态不能为空")
-    @ApiModelProperty(value = "状态", example = "0")
-    private Integer status;
+    @ApiModelProperty(value = "状态")
+    private UimSysUserStatusEnum status;
     /**
      * 账户密码
      */

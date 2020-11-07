@@ -19,26 +19,28 @@ import java.util.List;
 public interface UimSysUserMapper extends BaseMapper<UimSysUser> {
 
 
+
     /**
      * 分页查询系统用户
-     *
-     * @param search   查询条件
-     * @param appId    平台id
-     * @param organId  组织id
+     * @param search 查询条件
+     * @param appId 平台id
+     * @param organId 组织id
      * @param branchId 部门id
-     * @param page     分页
+     * @param page 分页
      * @return 查询结果
      */
-    Page<UimSysUserVO> pageUimSysUserByCondition(@Param("search") String search,
-                                                 @Param("appId") Long appId,
-                                                 @Param("organId") Long organId,
-                                                 @Param("branchId") Long branchId,
+    Page<UimSysUserVO> pageUimSysUserByCondition(@Param("search")String search,
+                                                 @Param("appId")Long appId,
+                                                 @Param("organId")Long organId,
+                                                 @Param("branchId")Long branchId,
+                                                 @Param("status")Integer status,
+                                                 @Param("del")Integer del,
                                                  @Param("page") Page<UimSysUserVO> page);
+
 
 
     /**
      * 根据用户ID获取资源
-     *
      * @param id 系统用户id
      * @return 资源信息
      */
@@ -46,7 +48,6 @@ public interface UimSysUserMapper extends BaseMapper<UimSysUser> {
 
     /**
      * 根据用户ID获取角色信息
-     *
      * @param id 系统用户id
      * @return 相应的角色信息
      */

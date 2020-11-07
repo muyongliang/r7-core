@@ -36,7 +36,19 @@ public class CoreFundsServiceImpl extends ServiceImpl<CoreFundsMapper, CoreFunds
     @Transactional(rollbackFor = Exception.class)
     public Boolean saveFunds(CoreFundsDTO coreFundsDto, Long appId, Long organId, Long userId) {
         Long fundsUserId = coreFundsDto.getUserId();
+        Long inOrderSn = coreFundsDto.getInOrderSn();
+        String outOrderSn = coreFundsDto.getOutOrderSn();
         log.info("在该平台:{}组织:{}中的用户:{}创建资金流动记录,操作者:{}", appId, organId, fundsUserId, userId);
+        int standard = 19;
+        if (fundsUserId.toString().length() != standard) {
+            throw new BusinessException(CoreFundsErrorEnum.FUNDS_USER_ID_LENGTH_INCORRECT);
+        }
+        if (inOrderSn.toString().length() != standard) {
+            throw new BusinessException(CoreFundsErrorEnum.FUNDS_IN_ORDER_SN_LENGTH_INCORRECT);
+        }
+        if (outOrderSn.length() != standard) {
+            throw new BusinessException(CoreFundsErrorEnum.FUNDS_OUT_ORDER_SN_LENGTH_INCORRECT);
+        }
         CoreFunds coreFunds = new CoreFunds();
         Long id = SnowflakeUtil.getSnowflakeId();
         coreFunds.setId(id);
@@ -63,6 +75,10 @@ public class CoreFundsServiceImpl extends ServiceImpl<CoreFundsMapper, CoreFunds
     @Override
     public CoreFundsVO getFundsById(Long id) {
         Option.of(id).getOrElseThrow(() -> new BusinessException(CoreFundsErrorEnum.FUNDS_ID_IS_NULL));
+        int standard = 19;
+        if (id.toString().length() != standard) {
+            throw new BusinessException(CoreFundsErrorEnum.FUNDS_ID_LENGTH_IS_INCORRECT);
+        }
         CoreFunds coreFunds = Option.of(getOne(Wrappers.<CoreFunds>lambdaQuery()
                 .select(CoreFunds::getId, CoreFunds::getAppId, CoreFunds::getInOrderSn,
                         CoreFunds::getUserId, CoreFunds::getOrganId, CoreFunds::getPayLink,
@@ -74,21 +90,60 @@ public class CoreFundsServiceImpl extends ServiceImpl<CoreFundsMapper, CoreFunds
     }
 
     @Override
-    public IPage<CoreFundsPageVO> pageFundsByUserId(Long userId, FundsStatusEnum status, FundsTransactionStatusEnum transactionStatus, FundsChannelEnum channel, String startDate, String endDate, Integer pageNum, Integer pageSize) {
+    public IPage<CoreFundsPageVO> pageFundsByUserId(Long userId, FundsStatusEnum status,
+                                                    FundsTransactionStatusEnum transactionStatus,
+                                                    FundsChannelEnum channel, String startDate,
+                                                    String endDate, Integer pageNum, Integer pageSize) {
         Option.of(userId).getOrElseThrow(() -> new BusinessException(CoreFundsErrorEnum.FUNDS_USER_ID_IS_NULL));
+        int standard = 19;
+        if (userId.toString().length() != standard) {
+            throw new BusinessException(CoreFundsErrorEnum.FUNDS_USER_ID_LENGTH_INCORRECT);
+        }
         Page<CoreFundsPageVO> page = new Page<>(pageNum, pageSize);
-        Integer statusValue = status.getValue();
-        Integer transactionStatusValue = transactionStatus.getValue();
-        Integer channelValue = channel.getValue();
+        Integer statusValue;
+        if (status == null) {
+            statusValue = 0;
+        } else {
+            statusValue = status.getValue();
+        }
+        Integer transactionStatusValue;
+        if (transactionStatus == null) {
+            transactionStatusValue = 0;
+        } else {
+            transactionStatusValue = transactionStatus.getValue();
+        }
+        Integer channelValue;
+        if (channel == null) {
+            channelValue = 0;
+        } else {
+            channelValue = channel.getValue();
+        }
         return baseMapper.pageFundsByUserId(userId, statusValue, transactionStatusValue, channelValue, startDate, endDate, page);
     }
 
     @Override
-    public IPage<CoreFundsPageVO> pageFundsByAppId(Long appId, FundsStatusEnum status, FundsTransactionStatusEnum transactionStatus, FundsChannelEnum channel, String startDate, String endDate, Integer pageNum, Integer pageSize) {
+    public IPage<CoreFundsPageVO> pageFundsByAppId(Long appId, FundsStatusEnum status,
+                                                   FundsTransactionStatusEnum transactionStatus, FundsChannelEnum channel,
+                                                   String startDate, String endDate, Integer pageNum, Integer pageSize) {
         Page<CoreFundsPageVO> page = new Page<>(pageNum, pageSize);
-        Integer statusValue = status.getValue();
-        Integer transactionStatusValue = transactionStatus.getValue();
-        Integer channelValue = channel.getValue();
+        Integer statusValue;
+        if (status == null) {
+            statusValue = 0;
+        } else {
+            statusValue = status.getValue();
+        }
+        Integer transactionStatusValue;
+        if (transactionStatus == null) {
+            transactionStatusValue = 0;
+        } else {
+            transactionStatusValue = transactionStatus.getValue();
+        }
+        Integer channelValue;
+        if (channel == null) {
+            channelValue = 0;
+        } else {
+            channelValue = channel.getValue();
+        }
         return baseMapper.pageFundsByAppId(appId, statusValue, transactionStatusValue, channelValue, startDate, endDate, page);
     }
 }
