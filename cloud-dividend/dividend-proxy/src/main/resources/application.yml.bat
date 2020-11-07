@@ -18,6 +18,9 @@ spring:
 feign:
   okhttp:
     enabled: true
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml

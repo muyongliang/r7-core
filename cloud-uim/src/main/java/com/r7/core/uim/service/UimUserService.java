@@ -121,4 +121,14 @@ public interface UimUserService extends IService<UimUser> {
      * @param templateCode 短信模板
      */
     void sendSmsCode(Long phone, String templateCode);
+
+
+    /**
+     * 通过手机号重新设置密码
+     * @param phone 手机号
+     * @param code 验证码
+     * @param newPassword 新密码
+     * @return 返回重新设置密码的结果
+     */
+    boolean updateUserPasswordByPhoneNumber(Long phone, Long code, String newPassword);
 }

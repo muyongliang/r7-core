@@ -19,7 +19,7 @@ public interface CoreProxyService extends IService<CoreProxy>{
 
     /**
      * 新增层级
-     * @param coreProxyDto 新增的层级信息
+//     * @param coreProxyDto 新增的层级信息
      * @param  optionalUserId 操作人ID
      * @return 返回新增结果
      */
