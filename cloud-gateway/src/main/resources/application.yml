@@ -17,20 +17,32 @@ spring:
           predicates:
             - Path=/api/deposit/**,/api/product/**,/api/rights/**,/api/user/product/**,/api/shopping/**,/api/rights/product/**
         - id: cloud-purchase-route
-            uri: lb://cloud-purchase
-            predicates:
-              - Path=/api/supply/**,/api/purchase/**
+          uri: lb://cloud-purchase
+          predicates:
+            - Path=/api/supply/**,/api/purchase/**
         - id: cloud-warehouse-route
-            uri: lb://cloud-warehouse
-            predicates:
-              - Path=/api/inventory/**,/api/warehouse/**
+          uri: lb://cloud-warehouse
+          predicates:
+            - Path=/api/inventory/**,/api/warehouse/**
         - id: cloud-order-route
-            uri: lb://cloud-order
-            predicates:
-              - Path=/api/order/**,/api/logistics/**
+          uri: lb://cloud-order
+          predicates:
+            - Path=/api/order/**,/api/logistics/**
+        - id: cloud-resource-route
+          uri: lb://cloud-resource
+          predicates:
+            - Path=/api/file/**
+        - id: stand-video-route
+          uri: lb://stand-video
+          predicates:
+            - Path=/api/recording/**
+        - id: cloud-setting-route
+          uri: lb://cloud-setting
+          predicates:
+            - Path=/api/setting/**
 
-  #          filters:
-  #            - StripPrefix=1
+  #       filters:
+  #         - StripPrefix=1
   #      discovery:
   #        locator:
   #          enabled: true #开启从注册中心动态创建路由的功能

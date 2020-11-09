@@ -61,7 +61,7 @@ public class FileUploadController {
     @GetMapping
     @ApiOperation(
             value = "文件下载接口，大小限制1G"
-            , notes = "fileName:上传时返回的fileName;inline:是否在浏览器中直接展示，否则下载到本地"
+            , notes = "fileName:上传时返回的fileName或者原始文件名;inline:是否在浏览器中直接展示，否则下载到本地"
     )
     public void download(@RequestParam(value = "fileName") String fileName
             , @RequestParam(value = "inline", defaultValue = "false") boolean inline

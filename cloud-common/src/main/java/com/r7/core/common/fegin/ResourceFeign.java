@@ -18,7 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 @FeignClient("cloud-resource")
 public interface ResourceFeign {
 
-
+    /**
+     * @param file      上传文件
+     * @param encrypted 是否需要加密
+     * @return
+     */
     @PostMapping(value = "/api/file",
             produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
